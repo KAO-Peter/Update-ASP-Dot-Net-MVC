@@ -1,0 +1,181 @@
+﻿@model HRPortal.Mvc.Models.SignFlowAssignDeptViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "AddSignFlow";
+}
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+<style>
+       .form-group input {
+        display:inline-block;
+        width: 30%;
+                 }
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.AddSignFlow</h4>
+        </div>
+
+        @using (Html.BeginForm("AddSignFlow", "SignFlowSetting", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="LevelID" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.FormType</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("FormTypeList", (IEnumerable<SelectListItem>)ViewData["FormTypeList"], new { @class = "form-control", onchange = "formTypeSelected();" })
+                            @Html.HiddenFor(model => model.FormType)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="LevelID" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.Company</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("CompanyList", (IEnumerable<SelectListItem>)ViewData["CompanyList"], new { @class = "form-control", onchange = "companySelected();" })
+                            @Html.HiddenFor(model => model.CompanyID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="LevelID" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.Department</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("DepartmentList", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", onchange = "departmentSelected();",@multiple="multiple" })
+                            @Html.HiddenFor(model => model.DeptID)
+                        </div>
+                    </div>
+                    <div class="form-group divEmp">
+                        <label for="LevelID" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="EmployeeList" name="EmployeeList" multiple="multiple" onchange="employeeSelected();"></select>
+                            <input id="EmpID" name="EmpID" type="hidden" value="ALL">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        formTypeSelected();
+        companySelected();
+        departmentSelected();
+        //20160123 by bee
+        var $divEmp=$('.divEmp');
+        $divEmp.hide();
+        $("#DepartmentList").change(function(){
+            var curSelected=$(this).children('option:selected').val();
+            var $employeeSelect = $('#EmployeeList');
+            if(curSelected=="ALL"){
+                $divEmp.hide();
+                $employeeSelect.empty();
+                employeeSelected()
+            }else{       
+                $.getJSON('@Url.Action("GetMultiEmployeeOption")',{
+                    companyCode: $('#CompanyID').val(),
+                    DepartmentCode: $('#DeptID').val()
+                },
+                function(employees){                  
+                    $employeeSelect.empty();
+                    $.each(employees, function (index, employee) {
+                        $employeeSelect.append($("<option></option>").val(employee.Value).html(employee.Text));
+                    });
+                    employeeSelected();
+                    $employeeSelect.multipleSelect();
+                    var $employeeSelectArea=$employeeSelect.parent();
+                    $employeeSelectArea.children('.ms-parent').css({'width':'100%','padding':'0 0 0 0'});
+                    $employeeSelectArea.find('.ms-choice').css({'height':'100%'});
+                    $employeeSelectArea.find('.ms-select-all').remove();
+                    $employeeSelectArea.find('input[data-name=selectItemEmployeeList]').click(function(){
+                        var $selectItemEmployeeList= $employeeSelectArea.find('input[data-name=selectItemEmployeeList]');
+                        if($(this).val()=='ALL'){                           
+                            if($(this).prop('checked')==true){
+                                $selectItemEmployeeList.prop('disabled',true);
+                                $(this).prop('disabled',false);
+                            }else if($(this).prop('checked')==false){
+                                $selectItemEmployeeList.prop('disabled',false);
+                            }
+                        }else if($(this).val()!='ALL'){
+                            if($(this).prop('checked')==true){
+                                $selectItemEmployeeList.eq(0).prop('disabled',true);
+                            }else if($(this).prop('checked')==false){
+                                if($selectItemEmployeeList.find('input:checked').length==0){
+                                    $selectItemEmployeeList.eq(0).prop('disabled',false);
+                                }
+                            }
+                        }
+                    });
+                }
+                )
+                $divEmp.show();
+            }
+        })
+    })
+    function formTypeSelected() {
+        $('#FormType').val($('#FormTypeList option:selected').val());
+    }
+    function companySelected() {
+        $('#CompanyID').val($('#CompanyList option:selected').val());
+        $.getJSON('@Url.Action("GetDepartmentOptions")',
+            { companyCode: $('#CompanyID').val() },
+            function (departments) {
+                var $departmentsSelect = $('#DepartmentList');
+                $departmentsSelect.empty();
+                $.each(departments, function (index, department) {
+                    $departmentsSelect.append($("<option></option>").val(department.Value).html(department.Text));
+                });
+                $departmentsSelect.find('option[value=ALL]').prop('selected',true);
+                departmentSelected();
+                $departmentsSelect.multipleSelect();
+                var $multiSelectArea=$departmentsSelect.parent();
+                $multiSelectArea.children('.ms-parent').css({'padding':'0 0 0 0'});
+                $multiSelectArea.find('.ms-choice').css({'height':'100%'});
+                $multiSelectArea.find('.ms-select-all').remove();
+            }
+        );
+    }
+    function departmentSelected() {
+        var DepartmentList=$('#DepartmentList option:selected'),
+            curSelectDept="";
+
+        $.each(DepartmentList,function(){
+            curSelectDept=curSelectDept+$(this).val()+',';
+        })
+        curSelectDept=curSelectDept.substring(0,curSelectDept.length-1);
+        $('#DeptID').val(curSelectDept);
+    }
+    function employeeSelected(){
+        var $EmployeeList=$('#EmployeeList');
+        if($EmployeeList.children().length==0){
+            $('#EmpID').val('ALL');
+        }else if($EmployeeList.children().length>0){
+           
+            var EmpList=$EmployeeList.find('option:selected'),
+                curSelectEmp="";
+
+            $.each(EmpList,function(){
+                curSelectEmp=curSelectEmp+$(this).val()+',';
+            })
+
+            curSelectEmp=curSelectEmp.substring(0,curSelectEmp.length-1);
+            $('#EmpID').val(curSelectEmp);
+        }
+    }
+</script>

@@ -1,0 +1,326 @@
+﻿@model HRPortal.Mvc.Models.SalaryQueryForHRViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+   
+</style>
+@using (Html.BeginForm("Index", "DeptSalaryQuery", FormMethod.Post, new { id = "SalaryQueryForm" }))
+{
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    //if (ViewBag.Status == null || ViewBag.Status == "false" || Session["_OutTime"] == null || DateTime.Parse(Session["_OutTime"].ToString()) < DateTime.Now)
+    if (false)
+    {
+        <div class="col-xs-12">
+            <h4 class="text-danger" style="font-size:20px;">※請再次輸入您的<span style="font-size:24px;font-weight:bolder;">AD登入密碼</span>，才可使用該功能。</h4>
+            <!--<label for="Password" style="font-weight: bold;color: red;">提醒您：密碼連續輸入錯誤3次，將被鎖定並立即登出，請逕洽HR。</label>-->
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="col-md-2 control-label" style="font-size:16px;width:7.6%">密碼：</label>
+                <div class="col-md-4">
+                    <input type="password" name="PWdata" class="form-control" id="PWdata" />
+                </div>
+                <button name="btnCheckPW" id="btnCheckPW" class="col-md-2 btn btn-success" type="button">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                @*<input type="submit" class="col-md-2 btn btn-success" name="btnCheckPW" id="btnCheckPW" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" />*@
+            </div>
+        </div>
+    }
+    else
+    {
+        
+    <div class=" row">
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+    <div class="search-section">
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Department</label>
+            </div>
+            <div class="search-input">
+                @Html.DropDownListFor(x => x.SelectedDepartment, Model.DepartmentListData, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+            </div>
+            <div class="search-input">
+                @Html.DropDownListFor(x => x.SelectedEmployee, Model.EmployeeListData, new { @class = "form-control" })
+            </div>
+        </div>
+        <br />
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Label_PayCycleBeginDate</label>
+            </div>
+            <div class="search-input">
+                <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+            </div>
+        </div>
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Label_PayCycleEndDate</label>
+            </div>
+            <div class="search-input">
+                <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+            </div>
+        </div>
+        @if ((ViewData["isHR"]==null?false:(bool)ViewData["isHR"]) || (ViewData["isAdmin"]==null?false:(bool)ViewData["isAdmin"]))
+        {
+            <div class="search-wrap">
+                <div class="search-name">
+                    <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                </div>
+                <div class="search-input">
+                    @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+                </div>
+            </div>
+        }
+                            
+        </div>
+         <div class="search-wrap">
+           
+             <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="@HRPortal.MultiLanguage.Resource.BtnClear" class="btn btn-warning" />
+                            </div>
+                            
+                      </div>         
+        </div>
+            </div>
+   <input type="hidden" id="searchkey" name="searchkey" value="" />
+    <div class="col-xs-12">
+        @if (Model.SalaryFormListData != null)
+        {
+            <input type="hidden" id="ExportsalaryYMData" name="ExportsalaryYMData" value="" />
+            <input type="hidden" id="ExportFormNo" name="ExportFormNo" value="" />
+            <input type="hidden" id="ExportEmployeeNo" name="ExportEmployeeNo" value="" />
+            <div class="table-responsive" id="SalaryFormNoListBlock">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <!--<div style="color:#F00;font-size:20px">※下載後，PDF開啟密碼預設為<span style="font-size:24px;font-weight:bolder;">身分證字號後6碼+生日月份4碼</span>(ex:生日是3月7日請輸入0307)</div>-->
+                        <div style="color:#F00" style="font-size:20px">@HRPortal.MultiLanguage.Resource.Hint_SalaryReceiptProvideTime</div>
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Header_EmpID</div>
+                        </th>
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.EmployeeName</div>
+                        </th> 
+                        <th class="" style="width:30%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Header_PayCycleYM</div>
+                        </th>
+                        <th class="" style="width:20%">
+                             <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Header_PayCycleFormNo</div>
+                        </th>
+                        <th class="" style="width:1%">
+
+                        </th>
+
+                    </tr>
+                    @if (Model.SalaryFormListData.Count>0)
+                     {
+                        foreach (var item in Model.SalaryFormListData)
+                        {
+                            <tr role="row" tabindex="-1" id="@item.FormNo" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                    @Model.SelectedEmployee
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                    @(ViewBag.LanguageCookie == "en-US" ? Model.SelectedEmployeeEnglishName : Model.SelectedEmployeeName)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                    @item.SalaryYM
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                    @item.FormNo
+                                </td>
+
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a class="btn btn-success" onclick="exportPDF('@item.FormNo','@item.SalaryYM','@ViewBag.ExportEmployeeNo');">@HRPortal.MultiLanguage.Resource.BtnDownload</a>
+                                </td>
+
+                            </tr>
+                        }
+                     }
+                     else
+                     {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="6" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                     }
+                </table>
+            </div>
+            <div style="text-align:center">
+                          </div>
+           
+        }
+        
+    </div>
+
+}
+}
+
+<script>
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        /*
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm',
+            pickTime: false,
+            startView: 'decade',
+            minView: 'year',
+            autoclose: true,
+            language: 'zh-TW'
+        });
+        */
+
+        var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+        $('#BeginDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+            //"current":formatToday+" 08:00"
+        });
+
+        $('#EndDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+            //"current":formatToday+" 08:00"
+        });
+
+        $('#btnQuery').click(function (event) {
+            //event.preventDefault();
+            var form = $('#SalaryQueryForm');
+
+            //if ($('#EndDate').val() != "" && $('#BeginDate').val() == "")
+            //    showAlertMessage("請輸入查詢起始日期");
+            //else {
+            $('#searchkey').val(1);
+            //form.submit();
+            //}
+
+        });
+
+    });
+
+    function exportPDF(formNOData, salaryYMData, exportEmployeeNo) {
+        $('#ExportFormNo').val(formNOData);
+        $('#ExportsalaryYMData').val(salaryYMData);
+        $('#ExportEmployeeNo').val(exportEmployeeNo);
+        var form = $('#SalaryQueryForm');
+        form.submit();
+
+    }
+    $(function () {
+
+        //停用按下Return鍵會自動送出表單的動作
+        
+        $(document).on('keypress', 'form input[type="password"]', function(e) {
+            if(e.which == 13) {
+                e.preventDefault();
+                $('#btnCheckPW').trigger('click');
+                //return false;
+            }
+        });
+        
+
+        $('#btnCheckPW').click(function (event) {
+            var form = $('#SalaryQueryForm');
+
+            if ($('#PWdata').val() == "")
+                showAlertMessage("請輸入密碼");
+            else {
+                checkPassword();
+            }
+
+        });
+
+        function checkPassword() {
+            var form = $('#SalaryQueryForm');
+            var submitData = new FormData(form[0]);
+            $.ajax({
+                url: 'SalaryQuery/CheckPassword',
+                type: 'POST',
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (checkResult) {
+                    if (checkResult.status != 'success') {
+                        $('#PWdata').val('');
+                        showAlertMessage(checkResult.message, function(){
+                        window.location='@Url.Action("Index")';    
+                        });
+                    }
+                    else {
+                        form.submit();
+                    }
+                }
+            });
+
+        }
+
+
+        $("#SelectedDepartment").change(function (event) {
+            $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val(),StatusData:$('#SelectedStatuslistData').val() }, function (datas) {
+                 var empSelect = $("#SelectedEmployee");
+                 $(empSelect).empty();
+                 $.each(datas, function (index, data) {
+                     empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+                 });
+
+                 /*
+                 if (obj != null)
+                 {
+                     $("#SelectedEmployee").val(obj.Empno);
+                     obj = null;
+                 }
+                 */
+             });
+             //隱藏底下薪資批號區塊
+             $("#SalaryFormNoListBlock").hide();
+        });
+
+        $("#SelectedEmployee").change(function() {
+
+            //隱藏底下薪資批號區塊
+            $("#ExportFormNo").val("");
+            $("#ExportsalaryYMData").val("");
+            $("#ExportEmployeeNo").val("");
+            $("#SalaryFormNoListBlock").hide();
+        });
+
+        //在離職狀態改變時直接觸發部門修改的動作，更新員工清單
+        $('#SelectedStatuslistData').change(function() {
+            $("#SelectedDepartment").trigger('change');
+        });
+    });
+   
+</script>

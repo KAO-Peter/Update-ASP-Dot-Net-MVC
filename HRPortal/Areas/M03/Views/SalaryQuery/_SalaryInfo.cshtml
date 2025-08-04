@@ -1,0 +1,64 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryInfo
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th>
+              員工姓名
+            </th>
+            <td>@Model.Name</td>
+            <th>工號</th>
+            <td>@Model.EmpID </td>
+            <th>薪資年月</th>
+            <td>@Model.SalaryYM</td>
+        </tr>
+        <tr>
+            <th>
+                部門代號
+            </th>
+            <td>@Model.DeptCode</td>
+            <th>部門名稱</th>
+            <td>@Model.DeptName</td>
+            <th>扶養人數</th>
+            <td style="text-align:right">@Model.BringNumber</td>
+            
+        </tr>
+        <tr>
+            <th>
+                職等
+            </th>
+            <td>@Model.GradeName</td>
+            <th>職級</th>
+            <td>@Model.PositionName</td>
+            <th>職稱</th>
+            <td>@Model.JobTitle</td>         
+        </tr>
+        <tr>
+            <th>
+                金融局號
+            </th>
+            <td>@Model.BankCode </td>
+            <th>金融帳號</th>
+            <td>@Model.BankAccount</td>
+            <th>薪點</th>
+            <td style="text-align:right">@Model.SalaryBasis.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+        <tr>
+            <th> 
+                勞退公司提撥
+            </th>
+            <td style="text-align:right">@Model.RetirementAllocate.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th>應稅合計</th>
+            <td style="text-align:right">@Model.TaxTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>   
+            <th>應發金額</th>
+            <td style="text-align:right">@Model.StandardAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>      
+            </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>實發金額</th>
+            <td style="text-align:right">@Model.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td> 
+       </tr>
+    </tbody>
+</table>

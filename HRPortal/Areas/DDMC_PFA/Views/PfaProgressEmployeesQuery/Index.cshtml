@@ -1,0 +1,289 @@
+﻿@model IEnumerable<HRPortal.Mvc.DDMC_PFA.Models.PfaProgressQueryViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "PfaProgressEmployeesQuery", FormMethod.Post, new { Id = "PfaProgressEmployeesQueryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMsg(message);
+            });
+        </script>
+    }
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>績效考核批號</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlPfaFormNo", (List<SelectListItem>)ViewBag.FormNoList, new { @id = "ddlPfaFormNo", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>部門組織</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlPfaOrg", (List<SelectListItem>)ViewBag.OrgList, new { @id = "ddlPfaOrg", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>部門</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlDepartment", (List<SelectListItem>)ViewBag.DepartmentList, new { @id = "ddlDepartment", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtEmployeeNo" name="txtEmployeeNo" value="@ViewBag.txtEmployeeNo" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtEmployeeName" name="txtEmployeeName" value="@ViewBag.txtEmployeeName" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>簽核狀態</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlStatus", (List<SelectListItem>)ViewBag.StatusList, new { @id = "ddlStatus", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">績效考核批號</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">部門組織</div>
+                        </th>
+                        <th style="width:11%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">部門</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">員工編號</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">員工姓名</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">送簽日期</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">自評</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">初核</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">複核</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">核決</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">簽核狀態</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">待簽核人編號</div>
+                        </th>
+                        <th style="width:7%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">待簽核人姓名</div>
+                        </th>
+                        <th style="width:3%"></th>
+                        <th style="width:3%"></th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.PfaCycleEmpID">
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaFormNo)
+                                </td>
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaOrgName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaDeptName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmployeeNo)
+                                </td>
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.StartDate.HasValue)
+                                    {
+                                        @item.StartDate.Value.ToString("yyyy/MM/dd")
+                                    }
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaSelfScore)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaFirstScore)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaLastScore)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaFinalScore)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.StrSignStatus)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PreSignEmpNo)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PreSignEmpName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnDetail" class="btn btn-warning" data-modal="" href="@Url.Action("Detail", new { Id = item.PfaCycleEmpID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDetail</a>
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnPDF" class="btn btn-warning" href="@Url.Action("PDF", new { Id = item.PfaCycleEmpID })" target="_blank">PDF</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.Mvc.DDMC_PFA.Models.PfaProgressQueryViewModel>;
+                }
+                @{
+                    if (IsAjax)
+                    { Layout = ""; }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, txtPfaCycleID = ViewBag.txtPfaCycleID, txtPfaOrgID = ViewBag.txtPfaOrgID, txtDepartmentID = ViewBag.txtDepartmentID, txtEmployeeNo = ViewBag.txtEmployeeNo, txtEmployeeName = ViewBag.txtEmployeeName, txtStatus = ViewBag.txtStatus, cmd = "Query" }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, txtPfaCycleID = ViewBag.txtPfaCycleID, txtPfaOrgID = ViewBag.txtPfaOrgID, txtDepartmentID = ViewBag.txtDepartmentID, txtEmployeeNo = ViewBag.txtEmployeeNo, txtEmployeeName = ViewBag.txtEmployeeName, txtStatus = ViewBag.txtStatus, cmd = "Query" }), new PagedListRenderOptions
+                        {
+                            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                            DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                            DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                            DisplayLinkToIndividualPages = false,
+                            DisplayPageCountAndCurrentLocation = true,
+                            PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.Pageof,
+                            DisplayItemSliceAndTotal = true,
+                            ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.ofrow
+                        })
+                }
+            </div>
+        }
+    </div>
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.txtPfaCycleID" name="txtPfaCycleID" id="txtPfaCycleID" />
+    <input type="hidden" value="@ViewBag.txtPfaOrgID" name="txtPfaOrgID" id="txtPfaOrgID" />
+    <input type="hidden" value="@ViewBag.txtDepartmentID" name="txtDepartmentID" id="txtDepartmentID" />
+    <input type="hidden" value="@ViewBag.txtStatus" name="txtStatus" id="txtStatus" />
+}
+
+<div id='PfaSignProcessDialogDiv' class='modal fade in' role="dialog"><div id='PfaSignProcessDialogContent'></div></div>
+<div id='UploadDialogDiv' class='modal fade in' role="dialog" tabindex="-1"><div id='UploadDialogContent'></div></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $(document).ready(function () {
+                $("#txtPfaCycleID").val($("#ddlPfaFormNo").val());
+            });
+
+            $("#ddlDepartment").change(function () {
+                $("#txtDepartmentID").val($("#ddlDepartment").val());
+            });
+
+            $("#ddlStatus").change(function () {
+                $("#txtStatus").val($("#ddlStatus").val());
+            });
+
+            $("#ddlPfaFormNo").change(function () {
+
+                $("#txtPfaCycleID").val($("#ddlPfaFormNo").val());
+            });
+
+            $("#ddlPfaOrg").change(function () {
+                $("#txtPfaOrgID").val($("#ddlPfaOrg").val());
+            });
+
+            $('a[data-modal]').click(function () {
+                selUrl = this.href;
+                reload = "1";
+                var datareload = $(this).attr("data-reload");
+
+                if (!(datareload === undefined) && datareload == '0') {
+                    console.log(datareload);
+                    reload = "0";
+                }
+
+                $('#PfaSignProcessDialogContent').load(selUrl, function () {
+                    $('#PfaSignProcessDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                });
+                return false;
+            });
+
+            $("#PfaSignProcessDialogDiv").on("hidden.bs.modal", function () {
+                if (reload == "1") location.reload();
+            });
+        });
+    </script>
+}

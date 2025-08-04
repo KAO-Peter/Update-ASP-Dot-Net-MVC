@@ -1,0 +1,178 @@
+﻿@model HRPortal.DBEntities.Department
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditDepartment";
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+    .col-md-33 {
+    color: #777;
+    width: 100px;
+    height: 15px;
+    text-align: justify;
+    -ms-text-justify: distribute;
+    padding: 0px 0 8px 35px;
+    float: left;
+}
+    .col-md-33:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });     
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.EditDepartment</h4>
+        </div>
+
+        @using (Html.BeginForm("EditDepartment", "DepartmentManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.CompanyID)
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.EffectiveDateID);
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="DepartmentCode" class="col-md-33" style="width: 16%;">@HRPortal.MultiLanguage.Resource.DeptCode</label>
+                        <div class="col-sm-44">
+                           
+                                @Html.DisplayFor(model => model.DepartmentCode, new { @class = "form-control" })
+                           
+                        </div>
+                        @Html.HiddenFor(model => model.DepartmentCode)
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DepartmentName" class="col-md-33" style="width: 16%;">@HRPortal.MultiLanguage.Resource.DeptName</label>
+                        <div class="col-sm-44">
+                            
+                                @Html.DisplayFor(model => model.DepartmentName, new { @class = "form-control" })
+                           
+                        </div>
+                        @Html.HiddenFor(model => model.DepartmentName)
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Departmentlevel" class="col-md-22" style="width: 16%;">@HRPortal.MultiLanguage.Resource.Departmentlevel</label>
+                        <div class="col-sm-44" style="width:50%">
+                           
+                                @*@Html.TextBoxFor(model => model.DepartmentsLevel)*@
+                                 @Html.TextBoxFor(model => model.DepartmentsLevel, new { @class = "form-control" })
+                                 @Html.ValidationMessageFor(model => model.DepartmentsLevel, "", new { @class = "text-danger" })
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DepartmentEnglishName" class="col-md-33" style="width: 16%;">@HRPortal.MultiLanguage.Resource.DeptEngName</label>
+                        <div class="col-sm-44">
+                           
+                                @Html.DisplayFor(model => model.DepartmentEnglishName, new { @class = "form-control" })
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="HRMManagerId" class="col-md-33" style="width: 16%;">@HRPortal.MultiLanguage.Resource.HRMDeptManager</label>
+                        <div class="col-sm-44">
+                           
+                                @Html.DisplayFor(model => model.Manager.EmployeeNO, new { @class = "form-control" }) @Html.DisplayFor(model => model.Manager.EmployeeName, new { @class = "form-control" })
+                           
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-33" style="width: 16%;">@HRPortal.MultiLanguage.Resource.DeptParent</label>
+                        <div class="col-sm-44">
+                          
+                                @Html.DisplayFor(model => model.Parent.DepartmentCode, new { @class = "form-control" })
+                                @Html.DisplayFor(model => model.Parent.DepartmentName, new { @class = "form-control" })
+                           
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SignParentID" class="col-md-22" style="width: 16%;">@HRPortal.MultiLanguage.Resource.DeptSignParent</label>
+                        <div class="col-sm-44" style="width:50%">
+                            @Html.DropDownList("DepartmentList", (IEnumerable<SelectListItem>)ViewData["Departments"], new { @class = "form-control", onchange = "$('#SignParentID').val(this.options[this.selectedIndex].value);" })
+                            @Html.HiddenFor(model => model.SignParentID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SignManagerId" class="col-md-22" style="width: 16%;">@HRPortal.MultiLanguage.Resource.SignDeptManager</label>
+                        <div class="col-sm-44" style="width:50%">
+                           @Html.DropDownList("EmployeeList", (IEnumerable<SelectListItem>)ViewData["Employees"], new { @class = "form-control", onchange = "$('#SignManagerId').val(this.options[this.selectedIndex].value);" })
+                           @Html.HiddenFor(model => model.SignManagerId)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EffectiveDates" class="col-md-22" style="width: 16%;">@HRPortal.MultiLanguage.Resource.EffectiveDates</label>
+                        <div class="col-sm-44" style="width:50%">
+                        @Html.TextBoxFor(model => model.EffectiveDate, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker1" })
+                        @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SignDeptManager" class="col-md-22" style="width: 16%;">@HRPortal.MultiLanguage.Resource.SignDeptManager</label>
+                        <div class="col-sm-44" style="width:50%">
+                            @Html.DropDownList("EmployeeList1", (IEnumerable<SelectListItem>)ViewData["Employees1"], new { @class = "form-control", onchange = "$('#SignManagerId1').val(this.options[this.selectedIndex].value);" })
+                            @Html.HiddenFor(model => model.SignManagerId1)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+    <script type="text/javascript">
+        /*
+        $('#datetimepicker1').datetimepicker({
+            language: 'zh-TW',
+            pick12HourFormat: true,
+            format: 'yyyy/mm/dd hh:ii',
+            autoclose: true,
+            showMeridian: true,
+            minuteStep:30
+        });
+        */
+        $('#datetimepicker1').appendDtpicker({
+            "inline": false,
+            "locale": "cn",
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+            //"current":formatToday+" 08:00"
+        });
+
+    </script>

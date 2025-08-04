@@ -1,0 +1,318 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.GetEmpDataCasualDetail
+@Scripts.Render("~/bundles/validate")
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">新增臨時員工資料</h4>
+        </div>
+
+        @using (Html.BeginForm("Index", "EmpDataCasual", FormMethod.Post, new { Id = "CreateEmpDataCasualForm" }))
+        {
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.CompanyCode)
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmpID, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.EmpID, new { @class = "form-control", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.EmpID, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.EmpName, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.EmpName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmpName, "", new { @class = "text-danger" })
+                        </div>                        
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IDNumber, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.IDNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDNumber, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Sex, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3" style="margin-top: 8px;">
+                            @Html.RadioButtonFor(model => model.Sex, "M", new { id = "IsMale" })
+                            @Html.Label("IsMale", "男")
+                            @Html.RadioButtonFor(model => model.Sex, "F", new { id = "IsFeMale" })
+                            @Html.Label("IsFeMale", "女")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NationType, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3" style="margin-top: 8px;">
+                            @Html.RadioButtonFor(model => model.NationType, true, new { id = "TheNationality" })
+                            @Html.Label("TheNationality", "本國籍")
+                            @Html.RadioButtonFor(model => model.NationType, false, new { id = "ForeignNationality" })
+                            @Html.Label("ForeignNationality", "外國籍")
+                        </div>
+                        @Html.LabelFor(model => model.NationCode, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(model => model.NationCode, (IEnumerable<SelectListItem>)ViewData["NationList"], new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NationCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group" id="divForeignType" style="display:none">
+                        @Html.LabelFor(model => model.ForeignType, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(model => model.ForeignType, (IEnumerable<SelectListItem>)ViewData["ForeignTypeList"], new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ForeignType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DeptCode, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(model => model.DeptCode, (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DeptCode, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.CostCode, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(model => model.CostCode, (IEnumerable<SelectListItem>)ViewData["DeptCostList"], new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CostCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AssumeDate, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.AssumeDate, "{0:yyyy/MM/dd}", new { @class = "form-control date-control" })
+                            @Html.ValidationMessageFor(model => model.AssumeDate, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Birthday, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.Birthday, "{0:yyyy/MM/dd}", new { @class = "form-control date-control" })
+                            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Married, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3" style="margin-top: 8px;">
+                            @Html.CheckBoxFor(model => model.Married)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RegisterAddress, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(model => model.RegisterAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RegisterAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @Html.CheckBoxFor(model => model.AsAbove) 
+                            @Html.LabelFor(model => model.AsAbove)
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tel, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.Tel, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Tel, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Mobile, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-2" style="color:red;margin-top: 8px;">(二擇一輸入)</div>
+                    </div> 
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmergencyName, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.EmergencyName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmergencyName, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.EmergencyPhone, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.EmergencyPhone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmergencyPhone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BranchNo, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.BranchNo, new { @class = "form-control", @maxlength = "3" })
+                            @Html.ValidationMessageFor(model => model.BranchNo, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Account, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(model => model.Account, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input id="btnSave" type="button" class="btn btn-success" value="@HRPortal.MultiLanguage.Resource.BtnSave" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    var addObj= $("#Address");
+
+    $(function () {
+        $("[class*='date-control']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            pickTime: false,
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        //下拉選單 change 事件
+        $("select.form-control").change(function () {
+            switch($(this).attr("id"))
+            {
+                case "DeptCode":  //部門
+                    //排班部門帶出費用中心
+                    $.getJSON('@Url.Action("GetCost")', { DeptCode: $(this).val() }, function (result) {
+                        var obj = $("#CostCode").empty();
+
+                        $.each(result, function (index, item) {
+                            obj.append($("<option></option>").val(item.Value).html(item.Text));
+                        });
+                    });
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //NationType RadioBox change 事件
+        //20170503 Dsinfo Yoyo Start 外籍臨時工勞保陸配及外配判斷
+        if ($("input[type='Radio'][name='NationType']:checked").val() == "True") {
+            $("#ForeignType").val("");
+            $("#divForeignType").hide();
+        }
+        else {
+            $("#ForeignType").val("Y");
+            $("#divForeignType").show();
+        }
+
+        $("input[type='Radio'][name='NationType']").change(function () {
+            if ($(this).val() == "True") {
+                $("#ForeignType").val("");
+                $("#divForeignType").hide();
+            }
+            else {
+                $("#ForeignType").val("Y");
+                $("#divForeignType").show();
+            }
+        });
+        //20170503 Dsinfo Yoyo End 外籍臨時工勞保陸配及外配判斷
+
+        //儲存
+        $("#btnSave").click(function (event) {
+            if (!$(this).prop("disabled"))
+            {
+                var form = $("#CreateEmpDataCasualForm");
+
+                form.submit(function (e) {
+                    e.preventDefault();
+                });
+
+                if ($("#NationCode").val() == "") {
+                    showAlertMessage("請選擇國籍");
+                    return false;
+                }
+
+                if ($("#Tel").val() == "" && $("#Mobile").val() == "") {
+                    showAlertMessage("連絡電話與行動電話請二擇一輸入");
+                    return false;
+                }
+
+                if (form.validate().form()) {
+                    $("#btnSave").prop("disabled",true);
+
+                    var checkData = new FormData();
+                    checkData.append("IDNumber", $("#IDNumber").val());
+
+                    $.ajax({
+                        async: true,
+                        url: '@Url.Action("IDNumberCheckExists", "EmpDataCasual")',
+                        type: "POST",
+                        data: checkData,
+                        contentType: false,
+                        processData: false,
+                        success: function (checkResult) {
+                            if (!checkResult.Result)
+                            {
+                                showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.IDNumberError</div>", function(){
+                                    SaveEmpData();
+                                });
+
+                                $("#btnSave").prop("disabled",false);
+                            }
+                            else
+                            {
+                                SaveEmpData();
+                            }
+                        },
+                        error: function(){
+                            $("#btnSave").prop("disabled",false);
+                        }
+                    });
+                }
+            }
+        });
+
+        function SaveEmpData()
+        {
+            $("#btnSave").prop("disabled",true);
+
+            var form = $("#CreateEmpDataCasualForm");
+            var submitData = new FormData(form[0]);
+
+            $.ajax({
+                url: "EmpDataCasual/Create",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (submitResult) {
+                    if (submitResult.status == "success") {
+                        $("#EmpDataCasualDialogDiv").modal("hide");
+                        showAlertMessage(submitResult.message, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        showAlertMessage(submitResult.message);
+                    }
+                },
+                complete: function(){
+                    $("#btnSave").prop("disabled",false);
+                }
+            });
+        }
+
+        //同上
+        $("#AsAbove").change(function (event) {
+            if ($(this).prop("checked"))
+            {
+                $(addObj).val($("#RegisterAddress").val());
+            }
+
+            $(addObj).prop("readonly",$(this).prop("checked"));
+        });
+
+        //初始化
+        $("#AsAbove").change();
+    });
+</script>

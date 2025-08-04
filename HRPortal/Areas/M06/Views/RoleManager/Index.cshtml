@@ -1,0 +1,103 @@
+﻿@model List<HRPortal.Mvc.Models.RoleViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+        </script>
+    }
+    <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+        <a class="btn btn-info" id="btnCreate" data-modal="" href="@Url.Action("Create")">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777;">
+                    <th class="col-xs-2" style="white-space:normal;width:10%">
+                         <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</div>
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal;width:15%">
+                         <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().IsAdmin)</div>
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal;width:15%">
+                         <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().IsHR)</div>
+                    </th>
+                    <th class="col-xs-4" style="white-space:normal;width:20%">
+                         <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</div>
+                    </th>
+                    <th class="col-xs-2" style="width:15%">
+                    </th>
+                </tr>
+                @if (Model != null && Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                @Html.CheckBoxFor(modelItem => item.IsAdmin, new { @onclick = "return false" })
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                @Html.CheckBoxFor(modelItem => item.IsHR, new { @onclick = "return false" })
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+
+                            <td style="white-space:normal;text-align:center;">
+                                <a class="btn btn-warning" id="btnEdit@(item.ID)" data-modal="" href="@Url.Action("Edit", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                <a class="btn btn-danger" id="btnMenu@(item.ID)" data-modal="" href="@Url.Action("RoleMenuMap", new { roleID = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.EditRoleMenu</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="6" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id='RoleDialogDiv' class='modal fade in' role="dialog">
+        <div id='RoleDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#RoleDialogContent').load(this.href, function () {
+                    $('#RoleDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#RoleDialogDiv', '#RoleDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+
+        });
+    </script>
+}
+

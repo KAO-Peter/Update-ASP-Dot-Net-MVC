@@ -1,0 +1,90 @@
+﻿@model List<YoungCloud.SignFlow.Databases.UnitOfWorks.SignFlowLevel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+        </script>
+    }
+    <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+        <a class="btn btn-info" id="btnCreate" data-modal="" href="@Url.Action("Create")">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777;">
+                    <th class="col-xs-3" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.SignFlowLevelID
+                    </th>
+                    <th class="col-xs-3" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.SignFlowLevelName
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+                        
+                    </th>
+                </tr>
+                @if (Model != null && Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.LevelID)
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+                            <td style="white-space:normal;text-align:center;width:2%">
+                                <a class="btn btn-warning" id="btnEdit@(item.LevelID)" data-modal="" href="@Url.Action("Edit", new { id = item.LevelID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="6" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id='LevelDialogDiv' class='modal fade in' role="dialog">
+        <div id='LevelDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#LevelDialogContent').load(this.href, function () {
+                    $('#LevelDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#LevelDialogDiv', '#LevelDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+
+        });
+    </script>
+}
+

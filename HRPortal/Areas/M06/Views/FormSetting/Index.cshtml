@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="row btn-toolbar action-buttons">
+    <div class="col-md-4">
+        <div class="search-name">
+            <label>公司別</label>
+        </div>
+        <div class="search-input">
+            @Html.DropDownList("companyList", (IEnumerable<SelectListItem>)ViewBag.companyListItems, new { @class = "form-control"})
+        </div>
+    </div>
+</div>
+
+ <div class="col-xs-12">
+    <div class="table-responsive" id="eachCompanyFormSetting">
+    </div>
+</div>
+
+
+<script>
+    $(function(){
+        $.ajax({
+            url: '@Url.Action("CreateFormStatusPage")',
+            type: 'GET',
+            success: function (result) {
+                $('#eachCompanyFormSetting').html(result);
+            }
+                
+        });
+    })
+    $('#companyList').change(function(){
+        $.ajax({
+            url: '@Url.Action("CreateFormStatusPage")',
+            type: 'GET',
+            data:{CompanyCode:$(this).val()},
+            success: function (result) {
+                $('#eachCompanyFormSetting').html(result);
+            }
+                
+        });
+    })
+</script>
+

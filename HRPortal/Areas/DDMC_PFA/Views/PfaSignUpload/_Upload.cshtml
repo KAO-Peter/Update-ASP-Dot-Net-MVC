@@ -1,0 +1,318 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaSignUploadDataViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+
+<link href="@Url.Content("~/Content/jquery-ui_1.11.3.css")" rel="stylesheet" type="text/css" />
+@Scripts.Render("~/Scripts/jquery-ui-1.11.4.min.js")
+@Scripts.Render("~/Scripts/plugins/pdfjs/pdf.js")
+
+@using (Html.BeginForm("Upload", "PfaCycleSelfEvaluation", FormMethod.Post, new { @id = "UploadForm", @multiple = "multiple" }))
+{
+    @Html.Hidden("pfaCycleEmpId")
+    @Html.Hidden("pfaSignProcessId")
+    @Html.Hidden("pfaSignUploadId")
+    @Html.Hidden("cmd")
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">附件</h4>
+            </div>
+            <div class="modal-body">
+                @if (@ViewBag.cmd == "Edit")
+                {
+                    <div class="tab-content" style="height:80px">
+                        <div class="form-group" style="height:30px">
+                            <label class="col-md-22" style="width:20%">附件</label>
+                            <div class="col-sm-44" style="width:80%">
+                                <input id="file" name="file" type="file" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="height:30px">
+                            <label class="col-md-22" style="width: 20%;">檔名</label>
+                            <div class="col-sm-44" style="width:80%">
+                                <input id="filename" name="filename" type="text" class="form-control" value="@ViewBag.filename" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="tab-content">
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive">
+                            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:60%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">名稱</div>
+                                    </th>
+                                    <th style="width:40%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">功能</div>
+                                    </th>
+                                </tr>
+                                @if (Model.PfaSignUpload.Count() > 0)
+                                {
+                                    foreach (var item in Model.PfaSignUpload)
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr" name="@item.ID">
+                                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.FileName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                                <a id="btnView" class="btn btn-info" style="color:white;" onclick="ViewPDF('@item.ID');">閱覽</a>
+                                                <a id="btnDownload" class="btn btn-primary" style="color:white;" data-modal="" href="@Url.Action("Download", new { pfaSignUploadId = item.ID })" data-action="4">下載</a>
+                                                @if (Model.IsUpload == true && @ViewBag.cmd == "Edit")
+                                                {
+                                                    <a id="btnDelFile" class="btn btn-danger" style="color:white;" data-modal="" href="@Url.Action("DelFile")" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td colspan="3" style="text-align:center">@HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (Model.IsUpload == true && @ViewBag.cmd == "Edit")
+                {
+                    <button type="button" id="btnSubUpload" class="btn btn-success">@HRPortal.MultiLanguage.DDMC_PFA.Resource.FileUpload</button>
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewPdfDialog" title="view pdf dialog">
+        <div style="align-items: center; text-align: center;">
+            <button style="font-size: medium; width:75px;" type="button" class="btn bg-success" id="prev">上一頁</button>
+            <button style="font-size: medium; width: 75px; " type="button" class="btn bg-success" id="next">下一頁</button><br />
+            <span style="font-size:medium;">Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+        </div>
+        <div style="font-size: medium; margin-top: 50px; align-items: center; text-align: center;">
+            顯示比例
+            <select id="scaleSelect" name="scaleSelect">
+                <option value="1" selected="selected">100%</option>
+                <option value="1.25">125%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+                <option value="3">300%</option>
+            </select>
+        </div>
+        <div id="viewPdf" style="align-items: center; text-align: center;"></div>
+    </div>
+    <div id="Message" title="message dialog">文件內容請遵守保密原則!</div>
+}
+
+<script type="text/javascript">
+    var uploadUrl = '@Url.Action("Upload")';
+
+    $(function () {
+
+        $("a[id='btnDownload']").click(function (event) {
+            event.preventDefault();
+            window.open($(this).attr("href"));
+        });
+
+        $("a[id='btnDelFile']").click(function (event) {
+            event.preventDefault();
+
+            var jsonObj = { "pfaSignUploadId": $(this).parent("td").parent("tr").attr("name") };
+            var delurl = $(this).attr("href");
+
+            showConfirm("<div style='text-align:center'>是否確認刪除?</div>", function () {
+                $.ajax({
+                    url: delurl,
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+
+                        showAlertMessage(message, function () {
+                            if (result.success) {
+                                var href = uploadUrl + "?pfaCycleEmpId=" + $("#pfaCycleEmpId").val() + "&pfaSignProcessId=" + $("#pfaSignProcessId").val() + "&cmd=" + $("#cmd").val();
+                                $("#UploadDialogContent").load(href);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        $("#btnSubUpload").click(function () {
+            var maxSize = 5242880;
+            var size = $("input[type=file]").get(0).files[0].size;
+            if (size < maxSize) {
+                var formData = new FormData($("#UploadForm")[0]);
+                $.ajax({
+                    url: uploadUrl,
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        var message = result.message;
+
+                        showAlertMessage(message, function () {
+                            if (result.success) {
+                                var href = uploadUrl + "?pfaCycleEmpId=" + $("#pfaCycleEmpId").val() + "&pfaSignProcessId=" + $("#pfaSignProcessId").val() + "&cmd=" + $("#cmd").val();
+                                $("#UploadDialogContent").load(href);
+                            }
+                        });
+                    }
+                });
+            } else {
+                showAlertMessage("上傳檔案大小不可超過5MB");
+            }
+        });
+
+        var bheight = $(window).height();
+        console.log(bheight * 0.7);
+        $("#viewPdfDialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 840,
+            height: bheight * 0.7,
+            close: function (event, ui) {
+                console.log('close');
+                $("#scaleSelect").unbind('change');
+                $("#scaleSelect")[0].selectedIndex = 0;
+            }
+        });
+
+        $("#Message").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 260,
+            height: 120
+        });
+
+        $('#viewPdfDialog').on('dialogclose', function (event) {
+            $(document).unbind("contextmenu");
+        });
+
+        $("#next").click(function () {
+            onNextPage();
+        });
+
+        $("#prev").click(function () {
+            onPrevPage();
+        });
+    });
+
+    var pageNumber = 1;
+    var pdfDoc = null;
+    var pscale = 1;
+    var pageRendering = false;
+
+    function ViewPDF(pfaSignUploadId) {
+        $("#pfaSignUploadId").val(pfaSignUploadId);
+        $(document).bind("contextmenu", function (e) {
+            e.preventDefault();
+            $("#Message").dialog("open");
+        });
+
+        $('#scaleSelect').on('change', function () {
+            pscale = this.value;
+            ScalePdf($("#pfaSignUploadId").val());
+        });
+
+        $("#viewPdfDialog").dialog("open");
+        $(".ui-dialog").css({
+            zIndex: '1060',
+        });
+        ScalePdf(pfaSignUploadId);
+    }
+
+    function ScalePdf(pfaSignUploadId) {
+        $("#viewPdf").append("<label>..................載入中</label>");
+        $("#viewPdf").find("canvas").remove();
+
+        var srcpath = '@Url.Action("LoadPfaSignUpload", "PfaSignUpload", new { Area = "DDMC_PFA" })';
+        var url = srcpath + "?pfaSignUploadId=" + pfaSignUploadId + "#toolbar=0";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '@Url.Content("~/Scripts/plugins/pdfjs/pdf.worker.js")';
+
+        var loadingTask = pdfjsLib.getDocument(url);
+        loadingTask.promise.then(function (pdf) {
+            pdf.getPage(1).then(function (page) {
+                pdfDoc = pdf;
+                document.getElementById('page_count').textContent = pdfDoc.numPages;
+                renderPage(pageNumber);
+            });
+        });
+    }
+
+    function queueRenderPage(pageNumber) {
+        if (!pageRendering) {
+            $("#viewPdf").append("<label>..................載入中</label>");
+            $("#viewPdf").find("canvas").remove();
+            renderPage(pageNumber);
+        }
+    }
+
+    function onNextPage() {
+        if (pdfDoc != null && pageRendering == false) {
+            if (pageNumber >= pdfDoc.numPages) {
+                return;
+            }
+            pageNumber++;
+            queueRenderPage(pageNumber);
+        }
+    }
+
+    function onPrevPage() {
+        if (pdfDoc != null && pageRendering == false) {
+            if (pageNumber <= 1) {
+                return;
+            }
+            pageNumber--;
+            queueRenderPage(pageNumber);
+        }
+    }
+
+    function renderPage(pageNumber) {
+        pageRendering = true;
+        pdfDoc.getPage(pageNumber).then(function (page) {
+            var scale = pscale;
+            var viewport = page.getViewport({ scale: scale });
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            var renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function () {
+                pageRendering = false;
+                document.getElementById('viewPdf').appendChild(canvas);
+                $("#viewPdf").find("label").remove();
+            });
+        });
+        document.getElementById('page_num').textContent = pageNumber;
+    }
+</script>

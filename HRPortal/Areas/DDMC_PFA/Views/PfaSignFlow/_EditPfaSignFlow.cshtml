@@ -1,0 +1,389 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaSignFlowViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditPfaSignFlow";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog" style="width:1200px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">考核簽核設定</h4>
+        </div>
+        @using (Html.BeginForm("Edit", "PfaSignFlow", FormMethod.Post, new { @id = "EditPfaSignFlowForm", @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-body" style="height:500px; overflow-y:scroll">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">簽核類別</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("SignTypeID", Model.SignTypeList, new { @id = "SignTypeID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <button type="button" class="btn btn-warning" style="margin-bottom: 10px;" id="btnAdd">新增</button>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table id="tableData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                            <thead>
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:80px"></th>
+                                    <th style="width:80px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核步驟</div>
+                                    </th>
+                                    <th style="width:170px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核關卡</div>
+                                    </th>
+                                    <th style="width:306px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核目標</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">自評</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">初核</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">複核</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">決核</div>
+                                    </th>
+                                    <th style="width:90px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">上傳權限</div>
+                                    </th>
+                                    <th style="width:80px"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyData">
+                                @if (Model.Data != null)
+                                {
+                                    var isHide = "";
+                                    foreach (var item in Model.Data)
+                                    {
+                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td style="white-space:normal;text-align:center">
+                                                <button type="button" class="btn btn-success" id="btnInsert">插入</button>
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @item.SignStep
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.DropDownList("SignLevel", item.SignLevelList, new { @id = "SignLevel", @class = "form-control" })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "DeptManager")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_DeptManager" class="form-group" style="@isHide">
+                                                    @Html.DropDownList("DeptClass", item.DeptClassList, new { @id = "DeptClass", @class = "form-control" })
+                                                </div>
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "SpEmp")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_SpEmp" class="form-group" style="@isHide">
+                                                    @Html.TextBox("EmployeesName", string.Format("{0} {1}", item.EmployeesNo, item.EmployeesName), new { @class = "form-control", @style = "width:70%", @disabled = true })
+                                                    <button type="button" id="btnEmp" name="@Url.Action("Emp")" class="btn btn-primary" value="" data-toggle="modal">查詢</button>
+                                                    @Html.Hidden("EmployeesID", item.EmployeesID)
+                                                </div>
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "SpDept")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_SpDept" class="form-group" style="@isHide">
+                                                    @Html.DropDownList("Company", item.CompanyList, new { @id = "Company", @class = "form-control" })
+                                                    @Html.DropDownList("Department", item.DepartmentList, new { @id = "Department", @class = "form-control" })
+                                                </div>
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsSelfEvaluation", item.IsSelfEvaluation)
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsFirstEvaluation", item.IsFirstEvaluation)
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsSecondEvaluation", item.IsSecondEvaluation)
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsThirdEvaluation", item.IsThirdEvaluation)
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsUpload", item.IsUpload)
+                                            </td>
+                                            <td style="white-space:normal;text-align:center">
+                                                <button type="button" class="btn btn-danger" id="btnDel">刪除</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tbody id="tbodyCopy" style="display:none">
+                                <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                    <td style="white-space:normal;text-align:center">
+                                        <button type="button" class="btn btn-success" id="btnInsert">插入</button>
+                                    </td>
+                                    <td style="white-space:normal; text-align:center"></td>
+                                    <td style="white-space:normal">
+                                        @Html.DropDownList("SignLevel", Model.SignLevelList, new { @id = "SignLevel", @class = "form-control" })
+                                    </td>
+                                    <td style="white-space:normal">
+                                        <div id="SignLevel_DeptManager" class="form-group" style="display:none">
+                                            @Html.DropDownList("DeptClass", Model.DeptClassList, new { @id = "DeptClass", @class = "form-control" })
+                                        </div>
+                                        <div id="SignLevel_SpEmp" class="form-group" style="display:none">
+                                            @Html.TextBox("EmployeesName", "", new { @class = "form-control", @style = "width:70%", @disabled = true })
+                                            <button type="button" id="btnEmp" name="@Url.Action("Emp")" class="btn btn-primary" value="" data-toggle="modal">查詢</button>
+                                            @Html.Hidden("EmployeesID", "")
+                                        </div>
+                                        <div id="SignLevel_SpDept" class="form-group" style="display:none">
+                                            @Html.DropDownList("Company", Model.CompanyList, new { @id = "Company", @class = "form-control" })
+                                            @Html.DropDownList("Department", Model.DepartmentList, new { @id = "Department", @class = "form-control" })
+                                        </div>
+                                    </td>
+                                    <td style="white-space:normal; text-align:center">
+                                        @Html.CheckBox("IsSelfEvaluation", false)
+                                    </td>
+                                    <td style="white-space:normal; text-align:center">
+                                        @Html.CheckBox("IsFirstEvaluation", false)
+                                    </td>
+                                    <td style="white-space:normal; text-align:center">
+                                        @Html.CheckBox("IsSecondEvaluation", false)
+                                    </td>
+                                    <td style="white-space:normal; text-align:center">
+                                        @Html.CheckBox("IsThirdEvaluation", false)
+                                    </td>
+                                    <td style="white-space:normal; text-align:center">
+                                        @Html.CheckBox("IsUpload", false)
+                                    </td>
+                                    <td style="white-space:normal;text-align:center">
+                                        <button type="button" class="btn btn-danger" id="btnDel">刪除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var copyObj = $("#tbodyCopy tr");
+        var idx = $("#tbodyData tr").length;
+
+        //新增
+        $("#btnAdd").click(function () {
+            idx += 1;
+            var item = $(copyObj).clone();
+            $($(item).children("td")[1]).text(idx);
+            $($(item).children("td")[7]).find("input[type='checkbox'][name='IsUpload']").show();
+            $(item).appendTo("tbody[id='tbodyData']");
+        });
+
+        //插入
+        $("#tbodyData").delegate("button[id='btnInsert']", "click", function () {
+            var trObj = $(this).parent("td").parent("tr");
+            $(trObj).after($(copyObj).clone());
+
+            var nidx = 0;
+            $("#tbodyData tr").each(function () {
+                nidx += 1;
+                $($(this).children("td")[1]).text(nidx);
+                $($(this).children("td")[7]).find("input[type='checkbox'][name='IsUpload']").show();
+            });
+            idx = nidx;
+        });
+
+        //刪除
+        $("#tbodyData").delegate("button[id='btnDel']", "click", function () {
+            var trObj = $(this).parent("td").parent("tr");
+            $(trObj).remove();
+
+            var nidx = 0;
+            $("#tbodyData tr").each(function () {
+                nidx += 1;
+                $($(this).children("td")[1]).text(nidx);
+                $($(this).children("td")[7]).find("input[type='checkbox'][name='IsUpload']").show();
+            });
+
+            idx = nidx;
+        });
+
+        //簽核關卡
+        $("#tbodyData").delegate("select[id='SignLevel']", "change", function () {
+            var trObj = $(this).parent("td").parent("tr");
+            var tdObj = $(trObj).children("td")[3];
+            $(tdObj).children("div").hide();
+
+            if ($(this).val() != "" && $(this).val() != "PsManager") {
+                $(tdObj).children("div[id='SignLevel_" + $(this).val() + "']").show();
+            }
+        });
+
+        //特定人員的員工查詢click
+        $("#tbodyData").delegate("button[id='btnEmp']", "click", function () {
+            $(this).val("sel");
+
+            $("#EmpDialogContent").load($(this).attr("name"), function () {
+                $('#EmpDialog').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }, 'show');
+            });
+        });
+
+        //特定部門主管的公司別change
+        $("#tbodyData").delegate("select[id='Company']", "change", function () {
+            var ddlCompany = $(this);
+
+            var submitData = new FormData();
+            submitData.append("company", $(ddlCompany).val());
+
+            $.ajax({
+                url: "PfaSignFlow/GetDept",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $($(ddlCompany).next()).html(result.data);
+                }
+            });
+        });
+
+        $('#btnSave').click(function () {
+            var obj = new Object();
+            obj.ID = $("#SignTypeID").val();
+
+            if (obj.ID == "")
+            {
+                showAlertMessage("請選擇簽核類別");
+                return false;
+            }
+
+            var nidx = 0;
+            var item = [];
+            var error = false;
+            $("#tbodyData tr").each(function () {
+                item[nidx] = new Object();
+                item[nidx].SignStep = nidx + 1;
+
+                item[nidx].SignLevelCode = $($(this).find("select[id='SignLevel']")[0]).val();
+                item[nidx].DeptClassID = $($(this).find("select[id='DeptClass']")[0]).val();
+                item[nidx].EmployeesID = $($(this).find("input[id='EmployeesID']")[0]).val();
+                item[nidx].EmployeesName = $($(this).find("input[id='EmployeesName']")[0]).val();
+                item[nidx].CompanysID = $($(this).find("select[id='Company']")[0]).val();
+                item[nidx].DepartmentsID = $($(this).find("select[id='Department']")[0]).val();
+                item[nidx].IsSelfEvaluation = $($(this).find("input[id='IsSelfEvaluation']")[0]).prop("checked");
+                item[nidx].IsFirstEvaluation = $($(this).find("input[id='IsFirstEvaluation']")[0]).prop("checked");
+                item[nidx].IsSecondEvaluation = $($(this).find("input[id='IsSecondEvaluation']")[0]).prop("checked");
+                item[nidx].IsThirdEvaluation = $($(this).find("input[id='IsThirdEvaluation']")[0]).prop("checked");
+                item[nidx].IsUpload = $($(this).find("input[id='IsUpload']")[0]).prop("checked");
+
+                if (item[nidx].SignLevelCode == "")
+                {
+                    showAlertMessage("請選擇簽核關卡");
+                    $($(this).find("select[id='SignLevel']")[0]).select();
+                    error = true;
+                    return false;
+                }
+
+                switch (item[nidx].SignLevelCode)
+                {
+                    case "DeptManager":  //部門主管
+                        if (item[nidx].DeptClassID == "") {
+                            showAlertMessage("請選擇簽核目標");
+                            $($(this).find("select[id='DeptClass']")[0]).select();
+                            error = true;
+                            return false;
+                        }
+                        break;
+                    case "PsManager":  //專業主管
+                        //if (item[nidx].PfaPositionID == "") {
+                        //    showAlertMessage("請選擇簽核目標");
+                        //    $($(this).find("select[id='PfaPosition']")[0]).select();
+                        //    error = true;
+                        //    return false;
+                        //}
+                        break;
+                    case "SpEmp":  //特定人員
+                        if (item[nidx].EmployeesID == "") {
+                            showAlertMessage("請選擇簽核目標");
+                            $($(this).find("input[id='EmployeesName']")[0]).select();
+                            error = true;
+                            return false;
+                        }
+                        break;
+                    case "SpDept":  //特定部門主管
+                        if (item[nidx].DepartmentsID == "") {
+                            showAlertMessage("請選擇簽核目標");
+                            $($(this).find("select[id='Department']")[0]).select();
+                            error = true;
+                            return false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                nidx += 1;
+            });
+
+            if (error == false)
+            {
+                if (nidx == 0) {
+                    showAlertMessage("請輸入簽核步驟");
+                    return false;
+                }
+
+                obj.Data = item;
+
+                var jsonObj = { "obj": obj };
+
+                $.ajax({
+                    url: "PfaSignFlow/Edit",
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaSignFlowDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

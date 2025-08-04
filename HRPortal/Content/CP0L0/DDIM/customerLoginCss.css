@@ -1,0 +1,9 @@
+#index .login .box
+{
+	border: #FFC13A 1px solid;/*取消邊框顏色*/
+}
+		
+#index .login .box .title
+{
+	border-bottom:#FFC13A 1px solid;
+}

@@ -1,0 +1,151 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.SalaryChangeNoteInfo
+@{
+            var MaxCount = Model.SalaryData.Count;
+            decimal TaxableAmounts = 0;
+            decimal NoTaxAmounts = 0;
+            decimal WithholdingAmounts = 0;
+            decimal TaxableItemsTotal = 0;
+            decimal WithholdingItemsTotal = 0;
+            if (MaxCount <= 7)
+            {
+                MaxCount = 7;
+            }   else{
+                MaxCount =MaxCount+ 1;
+            }
+}
+
+<div>
+    <a />
+</div>
+<table cellpadding="0" cellspacing="2" border="0" style="border: 0 solid #000000; width: 100%; max-width: 100%; margin-bottom: 20px;" class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th style="text-align: center; height: 25px; font-family: 標楷體; font-size: 24px; width: 100%" colspan="6">鼎鼎企業管理顧問股份有限公司</th>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 25px; width: 10%"></td>
+            <td style="text-align: center; height: 25px; width: 10%"></td>
+            <th style="text-align: center; height: 25px; font-family: 標楷體; font-size: 20px;" colspan="2">職位薪給調整通知</th>
+            <td style="text-align: center; height: 25px; width: 10%"></td>
+            <td>
+                <c />
+            </td>
+            @*<td style="text-align: center; height: 25px; font-family: 標楷體; width: 10%; border: 1px; border-style: dotted;">正本</td>
+            *@
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 25px;" colspan="5"></td>
+            <td>
+                <d />
+            </td>
+            @*<td style="text-align: center; height: 25px; font-family: 標楷體; border: 1px; border-style: double;">密件</td>
+            *@
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 25px;" colspan="3"></td>
+            <td style="text-align: right; height: 25px;"></td>
+            <td style="text-align: left; height: 25px; font-family: 標楷體;" colspan="2">發文日期：@Model.ExecutionDate</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 25px;" colspan="3"></td>
+            <td style="text-align: right; height: 25px;"></td>
+            <td style="text-align: left; height: 25px; font-family: 標楷體;" colspan="2">發文編號：@Model.FormNo</td>
+        </tr>
+    </tbody>
+</table>
+<table cellpadding="0" cellspacing="0" border="1" style="border: 1 solid #000000; width: 100%; max-width: 100%; margin-bottom: 20px;">
+    <tbody>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">姓名</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.Name</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">員工編號</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.EmpID</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">調整原因</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="3">@Model.ChangeReason</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">項目</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">調整前</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">調整後</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">單位名稱</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.BefDeptName</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">@Model.AftDeptName</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">資位</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.BefJobFunction</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">@Model.AftJobFunction</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">職稱</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.BefJobTitle</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">@Model.AftJobTitle</td>
+        </tr>
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">職等</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.BefGrade</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">@Model.AftGrade</td>
+        </tr>
+   @*     <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">薪點</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.BefSalarybasis</td>
+            <td style="text-align: center; height: 30px;" colspan="2">@Model.AftSalarybasis</td>
+        </tr>*@
+        @for (int i = 0; i < MaxCount; i++)
+            {
+        <tr>
+            @if(i==MaxCount -1)
+            {
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">合計</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;">@Model.BefTotalAmount 元<br />
+                (未含獎金)</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;" colspan="2">@Model.AftTotalAmount 元<br />
+                (未含獎金)</td>
+
+            }
+            else if (i ==0)
+             {
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" rowspan="@MaxCount">薪津</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.SalaryData[i].Name</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;">@Model.SalaryData[i].Salary_b 元</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;" colspan="2">@Model.SalaryData[i].Salary_a 元</td>
+            }
+            else if(i < Model.SalaryData.Count)
+            {
+            <td style="text-align: center; height: 30px; font-family: 標楷體;">@Model.SalaryData[i].Name</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;">@Model.SalaryData[i].Salary_b 元</td>
+            <td style="text-align: right; height: 30px; font-family: 標楷體;" colspan="2">@Model.SalaryData[i].Salary_a 元</td>
+            }
+            else
+            {
+            <td style="text-align: center; height: 30px;"></td>
+            <td style="text-align: right; height: 30px;"></td>
+            <td style="text-align: right; height: 30px;" colspan="2"></td>
+            }
+
+        </tr>
+        }
+        <tr>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="2">生效日期</td>
+            <td style="text-align: center; height: 30px; font-family: 標楷體;" colspan="3">@Model.AppplyDate</td>
+        </tr>
+    </tbody>
+</table>
+<span style="font-family: 標楷體;">備註：<br />
+    一、上列薪給調整業經核定，如係調任新職或留職停薪，應即按規定辦妥交接手續。<br />
+    二、副本抄送：
+</span>
+<br />
+<span style="font-weight: bold; font-size: 16px;font-family: 標楷體;">（本通知單請妥為保管，並請勿出示他人）
+</span>
+<br />
+<div style="text-align: right;">
+    <b />
+</div>
+<p style="text-align: right; font-weight: bold; font-family: 標楷體; font-size: 20px">
+    行政管理部　啟
+</p>

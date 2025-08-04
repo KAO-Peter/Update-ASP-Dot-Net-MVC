@@ -1,0 +1,76 @@
+﻿
+@model HRPortal.Mvc.Models.LeaveDisplayModel
+<style>
+     #hidden_div{display: none;}
+</style>
+
+<div id="printdiv">
+    <div id="hidden_div">
+        <table style="width:600px;"><tr><td style="border:none;text-align:center;font-size:16pt;"><img src=@Url.Content("/Images/ddmc_32_32.png") style="vertical-align:middle;"/>@ViewBag.CompanyName</td></tr></table>
+        <table style="width:600px; " >
+        <tr ><td colspan=6 style="text-align:center;font-size:16pt;" >請假申請單</td></tr>
+        <tr>
+            <td style="width:80px"></td>
+            <td colspan="2" style="width:220px;" class="text tdpad">單位</td>
+            <td colspan="2" style="width:220px;" class="text tdpad">姓名</td>
+            <td style="width:80px" class="text tdpad">工號</td>
+        </tr>
+        <tr>
+            <td style="width:80px;" class="text tdpad">@HRPortal.MultiLanguage.Resource.applicant</td>
+            <td colspan="2" style="width:220px" class="tdpadII">@Model.DepartmentName</td>
+            <td colspan="2" style="width:220px" class="tdpadII">
+                @if(Model.getLanguageCookie== "en-US")
+                {
+                @Model.SenderEmployeeEnglishName 
+                }else{
+                 @Model.EmployeeName 
+                }
+            </td>
+            <td style="width:80px" class="tdpadII">@Model.EmpID</td>
+        </tr>
+        <tr>
+            <td style="width:80px;" class="text tdpad">@HRPortal.MultiLanguage.Resource.ActingPerson</td>
+            <td colspan="5" style="width:520px" class="tdpadII">
+            @if(Model.getLanguageCookie== "en-US")
+            {
+                @Model.AgentEmployeeEnglishName
+            }else
+            {
+                @Model.AgentName
+            }
+
+            </td>
+        </tr>
+        <tr>
+            <td style="width:80px;" class="text tdpad">請假時間</td>
+            <td colspan="3" style="width:320px;" class="tdpad">@Model.StartTime.ToString("yyyy/MM/dd HH:mm")~<br />@Model.EndTime.ToString("yyyy/MM/dd HH:mm")</td>
+            <td colspan="2" style="width:200px;" class="text tdpad">@Model.DHM </td>
+        </tr>
+        <tr>
+            <td style="width:80px;" class="text tdpad">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</td>
+            <td colspan="5" style="width:520px" class="tdpadII">
+                 @if(Model.getLanguageCookie== "en-US")
+                {
+                 @Model.AbsentNameEn
+                 }else
+                 {
+                 @Model.AbsentType
+                 }
+            </td>
+        </tr>
+        <tr style="height:120px; vertical-align:top;">
+            <td style="width:80px" class="text tdpad">@HRPortal.MultiLanguage.Resource.Subjectt</td>
+            <td colspan="5" style="width:520px" class="tdpadII">@Model.LeaveReason</td>
+        </tr>
+        <tr style="text-align:center; height:140px; vertical-align:top;">
+            <td colspan="2" style="width:200px;">董事長</td>
+            <td colspan="2" style="width:200px;">總經理</td>
+            <td colspan="2" style="width:200px;">申請人</td>
+        </tr>
+        </table>
+        <div style="width:600px; margin-left: auto;margin-right: auto;">填表日期 : @Model.CreatedTime.ToString("yyyy/MM/dd")</div>  
+
+    </div>
+</div>
+
+

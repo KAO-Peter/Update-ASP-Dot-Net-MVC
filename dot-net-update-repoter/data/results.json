@@ -1,0 +1,910 @@
+results = 
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "",
+    "targetDisplayName": ".NET 8.0"
+  },
+  "analysisStartTime": "2025-08-04T03:26:46.1872731Z",
+  "analysisEndTime": "2025-08-04T03:26:51.5910648Z",
+  "privacyMode": "Unrestricted",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 1,
+      "issues": 7,
+      "incidents": 35,
+      "effort": 35
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 4,
+        "Optional": 2,
+        "Potential": 29,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 6,
+        "Project": 2,
+        "Api": 27
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "HRPortal.Core\\HRPortal.Core.csproj",
+      "startingProject": true,
+      "issues": 7,
+      "storyPoints": 35,
+      "ruleInstances": [
+        {
+          "incidentId": "1093aa32-a26a-4497-9148-100a96b7b0e8",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "EntityFramework, 6.1.3\n\n\u5EFA\u8B70\uFF1A\n\nEntityFramework 6.5.1",
+            "protectedSnippet": "EntityFramework, 6.1.3\n\n\u5EFA\u8B70\uFF1A\n\nEntityFramework 6.5.1",
+            "label": "EntityFramework 6.1.3",
+            "properties": {
+              "PackageId": "EntityFramework",
+              "PackageVersion": "6.1.3",
+              "PackageNewVersion": "6.5.1",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "e9e386b7-5b31-4d84-8698-f824b3eb9b3c",
+          "ruleId": "NuGet.0001",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "LINQKit, 1.1.2\n\n\u5EFA\u8B70\uFF1A\n\nLINQKit, 1.3.8",
+            "protectedSnippet": "LINQKit, 1.1.2\n\n\u5EFA\u8B70\uFF1A\n\nLINQKit, 1.3.8",
+            "label": "LINQKit 1.1.2",
+            "properties": {
+              "PackageId": "LINQKit",
+              "PackageVersion": "1.1.2",
+              "PackageNewVersion": "1.3.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "24a06216-e483-4ec3-b19e-54a7d5514a56",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "Newtonsoft.Json, 6.0.8\n\n\u5EFA\u8B70\uFF1A\n\nNewtonsoft.Json 13.0.3",
+            "protectedSnippet": "Newtonsoft.Json, 6.0.8\n\n\u5EFA\u8B70\uFF1A\n\nNewtonsoft.Json 13.0.3",
+            "label": "Newtonsoft.Json 6.0.8",
+            "properties": {
+              "PackageId": "Newtonsoft.Json",
+              "PackageVersion": "6.0.8",
+              "PackageNewVersion": "13.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "073ff44d-c6ba-4d99-a010-bb9fa12e0e7d",
+          "ruleId": "NuGet.0001",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "NLog, 3.2.0.0\n\n\u5EFA\u8B70\uFF1A\n\nNLog, 6.0.2",
+            "protectedSnippet": "NLog, 3.2.0.0\n\n\u5EFA\u8B70\uFF1A\n\nNLog, 6.0.2",
+            "label": "NLog 3.2.0.0",
+            "properties": {
+              "PackageId": "NLog",
+              "PackageVersion": "3.2.0.0",
+              "PackageNewVersion": "6.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "b5713fc3-27b2-4d31-864a-4a09dc13433d",
+          "ruleId": "NuGet.0005",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "EntityFramework, 6.1.3\n\n\u5EFA\u8B70\uFF1A\n\n\u61C9\u88AB\u53D6\u4EE3\u3002\n\u53D6\u4EE3 EntityFramework, 6.5.1",
+            "protectedSnippet": "EntityFramework, 6.1.3\n\n\u5EFA\u8B70\uFF1A\n\n\u61C9\u88AB\u53D6\u4EE3\u3002\n\u53D6\u4EE3 EntityFramework, 6.5.1",
+            "label": "EntityFramework 6.1.3",
+            "properties": {
+              "PackageId": "EntityFramework",
+              "PackageVersion": "6.1.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "c082e8ed-2138-49c6-9770-1e0bfdb7f608",
+          "ruleId": "NuGet.0004",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "Newtonsoft.Json, 6.0.8\n\n\u5EFA\u8B70\uFF1A\n\nNewtonsoft.Json, 13.0.3",
+            "protectedSnippet": "Newtonsoft.Json, 6.0.8\n\n\u5EFA\u8B70\uFF1A\n\nNewtonsoft.Json, 13.0.3",
+            "label": "Newtonsoft.Json 6.0.8",
+            "properties": {
+              "PackageId": "Newtonsoft.Json",
+              "PackageVersion": "6.0.8",
+              "PackageNewVersion": "13.0.3",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a5edc3c1-aa07-4885-9575-164d5456b7e7",
+          "ruleId": "Project.0001",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj"
+          }
+        },
+        {
+          "incidentId": "40899cc9-ab9f-4711-9355-64a9ed354b65",
+          "ruleId": "Project.0002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\HRPortal.Core.csproj",
+            "snippet": "\u76EE\u524D\u7684\u76EE\u6A19\u67B6\u69CB: .NETFramework,Version=v4.8\n\u5EFA\u8B70\u7684\u76EE\u6A19\u67B6\u69CB: net8.0",
+            "protectedSnippet": "\u76EE\u524D\u7684\u76EE\u6A19\u67B6\u69CB: .NETFramework,Version=v4.8\n\u5EFA\u8B70\u7684\u76EE\u6A19\u67B6\u69CB: net8.0"
+          }
+        },
+        {
+          "incidentId": "391a10a9-498b-46b9-bb5b-e18c97fe40e7",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache.Remove(item.Key);",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 104,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "bbe05a32-de6f-4db4-94e0-16a382d429c5",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache.Remove(item.Key);",
+            "protectedSnippet": "M:System.Runtime.Caching.MemoryCache.Remove(System.String,System.String)",
+            "label": "M:System.Runtime.Caching.MemoryCache.Remove(System.String,System.String)",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache.remove",
+                "isCustom": false
+              }
+            ],
+            "line": 104,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "f1115b35-c5ec-412b-93f5-fba914dc11b0",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "List\u003CKeyValuePair\u003Cstring, Object\u003E\u003E list = cache.Where(item =\u003E item.Key.IndexOf(\u0022REGION::\u0022 \u002B regionName.ToUpper() \u002B \u0022,\u0022) == 0).ToList\u003CKeyValuePair\u003Cstring, Object\u003E\u003E();",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 101,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "3b6825b0-3f02-411e-9483-78c63128dbf4",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache.Remove(item.Key);",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 93,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "3534d098-94e1-4214-96fd-8c2605ada3a5",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache.Remove(item.Key);",
+            "protectedSnippet": "M:System.Runtime.Caching.MemoryCache.Remove(System.String,System.String)",
+            "label": "M:System.Runtime.Caching.MemoryCache.Remove(System.String,System.String)",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache.remove",
+                "isCustom": false
+              }
+            ],
+            "line": 93,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "4a51426f-8d22-4722-91ff-a8c268e71bcb",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "List\u003CKeyValuePair\u003Cstring, Object\u003E\u003E list = cache.Where(x =\u003E rx.IsMatch(x.Key)).ToList\u003CKeyValuePair\u003Cstring, Object\u003E\u003E();",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 90,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "8ad61e02-5f1f-434d-a01a-0d4baa0bafcf",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache.Set(GetKeyName(key, regionName), item, policy);",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 77,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "f3442f90-efa1-43cc-91dd-b82710efa22f",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "policy.AbsoluteExpiration = DateTimeOffset.Now.AddHours(24);",
+            "protectedSnippet": "P:System.Runtime.Caching.CacheItemPolicy.AbsoluteExpiration",
+            "label": "P:System.Runtime.Caching.CacheItemPolicy.AbsoluteExpiration",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.cacheitempolicy.absoluteexpiration",
+                "isCustom": false
+              }
+            ],
+            "line": 72,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "66152bce-9685-451c-8817-4ffd5df64a67",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "CacheItemPolicy policy = new CacheItemPolicy();",
+            "protectedSnippet": "T:System.Runtime.Caching.CacheItemPolicy",
+            "label": "T:System.Runtime.Caching.CacheItemPolicy",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.cacheitempolicy",
+                "isCustom": false
+              }
+            ],
+            "line": 71,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "181a1cb5-87a2-461f-aa75-16195b5c24e1",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "CacheItemPolicy policy = new CacheItemPolicy();",
+            "protectedSnippet": "M:System.Runtime.Caching.CacheItemPolicy.#ctor",
+            "label": "M:System.Runtime.Caching.CacheItemPolicy.#ctor",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.cacheitempolicy.cacheitempolicy",
+                "isCustom": false
+              }
+            ],
+            "line": 71,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "340a821b-7989-4fe2-9925-cb57b590b2d8",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "var data = (dynamic)cache[GetKeyName(key, regionName)];",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 58,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "747f3729-f53d-4e5d-9e2f-09a9aeb23a8b",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "var data = (dynamic)cache[GetKeyName(key, regionName)];",
+            "protectedSnippet": "P:System.Runtime.Caching.MemoryCache.Item(System.String)",
+            "label": "P:System.Runtime.Caching.MemoryCache.Item(System.String)",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache.this[string]",
+                "isCustom": false
+              }
+            ],
+            "line": 58,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "52178854-e779-4b13-9127-ef8ab1533dc6",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "return cache.Where(c =\u003E c.Key.IndexOf(\u0022REGION::\u0022 \u002B regionName.ToUpper() \u002B \u0022,\u0022) == 0).ToList();",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 53,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "3ab0629f-a575-436b-b649-aa97d84f4b97",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "foreach (string regionName in cache.Where(c =\u003E c.Key.IndexOf(\u0022REGION::\u0022) == 0).Select(c =\u003E c.Key.Substring(8, c.Key.IndexOf(\u0027,\u0027))).Distinct().ToList\u003Cstring\u003E())\r\n            {\r\n                RegionDataCache item = new RegionDataCache();\r\n                item.key = regionName;\r\n                item.count = Items(regionName).Count();\r\n                data.Add(item);\r\n            }",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 41,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "8b0c2cb9-3768-446f-81d1-94ca0340900e",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "return cache.PhysicalMemoryLimit;",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 27,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "485397d1-c441-4025-bb05-b1c8ac90d636",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "return cache.PhysicalMemoryLimit;",
+            "protectedSnippet": "P:System.Runtime.Caching.MemoryCache.PhysicalMemoryLimit",
+            "label": "P:System.Runtime.Caching.MemoryCache.PhysicalMemoryLimit",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache.physicalmemorylimit",
+                "isCustom": false
+              }
+            ],
+            "line": 27,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0657f845-f8cc-48c4-8d3e-dec0b54358c5",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "return cache.CacheMemoryLimit;",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "5afd934d-75ab-43cc-a6e9-179c4131437b",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "return cache.CacheMemoryLimit;",
+            "protectedSnippet": "P:System.Runtime.Caching.MemoryCache.CacheMemoryLimit",
+            "label": "P:System.Runtime.Caching.MemoryCache.CacheMemoryLimit",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache.cachememorylimit",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "465930f7-2e92-4aac-b654-40ada00e8922",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 System.Runtime.Caching, 8.0.0 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\DataCache.cs",
+            "snippet": "cache = MemoryCache.Default",
+            "protectedSnippet": "T:System.Runtime.Caching.MemoryCache",
+            "label": "T:System.Runtime.Caching.MemoryCache",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/system.runtime.caching.memorycache",
+                "isCustom": false
+              }
+            ],
+            "line": 18,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "c6902ae1-539f-436c-8c3f-af8b46b17ada",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)",
+            "protectedSnippet": "T:Newtonsoft.Json.MemberSerialization",
+            "label": "T:Newtonsoft.Json.MemberSerialization",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.memberserialization",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "648ea4a8-88f5-4fc2-a7c1-fb30541b532f",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)",
+            "protectedSnippet": "T:Newtonsoft.Json.Serialization.JsonProperty",
+            "label": "T:Newtonsoft.Json.Serialization.JsonProperty",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.jsonproperty",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "ebd2821e-b5bc-4a4b-b70b-fb0e6bfaa9b6",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "property.Ignored = false;",
+            "protectedSnippet": "P:Newtonsoft.Json.Serialization.JsonProperty.Ignored",
+            "label": "P:Newtonsoft.Json.Serialization.JsonProperty.Ignored",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.jsonproperty.ignored",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "6e549279-ef33-4e00-b285-b80e898f6182",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "JsonProperty property = base.CreateProperty(member, memberSerialization);",
+            "protectedSnippet": "T:Newtonsoft.Json.Serialization.JsonProperty",
+            "label": "T:Newtonsoft.Json.Serialization.JsonProperty",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.jsonproperty",
+                "isCustom": false
+              }
+            ],
+            "line": 19,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "7c8e3303-d54d-45df-9852-ef0c45c5e496",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "JsonProperty property = base.CreateProperty(member, memberSerialization);",
+            "protectedSnippet": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)",
+            "label": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.defaultcontractresolver.createproperty",
+                "isCustom": false
+              }
+            ],
+            "line": 19,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "e5d5bc14-306c-4df4-a87c-699d4de2379e",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "public AllPropsContractResolver()\r\n        {\r\n        }",
+            "protectedSnippet": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.#ctor",
+            "label": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.#ctor",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.defaultcontractresolver.defaultcontractresolver",
+                "isCustom": false
+              }
+            ],
+            "line": 13,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "62ab3161-f965-413b-8c87-d071b088deb5",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "public AllPropsContractResolver()\r\n        {\r\n        }",
+            "protectedSnippet": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.#ctor",
+            "label": "M:Newtonsoft.Json.Serialization.DefaultContractResolver.#ctor",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.defaultcontractresolver.defaultcontractresolver",
+                "isCustom": false
+              }
+            ],
+            "line": 13,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "d6a458b5-b062-47ee-b73e-cd0a2f8d28f4",
+          "ruleId": "Api.0002",
+          "description": "API \u53EF\u5728\u5957\u4EF6 Newtonsoft.Json, 13.0.3 \u4E2D\u4F7F\u7528\u3002",
+          "projectPath": "HRPortal.Core\\HRPortal.Core.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "HRPortal.Core\\Utilities\\AllPropsContractResolver.cs",
+            "snippet": "DefaultContractResolver",
+            "protectedSnippet": "T:Newtonsoft.Json.Serialization.DefaultContractResolver",
+            "label": "T:Newtonsoft.Json.Serialization.DefaultContractResolver",
+            "links": [
+              {
+                "title": "API \u6587\u4EF6",
+                "url": "https://learn.microsoft.com/dotnet/api/newtonsoft.json.serialization.defaultcontractresolver",
+                "isCustom": false
+              }
+            ],
+            "line": 11,
+            "column": 44
+          }
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "\u5EFA\u8B70\u70BA\u9078\u53D6\u7684\u76EE\u6A19\u67B6\u69CB\u5347\u7D1A NuGet \u5957\u4EF6\u3002\n\n\u5EFA\u8B70\u4F7F\u7528\u6A19\u6E96 .NET \u5957\u4EF6\uFF0C\u8B93\u7248\u672C\u7B26\u5408\u5C08\u6848\u76EE\u6A19\u7684 .NET \u7248\u672C\u3002\n\n\u773E\u6240\u5468\u77E5\uFF0C\u6709\u4E9B\u5957\u4EF6\u66F4\u9069\u5408\u9078\u53D6\u7684\u76EE\u6A19\u67B6\u69CB\u3002",
+      "label": "\u5EFA\u8B70\u5347\u7D1A NuGet \u5957\u4EF6",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0001": {
+      "id": "NuGet.0001",
+      "isFeature": false,
+      "description": "NuGet \u5957\u4EF6\u8207\u9078\u53D6\u7684\u76EE\u6A19\u67B6\u69CB\u4E0D\u76F8\u5BB9\u3002\n\n\u5957\u4EF6\u5FC5\u9808\u5347\u7D1A\u81F3\u652F\u63F4\u6240\u9078\u5C08\u6848\u76EE\u6A19\u67B6\u69CB\u7684\u7248\u672C\u3002\u5982\u679C\u6C92\u6709\u652F\u63F4\u65B0\u76EE\u6A19\u67B6\u69CB\u7684\u65B0\u5957\u4EF6\u7248\u672C\uFF0C\u5247\u5FC5\u9808\u4F7F\u7528\u4E0D\u540C\u7684\u5957\u4EF6\uFF0C\u4E14\u6240\u6709\u7A0B\u5F0F\u78BC\u90FD\u5FC5\u9808\u5347\u7D1A\u81F3\u65B0\u7684 API\u3002",
+      "label": "NuGet \u5957\u4EF6\u4E0D\u76F8\u5BB9",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262529",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet \u5957\u4EF6\u5DF2\u904E\u6642\u3002\n\n\u8ACB\u53C3\u95B1\u5176\u6587\u4EF6\uFF0C\u770B\u770B\u662F\u5426\u6709\u66FF\u4EE3\u6B64\u5957\u4EF6\u63D0\u4F9B\u4E4B\u529F\u80FD\u7684\u6307\u5C0E\u3002",
+      "label": "NuGet \u5957\u4EF6\u5DF2\u904E\u6642",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0004": {
+      "id": "NuGet.0004",
+      "isFeature": false,
+      "description": "NuGet \u5957\u4EF6\u5305\u542B\u5B89\u5168\u6027\u5F31\u9EDE\u3002\n\n\u5957\u4EF6\u5FC5\u9808\u5347\u7D1A\u81F3\u53EF\u89E3\u6C7A\u5DF2\u77E5\u5B89\u5168\u6027\u5F31\u9EDE\u7684\u8F03\u65B0\u7248\u672C\u3002",
+      "label": "NuGet \u5957\u4EF6\u5305\u542B\u5B89\u5168\u6027\u5F31\u9EDE",
+      "severity": "Optional",
+      "effort": 1
+    },
+    "Project.0001": {
+      "id": "Project.0001",
+      "isFeature": false,
+      "description": "\u5C08\u6848\u6A94\u5FC5\u9808\u8F49\u63DB\u6210 SDK \u6A23\u5F0F\u3002\u65B0\u5F0F .NET Framework \u5C08\u6848\u9700\u8981\u8B8A\u66F4\u5C08\u6848\u6A94\u683C\u5F0F\uFF0C\u4E26\u4F7F\u7528\u8207\u5C08\u6848\u8B8A\u9AD4\u548C\u529F\u80FD\u5C0D\u61C9\u7684 SDK\u3002",
+      "label": "\u5C08\u6848\u6A94\u5FC5\u9808\u8F49\u63DB\u6210 SDK \u6A23\u5F0F",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "\u5F9E .NET Framework \u5230 .NET \u7684\u79FB\u690D\u6982\u89C0",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET \u5C08\u6848 SDK",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "\u5C08\u6848\u7684\u76EE\u6A19\u67B6\u69CB\u5FC5\u9808\u8B8A\u66F4\u70BA\u60A8\u70BA\u6B64\u5347\u7D1A\u9078\u53D6\u7684\u65B0\u76EE\u6A19\u67B6\u69CB\u3002\n\n\u5728\u5347\u7D1A\u671F\u9593\uFF0C\u76EE\u6A19\u67B6\u69CB\u6703\u5728\u9069\u7528\u6642\u8ABF\u6574\u70BA\u5C0D\u61C9\u7684\u5E73\u53F0\u3002\u5728\u67D0\u4E9B\u60C5\u6CC1\u4E0B\uFF0C\u5982\u679C\u5C08\u6848\u4F7F\u7528\u7684\u529F\u80FD\u73FE\u5728\u5728\u65B0\u5F0F .NET \u67B6\u69CB (windows\u3001iOS\u3001Android \u7B49) \u4E2D\u6709\u81EA\u5DF1\u7684\u5E73\u53F0\uFF0C\u5247\u5728\u5347\u7D1A\u4E4B\u5F8C\u6703\u5C0E\u81F4\u591A\u500B\u76EE\u6A19\u67B6\u69CB\u3002",
+      "label": "\u5FC5\u9808\u8B8A\u66F4\u5C08\u6848\u7684\u76EE\u6A19\u67B6\u69CB",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "\u5F9E .NET Framework \u5230 .NET \u7684\u79FB\u690D\u6982\u89C0",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET \u5C08\u6848 SDK",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "\u90E8\u5206\u5B58\u5728\u65BC\u820A\u7248 .NET \u67B6\u69CB\u4E2D\u7684 API \u5DF2\u79FB\u81F3\u53EF\u660E\u78BA\u65B0\u589E\u81F3\u5C08\u6848\u7684\u7368\u7ACB NuGet \u5957\u4EF6\u3002",
+      "label": "NuGet \u5957\u4EF6\u4E2D\u6709\u53EF\u7528\u7684 API",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": ".NET \u4E2D\u7684\u4E2D\u65B7\u8B8A\u66F4",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}

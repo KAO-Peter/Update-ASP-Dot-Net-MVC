@@ -1,0 +1,67 @@
+﻿@model  HRPortal.Mvc.Models.AnnualLeaveSummaryViewModel
+
+@if (Model.DeptDetailDatas == null)
+{
+    <table class="table table-outline table-bordered fe-table">
+        <tbody>
+            <tr>
+                <th>
+                    @HRPortal.MultiLanguage.Resource.NoData
+                </th>
+            </tr>
+        </tbody>
+    </table>
+}
+else { 
+   
+    foreach (var DeptDetailDatas in Model.DeptDetailDatas)
+    {
+        <table class="table table-outline table-bordered fe-table annua-leave-schedule">
+        <tbody>
+            <tr>
+                <th colspan="25">@DeptDetailDatas.DeptCode @DeptDetailDatas.DeptName</th>
+            </tr>
+            <tr style="background-color: lightgray;">
+                <th rowspan="2" style="background-color:pink;">員工姓名</th>
+                <th colspan="2">一月</th>
+                <th colspan="2">二月</th>
+                <th colspan="2">三月</th>
+                <th colspan="2">四月</th>
+                <th colspan="2">五月</th>
+                <th colspan="2">六月</th>
+                <th colspan="2">七月</th>
+                <th colspan="2">八月</th>
+                <th colspan="2">九月</th>
+                <th colspan="2">十月</th>
+                <th colspan="2">十一月</th>
+                <th colspan="2">十二月</th>
+            </tr>
+            <tr style="background-color: lightgray;">
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+                <td>預排</td><td>實際</td>
+            </tr>
+            @foreach (var EmpDetailDatas in DeptDetailDatas.EmpDetailDatas)
+            {
+                <tr class="empal">
+                    <td>@EmpDetailDatas.EmployeeName</td>
+                    @for (int i = 0; i < 12; i++)
+                    {
+                        <td>@(EmpDetailDatas.ALEachMonth[i].ToString("0.##"))</td>
+                        <td>@(EmpDetailDatas.EachMonth[i].ToString("0.##"))</td>
+                    }
+                </tr>
+            }
+        </tbody>
+        </table>
+    }
+}

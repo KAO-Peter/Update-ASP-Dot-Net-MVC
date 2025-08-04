@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E87B315A-E0E9-41F2-87E1-ECA84A7607E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HRPortal.Services</RootNamespace>
+    <AssemblyName>HRPortal.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidationNA">
+      <HintPath>..\packages\FluentValidationNA.1.2.16\lib\net40\FluentValidationNA.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>..\packages\LinqKit.1.1.2\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.Library.1.1.14\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\HRPortal\bin\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADLoginService.cs" />
+    <Compile Include="AnnouncementFilesService.cs" />
+    <Compile Include="AnnouncementService.cs" />
+    <Compile Include="AnswerFAQService.cs" />
+    <Compile Include="AnswerVacanciesService.cs" />
+    <Compile Include="BambooHRIntegrationService_bak.cs" />
+    <Compile Include="BaseCRUDService.cs" />
+    <Compile Include="BaseGridService.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="CasualCycleService.cs" />
+    <Compile Include="CasualFormLogService.cs" />
+    <Compile Include="CasualFormService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CryptoService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeptCostService.cs" />
+    <Compile Include="DownloadFilesService.cs" />
+    <Compile Include="EmpALScheduleService.cs" />
+    <Compile Include="EmployeeBenefitsFilesService.cs" />
+    <Compile Include="EmployeeBenefitsService.cs" />
+    <Compile Include="FAQService.cs" />
+    <Compile Include="FAQTypeService.cs" />
+    <Compile Include="FormSettingService.cs" />
+    <Compile Include="LeaveCancelService.cs" />
+    <Compile Include="Models\BambooHR.cs" />
+    <Compile Include="Models\CommonEnums.cs" />
+    <Compile Include="Models\JsonNetFix.cs" />
+    <Compile Include="Models\SignFlowToEPortalModel.cs" />
+    <Compile Include="Models\SiteFunctionInfo.cs" />
+    <Compile Include="Models\FormSignStatus.cs" />
+    <Compile Include="Models\TimeSpanQuota.cs" />
+    <Compile Include="OptionService.cs" />
+    <Compile Include="OverTimeCancelService.cs" />
+    <Compile Include="OverTimeFormService.cs" />
+    <Compile Include="MailMessageService.cs" />
+    <Compile Include="MailAccountService.cs" />
+    <Compile Include="LeaveFormService.cs" />
+    <Compile Include="PatchCardCancelService.cs" />
+    <Compile Include="PatchCardFormService.cs" />
+    <Compile Include="PersonalSettingsService.cs" />
+    <Compile Include="PersonnelspecificationFilesService.cs" />
+    <Compile Include="PersonnelspecificationService.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ReadTodayFilesService.cs" />
+    <Compile Include="ReadTodayService.cs" />
+    <Compile Include="RoleMenuMapsService.cs" />
+    <Compile Include="RolesService.cs" />
+    <Compile Include="SerialControlService.cs" />
+    <Compile Include="SignFlowToEPortalService.cs" />
+    <Compile Include="SystemLogService.cs" />
+    <Compile Include="OptionGroupService.cs" />
+    <Compile Include="SystemSettingService.cs" />
+    <Compile Include="CompanyService.cs" />
+    <Compile Include="DepartmentService.cs" />
+    <Compile Include="EmployeeService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRPortal_Services.cs" />
+    <Compile Include="MenuService.cs" />
+    <Compile Include="Models\JQGridRequest.cs" />
+    <Compile Include="Models\JQGridResponce.cs" />
+    <Compile Include="Models\ValueText.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserClaimsPrincipal.cs" />
+    <Compile Include="VacanciesService.cs" />
+    <Compile Include="VacanciesTypeService.cs" />
+    <Compile Include="Web References\EPORTALWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="WebLinkListFEDSService.cs" />
+    <Compile Include="WebLinkListService.cs" />
+    <Compile Include="SignoffAgentsService.cs" />
+    <Compile Include="EffectiveDateService.cs" />
+    <Compile Include="SmartSheetrIntegrationService.cs" />
+    <Compile Include="SmartSheetMappingService.cs" />
+    <Compile Include="BambooHRTimeOffTypeService.cs" />
+    <Compile Include="BambooHREmployeeMappingService.cs" />
+    <Compile Include="BambooHRHistoryLeaveFormService.cs" />
+    <Compile Include="BambooHRLeaveFormRecordService.cs" />
+    <Compile Include="BambooHRLeaveFormRecordLogService.cs" />
+    <Compile Include="BambooHRMailNotificationSettingService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\EPORTALWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\EPORTALWebService\service.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HRPortal.ApiAdapter\HRPortal.ApiAdapter.csproj">
+      <Project>{fc3ba0a4-28be-45ae-9f5b-5a992c861ae9}</Project>
+      <Name>HRPortal.ApiAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Core\HRPortal.Core.csproj">
+      <Project>{60059678-fd63-4848-88ae-6d423051234d}</Project>
+      <Name>HRPortal.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.DBEntities\HRPortal.DBEntities.csproj">
+      <Project>{111010b5-8234-474d-9312-f1051bf42420}</Project>
+      <Name>HRPortal.DBEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.MultiLanguage\HRPortal.MultiLanguage.csproj">
+      <Project>{8fab3a68-d5ee-4b90-86d5-1f517f0ccf26}</Project>
+      <Name>HRPortal.MultiLanguage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://test.fenc.com/A15PT_webservice/service.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\EPORTALWebService\</RelPath>
+      <UpdateFromURL>http://test.fenc.com/A15PT_webservice/service.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>HRPortal_Services_EPORTALWebService_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\EPORTALWebService\service.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

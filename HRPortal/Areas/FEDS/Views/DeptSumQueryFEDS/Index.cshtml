@@ -1,0 +1,272 @@
+﻿@model IEnumerable<HRPortal.Mvc.Models.DeptSumQueryViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+
+</style>
+@using (Html.BeginForm("Index", "DeptSumQueryFEDS", FormMethod.Post, new { id = "DeptSumForm" }))
+{
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    if (ViewBag.Status == null || ViewBag.Status == "false" || Session["ExpiredTime"] == null || DateTime.Parse(Session["ExpiredTime"].ToString()) < DateTime.Now)
+    {
+        <div class="col-xs-12">
+            <h4 class="text-danger">※請再次輸入您的登入密碼，才可使用該功能。</h4>
+            <label for="Password" style="font-weight: bold;color: red;">提醒您：密碼連續輸入錯誤3次，將被鎖定並立即登出，請逕洽HR。</label>
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="col-md-2 control-label" style="font-size:16px;width:7.6%">密碼：</label>
+                <div class="col-md-4">
+                    <input type="password" name="PWdata" class="form-control" id="PWdata" />
+                </div>
+                <button name="btnCheckPW" id="btnCheckPW" class="col-md-2 btn btn-success" type="button">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                @*<input type="submit" class="col-md-2 btn btn-success" name="btnCheckPW" id="btnCheckPW" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" />*@
+            </div>
+        </div>
+    }
+    else
+    {
+       <div class=" row">
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+    <div class="search-section">
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>開始日期</label>
+            </div>
+            <div class="search-input">
+                <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+            </div>
+        </div>
+          <div class="search-wrap">
+            <div class="search-name">
+                <label>結束日期</label>
+            </div>
+            <div class="search-input">
+                <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+            </div>
+        </div>
+         
+        
+                            
+        </div>
+         <div class="search-wrap">
+           
+             <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                            </div>
+                            
+                      </div>         
+        </div>
+            </div>
+   <input type="hidden" id="searchkey" name="searchkey" value="" />
+        <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+            @if (Model != null)
+            {
+                <input type="hidden" id="ExportsalaryYMData" name="ExportsalaryYMData" value="" />
+                    <input type="hidden" id="ExportFormNo" name="ExportFormNo" value="" />
+                    <div class="table-responsive">
+                        <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                <th class="" style="width:20%">
+                                     <div id="jqgh_grid-table_code" class="" style="text-align:center;">計薪年月</div>
+                                </th>
+                                <th class="" style="width:20%">
+                                     <div id="jqgh_grid-table_code" class="" style="text-align:center;">計薪年月</div>
+                                </th>
+                                <th class="" style="width:1%">
+
+                                </th>
+
+                            </tr>
+                            @if (Model.Count() > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr role="row" tabindex="-1" id="@item.FormNo" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                            @item.SalaryYM
+                                        </td>
+                                        <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                            @item.FormNo
+                                        </td>
+
+                                        <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                            <a class="btn btn-primary" data-modal="" onclick="resettime()" href="@Url.Action("GetDeptSumeryLists", new { id = "btnDeatil", FormNO = item.FormNo, SalaryYM = item.SalaryYM })">@HRPortal.MultiLanguage.Resource.BtnDetail</a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                    <td colspan="6" style="text-align:center">
+                                        @HRPortal.MultiLanguage.Resource.NoData
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    <div style="text-align:center">
+                        @* 在後面對pagelist做轉型 *@
+                        @using PagedList
+                        @using PagedList.Mvc
+                        @{
+                            var data = Model as IPagedList<HRPortal.Mvc.Models.DeptSumQueryViewModel>
+                            ;
+                        }
+                        @{
+                            if (IsAjax)
+                            { Layout = ""; }
+                        }
+                        @if (Model.Count() > 0)
+                        {
+
+
+                            @Html.PagedListPager(data, page => Url.Action("Index",
+                                   new { page, BeginDate = ViewBag.StartTime, EndDate = ViewBag.EndTime }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                            @Html.PagedListPager(data, page => Url.Action("Index",
+                               new { page, BeginDate = ViewBag.StartTime, EndDate = ViewBag.EndTime }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                   DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                   DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                   DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                   DisplayLinkToIndividualPages = false,
+                                   //LinkToFirstPageFormat = "<<第一頁",
+                                   //LinkToPreviousPageFormat = "<前一頁",
+                                   //LinkToNextPageFormat = "後一頁>",
+                                   //LinkToLastPageFormat = "最末頁>>",
+                                   DisplayPageCountAndCurrentLocation = true,
+                                   PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                   DisplayItemSliceAndTotal = true,
+                                   ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                               })
+                        }
+                    </div>
+                            }
+        </div>
+            <script type="text/javascript">
+                //指定多少毫秒無動作轉跳
+                var timeout = @(string.IsNullOrWhiteSpace(ViewBag.DeptSumQueryTimeout) ? 6000 : int.Parse(ViewBag.DeptSumQueryTimeout));
+
+                //紀錄當前時間
+                var occurtime=new Date().getTime() ;
+
+                //判斷無動作的時間轉跳
+                function goUrl(){
+                    var a = parseInt(new Date().getTime() - occurtime);
+                    if(a>=timeout){
+                          @{
+                              Session["ExpiredTime"] = null;
+                          }
+                        window.location.href = '@Url.Action("Index", "Home", new { area = "" })';
+                        intservalID=window.clearInterval(intservalID);
+                    }
+                }
+                //隔1000毫秒判斷一次
+                var intservalID=window.setInterval("goUrl()",1000);
+
+
+                function resettime()
+                {
+                    occurtime = new Date().getTime();
+                    @{
+                         Session["ExpiredTime"] = DateTime.Now.AddMinutes(1);
+                      }
+                }
+
+            </script>
+        }
+
+
+    }
+
+<div id='DeptSumQueryDialogDiv' class='modal fade in' role="dialog">
+    <div id='DeptSumQueryDialogContent'></div>
+</div>
+
+
+<script>
+
+    $(function () {
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm',
+            pickTime: false,
+            startView: 'decade',
+            minView: 'year',
+            autoclose: true,
+            language: 'zh-TW'
+        });
+        $('a[data-modal]').click(function () {
+            $('#DeptSumQueryDialogContent').load(this.href, function () {
+                $('#DeptSumQueryDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#DeptSumQueryDialogDiv', '#DeptSumQueryDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });
+
+        $('#btnQuery').click(function (event) {
+            var form = $('#DeptSumForm');
+            $('#searchkey').val(1);
+            form.submit();
+        });
+
+        $('#btnCheckPW').click(function (event) {
+            var form = $('#DeptSumForm');
+
+            if ($('#PWdata').val() == "" )
+                showAlertMessage("請輸入密碼");
+            else {
+                checkPassword();
+            }
+
+        });
+
+        function checkPassword() {
+            var form = $('#DeptSumForm');
+            var submitData = new FormData(form[0]);
+            $.ajax({
+                url: 'DeptSumQueryFEDS/CheckPassword',
+                type: 'POST',
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (checkResult) {
+                    if (checkResult.status != 'success') {
+                        $('#PWdata').val('');
+                        showAlertMessage(checkResult.message, function(){
+                            window.location='@Url.Action("Index")';    
+                        });
+                    }
+                    else
+                    {
+                        form.submit();
+                    }
+                }
+            });
+
+        }
+    });
+
+</script>

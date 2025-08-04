@@ -1,0 +1,215 @@
+﻿@model IEnumerable<HRPortal.ApiAdapter.HRMApiAdapterData.CasualFormMonthlyData>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "CasualFormMonthly", FormMethod.Post, new { Id = "CasualFormMonthly" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    @Html.Hidden("cmd", "Excel", new { id = "cmd" })
+    
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>資訊格式</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="radio" name="Grouping" id="Grouping1" value="1" text="單位名稱" /> 單位名稱
+                        <input type="radio" name="Grouping" id="Grouping2" value="2" text="成本中心名稱" /> 成本中心名稱
+                        <input type="radio" name="Grouping" id="Grouping3" value="3" text="資料日期" /> 資料日期
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>月結 / 現金</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlMonthlyOrCash", (IEnumerable<SelectListItem>)ViewBag.MonthlyOrCashList, new { @class = "form-control", id = "ddlMonthlyOrCash" })
+                    </div>
+                </div>
+                <div style="width:49%">
+                    <div class="search-name">
+                        <label>日期</label>
+                    </div>
+                    <div class="search-date">
+                        <input id="txtDateS" name="txtDateS" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeS" />
+                        ~
+                        <input id="txtDateE" name="txtDateE" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeE" />
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnExcel" style="width:100%" name="btnExcel" type="submit" value="Excel" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:25%"><div style="text-align:center;">@ViewBag.Grouping</div></th>
+                        <th style="width:15%"><div style="text-align:center;">GROSS</div></th>
+                        <th style="width:15%"><div style="text-align:center;">HOURS</div></th>
+                        <th style="width:15%"><div style="text-align:center;">Employee Premium</div></th>
+                        <th style="width:15%"><div style="text-align:center;">Employeer Premium</div></th>
+                        <th style="width:15%"><div style="text-align:center;">NET</div></th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        double sCross = 0, sHours = 0, sEmployeePremium = 0, sEmployeerPremium = 0, sNET = 0;
+                        
+                        foreach (var item in Model)
+                        {
+                            sCross += item.Cross;
+                            sHours += item.Hours;
+                            sEmployeePremium += item.EmployeePremium;
+                            sEmployeerPremium += item.EmployeerPremium;
+                            sNET += item.NET;
+                            
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Name
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Cross.ToString("#,0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Hours.ToString("#,0.0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmployeePremium.ToString("#,0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmployeerPremium.ToString("#,0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.NET.ToString("#,0")
+                                </td>
+                            </tr>
+                        }
+
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Grand Total
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sCross.ToString("#,0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sHours.ToString("#,0.0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sEmployeePremium.ToString("#,0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sEmployeerPremium.ToString("#,0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sNET.ToString("#,0")
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        var val ="@ViewBag.Group";
+        $("input[type='radio'][value='"+val+"']").prop("checked",true);
+
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        //清除
+        $("#btnClear").click(function () {
+            $("#cmd").val("Clear");
+            $("input:radio[name=Grouping]")[0].checked = true;
+            $("#CasualFormMonthly").submit();
+        });
+
+        //查詢
+        $("#btnQuery").click(function () {
+            $("#cmd").val("Search");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入日期起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入日期迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualFormMonthly").submit();
+            }
+        });
+
+        //Excel
+        $("#btnExcel").click(function () {
+            $("#cmd").val("Excel");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入日期起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入日期迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualFormMonthly").submit();
+            }
+        });
+    });
+</script>
+}

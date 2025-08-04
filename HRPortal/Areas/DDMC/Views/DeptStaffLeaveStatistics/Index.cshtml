@@ -1,0 +1,202 @@
+﻿@model HRPortal.Mvc.Models.DeptStaffLeaveStatisticsViewModel
+@Scripts.Render("~/bundles/validate")
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+
+    .annua-leave-schedule th, .annua-leave-schedule td {
+        text-align: center;
+    }
+
+    .annua-leave-schedule .empal td:nth-child(2n) {
+        background-color: lightyellow;
+    }
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]))
+        showAlertMessage(message);
+    </script>
+}
+@using (Html.BeginForm("Export", "DeptStaffLeaveStatistics", FormMethod.Post, new { id = "DeptStaffLeaveStatisticsForm" }))
+{
+    <div class=" row">
+        <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div>
+
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.yearr</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedYear, Model.YearListData, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                    </div>
+                    <div class="search-input" style="width: 200px">
+                        @Html.DropDownListFor(x => x.AbsentCodes, Model.AbsentCodes, new { @class = "form-control", @multiple = "multiple" })
+                        <input id="QAbsentCodes" name="QAbsentCodes" type="hidden" value="">
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                @if (Model.DepartmentListData != null)
+                {
+
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var ddata = new ViewDataDictionary();
+                                ddata.Add("id", "DepartmentList");
+                                ddata.Add("class", "form-control");
+                                ddata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.DepartmentListData, ddata);
+                            }
+                            <input id="DeptID" name="DeptID" type="hidden" value="">
+                        </div>
+                    </div>
+                }
+                <div class="search-wrap divEmp">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var edata = new ViewDataDictionary();
+                            edata.Add("id", "EmployeeList");
+                            edata.Add("class", "form-control");
+                            edata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.EmployeeListData, edata);
+                        }
+                        <input id="EmpID" name="EmpID" type="hidden" value="">
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="search-wrap">
+               @* <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnQuery" style="width: 100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>*@
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnClear" style="width: 100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnExport" style="width: 100%" name="btnExport" type="button" value="匯出" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var $url = "@Url.Action()";
+        var checkType = 'd';
+    
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.deptSelect = $('#DepartmentList');
+        $mutiSelect.empSelect = $('#EmployeeList');
+        $mutiSelect.statusSelect = $('#SelectedStatuslistData');
+
+        $(function () {
+            $mutiSelect.setDepartmentList2();
+            var absentcodes = $('#AbsentCodes');
+            absentcodes.find('option[value=01]').prop('selected', true);
+            absentcodes.find('option[value=DD1]').prop('selected', true);
+            if (absentcodes.find('option').length == 1) {
+                absentcodes.removeAttr("multiple");                
+            }
+            else {
+                absentcodes.multipleSelect({ selectAllText: '全部', allSelected: '全部' });
+                var $multiSelectArea = absentcodes.parent();
+                $multiSelectArea.children('.ms-parent').css({ 'padding': '0 0 0 0', 'max-width': '100%'});
+                $multiSelectArea.find('.ms-choice').css({ 'height': '100%' });
+            }
+
+            $('#btnClear').click(function () {
+                window.location.href = $url;
+            });
+
+            $('#btnExport').click(function () {
+                var form = $('#DeptStaffLeaveStatisticsForm');
+
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+                var curSelectAbsent = '';
+                $.each(absentcodes.find('option:selected'), function () {
+                    curSelectAbsent += $(this).val() + ',';
+                });
+
+                curSelectAbsent = curSelectAbsent.substring(0, curSelectAbsent.length - 1);
+
+                if (curSelectAbsent.trim().length == 0) {
+                    showAlertMessage('請選擇假別');
+                    return false;
+                }
+                $("#QAbsentCodes").val(curSelectAbsent);
+
+                form.submit();
+            });
+
+            if ('@ViewBag.isALL' != 'True') {
+                //$("#btnQuery").trigger("click");
+            }
+            else {
+                $mutiSelect.divEmp.hide();
+            }
+
+        });
+
+    </script>
+} 

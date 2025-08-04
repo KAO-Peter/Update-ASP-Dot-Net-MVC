@@ -1,0 +1,121 @@
+﻿@model  HRPortal.Mvc.Models.LeaveHoursQueryViewModel
+
+<style type="text/css">
+    th, td {
+        text-align: center;
+    }
+
+        th.ebc {
+            background-color: pink;
+        }
+
+        th.dbc {
+            background-color: bisque;
+        }
+
+    .trTop {
+        background-color: lightgray;
+    }
+
+    .trSummary {
+        background-color: gray;
+        color: white;
+    }
+</style>
+@if (Model == null || Model.LeaveHoursDetailList.Count() == 0)
+{
+    <table class="table table-outline table-bordered fe-table">
+        <tr>
+            <th>@HRPortal.MultiLanguage.Resource.NoData</th>
+        </tr>
+    </table>
+}
+else
+{
+    foreach (var data in Model.LeaveHoursDetailList)
+    {
+         @*<h4>@data.DepartCode @data.DepartName @data.EmployeeNo @data.EmployeeName</h4>
+*@
+        if (data.leaveDatas != null)
+        {
+           <div class="col-sm-7">
+               <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+                   <tr class="">@data.DepartCode @data.DepartName @data.EmployeeNo @data.EmployeeName</tr>
+                   <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                       <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div>
+                       </th>
+                       <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnualLeaveHours</div>
+                       </th>
+                       <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.LeaveHours</div>
+                       </th>
+                       <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.ApprovedHours</div>
+                       </th>
+                       <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.RemainingHours</div>
+                       </th>
+                   </tr>
+                   @*@foreach (var item in ((List<hrportal.apiadapter.hrmapiadapterdata.absentdetail>)ViewData["LeaveDatas"]).Where(x => x.CanUse))*@
+            @foreach (var item in data.leaveDatas.Where(x => x.CanUse))
+            {
+                <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                    <td role="gridcell" style="" title="@item.Name" aria-describedby="grid-table_classified_code_name">@(item.getLanguageCookie == "en-US" ? item.AbsentNameEn : item.Name)</td>
+                    <td role="gridcell" style="" title="@item.AnnualLeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.AnnualLeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                    <td role="gridcell" style="" title="@item.LeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.LeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                    <td role="gridcell" style="" title="@item.ApprovedHours @item.Unit" aria-describedby="grid-table_category_name">@item.ApprovedHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                    <td role="gridcell" style="" title="@item.UseAmount @item.Unit" aria-describedby="grid-table_category_name">@item.UseAmount.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                </tr>
+                   }
+               </table>
+           </div>
+}
+        if (data.holidayDatas != null && data.holidayDatas.Count() > 0)
+        {   
+            <div class="col-sm-5">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+                    <tr class="">加班資料</tr>
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div>
+                        </th>
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.CanUseCount</div>
+                        </th>
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.EffectiveDates</div>
+                        </th>
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.ExpiryDates</div>
+                        </th>
+
+                    </tr>
+                    @*@foreach (var item in ((List<hrportal.apiadapter.hrmapiadapterdata.empholidaydata>)ViewData["HolidayDatas"]))*@
+            @foreach (var item in data.holidayDatas)
+            {
+                <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                    <td role="gridcell" style="" title="@item.AbsentName" aria-describedby="grid-table_classified_code_name">@(ViewBag.getLanguageCookie == "en-US" ? item.AbsentNameEN : item.AbsentName)</td>
+                    <td role="gridcell" style="" title="@item.CanUseCount @HRPortal.MultiLanguage.Resource.Hour" aria-describedby="grid-table_category_name">@item.CanUseCount.ToString("0.0")  @HRPortal.MultiLanguage.Resource.Hour </td>
+                    <td role="gridcell" style="" title="@item.BeginDate " aria-describedby="grid-table_category_name">@item.BeginDate.ToString("yyyy/MM/dd")</td>
+                    <td role="gridcell" style="" title="@item.EndDate " aria-describedby="grid-table_category_name">@item.EndDate.ToString("yyyy/MM/dd")</td>
+                </tr>
+                    }
+                </table>
+            </div>
+}
+<hr />
+<br />
+}
+}
+
+
+
+
+
+
+
+
+
+

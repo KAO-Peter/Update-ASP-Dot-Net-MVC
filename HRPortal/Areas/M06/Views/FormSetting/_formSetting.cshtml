@@ -1,0 +1,88 @@
+﻿@model IList<HRPortal.DBEntities.FormSetting>
+
+<style>
+    .formSettingTable {
+        width:50%;
+        padding-left:10px;
+    }
+</style>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:80px;width:100%">
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.SettingKey == "isCheck" && item.FormType=="Leave")
+                    {   <!--等不檢核時數的機制確定後再開啟-->
+                        <tr role="row">
+                        <td class="formSettingTable">假單是否檢核</td>
+                        <td class="formSettingTable">
+                            <form id="leaveCheck" gid="@item.ID">
+                                <input type="radio" name="leaveCheck" value="check" @(item.SettingValue=="true"?"checked":"")> 檢核
+                                <input type="radio" name="leaveCheck" value="uncheck" @(item.SettingValue=="false"?"checked":"")> 不檢核
+                            </form>
+                        </td>
+                        </tr>
+                    }
+                    else if (item.SettingKey == "isCheck" && item.FormType == "OverTime")
+                    {
+                        <tr role="row">
+                            <td class="formSettingTable">加班單是否檢核刷卡資料</td>
+                            <td class="formSettingTable">
+                                <form id="overTimeCheck" gid="@item.ID">
+                                    <input type="radio" name="overTimeCheck" value="check" @(item.SettingValue=="true"?"checked":"")> 檢核
+                                    <input type="radio" name="overTimeCheck" value="uncheck" @(item.SettingValue=="false"?"checked":"")> 不檢核
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    else if (item.SettingKey == "enableSettingEatingTime" && item.FormType == "OverTime")
+                    {
+                        <tr role="row"> 
+                            <td class="formSettingTable">加班單用餐時間是否允許手動輸入</td>
+                            <td class="formSettingTable">
+                                <form id="enableEatingTime" gid="@item.ID">
+                                    <input type="radio" name="enableEatingTime" value="check" @(item.SettingValue=="true"?"checked":"")> 允許
+                                    <input type="radio" name="enableEatingTime" value="uncheck" @(item.SettingValue=="false"?"checked":"")> 不允許
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+    <button type="button" class="btn btn-success" id="btnFormSettingSubmit" style="margin-top:10px;">@HRPortal.MultiLanguage.Resource.BtnSave</button>
+    
+    <script>
+        $(function () {
+            //將修改的資訊儲存
+            $('#btnFormSettingSubmit').click(function () {
+                var formSettingArray = [
+                    {// 假單是否檢核
+                        FormID: $('#leaveCheck').attr('gid'),
+                        SettingValue: $('input[name=leaveCheck]:checked').val() == 'check' ? 'true' : 'false'
+                    },
+                    {//加班單是否檢核刷卡資料
+                        FormID: $('#overTimeCheck').attr('gid'),
+                        SettingValue: $('input[name=overTimeCheck]:checked').val() == 'check' ? 'true' : 'false'
+                    },
+                    {//用餐時間是否允許手動輸入
+                        FormID: $('#enableEatingTime').attr('gid'),
+                        SettingValue: $('input[name=enableEatingTime]:checked').val() == 'check' ? 'true' : 'false'
+                    }
+                ];
+
+                $.ajax({
+                    url: '@Url.Action("UpdateFormSettingStatus")',
+                    type: 'POST',
+                    data: typeof (formSettingArray) == "string" ? formSettingArray : JSON.stringify(formSettingArray),
+                    contentType: "application/json",
+                    success: function (result) {
+                    }
+
+                });
+            });
+        });
+    </script>
+}

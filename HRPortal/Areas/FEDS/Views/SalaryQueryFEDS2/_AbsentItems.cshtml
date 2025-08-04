@@ -1,0 +1,174 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeAbsentItemsFEDS
+
+<table cellpadding='0' cellspacing='0' border='1' style='width: 100%; max-width: 100%; margin-bottom: 0px; font-size: 10px;'>
+    <tbody>
+        <tr height='20'>
+            <td colspan='6' width='620' align='center' valign='middle' style='border-width: 0px 0px 1px 0px; border-color:none black #CCCCCC none;'>考勤紀錄</td>
+            <td colspan='6' width='400' align='center' valign='middle' style='border-width: 0px 0px 1px 1px; border-color:none none #CCCCCC black;'>週年特休紀錄</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='center' style='border-width: 0px 1px 1px 0px; border-color:none #CCCCCC black none;'>&nbsp;出缺勤</td>
+            <td align='center' style='border-width: 0px 1px 1px 0px; border-color:none #CCCCCC black none;'>當月</td>
+            <td align='center' style='border-width: 0px 0px 1px 0px;'>年累</td>
+            <td align='center' style='border-width: 0px 1px 1px 1px; border-color:none #CCCCCC black black;'>&nbsp;假別狀況</td>
+            <td align='center' style='border-width: 0px 1px 1px 0px; border-color:none #CCCCCC black none;'>當月</td>
+            <td align='center' style='border-width: 0px 0px 1px 0px;'>年累</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px;'>可休期限</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>可休時數</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>當月已休</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>累計已休</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>累計未休</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>預支特休</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;遲到次數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Absents.LateCount.ThisMonth&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Absents.LateCount.ThisYear&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px; border-color:none #CCCCCC none black;'>&nbsp;補休已休時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.CompensatedDayOffHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.CompensatedDayOffHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='center' style='border-width: 0px 0px 0px 1px; font-size:8px;'>@Model.AnnualLeaves.AnnualLeaveEndDate</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.AnnualLeaves.CurrentYearAnnualLeaveHours.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.Leaves.AnnualLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.AnnualLeaves.CurrentYearUsedAnnualLeaveHours.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.AnnualLeaves.CurrentYearRemainderAnnualLeaveHours.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.AnnualLeaves.CurrentYearAdvanceAnnualLeaveHours.ToString("#0.0")&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;早退次數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Absents.LeaveEarlyCount.ThisMonth&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Absents.LeaveEarlyCount.ThisYear&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px; border-color:none #CCCCCC none black;'>&nbsp;補休未休時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.CompensatedDayOffNoUseHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td colspan='6' width='400' align='center' valign='middle' style='border-width: 1px 0px 1px 1px; border-color:black none #CCCCCC black;'>當月加班時數</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;曠職時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Absents.AbsenteeismCount.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Absents.AbsenteeismCount.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px; border-color:none #CCCCCC none black;'>&nbsp;事假時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.PersonalLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.PersonalLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px;'>加班日</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; font-size:8px; border-color:none none black #CCCCCC;'>擬補休時數</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>I</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>II</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>III</td>
+            <td align='center' style='border-width: 0px 0px 1px 1px; border-color:none none black #CCCCCC;'>IX</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px;  border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px;  border-color:none #CCCCCC none black;'>&nbsp;半薪病假時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.HalfPaySickSickLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.HalfPaySickSickLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 0px 0px 1px;'>平日</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.OverTimes.OverTimeRestHours_D.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>-&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px;  border-color:none #CCCCCC none black;'>&nbsp;無薪病假時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.NoPaySickSickLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.NoPaySickSickLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 0px 0px 1px;'>例假日</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.OverTimes.OverTimeRestHours_H.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px;  border-color:none #CCCCCC none black;'>&nbsp;產假天數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.MaternityLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.MaternityLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 0px 0px 1px;'>休息日</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.OverTimes.OverTimeRestHours_O.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>-&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px;  border-color:none #CCCCCC none black;'>&nbsp;陪產假天數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.PaternityLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.PaternityLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 0px 0px 1px;'>國定假日</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.OverTimes.OverTimeRestHours_P.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>-&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px; font-size:8px;  border-color:none #CCCCCC none black;'>&nbsp;其他有薪假時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.OtherLeaveHours.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.OtherLeaveHours.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 0px 0px 0px 1px;'>免出勤日</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>@Model.OverTimes.OverTimeRestHours_N.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 1px; border-color:none none none #CCCCCC;'>-&nbsp;</td>
+        </tr>
+        <tr height='20' align='center' valign='middle'>
+            <td align='left' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>&nbsp;</td>
+            <td align='left' style='border-width: 0px 1px 0px 1px; font-size:8px;  border-color:none #CCCCCC none black;'>&nbsp;其他無薪假時數</td>
+            <td align='right' style='border-width: 0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.Leaves.OtherLeaveHoursNoPay.ThisMonth.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 0px 0px 0px 0px;'>@Model.Leaves.OtherLeaveHoursNoPay.ThisYear.ToString("#0.0")&nbsp;</td>
+            <td align='left' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none black;'>合計</td>
+            <td align='right' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none #CCCCCC;'>@Model.OverTimes.OverTimeTotalHours.ToString("#0.0")&nbsp;</td>
+            <td align='right' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none #CCCCCC;'>0.0&nbsp;</td>
+            <td align='right' style='border-width: 1px 0px 0px 1px; border-color:#CCCCCC none none #CCCCCC;'>0.0&nbsp;</td>
+        </tr>
+        
+    </tbody>
+</table>
+<table cellpadding='0' cellspacing='0'  style='width: 100%; max-width: 100%; margin-bottom: 10px; margin-top:0px; font-size: 10px; border-width: 0px 1px 1px 1px;'>
+    <tbody>
+        <tr>
+             <td ROWSPAN='8' width='26' style='border-width:0px 1px 0px 0px;' align='center'>注意事項</td>
+        </tr>
+        <tr height='12' align='left' valign='middle'>
+            <td colspan='12' width='1000' style='border-width: 0px 0px 0px 0px;'></td>
+        </tr>
+        <tr height='20' align='left' valign='middle'>
+            <td colspan='12' width='1000' style='border-width: 0px 0px 0px 0px;'>&nbsp;* 薪資保密是既定政策，違反者將依人事規章處分。</td>
+        </tr>
+        <tr height='20' align='left' valign='middle'>
+            <td colspan='12' width='1000' style='border-width: 0px 0px 0px 0px;'>&nbsp;* 公司各項獎金、紅利或福利事項於發放時，原則發給發放時仍在職之同仁或符合發放條件之在職同仁；同仁於辦理辭職或退休時，</td>
+        </tr>
+        <tr height='10' align='left' valign='middle'>
+            <td colspan='12' width='1000' style='border-width: 0px 0px 0px 0px;'>&nbsp;&nbsp;&nbsp;請多加留意自身權益。</td>
+        </tr>
+        <tr height='30' align='left' valign='middle'>
+            <td colspan='12'width='1000' style='border-width: 0px 0px 0px 0px;'>&nbsp;* 同仁因公務延長工時應 "事先" 申請權限主管核准，並於加班後之三個工作日內填寫加班時數確認，經權限主管核准後始列加班紀錄。</td>
+        </tr>
+        <tr height='15' align='left' valign='middle'>
+            <td colspan='12'  width='1000' style='border-width: 0px 0px 0px 0px;'>&nbsp;* 有關各項請假、加班時數結算如有疑義，請洽人事單位辦理。</td>
+        </tr>
+        <tr height='12' align='left' valign='middle'>
+            <td colspan='12'  width='1000' style='border-width: 0px 0px 0px 0px;'></td>
+        </tr>
+    </tbody>
+</table>

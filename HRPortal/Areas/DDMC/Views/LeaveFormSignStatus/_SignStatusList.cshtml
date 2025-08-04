@@ -1,0 +1,98 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.QueryLeaveFormSignStatusViewModel
+@{
+    int i = 10;
+    i++;
+    int j = i + 100;   
+}
+<style>
+    .align-center {
+        text-align:center;
+    }
+
+    .align-right {
+        text-align:right;
+    }
+
+    .font-darker {
+        color:#111;
+    }
+
+    .detail-link {
+        text-decoration:underline;
+        cursor:pointer;
+    }
+
+
+</style>
+<div>
+    @Html.Hidden("Detail_QueryBeginDate", Model.QueryCondition.QueryBeginDate.ToString("yyyy/MM/dd"))
+    @Html.Hidden("Detail_QueryEndDate",Model.QueryCondition.QueryEndDate.ToString("yyyy/MM/dd"))
+
+    <table id="DetailTable" class="display cell-border" style="display:none;">
+        @*Header資料*@
+        <thead>
+            <tr role="rowheader">
+         
+                <th role="columnheader" class="" style="width: 9%">
+                    <div style="text-align: center;">Employee No</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%">
+                    <div style="text-align: center;">Employee</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%;">
+                    <div style="text-align: center;">Type</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%;" data-memo="dateoffperiod">
+                    <div style="text-align: center;">Date(s) Off</div>
+                </th>
+                <th role="columnheader" class="" style="width: 8%;" data-memo="requestedtime">
+                    <div style="text-align: center;">Requested</div>
+                </th>
+                <th role="columnheader" class="" style="width: 8%;" data-memo="approvedtime">
+                    <div style="text-align: center;">Approved</div>
+                </th>
+                <th role="columnheader" class="" style="width: 24%;" data-memo="notes">
+                    <div style="text-align: center;">Notes</div>
+                </th>
+                <th role="columnheader" class="align-center" style="width: 8%;" data-memo="timeoffhours">
+                    <div>Time Off <br/>Hours</div>
+                </th>
+          
+
+            </tr>
+        </thead>
+
+        <tbody class="font-darker">
+        @*明細資料*@
+        @if (Model != null && Model.DetailData!=null && Model.DetailData.Count>0)
+        {
+           
+            foreach (var item in Model.DetailData)
+            {
+              
+            <tr role="row" tabindex="-1">
+               
+                <td class="align-center" style="width: 9%">@item.EmpID</td>
+
+                <td class="align-center" style="width: 13%">@(item.EmpName == item.EmpNameEN ? item.EmpNameEN  : item.EmpNameEN + "(" + item.EmpName + ")")</td>
+
+                <td class="align-center" style="width: 13%;" title="@item.Absent.AbsentName">@item.Absent.AbsentEnglishName</td>
+
+                <td class="align-center" style="width: 13%;">@(item.BeginTime.ToString("yyyy/MM/dd") + " ~ " + item.EndTime.ToString("yyyy/MM/dd"))</td>
+
+                <td class="align-center" style="width: 8%;">@item.CreateTime.ToString("yyyy/MM/dd")</td>
+
+                <td class="align-center" style="width: 8%;">@(item.ApproveTime == null ? "" : item.ApproveTime.Value.ToString("yyyy/MM/dd"))</td>
+
+                <td class="align-center" style="width: 24%;">@item.Reason</td>
+  
+                <td class="align-right" style="width: 8%;">@item.LeaveHours.ToString()</td>
+              
+              
+            </tr>
+            }
+        }
+   
+        </tbody>
+    </table>
+</div>

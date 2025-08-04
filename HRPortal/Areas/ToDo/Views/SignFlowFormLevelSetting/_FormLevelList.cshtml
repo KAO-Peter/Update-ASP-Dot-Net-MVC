@@ -1,0 +1,95 @@
+﻿@model IList<YoungCloud.SignFlow.Databases.UnitOfWorks.SignFlowFormLevel>
+
+<a style="margin-bottom:10px" class="btn btn-info" id="btnAddFormLevel" data-modal="" href="@Url.Action("AddFormLevel")">@HRPortal.MultiLanguage.Resource.AddFormSignLevel</a>
+<table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+        <th class="col-xs-3">
+            @HRPortal.MultiLanguage.Resource.FormSignLevelID
+        </th>
+        <th class="col-xs-3">
+            @HRPortal.MultiLanguage.Resource.FormSignLevelName
+        </th>
+        <th class="col-xs-1">
+        </th>
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.LevelID)
+                </td>
+
+                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td style="text-align:center"><a style="" class="btn btn-warning delete-level" id="btnDelete@(item.FormLevelID)" href="@Url.Action("DeleteFormLevel", new { formLevelId = item.FormLevelID })" level-id="" data-action="4">@HRPortal.MultiLanguage.Resource.BtnDelete</a></td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td colspan="6" style="text-align:center">
+                @HRPortal.MultiLanguage.Resource.NoData
+            </td>
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        $('a[data-modal]').click(function () {
+            $('#FormLevelContent').load(this.href, function () {
+                $('#FormLevelDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+
+                $('form', this).submit(function () {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            $('#FormLevelDiv').modal('hide');
+                            window.location = '@Url.Action("Index")';
+                            location.reload();
+                        }
+                    });
+                    return false;
+                });
+            });
+            return false;
+        });
+
+        $('a.delete-level').click(function () {
+            $.ajax({
+                url: this.href,
+                type: 'POST',
+                success: function (result) {
+                    if (result.status == 'success') {
+                        window.location = '@Url.Action("Index")';
+                        location.reload();
+                    } else {
+                        showAlertMessage(result.message);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+    @*$('#btnEditOption').click(function () {
+            $('#OptionDialogContent').load(this.href, function () {
+                $('#OptionDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#OptionDialogDiv', '#OptionDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });*@
+</script>

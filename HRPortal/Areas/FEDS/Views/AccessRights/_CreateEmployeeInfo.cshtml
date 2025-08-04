@@ -1,0 +1,224 @@
+﻿@model HRPortal.Mvc.Models.EmployeeInfoManageViewModel
+@Scripts.Render("~/bundles/validate")
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 5px;
+}
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">新增員工基本資料</h4>
+        </div>
+
+        @using (Html.BeginForm("Index", "AccessRights", FormMethod.Post, new { Id = "CreateEmployeeInfoForm" }))
+        {
+            @Html.HiddenFor(x=> x.employeeData.ID)
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>公司別</label>
+                        <div class="col-sm-44">
+                            @Html.DropDownListFor(m => m.employeeData.CompanyID, Model.companyLists, new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value);" })
+                            @Html.ValidationMessageFor(model => model.employeeData.CompanyID, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>預設密碼</label>
+                        <div class="col-sm-44">
+                            @Html.PasswordFor(model => model.employeeData.PasswordHash, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.PasswordHash, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>姓名</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.EmployeeName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmployeeName, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>工號</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.EmployeeNO, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmployeeNO, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">英文名</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.EmployeeEnglishName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmployeeEnglishName, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;">性別</label>
+                        <div class="col-sm-44" style="margin-top: 8px;">
+                            @Html.RadioButtonFor(model => model.employeeData.Gender, (int)HRPortal.Mvc.Models.GenderType.Male, new { id = "IsMale", style = "width:10%" })
+                            @Html.Label("IsMale", "男")
+                            @Html.RadioButtonFor(model => model.employeeData.Gender, (int)HRPortal.Mvc.Models.GenderType.Female, new { id = "IsFeMale", style = "width:10%" })
+                            @Html.Label("IsFeMale", "女")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                         <label class="col-md-22" style="width: 15%;">到職日期</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.ArriveDate, "{0:yyyy/MM/dd}", new { @class = "form-control", id = "datetimepicker1" })
+                                @Html.ValidationMessageFor(model => model.employeeData.ArriveDate, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;">電子郵件</label>
+                        <div class="col-sm-44"  title="">
+                            @Html.TextBoxFor(model => model.employeeData.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">聯絡電話(O)</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.TelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.TelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;">聯絡地址</label>
+                        <div class="col-sm-44" data-bind="validationElement: Address" title="">
+                            @Html.TextBoxFor(model => model.employeeData.Address, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.Address, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">戶籍電話(O)</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.RegisterTelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RegisterTelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;">戶籍地址</label>
+                        <div class="col-sm-44" data-bind="validationElement: RegisterAddress" title="">
+                            @Html.TextBoxFor(model => model.employeeData.RegisterAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RegisterAddress, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">行動電話(O)</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.CellphoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.CellphoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;">緊急聯絡人姓名</label>
+                        <div class="col-sm-44" data-bind="validationElement: EmergencyName" title="">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyName, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">緊急連絡人關係</label>
+                            <div class="col-sm-44">
+                                @Html.DropDownListFor(model => model.employeeData.EmergencyRelation, (IEnumerable<SelectListItem>)ViewData["EmergencyRelativesList"], new { @class = "form-control"})
+                                @*@Html.DropDownList("EmergencyRelatives", (IEnumerable<SelectListItem>)ViewData["EmergencyRelativesList"], new { @class = "form-control" })*@
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>緊急聯絡人電話</label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyTelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyTelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-md-22" style="width: 15%;"><span style="color:red;">* </span>簽核部門</label>
+                        <div class="col-sm-44">
+                            @Html.DropDownListFor(m => m.employeeData.SignDepartmentID, Model.signDepartmentLists, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.SignDepartmentID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">緊急連絡人地址</label>
+                        <div class="col-sm-44" data-bind="validationElement: EmergencyAddress" title="">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyAddress, "", new { @class = "text-danger" })                      
+                    </div>
+                   
+                        <label class="col-md-22" style="width: 15%;">使用權限</label>
+                        <div class="col-sm-44" title="">
+                            @Html.DropDownListFor(m => m.employeeData.RoleID, Model.roleLists, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RoleID, "", new { @class = "text-danger" })
+                        </div>
+                       
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-md-22" style="width: 15%;">員工階層</label>
+                            <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.employeeData.EmployeesLevel, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmployeesLevel, "", new { @class = "text-danger" })
+                            </div>  
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input id="btnPersonalInfoCreate" type="submit" class="btn btn-success" value="@HRPortal.MultiLanguage.Resource.BtnSave" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    function ChangeStatus(form, fileId) {
+        if ( fileId != null) {
+            $.getJSON('@Url.Action("GetDepartment")', { CompanyId: fileId }, function (months) {
+                var monthsSelect = $('#employeeData_SignDepartmentID');
+                monthsSelect.empty();
+                $.each(months, function (index, month) {
+                    monthsSelect.append($("<option></option>").val(month.Value).html(month.Text));
+                });
+            });
+        }
+    }
+
+    
+    $(function () {
+        $('#btnPersonalInfoCreate').click(function (event) {
+            var form = $('#CreateEmployeeInfoForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            var submitData = new FormData(form[0]);
+            if ($("#employeeData_PasswordHash").val() == "") {
+                showAlertMessage("預設密碼為必填欄位。");
+            }
+            if (form.validate().form()) {
+                $.ajax({
+                    url: 'AccessRights/Create',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        //svar submitResult = JSON.parse(result);
+                        if (submitResult.status == 'success') {
+                            $('#EmployeeInfoDialogDiv').modal('hide');
+                            //showAlertMessage(submitResult.message);
+                            showAlertMessage(submitResult.message, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            showAlertMessage(submitResult.message);
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+
+    $('#datetimepicker1').datetimepicker({
+        language: 'zh-TW',
+        pick12HourFormat: true,
+        format: 'yyyy/mm/dd',
+        autoclose: true,
+        showMeridian: true
+    });
+</script>

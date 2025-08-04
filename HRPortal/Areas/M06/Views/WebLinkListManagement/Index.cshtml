@@ -1,0 +1,131 @@
+﻿@model IEnumerable<HRPortal.DBEntities.WebLinkList>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "WebLinkListManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "WebLinkListForm" }))
+    {
+        <div class="row">
+            @if (TempData["message"] != null)
+            {
+                <script type="text/javascript">
+                    $(function () {
+                        var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+                </script>
+            }
+            <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+                <a class="btn btn-info" id="btnCreate" data-modal="" href="@Url.Action("Create")">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+            </div>
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777;">
+                            <th class="col-xs-2" style="white-space: normal; width: 10%">
+                                @*@Html.DisplayNameFor(model => model.FirstOrDefault().Number)*@
+                                @HRPortal.MultiLanguage.Resource.Number
+                            </th>
+                            <th class="col-xs-2" style="white-space: normal; width: 10%">
+                                @*@Html.DisplayNameFor(model => model.FirstOrDefault().WebName)*@
+                                @HRPortal.MultiLanguage.Resource.WebName
+                            </th>
+                            <th class="col-xs-2" style="white-space: normal; width: 15%">
+                                @*@Html.DisplayNameFor(model => model.FirstOrDefault().WebLink)*@
+                                @HRPortal.MultiLanguage.Resource.WebLink
+                            </th>
+                             <th class="col-xs-2" style="white-space: normal; width: 15%">
+                                @*@Html.DisplayNameFor(model => model.FirstOrDefault().IsUsed)*@
+                                @HRPortal.MultiLanguage.Resource.WebLinkListStatus
+                            </th>
+                            <th class="col-xs-2" style="width: 15%"></th>
+                        </tr>
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space: normal; text-align: center; vertical-align: inherit;" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Number)
+                                </td>
+
+                                <td role="gridcell" class="" style="white-space: normal; text-align: center; vertical-align: inherit;" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.WebName)
+                                </td>
+
+                                <td role="gridcell" class="" style="white-space: normal; text-align: center; vertical-align: inherit;" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.WebLink)
+                                </td>
+                                <td role="gridcell" class="" style="white-space: normal; text-align: center; vertical-align: inherit;" aria-describedby="grid-table_notification_count">
+                                    <span> @(item.IsUsed == true ? HRPortal.MultiLanguage.Resource.WebLinkListStatusShow : HRPortal.MultiLanguage.Resource.WebLinkListStatusHide)</span>
+                                </td>
+                                <td style="white-space: normal; text-align: center;">
+                                    <a class="btn btn-warning" id="btnEdit@(item.ID)" data-modal="" href="@Url.Action("Edit", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                    <input type="button" value="@HRPortal.MultiLanguage.Resource.BtnDelete" formnovalidate="formnovalidate" onclick="ChangeStatus(this.form,'@item.ID','#deletedId');" class="btn btn-danger" />
+                                    @if (item.IsUsed == true)
+                                    {
+                                        <input type="button" value="@HRPortal.MultiLanguage.Resource.WebLinkListStatusHide" formnovalidate="formnovalidate" onclick="ChangeStatus(this.form,'@item.ID','#changeId');" class="btn btn-danger" />
+                                    }
+                                    else
+                                    {
+                                        <input type="button" value="@HRPortal.MultiLanguage.Resource.WebLinkListStatusShow" formnovalidate="formnovalidate" onclick="ChangeStatus(this.form,'@item.ID','#changeId');" class="btn btn-success" />
+                                    }
+                                </td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td colspan="6" style="text-align: center">
+                                    @HRPortal.MultiLanguage.Resource.NoData
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <input type="hidden" value="0" name="deletedId" id="deletedId" />
+         <input type="hidden" value="0" name="changeId" id="changeId" />
+    }
+    <div id='webLinkDialogDiv' class='modal fade in' role="dialog">
+        <div id='webLinkDialogContent'></div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    <script type="text/javascript">
+        function ChangeStatus(form, fileId, formName) {
+            $(formName).val(fileId);
+            form.submit();
+        }
+
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#webLinkDialogContent').load(this.href, function () {
+                    $('#webLinkDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#webLinkDialogDiv', '#webLinkDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+
+        });
+    </script>
+}
+

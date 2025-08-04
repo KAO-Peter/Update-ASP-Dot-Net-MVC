@@ -1,0 +1,613 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Resources;
+
+<style>
+    .form-control:before {
+            content: "：";
+            display: inline-block;
+                  }
+    
+    .signdate,.signdate2,.form_nowrap {
+        white-space:nowrap !important;
+    }
+
+    .signtime {
+        /*
+            font-size: 16px;
+        white-space:nowrap;
+        font-weight: normal;
+        */
+        white-space: nowrap;
+    }
+    
+
+    div #grid-table {
+        font-family:'Verdana','Microsoft JhengHei';
+    }
+    /*
+    .formSummary {
+        font-size: 15px;
+    }
+    */
+</style>
+<style media="screen and (min-width: 400px) and (max-width: 767px)">
+    .signdate2:before {
+        content: "        ";
+    }
+
+    #page-wrapper,.col-xs-12 {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    .divFormSummary  {
+        width:240px !important;
+        word-wrap:break-word !important; 
+        word-break:break-all !important; 
+        white-space: pre-wrap;
+    }
+
+    #jqgh_grid-table_category_name {
+        width:240px !important;
+    }
+    
+    #jqgh_grid-table_cb {
+        white-space: normal;
+    }
+
+    #checkbox_selectall {
+        white-space:nowrap;
+        font-size:11px;
+    }
+
+
+</style>
+
+<style media="screen and (max-width: 400px)">
+    #page-wrapper,.col-xs-12 {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+    .divFormSummary  {
+        /*
+        width:210px !important;
+        */
+        width:140px;
+        word-wrap:break-word !important; 
+        word-break:break-all !important; 
+        white-space: pre-wrap;
+    }
+
+    #jqgh_grid-table_category_name {
+        width:140px !important;
+    }
+
+    #jqgh_grid-table_cb {
+        white-space: normal;
+    }
+
+    #checkbox_selectall {
+        white-space:nowrap;
+        font-size:11px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+        <button id="btnBatchSign" type="button" class="btn btn-success" data-action="5" style="display: none;">@HRPortal.MultiLanguage.Resource.Agree</button>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-5 col-sm-12 mini-input-group">
+
+    </div>
+
+</div>
+<div class="row" style="z-index:-1">
+
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table id="grid-table" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                    @*<th class="">
+
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormCreateDate)
+                </th>
+                <th class="" >
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormType)
+                </th>
+                <th class="" style="width:40%">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormSummary)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DepartmentName)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().SenderEmployeeName)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().SignerEmployeeName)
+                </th>
+                <th class="" style="width:15px">
+                </th>*@
+
+                    <th id="grid-table_cb" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_cb"><input role="checkbox" id="cb_grid-table" class="cbox" type="checkbox" style="zoom: 1.5"> <span id="checkbox_selectall">@HRPortal.MultiLanguage.Resource.SelectAll</span></div>
+                    </th>
+
+                    <th id="grid-table_count" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.applicant</div>
+                    </th>
+
+                    <th id="grid-table_count" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div>
+                    </th>
+
+                    <th id="grid-table_count" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Hours</div>
+                    </th>
+
+                    <th id="grid-table_category_name" role="columnheader" class="col-md-4" >
+                        <div id="jqgh_grid-table_category_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.FormInterval</div>
+                    </th>
+
+                    <th id="grid-table_notification_count" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_notification_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Attachment</div>
+                    </th>
+
+
+                    <th id="grid-table_code" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_code" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Date</div>
+                    </th>
+                    <!--
+                    <th id="grid-table_classified_code_name" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_classified_code_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Type</div>
+                    </th>
+                    -->
+                    <th id="grid-table_teacher_name" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_teacher_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Department</div>
+                    </th>
+
+                   @* <th id="grid-table_notification_count" role="columnheader" class="" style="width: 10%;">
+                        <div id="jqgh_grid-table_notification_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.DeptType</div>
+                    </th>*@
+                
+
+
+                     <th id="grid-table_id" role="columnheader" class="col-md-1" >
+                        <div id="jqgh_grid-table_id" class="ui-jqgrid-sortable"></div>
+                    </th>
+
+                </tr>
+                @if (Model != null && Model.Count() > 0)
+                {
+                    ResourceManager _resourceManager = new ResourceManager("HRPortal.MultiLanguage.Resource", typeof(HRPortal.MultiLanguage.Resource).Assembly);
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" id="@item.FormNo" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            @Html.HiddenFor(m => item.FormType)
+                            @Html.HiddenFor(m => item.FormNo)
+                            @Html.HiddenFor(m => item.SignFlowID)
+
+                            <td role="gridcell" style="text-align: center;" aria-describedby="grid-table_cb" class="form_selectcolumn"><input role="checkbox" type="checkbox" class="cbox batchSignCheck"></td>
+                            
+                             @*if (item.getLanguageCookie == "en-US")
+                             {
+                            <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count" class="sender">@item.SenderEmployeeEnglishName</td>
+                             }
+                             else
+                             {
+                             <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count" class="sender">@item.SenderEmployeeName</td>
+                             }
+                             *@
+
+                            @{
+                                string[] summary = item.FormSummary.Split('|'); //[0]是假別，[1]是時數，[2]是起訖區間
+                        
+                            }
+                            <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count" class="sender">@(item.getLanguageCookie == "en-US" ? item.SenderEmployeeEnglishName : item.SenderEmployeeName)</td>
+                            
+                            <td role="gridcell" style="white-space:normal; text-align:center;" class="form_category formType">@summary[0]</td>
+                            
+                            <td role="gridcell" style="white-space:normal; text-align:center;" class="form_category form_nowrap">@summary[1]</td>
+                          
+                            <td role="gridcell" style="" aria-describedby="grid-table_category_name" class="formSummary"><div class ="divFormSummary">@Html.Raw(summary[2])</div></td>
+
+                             <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                @*<a target="_blank" class="glyphicon glyphicon-paperclip" href="@Url.Action("DownloadLeaveFormFile")"> </a>*@
+                               @* <button class="glyphicon glyphicon-paperclip" onclick="location.href="@Url.Action("DownloadLeaveFormFile")""></button>*@
+                                 @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                                   {
+                                 <a  class="glyphicon glyphicon-paperclip" style="text-decoration: none;color: #333;" href="@Url.Action("DownloadLeaveFormFile", new { formNo = item.FormNo,formType = item.FormType })"></a>
+                                 }
+                            </td>
+
+                            <td role="gridcell" style="" aria-describedby="grid-table_code">@item.FormCreateDate.ToString("yyyy-MM-dd")</td>
+                            <!--
+                                <td role="gridcell" style="text-align:center;" aria-describedby="grid-table_classified_code_name" class="formType">@(_resourceManager.GetString(item.FormType.ToString()) ?? item.FormType.ToString())</td>
+                            -->
+                            <td role="gridcell" style="white-space:normal; text-align:left;" aria-describedby="grid-table_notification_count" class="form_nowrap">@(item.getLanguageCookie == "en-US" ? item.DepartmentEnglishName : item.DepartmentName)</td>
+
+                           
+                             <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                 <!-- 2019/09/10 Neo 增加tab1 click -->
+                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="loadFormDetail('@item.FormType.ToString()', '@item.FormNo', '@item.SignFlowID');$('#tab1').click();">@HRPortal.MultiLanguage.Resource.Signed</button>
+                            </td>
+
+                            @* @if (item.getLanguageCookie == "en-US")
+                             {
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">@item.SignerEmployeeEnglishName</td>
+                             }
+                             else
+                             {
+                              <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">@item.SignerEmployeeName</td>
+                             }*@
+                           
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="9" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div style="text-align:center">
+            @* 在後面對pagelist做轉型 *@
+@*            @using PagedList
+            @using PagedList.Mvc
+            @{
+                var data = Model as IPagedList<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+                    ;
+            }
+            @{
+                if (IsAjax)
+                { Layout = ""; }
+            }*@
+            @*@if (Model != null && Model.Count() > 0)
+            {
+
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                         new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                     new { page }), new PagedListRenderOptions
+                                     {
+                                         DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToIndividualPages = false,
+                                         //LinkToFirstPageFormat = "<<第一頁",
+                                         //LinkToPreviousPageFormat = "<前一頁",
+                                         //LinkToNextPageFormat = "後一頁>",
+                                         //LinkToLastPageFormat = "最末頁>>",
+                                         DisplayPageCountAndCurrentLocation = true,
+                                         PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                         DisplayItemSliceAndTotal = true,
+                                         ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                     })
+            }*@
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-7 col-sm-12 action-buttons">
+        <button id="btnBatchSignButton" type="button" class="btn btn-success"  style="display: none;">@HRPortal.MultiLanguage.Resource.Agree</button>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" style="-ms-overflow-style:scrollbar; overflow-y:scroll;">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.FormDetails - <span id="detailFormTypeName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <!-- 2019/09/10 Neo 增加id="tab1" -->
+                    <li class="active"><a id="tab1" href="#BaseFormModel_form_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_form_tab_0">@HRPortal.MultiLanguage.Resource.BtnDetail</a></li>
+                    <li><a href="#BaseFormModel_flow_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_flow_tab_0">@HRPortal.MultiLanguage.Resource.Signoffrecord</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="BaseFormModel_form_tab_0">
+                        <div id="formContent">
+                        </div>
+                        <div class="dl-info dl-horizontal">
+                            <div>
+                                <label class="col-md-22" style="line-height:23px;">
+                                    @HRPortal.MultiLanguage.Resource.Suggest
+                                    <div style="width: 100%; display:inline-block; color:red;">※@HRPortal.MultiLanguage.Resource.returnisSuggestrequired</div>
+                                </label>
+                                <div class="form-control-static"><input id="instruction" class="col-xs-6 col-md-7" type="text" style="height:50px; border-radius: 4px; border-style: solid; border-color: gray; border-width: 1px; float:initial"  /></div>
+                            </div>         
+                            
+                            <p ></p>
+                            <p ></p>
+                        </div>
+                        <div id="singFlowFooter" class="modal-footer">
+                            <input type="hidden" id="signingFormType" />
+                            <input type="hidden" id="signingFormNo" />
+                            <input type="hidden" id="signingFlowID" />
+                            <a class="btn btn-success" style="display:none" id="PrintBtn">@HRPortal.MultiLanguage.Resource.Button_PrintForm</a>
+                            <button type="button" id="AgentbtnAccept" style="display:none" class="btn btn-success" data-dismiss="modal">@HRPortal.MultiLanguage.Resource.Button_ProcurationSignForm2</button>
+                            <button type="button" id="btnAccept" class="btn btn-success" data-dismiss="modal">@HRPortal.MultiLanguage.Resource.Sendsignoff</button>
+                            <button type="button" id="btnReject" class="btn btn-danger" data-dismiss="modal">@HRPortal.MultiLanguage.Resource.returnn</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+                        </div>
+                        
+                    </div>
+                    <div class="tab-pane" id="BaseFormModel_flow_tab_0">
+                        <div id="signFlowContent">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#myModal').on('hidden.bs.modal', function () {
+            $('body').css('-ms-overflow-style', 'auto');
+        })
+        $('div.action-buttons').children('button').hide();
+        $('input#cb_grid-table').click(function () {
+            if ($(this).prop('checked') == true) {
+                $('#grid-table').find('input[type=checkbox]').prop('checked', true);
+                $('div.action-buttons').children('button').show();
+            } else {
+                $('#grid-table').find('input[type=checkbox]').prop('checked', false);
+                $('div.action-buttons').children('button').hide();
+            }
+        });
+        $('#grid-table').find('input[type=checkbox]').click(function () {
+            if ($(this).prop('checked') == true) {
+                $('div.action-buttons').children('button').show();
+            } else if ($(this).prop('checked') == false) {
+                //20170331 Start 修改 by Daniel，增加檢查全部checkbox清除才隱藏同意按鈕
+                if ($('#grid-table input[type=checkbox]:checked').not('#cb_grid-table').length == 0) {
+                    $('div.action-buttons').children('button').hide();
+                    $('#cb_grid-table').prop('checked', false);
+
+                }
+                //20170331 End
+            }
+        })
+
+        $('.form_selectcolumn').on('click', function (event) {
+            if (!$(event.target).hasClass('batchSignCheck'))
+            {
+                $(this).find('.batchSignCheck').trigger('click');
+            }
+        });
+
+        $('a').click(function () {
+            if ($(this).html() == '@HRPortal.MultiLanguage.Resource.BtnDetail' || $(this).html() == '@HRPortal.MultiLanguage.Resource.Signoffrecord') {
+                var $currentTab = $('#' + $(this).attr('modalID')).find('div.tab-content');
+                $currentTab.children().hide();
+                $currentTab.find("#" + $(this).attr('tabID')).show();
+            }
+        })
+
+        $('#btnAccept').click(function (){
+            var submitData = {
+                FormType: $('#signingFormType').val(),
+                FormNo: $('#signingFormNo').val(),
+                SignFlowID: $('#signingFlowID').val(),
+                Instruction: $('#instruction').val()
+            };
+            $.ajax({
+                url: 'SignForms/CheckAgentLeave',
+                method: 'POST',
+                data: JSON.stringify(submitData),
+                contentType: 'application/json',
+                dataType: 'text json',
+                success: function (checkResult) {
+                    if (checkResult.status == 'success') {
+                        $.ajax({
+                            url: 'SignForms/Accept',
+                            method: 'POST',
+                            data: JSON.stringify(submitData),
+                            contentType: 'application/json',
+                            dataType: 'text json',
+                            success: function (result) {
+                                bootbox.alert(result.message, function () {
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                    } else {
+                        showConfirm(checkResult.message + "<br/>@HRPortal.MultiLanguage.Resource.Confirmsend", function () {
+                            $.ajax({
+                                url: 'SignForms/Accept',
+                                method: 'POST',
+                                data: JSON.stringify(submitData),
+                                contentType: 'application/json',
+                                dataType: 'text json',
+                                success: function (result) {
+                                    bootbox.alert(result.message, function () {
+                                        window.location.reload();
+                                    });
+                                }
+                            });
+                    });
+                }
+            }
+             });
+        });
+
+        $('#AgentbtnAccept').click(function () {
+            var submitData = {
+                FormType: $('#signingFormType').val(),
+                FormNo: $('#signingFormNo').val(),
+                SignFlowID: $('#signingFlowID').val(),
+                Instruction: $('#instruction').val()
+            };
+            $.ajax({
+                url: 'SignForms/CheckAgentLeave',
+                method: 'POST',
+                data: JSON.stringify(submitData),
+                contentType: 'application/json',
+                dataType: 'text json',
+                success: function (checkResult) {
+                    if (checkResult.status == 'success') {
+                        $.ajax({
+                            url: 'SignForms/Accept',
+                            method: 'POST',
+                            data: JSON.stringify(submitData),
+                            contentType: 'application/json',
+                            dataType: 'text json',
+                            success: function (result) {
+                                bootbox.alert(result.message, function () {
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                    } else {
+                        showConfirm(checkResult.message + "<br/>@HRPortal.MultiLanguage.Resource.Confirmsend", function () {
+                            $.ajax({
+                                url: 'SignForms/Accept',
+                                method: 'POST',
+                                data: JSON.stringify(submitData),
+                                contentType: 'application/json',
+                                dataType: 'text json',
+                                success: function (result) {
+                                    bootbox.alert(result.message, function () {
+                                        window.location.reload();
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+         });
+
+        $('#btnReject').click(function () {
+            if ($('#instruction').val().trim() == '') {
+                showAlertMessage('@HRPortal.MultiLanguage.Resource.returnisSuggestrequired');
+                return false;
+            } else {
+                var submitData = {
+                    FormType: $('#signingFormType').val(),
+                    FormNo: $('#signingFormNo').val(),
+                    SignFlowID: $('#signingFlowID').val(),
+                    Instruction: $('#instruction').val()
+                };
+                $.ajax({
+                    url: 'SignForms/Reject',
+                    method: 'POST',
+                    data: JSON.stringify(submitData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        bootbox.alert(result.message, function () {
+                            window.location.reload();
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#btnBatchSignButton").click(function () {
+            $('#btnBatchSign').click();
+        });
+
+        $('#btnBatchSign').click(function () {
+            var formList = $('#grid-table tr[role=row]').filter(function () {
+                return $('.batchSignCheck', this).prop('checked');
+            });
+
+            var postData = [];
+            formList.each(function () {
+                postData.push({
+                    FormType: $('#item_FormType', this).val(),
+                    FormNo: $('#item_FormNo', this).val(),
+                    SignFlowID: $('#item_SignFlowID', this).val(),
+                    Instruction: ''
+                });
+            });
+
+            $.ajax({
+                url: 'SignForms/BatchAccept',
+                method: 'POST',
+                data: JSON.stringify(postData),
+                contentType: 'application/json',
+                success: function (result) {
+                    var message = $('<table style="margin-top: 12px;"></table>');
+                    for (var formNo in result) {
+                        var data = $('#' + formNo);
+                        var tr = $('<tr></tr>');
+                        tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + $('td.sender', data).html() + '</td>');
+                        tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + $('td.formType', data).html() + '</td>');
+                        tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + result[formNo].message + '</td>');
+                        message.append(tr);
+                    }
+
+                    bootbox.alert($("<p>").append(message).html(), function () {
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+    })
+
+    function loadFormDetail(formType, formNo, signFlowId) {
+        $('#signingFormType').val(formType);
+        $('#signingFormNo').val(formNo);
+        $('#signingFlowID').val(signFlowId);
+        $('#instruction').val('');
+        $("#PrintBtn").hide();
+        $('body').css('-ms-overflow-style', 'none');
+
+        var action;
+        if (formType == 'Leave') {
+            action = 'GetLeaveDetail';           
+        } else if (formType == 'OverTime') {
+            action = 'GetOverTimeDetail';
+        } else if (formType == 'PatchCard') {
+            action = 'GetSPatchCardDetail';
+        } else if (formType == 'LeaveCancel') {
+            action = 'GetLeaveCancelDetail';
+        } else if (formType == 'OverTimeCancel') {
+            action = 'GetOverTimeCancelDetail';
+        } else if (formType == 'PatchCardCancel') {
+            action = 'GetPatchCardCancelDetail';
+        };
+
+        $('#formContent').load('SignForms/' + action + '?formNo=' + formNo, function () {
+            if (formType == 'Leave') {
+                $("#PrintBtn").show();
+            }
+        });
+        $('#signFlowContent').load('SignForms/GetSignFlow?formNo=' + formNo);
+    }
+
+</script>
+
+<script src="@Url.Content("~/areas/ToDo/Scripts/LeavePrint.js")"></script>

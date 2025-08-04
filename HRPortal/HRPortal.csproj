@@ -1,0 +1,1486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{91C883E7-5CF9-4581-896C-1824344687F4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HRPortal</RootNamespace>
+    <AssemblyName>HRPortal</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClosedXML">
+      <HintPath>..\packages\ClosedXML.0.76.0\lib\net40-client\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.7\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.7\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Resources.Designer.cs" />
+    <Compile Include="App_GlobalResources\Resources.zh-CN.Designer.cs" />
+    <Compile Include="App_GlobalResources\Resources.zh-CN1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.zh-CN.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resources.zh-TW.Designer.cs" />
+    <Compile Include="App_GlobalResources\Resources.zh-TW1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.zh-TW.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resources1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\DDMC\Controllers\AnnualLeaveScheduleReportController.cs" />
+    <Compile Include="Areas\DDMC\Controllers\DeptSalaryQueryController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\DDMC\Controllers\DeptStaffLeaveStatisticsController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\DDMC\Controllers\EmpHolidayTimeSpanQuotaController.cs" />
+    <Compile Include="Areas\DDMC\Controllers\SalaryQueryController.cs" />
+    <Compile Include="Areas\DDMC\Controllers\LeaveFormSignStatusController.cs" />
+    <Compile Include="Areas\DDMC\Controllers\SalaryChangeNoteController.cs" />
+    <Compile Include="Areas\DDMC\DDMCAreaRegistration.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaAbilityController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCodeController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleFirstEvaluationController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleThirdEvaluationController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleSecondEvaluationController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleSelfEvaluationController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaCycleRationController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaDeptController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaEmpTypeController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaIndicatorController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaOptionController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaOrgController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaPerformanceController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaProgressEmployeesQueryController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaProgressQueryController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaSignFlowController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaSignUploadController.cs" />
+    <Compile Include="Areas\DDMC_PFA\Controllers\PfaStepTransferController.cs" />
+    <Compile Include="Areas\DDMC_PFA\DDMC_PFAAreaRegistration.cs" />
+    <Compile Include="Areas\FEDS\Controllers\AccessRightsController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\DepartmentManagerController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\DeptDateToBPMController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\DeptSumQueryFEDSController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\EmployeeInfoManageController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\IncomeSheetBlankFEDSController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\InsuranceAndLaborCertificateFEDSController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\SalaryQueryFEDSController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\SalaryQueryFEDSForHRController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\VacanciesQuestionController.cs" />
+    <Compile Include="Areas\FEDS\Controllers\SalaryQueryFEDS2Controller.cs" />
+    <Compile Include="Areas\FEDS\FEDSAreaRegistration.cs" />
+    <Compile Include="Areas\FEPH\Controllers\CasualAttendPayrollChecklistController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\CasualDailyPayrollChecklistController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\CasualFormController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\CasualFormMonthlyController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\DeptEmpHolidaySummaryController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\DutyResultWorkingController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\EmergencyStaffListController.cs" />
+    <Compile Include="Areas\FEPH\Controllers\EmpDataCasualController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\FEPH\FEPHAreaRegistration.cs" />
+    <Compile Include="Areas\M01\Controllers\PersonalSettingsController.cs" />
+    <Compile Include="Areas\M01\Controllers\SignoffAgentsController.cs" />
+    <Compile Include="Areas\M01\Controllers\PersonalInfoController.cs" />
+    <Compile Include="Areas\M01\M01AreaRegistration.cs" />
+    <Compile Include="Areas\M02\Controllers\ElectronicSignController.cs" />
+    <Compile Include="Areas\M02\Controllers\LeaveCancelFormController.cs" />
+    <Compile Include="Areas\M02\Controllers\LeaveFormController.cs" />
+    <Compile Include="Areas\M02\Controllers\OverTimeCancelFormController.cs" />
+    <Compile Include="Areas\M02\Controllers\OverTimeFormController.cs" />
+    <Compile Include="Areas\M02\Controllers\PatchCardFormController.cs" />
+    <Compile Include="Areas\M02\Controllers\ScheduleCalendarController.cs" />
+    <Compile Include="Areas\M02\Controllers\PatchCardCancelFormController.cs" />
+    <Compile Include="Areas\M02\M02AreaRegistration.cs" />
+    <Compile Include="Areas\M03\Controllers\DeptQueryLogController.cs" />
+    <Compile Include="Areas\M03\Controllers\DeptSumQueryController.cs" />
+    <Compile Include="Areas\M03\Controllers\SalaryQueryController.cs" />
+    <Compile Include="Areas\M03\M03AreaRegistration.cs" />
+    <Compile Include="Areas\M06\Controllers\AnnouncementManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\CompanyManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\DepartmentManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\EmailRecordController.cs" />
+    <Compile Include="Areas\M06\Controllers\EmployeeBenefitsManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\EmployeeInfoManageController.cs" />
+    <Compile Include="Areas\M06\Controllers\FAQManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\GeneralSettingsController.cs" />
+    <Compile Include="Areas\M06\Controllers\OptionSettingsController.cs" />
+    <Compile Include="Areas\M06\Controllers\PersonnelspecificationManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\QueryLogController.cs" />
+    <Compile Include="Areas\M06\Controllers\ReadTodayManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\RoleManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\DownloadFilesManagerController.cs" />
+    <Compile Include="Areas\M06\Controllers\VacanciesManager.cs" />
+    <Compile Include="Areas\Reports\Controllers\LeaveSummaryController.cs" />
+    <Compile Include="Areas\Reports\Controllers\DeptLeaveListController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\SignoffAgentsController.cs" />
+    <Compile Include="Areas\M06\Controllers\WebLinkListFEDSManagementController.cs" />
+    <Compile Include="Areas\M06\Controllers\WebLinkListManagementController.cs" />
+    <Compile Include="Areas\M06\Controllers\FormSettingController.cs" />
+    <Compile Include="Areas\M06\M06AreaRegistration.cs" />
+    <Compile Include="Areas\Reports\Controllers\DeptEmpHolidaySummaryController.cs" />
+    <Compile Include="Areas\Reports\Controllers\LeaveHoursQueryController.cs" />
+    <Compile Include="Areas\Reports\Controllers\LeaveQueryController.cs" />
+    <Compile Include="Areas\Reports\Controllers\SignFormsController.cs" />
+    <Compile Include="Areas\Reports\ReportsAreaRegistration.cs" />
+    <Compile Include="Areas\ToDo\Controllers\AttendanceController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\FormQueryController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\ToDo\Controllers\PendingFormsController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\ReplyQuestionController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\SignFlowFormLevelSettingController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\SignFlowLevelSettingController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\SignFlowSettingController.cs" />
+    <Compile Include="Areas\ToDo\Controllers\SignFormsController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\ToDo\ToDoAreaRegistration.cs" />
+    <Compile Include="Areas\YDCS\Controllers\DeptQueryLogController.cs" />
+    <Compile Include="Areas\YDCS\Controllers\DeptSumQueryController.cs" />
+    <Compile Include="Areas\YDCS\Controllers\SalaryQueryController.cs" />
+    <Compile Include="Areas\YDCS\YDCSAreaRegistration.cs" />
+    <Compile Include="Common\PDFHelper\iTextSharpHelper.cs" />
+    <Compile Include="Common\PFA\PfaOption.cs" />
+    <Compile Include="Common\PFA\PfaSignRecord.cs" />
+    <Compile Include="Controllers\DownloadFilesController.cs" />
+    <Compile Include="Controllers\EncryptController.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportQueryController.cs" />
+    <Compile Include="Controllers\SignFormOnlyController.cs" />
+    <Compile Include="Controllers\SSOLoginController.cs" />
+    <Compile Include="Controllers\VacanciesController.cs" />
+    <Compile Include="Controllers\ADLoginController.cs" />
+    <Compile Include="Controllers\WarmUpController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\FormNoGenerator.cs" />
+    <Compile Include="Helper\FormSummaryBuilder.cs" />
+    <Compile Include="Helper\FormSummaryBuilderr.cs" />
+    <Compile Include="Helper\IFormNoGenerator.cs" />
+    <Compile Include="Helper\OptionListHelper.cs" />
+    <Compile Include="Helper\RSAHelper.cs" />
+    <Compile Include="Helper\SignMailHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Utility\UnicodeFontFactory.cs" />
+    <Compile Include="Web References\eipWebReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\_AbsentItems.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\_MemoAll.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\_MemoSalaryOnly.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\_SalaryInfo.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptSalaryQuery\_SalaryItems.cshtml" />
+    <Content Include="Areas\DDMC\Views\DeptStaffLeaveStatistics\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\_PerformanceFormSelf.html" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\_PerformanceForm.html" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressQuery\_PerformanceForm.html" />
+    <Content Include="Areas\FEDS\Views\web.config" />
+    <Content Include="Areas\FEPH\Views\EmpDataCasual\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Scripts\LeavePrint.js" />
+    <Content Include="Areas\ToDo\Views\FormQuery\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_LeaveCancelContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_LeaveContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_OverTimeCancelContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_OverTimeContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_PatchCardContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\_SignFlowView.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker.min.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Clock\BebasNeue-webfont.svg" />
+    <Content Include="Content\CP0L0\02.jpg" />
+    <Content Include="Content\CP0L0\04.JPG" />
+    <Content Include="Content\CP0L0\background_2022.jpg" />
+    <Content Include="Content\CP0L0\bootstrap-ie7.css" />
+    <Content Include="Content\CP0L0\CP0L0.css" />
+    <Content Include="Content\CP0L0\index-2016.css" />
+    <Content Include="Content\CP0L0\login.css" />
+    <Content Include="Content\CP0L0\NewPanel.css" />
+    <Content Include="Content\CP0L0\page-2016.css" />
+    <Content Include="Content\CP0L0\ReportViewer\RSClientPrint-x64.cab" />
+    <Content Include="Content\CP0L0\ReportViewer\RSClientPrint-x86.cab" />
+    <Content Include="Content\CP0L0\index-2022-BG.css" />
+    <Content Include="Content\DataTable\DataTables-1.10.24\images\sort_asc.png" />
+    <Content Include="Content\DataTable\DataTables-1.10.24\images\sort_asc_disabled.png" />
+    <Content Include="Content\DataTable\DataTables-1.10.24\images\sort_both.png" />
+    <Content Include="Content\DataTable\DataTables-1.10.24\images\sort_desc.png" />
+    <Content Include="Content\DataTable\DataTables-1.10.24\images\sort_desc_disabled.png" />
+    <Content Include="Content\DataTable\datatables.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fullCalendar\fullcalendar.css" />
+    <Content Include="Content\fullCalendar\fullcalendar.min.css" />
+    <Content Include="Content\fullCalendar\fullcalendar.print.css" />
+    <Content Include="Content\images\ui-bg_diagonals-small_25_c5ddfc_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_e69700_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_22_1484e6_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_26_2293f7_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_0_e69700_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_0_e6b900_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_55_c0402a_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_55_eeeeee_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_55_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f8f8f8_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_35_dddddd_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_60_eeeeee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_f6f6f6_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_f9f9f9_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_25_0073ea_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_50_dddddd_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\images\ui-bg_inset-hard_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_inset-hard_75_999999_1x100.png" />
+    <Content Include="Content\images\ui-bg_inset-soft_50_c9c9c9_1x100.png" />
+    <Content Include="Content\images\ui-icons_0073ea_256x240.png" />
+    <Content Include="Content\images\ui-icons_0a82eb_256x240.png" />
+    <Content Include="Content\images\ui-icons_0b54d5_256x240.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\ui-icons_3383bb_256x240.png" />
+    <Content Include="Content\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_5fa5e3_256x240.png" />
+    <Content Include="Content\images\ui-icons_666666_256x240.png" />
+    <Content Include="Content\images\ui-icons_70b2e1_256x240.png" />
+    <Content Include="Content\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Content\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\ui-icons_999999_256x240.png" />
+    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\images\ui-icons_fbc856_256x240.png" />
+    <Content Include="Content\images\ui-icons_fcdd4a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ff0084_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.multiselect.css" />
+    <Content Include="Content\jquery-ui_1.11.3.css" />
+    <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
+    <Content Include="Content\jquery.simple-dtpicker.css" />
+    <Content Include="Content\jquery.simple-dtpicker_1.1.css" />
+    <Content Include="Content\lightbox.css" />
+    <Content Include="Content\lightbox_images\close.png" />
+    <Content Include="Content\lightbox_images\loading.gif" />
+    <Content Include="Content\lightbox_images\next.png" />
+    <Content Include="Content\lightbox_images\prev.png" />
+    <Content Include="Content\multiple-select-master\multiple-select.css" />
+    <Content Include="Content\multiple-select-master\multiple-select.png" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\plugins\bootstrap-dialog\bootstrap-dialog.css" />
+    <Content Include="Content\plugins\bootstrap-dialog\bootstrap-dialog.min.css" />
+    <Content Include="Content\plugins\bootstrap-timepicker\bootstrap-timepicker.css" />
+    <Content Include="Content\plugins\bootstrap-timepicker\bootstrap-timepicker.min.css" />
+    <Content Include="Content\plugins\bootstrap-treeview\bootstrap-treeview.css" />
+    <Content Include="Content\plugins\bootstrap-treeview\bootstrap-treeview.min.css" />
+    <Content Include="Content\plugins\jqGrid\jqGrid.bootstrap.css" />
+    <Content Include="Content\plugins\lightbox\img\close.png" />
+    <Content Include="Content\plugins\lightbox\img\loading.gif" />
+    <Content Include="Content\plugins\lightbox\img\next.png" />
+    <Content Include="Content\plugins\lightbox\img\prev.png" />
+    <Content Include="Content\plugins\lightbox\lightbox.css" />
+    <Content Include="Content\plugins\lightbox\screen.css" />
+    <Content Include="Content\plugins\metisMenu\metisMenu.css" />
+    <Content Include="Content\plugins\metisMenu\metisMenu.min.css" />
+    <Content Include="Content\plugins\sb-admin-2\sb-admin-2.css" />
+    <Content Include="Content\plugins\timeline\timeline.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\theme.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\typeahead.css" />
+    <Content Include="Content\jquery.simple-dtpicker_1.2.css" />
+    <Content Include="Content\jquery.simple-dtpicker_1.3.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Images\apple-touch-icon-144x144.png" />
+    <Content Include="Images\apple-touch-icon-152x152.png" />
+    <Content Include="Images\apple-touch-icon-180x180.png" />
+    <Content Include="Images\apple-touch-icon-76x76.png" />
+    <Content Include="Images\clock\clockface.jpg" />
+    <Content Include="Images\clock\hourhand.png" />
+    <Content Include="Images\clock\minhand.png" />
+    <Content Include="Images\clock\sechand.png" />
+    <Content Include="Images\Confidential.png" />
+    <Content Include="Images\ddmc_32_32.png" />
+    <Content Include="Images\DDMC_128_128.png" />
+    <Content Include="Images\DDMC_144_144.png" />
+    <Content Include="Images\DDMC_152_152.png" />
+    <Content Include="Images\DDMC_180_180.png" />
+    <Content Include="Images\DDMC_192_192.png" />
+    <Content Include="Images\DDMC_196_196.png" />
+    <Content Include="Images\DDMC_76_76.png" />
+    <Content Include="Images\DDMC_Chapter.png" />
+    <Content Include="Images\FEDS_128_128.png" />
+    <Content Include="Images\FEDS_144_144.png" />
+    <Content Include="Images\FEDS_152_152.png" />
+    <Content Include="Images\FEDS_180_180.png" />
+    <Content Include="Images\FEDS_192_192.png" />
+    <Content Include="Images\FEDS_196_196.png" />
+    <Content Include="Images\FEDS_76_76.png" />
+    <Content Include="Images\ICON_128_128.png" />
+    <Content Include="Images\ICON_144_144.png" />
+    <Content Include="Images\ICON_152_152.png" />
+    <Content Include="Images\ICON_180_180.png" />
+    <Content Include="Images\ICON_192_192.png" />
+    <Content Include="Images\ICON_196_196.png" />
+    <Content Include="Images\ICON_76_76.png" />
+    <Content Include="Images\ICON_Year_lOGO.png" />
+    <Content Include="Images\Original.png" />
+    <Content Include="Scripts\add-content-link.js" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.zh-TW.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CP0L0\CP0L0.js" />
+    <Content Include="Scripts\CP0L0\form\option-combobox.js" />
+    <Content Include="Scripts\CP0L0\form\year-combobox.js" />
+    <Content Include="Scripts\CP0L0\ie8.js" />
+    <Content Include="Scripts\CP0L0\jqGrid.js" />
+    <Content Include="Scripts\CP0L0\knockout\knockout.bindings.date.js" />
+    <Content Include="Scripts\CP0L0\knockout\validation\extension.js" />
+    <Content Include="Scripts\CP0L0\knockout\validation\Localization\zh-tw.js" />
+    <Content Include="Scripts\CP0L0\localization\messages_zh_TW.js" />
+    <Content Include="Scripts\CP0L0\services\formService.js" />
+    <Content Include="Areas\M06\Views\DepartmentManager\_CreateDepartment.cshtml" />
+    <Content Include="Areas\M06\Views\DepartmentManager\_EditDepartment.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeInfoManage\Index.cshtml" />
+    <Content Include="Areas\M03\Views\SalaryQuery\_SalaryInfo.cshtml" />
+    <Content Include="Areas\M03\Views\SalaryQuery\_SalaryItems.cshtml" />
+    <Content Include="Areas\M03\Views\SalaryQuery\_AbsentItems.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeInfoManage\_CreateEmployeeInfo.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeInfoManage\_EditEmployeeInfo.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowLevelSetting\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowLevelSetting\_CreateSignFlowLevel.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowLevelSetting\_EditSignFlowLevel.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowFormLevelSetting\_AddFormLevel.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowFormLevelSetting\_FormLevelList.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowFormLevelSetting\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\SignFlowDesignView.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\_AddSignFlow.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\_AddSignFlowItem.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\_EditSignFlowItem.cshtml" />
+    <Content Include="Areas\M06\Views\RoleManager\_RoleMenuMap.cshtml" />
+    <Content Include="Scripts\DataTable\datatables.min.js" />
+    <Content Include="Scripts\fullCalendar\fullcalendar.js" />
+    <Content Include="Scripts\fullCalendar\fullcalendar.min.js" />
+    <Content Include="Scripts\fullCalendar\gcal.js" />
+    <Content Include="Scripts\fullCalendar\locale-all.js" />
+    <Content Include="Scripts\jquery-ui.multiselect.js" />
+    <Content Include="Scripts\jquery-ui.multiselect.zh-tw.js" />
+    <Content Include="Scripts\jquery.linkify-1.0.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.url.min.js" />
+    <Content Include="Scripts\lightbox.js" />
+    <Content Include="Scripts\multiple-select-master\multiple-select.js" />
+    <Content Include="Scripts\muti-dept-emp.js" />
+    <Content Include="Scripts\pdfobject.min.js" />
+    <Content Include="Scripts\plugins\bootstrap-treeview\bootstrap-treeview.js" />
+    <Content Include="Scripts\plugins\bootstrap-treeview\bootstrap-treeview.min.js" />
+    <Content Include="Scripts\plugins\pdfjs\pdf.js" />
+    <Content Include="Scripts\plugins\pdfjs\pdf.worker.js" />
+    <Content Include="Scripts\security.js" />
+    <Content Include="Scripts\i18n\grid.locale-ar.js" />
+    <Content Include="Scripts\i18n\grid.locale-bg.js" />
+    <Content Include="Scripts\i18n\grid.locale-bg1251.js" />
+    <Content Include="Scripts\i18n\grid.locale-cat.js" />
+    <Content Include="Scripts\i18n\grid.locale-cn.js" />
+    <Content Include="Scripts\i18n\grid.locale-cs.js" />
+    <Content Include="Scripts\i18n\grid.locale-da.js" />
+    <Content Include="Scripts\i18n\grid.locale-de.js" />
+    <Content Include="Scripts\i18n\grid.locale-dk.js" />
+    <Content Include="Scripts\i18n\grid.locale-el.js" />
+    <Content Include="Scripts\i18n\grid.locale-en.js" />
+    <Content Include="Scripts\i18n\grid.locale-es.js" />
+    <Content Include="Scripts\i18n\grid.locale-fa.js" />
+    <Content Include="Scripts\i18n\grid.locale-fi.js" />
+    <Content Include="Scripts\i18n\grid.locale-fr.js" />
+    <Content Include="Scripts\i18n\grid.locale-gl.js" />
+    <Content Include="Scripts\i18n\grid.locale-he.js" />
+    <Content Include="Scripts\i18n\grid.locale-hr.js" />
+    <Content Include="Scripts\i18n\grid.locale-hr1250.js" />
+    <Content Include="Scripts\i18n\grid.locale-hu.js" />
+    <Content Include="Scripts\i18n\grid.locale-id.js" />
+    <Content Include="Scripts\i18n\grid.locale-is.js" />
+    <Content Include="Scripts\i18n\grid.locale-it.js" />
+    <Content Include="Scripts\i18n\grid.locale-ja.js" />
+    <Content Include="Scripts\i18n\grid.locale-kr.js" />
+    <Content Include="Scripts\i18n\grid.locale-lt.js" />
+    <Content Include="Scripts\i18n\grid.locale-mne.js" />
+    <Content Include="Scripts\i18n\grid.locale-nl.js" />
+    <Content Include="Scripts\i18n\grid.locale-no.js" />
+    <Content Include="Scripts\i18n\grid.locale-pl.js" />
+    <Content Include="Scripts\i18n\grid.locale-pt-br.js" />
+    <Content Include="Scripts\i18n\grid.locale-pt.js" />
+    <Content Include="Scripts\i18n\grid.locale-ro.js" />
+    <Content Include="Scripts\i18n\grid.locale-ru.js" />
+    <Content Include="Scripts\i18n\grid.locale-sk.js" />
+    <Content Include="Scripts\i18n\grid.locale-sr-latin.js" />
+    <Content Include="Scripts\i18n\grid.locale-sr.js" />
+    <Content Include="Scripts\i18n\grid.locale-sv.js" />
+    <Content Include="Scripts\i18n\grid.locale-th.js" />
+    <Content Include="Scripts\i18n\grid.locale-tr.js" />
+    <Content Include="Scripts\i18n\grid.locale-tw.js" />
+    <Content Include="Scripts\i18n\grid.locale-ua.js" />
+    <Content Include="Scripts\i18n\grid.locale-vi.js" />
+    <Content Include="Scripts\jquery-2.1.3.js" />
+    <Content Include="Scripts\jquery-2.1.3.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Content\CP0L0\xlsx\員工申請.xlsx" />
+    <Content Include="Content\CP0L0\xlsx\課程報名.xlsx" />
+    <Content Include="Content\toastr.less" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Areas\M02\Views\web.config" />
+    <Content Include="Areas\ToDo\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\ToDo\Views\SignForms\Index.cshtml" />
+    <Content Include="Areas\M03\Views\web.config" />
+    <Content Include="Areas\M01\Views\web.config" />
+    <Content Include="Areas\M06\Views\web.config" />
+    <Content Include="Areas\Reports\Views\web.config" />
+    <Content Include="Areas\M02\Views\ElectronicSign\Index.cshtml" />
+    <Content Include="Areas\M02\Views\LeaveForm\Index.cshtml" />
+    <Content Include="Areas\M02\Views\OverTimeForm\Index.cshtml" />
+    <Content Include="Areas\M02\Views\PatchCardForm\Index.cshtml" />
+    <Content Include="Areas\M03\Views\DeptQueryLog\Index.cshtml" />
+    <Content Include="Areas\M03\Views\DeptSumQuery\Index.cshtml" />
+    <Content Include="Areas\M03\Views\SalaryQuery\Index.cshtml" />
+    <Content Include="Areas\Reports\Views\DeptEmpHolidaySummary\Index.cshtml" />
+    <Content Include="Areas\M01\Views\PersonalInfo\Index.cshtml" />
+    <Content Include="Areas\M06\Views\AnnouncementManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\FAQManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\EmailRecord\Index.cshtml" />
+    <Content Include="Areas\M06\Views\GeneralSettings\Index.cshtml" />
+    <Content Include="Areas\M06\Views\OptionSettings\Index.cshtml" />
+    <Content Include="Areas\M06\Views\RoleManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\DownloadFilesManager\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\ReplyQuestion\Index.cshtml" />
+    <Content Include="Areas\M06\Views\QueryLog\Index.cshtml" />
+    <Content Include="Areas\M06\Views\AnnouncementManager\_CreateAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\AnnouncementManager\_EditAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\DownloadFilesManager\_CreateFile.cshtml" />
+    <Content Include="Areas\M06\Views\FAQManager\_CreateFAQ.cshtml" />
+    <Content Include="Areas\M06\Views\FAQManager\_EditFAQ.cshtml" />
+    <Content Include="Areas\M06\Views\GeneralSettings\EditorTemplates\SystemSettingViewModel.cshtml" />
+    <Content Include="Areas\M06\Views\DownloadFilesManager\_EditFile.cshtml" />
+    <Content Include="Content\Clock\BebasNeue-webfont.eot" />
+    <Content Include="Content\Clock\BebasNeue-webfont.ttf" />
+    <Content Include="Content\Clock\BebasNeue-webfont.woff" />
+    <Content Include="Areas\M06\Views\RoleManager\_EditRole.cshtml" />
+    <Content Include="Areas\M06\Views\RoleManager\_CreateRole.cshtml" />
+    <Content Include="Areas\ToDo\Views\ReplyQuestion\_Detail.cshtml" />
+    <Content Include="Areas\M06\Views\OptionSettings\_EditOption.cshtml" />
+    <Content Include="Areas\M06\Views\OptionSettings\_CreateGroup.cshtml" />
+    <Content Include="Areas\M06\Views\OptionSettings\_OptionList.cshtml" />
+    <Content Include="Areas\M06\Views\EmailRecord\_Detail.cshtml" />
+    <Content Include="Areas\M06\Views\CompanyManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\CompanyManager\_Detail.cshtml" />
+    <Content Include="Areas\M06\Views\DepartmentManager\Index.cshtml" />
+    <Content Include="Areas\M03\Views\DeptSumQuery\_DeptQueryDetail.cshtml" />
+    <Content Include="Areas\M03\Views\DeptSumQuery\PersonalSalary.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\SignFlowConditionView.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\_AddSignFlowCondition.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignFlowSetting\_EditSignFlowCondition.cshtml" />
+    <Content Include="Areas\Reports\Views\DeptEmpHolidaySummary\_SumeryDetail.cshtml" />
+    <Content Include="Areas\M02\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\M02\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\M02\Views\OverTimeCancelForm\Index.cshtml" />
+    <Content Include="Areas\M02\Views\LeaveCancelForm\Index.cshtml" />
+    <Content Include="Areas\M03\Views\DeptSumQuery\NoLimit.cshtml" />
+    <Content Include="Areas\M02\Views\LeaveCancelForm\SearchList.cshtml" />
+    <Content Include="Areas\M02\Views\OverTimeCancelForm\SearchList.cshtml" />
+    <Content Include="Areas\ToDo\Views\PendingForms\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\web.config" />
+    <Content Include="Areas\FEPH\Views\CasualForm\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualForm\_CreateCasualForm.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualForm\_EditCasualForm.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualForm\_EmpDialog.cshtml" />
+    <Content Include="Areas\FEPH\Views\EmpDataCasual\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\EmpDataCasual\_CreateEmpDataCasual.cshtml" />
+    <Content Include="Areas\FEPH\Views\EmpDataCasual\_EditEmpDataCasual.cshtml" />
+    <Content Include="Areas\ToDo\Views\Attendance\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\Attendance\_DutyScheduleSummary.cshtml" />
+    <Content Include="Areas\Reports\Views\LeaveQuery\Index.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_LeaveContent.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_OverTimeContent.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_PatchCardContent.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_LeaveCancelContent.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_OverTimeCancelContent.cshtml" />
+    <Content Include="Areas\Reports\Views\SignForms\_SignFlowView.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListManagement\Index.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListManagement\_CreateLink.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListManagement\_EditLink.cshtml" />
+    <Content Include="Content\multiple-select-master\bower.json" />
+    <Content Include="Content\multiple-select-master\multiple-select.jquery.json" />
+    <Content Include="Content\multiple-select-master\package.json" />
+    <Content Include="Areas\FEPH\Views\DutyResultWorking\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\EmergencyStaffList\Index.cshtml" />
+    <Content Include="Areas\M06\Views\FormSetting\Index.cshtml" />
+    <Content Include="Areas\M06\Views\FormSetting\_formSetting.cshtml" />
+    <Content Include="Areas\Reports\Views\LeaveHoursQuery\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS\_AbsentItems.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS\_SalaryItems.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS\_SalaryInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\DeptSumQueryFEDS\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\DeptSumQueryFEDS\_DeptQueryDetail.cshtml" />
+    <Content Include="Areas\FEDS\Views\DeptSumQueryFEDS\NoLimit.cshtml" />
+    <Content Include="Areas\FEDS\Views\DeptSumQueryFEDS\PersonalSalary.cshtml" />
+    <Content Include="Areas\FEDS\Views\DepartmentManager\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\DepartmentManager\_CreateDepartment.cshtml" />
+    <Content Include="Areas\FEDS\Views\DepartmentManager\_EditDepartment.cshtml" />
+    <Content Include="Areas\FEDS\Views\EmployeeInfoManage\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\EmployeeInfoManage\_CreateEmployeeInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\EmployeeInfoManage\_EditEmployeeInfo.cshtml" />
+    <Content Include="Areas\FEPH\Views\DeptEmpHolidaySummary\_SumeryDetail.cshtml" />
+    <Content Include="Areas\FEPH\Views\DeptEmpHolidaySummary\Index.cshtml" />
+    <Content Include="Areas\M01\Views\SignoffAgents\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualAttendPayrollChecklist\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualDailyPayrollChecklist\Index.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualDailyPayrollChecklist\_EmpDialog.cshtml" />
+    <Content Include="Areas\FEPH\Views\CasualFormMonthly\Index.cshtml" />
+    <Content Include="Areas\YDCS\Views\web.config" />
+    <Content Include="Areas\YDCS\Views\DeptQueryLog\Index.cshtml" />
+    <Content Include="Areas\YDCS\Views\DeptSumQuery\_DeptQueryDetail.cshtml" />
+    <Content Include="Areas\YDCS\Views\DeptSumQuery\Index.cshtml" />
+    <Content Include="Areas\YDCS\Views\DeptSumQuery\NoLimit.cshtml" />
+    <Content Include="Areas\YDCS\Views\DeptSumQuery\PersonalSalary.cshtml" />
+    <Content Include="Areas\YDCS\Views\SalaryQuery\_AbsentItems.cshtml" />
+    <Content Include="Areas\YDCS\Views\SalaryQuery\_SalaryInfo.cshtml" />
+    <Content Include="Areas\YDCS\Views\SalaryQuery\_SalaryItems.cshtml" />
+    <Content Include="Areas\YDCS\Views\SalaryQuery\Index.cshtml" />
+    <Content Include="Areas\M06\Views\ReadTodayManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\ReadTodayManager\_EditAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\ReadTodayManager\_CreateAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\PersonnelspecificationManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\PersonnelspecificationManager\_EditAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\PersonnelspecificationManager\_CreateAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListFEDSManagement\Index.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListFEDSManagement\_CreateLink.cshtml" />
+    <Content Include="Areas\M06\Views\WebLinkListFEDSManagement\_EditLink.cshtml" />
+    <Content Include="Areas\FEDS\Views\AccessRights\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\AccessRights\_CreateEmployeeInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\AccessRights\_EditEmployeeInfo.cshtml" />
+    <Content Include="Areas\M02\Views\ScheduleCalendar\Index.cshtml" />
+    <Content Include="Areas\M02\Views\ScheduleCalendar\_ScheduleCalendar.cshtml" />
+    <Content Include="Areas\M02\Views\PatchCardCancelForm\SearchList.cshtml" />
+    <Content Include="Areas\M02\Views\PatchCardCancelForm\Index.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignForms\_PatchCardCancelContent.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeBenefitsManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeBenefitsManager\_CreateAnnounce.cshtml" />
+    <Content Include="Areas\M06\Views\EmployeeBenefitsManager\_EditAnnounce.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignForms\_PLeaveContent.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignForms\_SPatchCardContent.cshtml" />
+    <Content Include="Areas\FEDS\Views\InsuranceAndLaborCertificateFEDS\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\InsuranceAndLaborCertificateFEDS\_InsureInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\InsuranceAndLaborCertificateFEDS\_InsureItem.cshtml" />
+    <Content Include="Areas\FEDS\Views\IncomeSheetBlankFEDS\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\IncomeSheetBlankFEDS\_IncomTaxDetail.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignoffAgents\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDSForHR\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDSForHR\_AbsentItems.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDSForHR\_SalaryInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDSForHR\_SalaryItems.cshtml" />
+    <Content Include="Areas\M06\Views\VacanciesManager\Index.cshtml" />
+    <Content Include="Areas\M06\Views\VacanciesManager\_CreateFAQ.cshtml" />
+    <Content Include="Areas\M06\Views\VacanciesManager\_EditFAQ.cshtml" />
+    <Content Include="Areas\FEDS\Views\VacanciesQuestion\Index.cshtml" />
+    <Content Include="Areas\FEDS\Views\VacanciesQuestion\_Detail.cshtml" />
+    <Content Include="Areas\ToDo\Views\SignForms\_LeavePrintContent.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS2\_AbsentItems.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS2\_SalaryInfo.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS2\_SalaryItems.cshtml" />
+    <Content Include="Areas\FEDS\Views\SalaryQueryFEDS2\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\_AbsentItems.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\_SalaryInfo.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\_SalaryItems.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\web.config" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\_MemoAll.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryQuery\_MemoSalaryOnly.cshtml" />
+    <Content Include="Areas\Reports\Views\LeaveSummary\Index.cshtml" />
+    <Content Include="Areas\M01\Views\PersonalSettings\Index.cshtml" />
+    <Content Include="Areas\Reports\Views\DeptLeaveList\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\EmpHolidayTimeSpanQuota\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\EmpHolidayTimeSpanQuota\_TimeSpanQuotaData.cshtml" />
+    <Content Include="Areas\DDMC\Views\LeaveFormSignStatus\_SignStatusList.cshtml" />
+    <Content Include="Areas\DDMC\Views\LeaveFormSignStatus\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\AnnualLeaveScheduleReport\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\AnnualLeaveScheduleReport\_AnnualLeaveSchedule.cshtml" />
+    <Content Include="Areas\DDMC\Views\AnnualLeaveScheduleReport\_Schedule.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryChangeNote\Index.cshtml" />
+    <Content Include="Areas\DDMC\Views\SalaryChangeNote\_EmpChangeNote.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOption\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\web.config" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOption\_PfaOptionList.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOption\_AddPfaOption.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOption\_DelPfaOption.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOption\_EditPfaOption.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCode\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCode\_AddPfaCode.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCode\_PfaCodeList.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCode\_DelPfaCode.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCode\_EditPfaCode.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_AddEmp.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_CreatePfaDept.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_DelPfaDept.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_DetailPfaDept.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_EditPfaDept.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_EmpDialog.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaDept\_SelEmp.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_CreatePfaOrg.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_EmpDialog.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_DetailPfaOrg.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_EditPfaOrg.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_DeletePfaOrg.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaOrg\_SelPfaOrgDept.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaPerformance\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaPerformance\_CreatePfaPerformance.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaPerformance\_EditPfaPerformance.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaPerformance\_DeletePfaPerformance.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\_CreatePfaEmpType.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\_EditPfaEmpType.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\_DetailPfaEmpType.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\_DeletePfaEmpType.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaEmpType\_SelPfaEmpTypeTargets.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_CreatePfaSignFlow.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_EditPfaSignFlow.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_DetailPfaSignFlow.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_DeletePfaSignFlow.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_EmpDialog.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignFlow\_SelPfaTargets.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaAbility\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaAbility\_CreatePfaAbility.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaAbility\_EditPfaAbility.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaAbility\_DeletePfaAbility.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaAbility\_DetailPfaAbility.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaIndicator\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaIndicator\_CreatePfaIndicator.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaIndicator\_DeletePfaIndicator.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaIndicator\_DetailPfaIndicator.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaIndicator\_EditPfaIndicator.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_CreateCycle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_EditCycle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_DelCycle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_PfaCycleEmp.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_DetailCycle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\_SignCycle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\_CreatePfaCycleRation.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSelfEvaluation\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSelfEvaluation\_Edit.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSelfEvaluation\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\_PfaRatioJobTitle.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\_EditPfaCycleRation.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\_DetailPfaCycleRation.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleRation\_DeletePfaCycleRation.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaSignUpload\_Upload.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleFirstEvaluation\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleFirstEvaluation\_Edit.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleFirstEvaluation\Index.cshtml" />
+    <Content Include="Content\view_pdf_exception.pdf" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleFirstEvaluation\_Sent.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\_Edit.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\_Sent.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressQuery\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\_Reject.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaStepTransfer\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaStepTransfer\_EmpDialog.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressQuery\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressQuery\_Upload.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleSecondEvaluation\_Batch.cshtml" />
+    <Content Include="Areas\ToDo\Views\FormQuery\_FormQuerySummary.cshtml" />
+    <Content Include="Areas\Reports\Views\LeaveHoursQuery\_LeaveHoursDetail.cshtml" />
+    <Content Include="Areas\Reports\Views\LeaveQuery\_LeaveQuerySummary.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\_Upload.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\_Batch.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\_Detail.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\_Edit.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\_Reject.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\_Sent.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycleThirdEvaluation\Index.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaCycle\RejectQuery.cshtml" />
+    <Content Include="Areas\DDMC_PFA\Views\PfaProgressEmployeesQuery\_DetailSelf.cshtml" />
+    <None Include="Properties\PublishProfiles\HRPortal.pubxml" />
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </Content>
+    <None Include="Properties\PublishProfiles\HRPortal_DDMC.pubxml" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <Content Include="Scripts\jquery.jqGrid.src.js" />
+    <Content Include="Scripts\jquery.placeholder.js" />
+    <Content Include="Scripts\jquery.placeholder.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\json2.min.js" />
+    <Content Include="Scripts\knockout-3.3.0.debug.js" />
+    <Content Include="Scripts\knockout-3.3.0.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\knockout.validation.debug.js" />
+    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\knockout.validation.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ar.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.az.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bg.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ca.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cy.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.da.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.de.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.el.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.en-GB.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.es.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.et.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.eu.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fa.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fi.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fo.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr-CH.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.gl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.he.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hu.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hy.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.id.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.is.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it-CH.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ja.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ka.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kh.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lt.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lv.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.me.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.mk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ms.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nb.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl-BE.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.no.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt-BR.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ro.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs-latin.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ru.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sq.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr-latin.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sv.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sw.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.th.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.tr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.uk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\plugins\bootstrap-dialog\bootstrap-dialog.js" />
+    <Content Include="Scripts\plugins\bootstrap-dialog\bootstrap-dialog.min.js" />
+    <Content Include="Scripts\plugins\bootstrap-timepicker\bootstrap-timepicker.js" />
+    <Content Include="Scripts\plugins\bootstrap-timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Scripts\plugins\fileDownload\jquery.fileDownload.js" />
+    <Content Include="Scripts\plugins\formatter\amd\formatter.js" />
+    <Content Include="Scripts\plugins\formatter\amd\inpt-sel.js" />
+    <Content Include="Scripts\plugins\formatter\amd\pattern-matcher.js" />
+    <Content Include="Scripts\plugins\formatter\amd\pattern.js" />
+    <Content Include="Scripts\plugins\formatter\amd\utils.js" />
+    <Content Include="Scripts\plugins\formatter\common\formatter.js" />
+    <Content Include="Scripts\plugins\formatter\common\inpt-sel.js" />
+    <Content Include="Scripts\plugins\formatter\common\pattern-matcher.js" />
+    <Content Include="Scripts\plugins\formatter\common\pattern.js" />
+    <Content Include="Scripts\plugins\formatter\common\utils.js" />
+    <Content Include="Scripts\plugins\formatter\formatter.js" />
+    <Content Include="Scripts\plugins\formatter\formatter.min.js" />
+    <Content Include="Scripts\plugins\formatter\jquery.formatter.js" />
+    <Content Include="Scripts\plugins\formatter\jquery.formatter.min.js" />
+    <Content Include="Scripts\plugins\form\jquery.form.js" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv-printshiv.js" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv-printshiv.min.js" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv.js" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv.min.js" />
+    <Content Include="Scripts\plugins\jquery-center\jquery.center.js" />
+    <Content Include="Scripts\plugins\jquery-center\jquery.center.min.js" />
+    <Content Include="Scripts\plugins\jquery\jquery-1.11.1.js" />
+    <Content Include="Scripts\plugins\jquery\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\plugins\knockout-mapping\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\plugins\knockout-mapping\knockout.mapping-latest.js" />
+    <Content Include="Scripts\plugins\lightbox\lightbox.js" />
+    <Content Include="Scripts\plugins\lightbox\lightbox.min.js" />
+    <Content Include="Scripts\plugins\locale\zh-tw.js" />
+    <Content Include="Scripts\plugins\metisMenu\metisMenu.js" />
+    <Content Include="Scripts\plugins\metisMenu\metisMenu.min.js" />
+    <Content Include="Scripts\plugins\ReportViewer\ReportViewer.js" />
+    <Content Include="Scripts\plugins\sb-admin-2\sb-admin-2.js" />
+    <Content Include="Scripts\plugins\swfobject\expressInstall.swf" />
+    <Content Include="Scripts\plugins\swfobject\FileToDataURI.swf" />
+    <Content Include="Scripts\plugins\swfobject\swfobject.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\sammy-0.7.5.js" />
+    <Content Include="Scripts\sammy-0.7.5.min.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker_1.1.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker_1.2.6.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker_1.2.7.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker_1.2.js" />
+    <Content Include="Scripts\SimpleDatePicker\jquery.simple-dtpicker_1.3.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\typeahead.jquery.js" />
+    <Content Include="Scripts\typeahead.jquery.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Encrypt\Index.cshtml" />
+    <Content Include="Views\Home\_ShowAttachmentContent.cshtml" />
+    <Content Include="Views\SignFormOnly\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web References\eipWebReference\encrypt.disco" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Scripts\knockout.validation.min.js.map" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Scripts\plugins\bootstrap-dialog\bootstrap-dialog.min.js.map" />
+    <Content Include="Scripts\plugins\bootstrap-timepicker\bootstrap-timepicker.min.js.map" />
+    <Content Include="Scripts\plugins\formatter\formatter.min.js.map" />
+    <Content Include="Scripts\plugins\formatter\jquery.formatter.min.js.map" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv-printshiv.min.js.map" />
+    <Content Include="Scripts\plugins\html5shiv\html5shiv.min.js.map" />
+    <Content Include="Scripts\plugins\jquery-center\jquery.center.min.js.map" />
+    <Content Include="Scripts\plugins\jquery\jquery-1.11.1.min.js.map" />
+    <Content Include="Scripts\plugins\lightbox\lightbox.min.js.map" />
+    <Content Include="Scripts\plugins\lightbox\lightbox.min.map" />
+    <Content Include="Scripts\plugins\metisMenu\metisMenu.min.js.map" />
+    <Content Include="Views\Login\_Login.cshtml" />
+    <Content Include="Views\FAQ\Index.cshtml" />
+    <Content Include="Views\DownloadFiles\Index.cshtml" />
+    <Content Include="Views\Shared\_ChangePassword.cshtml" />
+    <Content Include="Views\Home\_IndexAnnounceList.cshtml" />
+    <Content Include="Views\Home\_AnnounceDetail.cshtml" />
+    <Content Include="Views\FAQ\_Detail.cshtml" />
+    <Content Include="Views\Login\_ResetPassword.cshtml" />
+    <Content Include="Views\FAQ\_AskFAQ.cshtml" />
+    <Content Include="Views\Home\_ToDoList.cshtml" />
+    <Content Include="Views\Home\_LeaveToday.cshtml" />
+    <Content Include="Views\Home\_WebLinkList.cshtml" />
+    <Content Include="Views\Shared\_SalaryChangePassword.cshtml" />
+    <Content Include="Views\Home\_ReadToday.cshtml" />
+    <Content Include="Views\Home\_ReadTodayDetail.cshtml" />
+    <Content Include="Views\Home\_Personnelspecification.cshtml" />
+    <Content Include="Views\Home\_PersonnelspecificationDetail.cshtml" />
+    <Content Include="Views\Home\_SalarySearch.cshtml" />
+    <Content Include="Views\Home\_PersonalLeavesSummary.cshtml" />
+    <Content Include="Views\Home\_WebLinkListFEDS.cshtml" />
+    <Content Include="Views\Home\_SmallElectronicSign.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Home\_ScheduleCalendar.cshtml" />
+    <Content Include="Views\Home\_LeaveLinkList.cshtml" />
+    <Content Include="Views\Home\_EmployeeBenefitsDetail.cshtml" />
+    <Content Include="Views\Home\_EmployeeBenefits.cshtml" />
+    <Content Include="Views\Home\_Vacancies.cshtml" />
+    <Content Include="Views\Home\_VacanciesDetail.cshtml" />
+    <Content Include="Views\Vacancies\Index.cshtml" />
+    <Content Include="Views\Vacancies\_AskFAQ.cshtml" />
+    <Content Include="Views\Vacancies\_Detail.cshtml" />
+    <Content Include="Views\Home\_AskFAQ.cshtml" />
+    <Content Include="Views\ADLogin\_Login.cshtml" />
+    <Content Include="Views\ADLogin\_ResetPassword.cshtml" />
+    <Content Include="Views\ADLogin\Index.cshtml" />
+    <Content Include="Web References\eipWebReference\encrypt.wsdl" />
+    <Content Include="Web References\eipWebReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\SSOLogin\Index.cshtml" />
+    <Content Include="Views\SSOLogin\ToSign.cshtml" />
+    <Content Include="Views\Shared\_MutiSelectList.cshtml" />
+    <Content Include="Scripts\plugins\pdfjs\LICENSE" />
+    <Content Include="Scripts\plugins\pdfjs\pdf.js.map" />
+    <Content Include="Scripts\plugins\pdfjs\pdf.worker.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\DDMC\Models\" />
+    <Folder Include="Areas\DDMC_PFA\Models\" />
+    <Folder Include="Areas\DDMC_PFA\Views\Shared\" />
+    <Folder Include="Areas\FEDS\Models\" />
+    <Folder Include="Areas\FEDS\Views\DeptDateToBPM\" />
+    <Folder Include="Areas\FEDS\Views\Shared\" />
+    <Folder Include="Areas\FEPH\Models\" />
+    <Folder Include="Areas\FEPH\Views\Shared\" />
+    <Folder Include="Areas\M01\Models\" />
+    <Folder Include="Areas\M01\Views\Shared\" />
+    <Folder Include="Areas\M02\Models\" />
+    <Folder Include="Areas\M03\Models\" />
+    <Folder Include="Areas\M03\Views\Shared\" />
+    <Folder Include="Areas\M06\Models\" />
+    <Folder Include="Areas\M06\Views\Shared\" />
+    <Folder Include="Areas\Reports\Models\" />
+    <Folder Include="Areas\Reports\Views\Shared\" />
+    <Folder Include="Areas\ToDo\Models\" />
+    <Folder Include="Areas\ToDo\Views\Shared\" />
+    <Folder Include="Areas\ToDo\Views\SignFormsWarmUp\" />
+    <Folder Include="Areas\YDCS\Models\" />
+    <Folder Include="Areas\YDCS\Views\Shared\" />
+    <Folder Include="Data\DownloadFiles\" />
+    <Folder Include="Data\LeaveFormFiles\" />
+    <Folder Include="Data\PatchCardFormFiles\" />
+    <Folder Include="Models\" />
+    <Folder Include="Scripts\app\" />
+    <Folder Include="Views\WarmUp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-2.1.3.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HRPortal.ApiAdapter.DDMC_PFA\HRPortal.ApiAdapter.DDMC_PFA.csproj">
+      <Project>{50531e5c-8203-4d5b-a2b7-f19b95b623bb}</Project>
+      <Name>HRPortal.ApiAdapter.DDMC_PFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.ApiAdapter\HRPortal.ApiAdapter.csproj">
+      <Project>{fc3ba0a4-28be-45ae-9f5b-5a992c861ae9}</Project>
+      <Name>HRPortal.ApiAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.BambooHRIntegration\HRPortal.BambooHRIntegration.csproj">
+      <Project>{912bc486-dc2e-4da9-8752-7e5c35a4190b}</Project>
+      <Name>HRPortal.BambooHRIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.DBEntities.DDMC_PFA\HRPortal.DBEntities.DDMC_PFA.csproj">
+      <Project>{a0a4f086-739e-40cb-9779-660c62326abc}</Project>
+      <Name>HRPortal.DBEntities.DDMC_PFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.DBEntities\HRPortal.DBEntities.csproj">
+      <Project>{111010b5-8234-474d-9312-f1051bf42420}</Project>
+      <Name>HRPortal.DBEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.MultiLanguage.DDMC_PFA\HRPortal.MultiLanguage.DDMC_PFA.csproj">
+      <Project>{8ce65472-299d-4dbf-acc6-71ec640a82a7}</Project>
+      <Name>HRPortal.MultiLanguage.DDMC_PFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Mvc.DDMC_PFA\HRPortal.Mvc.DDMC_PFA.csproj">
+      <Project>{1faf031a-a322-4e74-ad5b-32003514ce43}</Project>
+      <Name>HRPortal.Mvc.DDMC_PFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Mvc\HRPortal.Mvc.csproj">
+      <Project>{34ade716-9d68-4a12-8cce-e7f01341e33d}</Project>
+      <Name>HRPortal.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Services.DDMC_PFA\HRPortal.Services.DDMC_PFA.csproj">
+      <Project>{35ee7eee-d6c2-463d-9f61-ff35c1ebd9d7}</Project>
+      <Name>HRPortal.Services.DDMC_PFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Services\HRPortal.Services.csproj">
+      <Project>{e87b315a-e0e9-41f2-87e1-eca84a7607e2}</Project>
+      <Name>HRPortal.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.MultiLanguage\HRPortal.MultiLanguage.csproj">
+      <Project>{8fab3a68-d5ee-4b90-86d5-1f517f0ccf26}</Project>
+      <Name>HRPortal.MultiLanguage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.SignFlow\HRPortal.SignFlow.csproj">
+      <Project>{3a0ab8ab-ceec-4c1a-be2e-b70ee134c4f8}</Project>
+      <Name>HRPortal.SignFlow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.Configurations\YoungCloud.Configurations.csproj">
+      <Project>{1a25d3f5-77f1-4e34-81df-465220dc820c}</Project>
+      <Name>YoungCloud.Configurations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.Databases\YoungCloud.Databases.csproj">
+      <Project>{785d9a10-031c-4d84-a02c-8c959a40de1c}</Project>
+      <Name>YoungCloud.Databases</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.Security\YoungCloud.Security.csproj">
+      <Project>{5442993f-4053-4c92-a781-2736acc629b0}</Project>
+      <Name>YoungCloud.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.SignFlow.Databases\YoungCloud.SignFlow.Databases.csproj">
+      <Project>{77b56cfc-8e55-4c6b-989d-4c298c56e2b3}</Project>
+      <Name>YoungCloud.SignFlow.Databases</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.SignFlow\YoungCloud.SignFlow.csproj">
+      <Project>{be6a9eb3-ac3e-4310-9a43-b8631347901c}</Project>
+      <Name>YoungCloud.SignFlow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud\YoungCloud.csproj">
+      <Project>{715dedc3-83aa-440a-ad41-0d8a0247adaf}</Project>
+      <Name>YoungCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Resources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resources1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Resources.zh-CN.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resources.zh-CN1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Resources.zh-TW.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resources.zh-TW1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://10.1.7.204/ad_auth/encrypt.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\eipWebReference\</RelPath>
+      <UpdateFromURL>http://10.1.7.204/ad_auth/encrypt.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>HRPortal_eipWebReference_Encrypt</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>8825</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8880/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

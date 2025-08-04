@@ -1,0 +1,18 @@
+#index .login .box
+{
+	border: #FFC13A 1px solid;/*取消邊框顏色*/
+}
+		
+#index .login .box .title
+{
+	border-bottom:#FFC13A 1px solid;
+}
+
+
+div#logoIcon
+{
+	background-size: 181px 60px;
+	position: absolute;
+    right: 0px;
+    top: -10px;
+}

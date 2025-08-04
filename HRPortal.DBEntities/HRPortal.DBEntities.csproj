@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{111010B5-8234-474D-9312-F1051BF42420}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HRPortal.DBEntities</RootNamespace>
+    <AssemblyName>HRPortal.DBEntities</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Announcement.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Announcement.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementFile.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementFile.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerFAQ.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerFAQ.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerVacancies.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerVacancies.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHREmployeeMapping.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHREmployeeMapping.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRHistoryLeaveForm.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRHistoryLeaveForm.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRLeaveFormRecord.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRLeaveFormRecord.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRLeaveFormRecordLog.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRLeaveFormRecordLog.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRMailNotificationSetting.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRMailNotificationSetting.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRTimeOffType.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BambooHRTimeOffType.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualCycle.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualCycle.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualForm.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualForm.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualFormLog.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CasualFormLog.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Department.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeptCost.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeptCost.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DownloadFile.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DownloadFile.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EffectiveDate.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EffectiveDate.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFGeneratePartialClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmpALSchedule.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmpALSchedule.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeBenefits.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeBenefits.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeBenefitsFiles.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeBenefitsFiles.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAQ.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAQ.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAQType.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAQType.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FormSetting.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FormSetting.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HRPortalModels.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HRPortalModels.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HRPortalModels.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HRPortalModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HRPortalModels.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="HRPortalModels1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HRPortalModels1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HRPortalModels.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveCancel.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveCancel.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveForm.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveForm.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailAccount.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailAccount.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailMessage.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailMessage.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Menu.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Menu.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Option.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Option.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OptionGroup.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OptionGroup.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverTimeCancel.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverTimeCancel.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverTimeForm.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverTimeForm.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatchCardCancel.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatchCardCancel.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatchCardForm.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatchCardForm.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonalSettings.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonalSettings.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Personnelspecification.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Personnelspecification.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonnelspecificationFiles.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonnelspecificationFiles.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadToday.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReadToday.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReadTodayFiles.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReadTodayFiles.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleMenuMap.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleMenuMap.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SerialControl.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SerialControl.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SignoffAgents.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SignoffAgents.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SmartSheetMapping.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemLog.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemLog.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetting.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetting.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vacancies.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vacancies.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VacanciesType.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VacanciesType.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WebLinkList.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WebLinkList.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WebLinkListFEDS.cs">
+      <DependentUpon>HRPortalModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WebLinkListFEDS.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="HRPortalModels.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HRPortalModels1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="HRPortalModels.edmx.diagram">
+      <DependentUpon>HRPortalModels.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EFGeneratePartialClass.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="HRPortalModels.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HRPortalModels.edmx</DependentUpon>
+      <LastGenOutput>HRPortalModels.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="HRPortalModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HRPortalModels.edmx</DependentUpon>
+      <LastGenOutput>HRPortalModels1.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HRPortal.MultiLanguage\HRPortal.MultiLanguage.csproj">
+      <Project>{8fab3a68-d5ee-4b90-86d5-1f517f0ccf26}</Project>
+      <Name>HRPortal.MultiLanguage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

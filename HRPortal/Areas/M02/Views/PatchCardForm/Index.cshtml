@@ -1,0 +1,231 @@
+﻿@model HRPortal.Mvc.Models.PatchCardFormViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "";
+}
+<style>
+     .col-sm-9:before {
+             content: "：";
+            display: inline-block;
+            height: 60px;
+            vertical-align: bottom;
+                  }
+</style>
+
+@using (Html.BeginForm("Index", "PatchCardForm", FormMethod.Post, new { enctype = "multipart/form-data", id = "PatchForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @Html.HiddenFor(model => model.FormData.FormNo);
+    @Html.HiddenFor(model => model.FormData.ID);
+    @Html.HiddenFor(model => model.FormData.Status);
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.EmployeeNo</label>
+            <div class="col-sm-44">
+                <p class="form-control-static">@ViewBag.EmpID</p>
+            </div>
+            
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+           
+            @if (Model.getLanguageCookie == "en-US")
+            {
+            <div class="col-sm-44">
+                <p class="form-control-static">@ViewBag.EmployeeEnglishName</p>
+            </div>
+            }else
+            {
+            <div class="col-sm-44">
+                <p class="form-control-static">@ViewBag.EmpName</p>
+            </div>
+            }
+        </div>
+        <div class="form-group">
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+            @if (Model.getLanguageCookie == "en-US")
+            {
+            <div class="col-sm-44">
+                <p class="form-control-static" data-bind="text: department_value">@ViewBag.DepartmentEnglishName</p>
+            </div>
+            }else
+            {
+            <div class="col-sm-44">
+                <p class="form-control-static" data-bind="text: department_value">@ViewBag.SignDeptName</p>
+            </div>
+            }
+            
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Date</label>
+            
+            <div class="col-sm-44">
+                <p class="form-control-static">@Html.Label(DateTime.Now.ToString("yyyy/MM/dd"))</p>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Type, new { @class = "col-sm-2 control-label" })*@
+            <label class="col-md-22"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.Passinandout</label>
+            <div class="col-sm-44" style=" margin-top: 5px;">
+                @Html.RadioButtonFor(model => model.FormData.Type, (int)HRPortal.Mvc.Models.PatchCardFormType.StartWork, new { id = "StartWork",style = "width:5%" })
+                @Html.Label("StartWork", HRPortal.MultiLanguage.Resource.OnDuty)
+                @Html.RadioButtonFor(model => model.FormData.Type, (int)HRPortal.Mvc.Models.PatchCardFormType.EndWork, new { id = "EndWork",style = "width:5%" })
+                @Html.Label("EndWork", HRPortal.MultiLanguage.Resource.OffDuty)
+                @Html.ValidationMessageFor(model => model.FormData.Type, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-22"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.Timecard</label>
+            @*@Html.LabelFor(model => model.FormData.PatchCardTime, new { @class = "col-sm-2 control-label" })*@
+            <div class="col-sm-44">
+                @Html.TextBoxFor(model => model.FormData.PatchCardTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker1" })
+                @Html.ValidationMessageFor(model => model.FormData.PatchCardTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Type, new { @class = "col-md-2 control-label" })*@
+            <label class="col-md-22"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.AbsentReason</label>
+            <div class="col-sm-44" style=" margin-top: 5px; width:500px">
+                @Html.RadioButtonFor(model => model.FormData.ReasonType, (int)HRPortal.Mvc.Models.ClockInReasonType.ForgotCreditCard, new { id = "ForgotCreditCard",style = "width:5%",@checked = true })
+                @Html.Label("ForgotCreditCard", HRPortal.MultiLanguage.Resource.Forgotbrushcard)
+                @*@Html.RadioButtonFor(model => model.FormData.ReasonType, (int)HRPortal.Mvc.Models.ClockInReasonType.ForgotBringCard, new { id = "ForgotBringCard",style = "width:5%" })
+                @Html.Label("ForgotBringCard", HRPortal.MultiLanguage.Resource.Forgotbringcard)
+                *@
+                <p style="color:red">每月(考勤月)以兩次為限，每超過一次以請假 1 小時計。</p>
+                @Html.ValidationMessageFor(model => model.FormData.ReasonType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.ComplementcardCause</label>
+            @*@Html.LabelFor(model => model.FormData.Reason, new { @class = "col-md-2 control-label" })*@
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.FormData.Reason, new { @class = "form-control", style = "height:60px;width:336px" })
+                <div style="padding-left: 20px;">@HRPortal.MultiLanguage.Resource.Within200Words</div>
+                @Html.ValidationMessageFor(model => model.FormData.Reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" style="display:none">@*//FEDS_隱藏附件檔案 Irving 20161208*@
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Attachment</label>
+            <div class="col-sm-44">
+                <input type="file" name="UploadFilePath" style="width:300px" id="UploadFilePath" title="支援格式： csv、jpg、jpeg、png、gif、tiff、bmp、txt、doc、docx、xls、xlsx、ppt、pptx、pdf" />
+            </div>
+        </div>
+
+    </div>
+    if (Model.FormData.Status == (int)HRPortal.Mvc.Models.FormStatus.Draft)
+    {
+        <div class="row">
+            <div class="col-sm-offset-2" style="margin-left: 127px;">
+                <button type="submit" class="btn btn-success" id="btnPatchFormSubmit">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                @if (ViewBag.StatusEdit == "True")
+                {
+                    <button type="submit" class="btn btn-danger" id="btnPatchFormDelete">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                }
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                language: 'zh-TW',
+                pick12HourFormat: true,
+                format: 'yyyy/mm/dd hh:ii',
+                autoclose: true,
+                showMeridian: true
+            });
+
+            $('#btnPatchFormDelete').click(function (event) {
+                var form = $('#PatchForm');
+                form.submit(function (e) {
+                    e.preventDefault();
+                });
+
+                var submitData = new FormData(form[0]);
+                showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+                    $.ajax({
+                        url: 'PatchCardForm/DeletedForm',
+                        type: 'POST',
+                        data: submitData,
+                        contentType: false,
+                        processData: false,
+                        success: function (submitResult) {
+                            if (submitResult.status == 'success')  {
+                                showAlertMessage( submitResult.message , function(){
+                                    window.location='@Url.Action("Index")';
+                                });
+                            }                else                {
+                                showAlertMessage(submitResult.message);
+                            }
+
+                        }
+                    });
+                });
+
+            });
+
+            $('#btnPatchFormSubmit').click(function (event) {
+                var form = $('#PatchForm');
+                form.submit(function (e) {
+                    e.preventDefault();
+                });
+
+                if (form.validate().form()) {
+                    var submitData = new FormData(form[0]);
+                    $.ajax({
+                        url: 'PatchCardForm/CheckPatchCardForm',
+                        type: 'POST',
+                        data: submitData,
+                        contentType: false,
+                        processData: false,
+                        success: function (checkResult) {
+                            //var checkResult = JSON.parse(result);
+                            if (checkResult.status == 'success')
+                            {
+                                $.ajax({
+                                    url: form.attr('action'),
+                                    type: form.attr('method'),
+                                    data: submitData,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (submitResult) {
+                                        //svar submitResult = JSON.parse(result);
+                                        if (submitResult.status == 'success')
+                                        {
+                                            showAlertMessage(submitResult.message, function(){
+                                                window.location = '@Url.Action("Index")';
+                                            });
+                                        }
+                                        else
+                                        {
+                                            showAlertMessage(submitResult.message, function(){
+                                                window.location = '@Url.Action("Index")';
+                                            });
+                                        }
+
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                showAlertMessage(checkResult.message);
+                            }
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+
+}

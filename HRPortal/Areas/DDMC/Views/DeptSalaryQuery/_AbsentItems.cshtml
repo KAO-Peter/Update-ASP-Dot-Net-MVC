@@ -1,0 +1,150 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeAbsentItemsDDMC
+@*
+@{
+    var MaxCount = Model.Leaves.Count;
+    //decimal TaxableAmounts = 0;
+    //decimal NoTaxAmounts = 0;
+    decimal OverTimesAmounts = 0;
+    if (Model.Absents.Count > MaxCount)
+    {
+        MaxCount = Model.Absents.Count;
+    }
+    if (Model.OverTimes.Count > MaxCount)
+    {
+        MaxCount = Model.OverTimes.Count;
+    }
+
+}
+*@
+
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+         <tr>
+             <th style="text-align:center;height:25px;" colspan="5">
+               @HRPortal.MultiLanguage.Resource.SalaryReceipt_AttendencePeriod:@Model.AttendanceFirstDays.ToString("yyyy/MM/dd")~@Model.AttendanceLastDays.ToString("yyyy/MM/dd")
+            </th>
+        </tr>
+         <tr>
+            <th style="text-align:center;height:25px;" colspan="3">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_Leave
+            </th>
+            @*<th style="text-align:center;height:25px;"  colspan="3">
+                出缺勤資訊
+            </th>*@
+            <th style="text-align:center;height:25px;"  colspan="2">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_Overtime
+            </th>
+              
+        </tr>
+        <tr>
+            <th style="text-align:center;height:25px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_LeaveType
+            </th>
+            <th style="text-align:center;height:25px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_CurrentMonthAccumulative
+            </th>
+            <th style="text-align:center;height:25px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_CurrentYearAccumulative
+            </th>
+           @* <th style="text-align:center;height:25px;"> 
+                出缺勤
+            </th>
+            <th style="text-align:center;height:25px;">
+                當月
+            </th>
+            <th style="text-align:center;height:25px;">
+                年累
+            </th>*@
+            <th style="text-align:center;height:25px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_OvertimeType
+            </th>
+            <th style="text-align:center;height:25px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_AccumulativeHours
+            </th>
+            @*<th style="text-align:center;height:25px"> 
+                
+            </th>*@
+           
+        </tr>
+        @*
+        <tr>
+            <td style="height:25px;">補休已休時數</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.CompensatedDayOffHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.CompensatedDayOffHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">平日</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_D.ToString("##0.0")</td>
+
+        </tr>
+        *@
+         <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_AnnualLeaveHours</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.AnnualLeaveHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.AnnualLeaves.CurrentYearUsedAnnualLeaveHours.ToString("##0.0")</td>
+
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_Weekday</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_D.ToString("##0.0")</td>
+
+        </tr>
+
+        @*
+        <tr>
+            <td style="height:25px;">補休未休時數</td>
+            <td style="text-align:right;height:25px;">&nbsp;</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.CompensatedDayOffNoUseHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">休息日</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_O.ToString("##0.0")</td>
+        </tr>
+        *@
+        <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_PersonalLeaveHours</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.PersonalLeaveHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.PersonalLeaveHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_OffDay</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_O.ToString("##0.0")</td>
+        </tr>
+
+        <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_MaternityLeaveHours</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.MaternityLeaveHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.MaternityLeaveHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_Holiday</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_H.ToString("##0.0")</td>
+        </tr>
+        
+        <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_PaternityLeaveHours</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.PaternityLeaveHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.PaternityLeaveHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_PublicHoliday</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeRestHours_P.ToString("##0.0")</td>
+        </tr>
+        
+        <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_PaidVacation</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.OtherLeaveHours.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.OtherLeaveHours.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_Total</td>
+            <td style="text-align:right;height:25px;">@Model.OverTimes.OverTimeTotalHours.ToString("##0.0")</td>
+        </tr>
+
+        <tr>
+            <td style="height:25px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_UnpaidVacation</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.OtherLeaveHoursNoPay.ThisMonth.ToString("##0.0")</td>
+            <td style="text-align:right;height:25px;">@Model.Leaves.OtherLeaveHoursNoPay.ThisYear.ToString("##0.0")</td>
+
+            <td style="height:25px;">&nbsp;</td>
+            <td style="text-align:right;height:25px;">&nbsp;</td>
+        </tr>
+
+       
+       
+        }
+     
+    </tbody>
+</table>

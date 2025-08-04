@@ -1,0 +1,612 @@
+﻿@model List<HRPortal.ApiAdapter.HRMApiAdapterData.IncomeTaxGetRes>
+
+@foreach (var item in Model)
+{
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td rowspan='4' width='160' align='left' valign='middle' style='border-width: 0px; height: 30px; font-size: 30px; text-align: center; vertical-align: top; letter-spacing: 5px; font-size: 16px;'>
+                    <div style="font-size: 24px;">各類所得扣繳暨免扣繳憑單</div>
+                    <div style="font-size: 12px;">Withholding & Non-WithholdingTax </div>
+                    <div style="font-size: 12px;">Statement(電子申報專用)</div>
+                </td>
+                <td  width='150' align='left' valign='middle' style='border-width: 2px 2px 1px 2px; height: 30px; text-align: left; vertical-align: central; font-size: 14px;'>
+                    <span>租賃房屋之房屋稅籍編號：</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td  width='150' align='left' valign='middle' style='border-width: 1px 2px 2px 2px; height: 30px; text-align: left;'>
+                    <span>租賃房屋坐落地址或租賃土地地段號：</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px; margin-top:1px;'>
+        <tbody>
+            <tr>
+                <td width='75' align='left' valign='middle' style='border-width: 2px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>扣繳單位統一編號</div>
+               </td>
+                <td width='40' align='left' valign='middle' style='border-width: 2px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>稽徵機關</div>
+               </td>
+                <td width='80' align='left' valign='middle' style='border-width: 2px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>製單編號</div>
+               </td>
+                <td width='115' align='left' valign='middle' style='border-width: 2px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>格式代號及所得類別</div>
+                    <div>Category of Income</div>
+               </td>
+            </tr>
+            <tr>
+                <td width='75' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                   @item.IncomeTaxArea.UnifiedNo
+               </td>
+                <td width='40' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    @item.IncomeTaxArea.TaxAuthID
+               </td>
+                <td width='80' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    @item.IncomeTaxTrans.AUT
+               </td>
+                <td width='115' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>@item.IncomeTaxType.TaxTypeCode &nbsp; @item.IncomeTaxType.TaxDesc</div>
+               </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得人統一編（證）號</div>
+                    <div>Taxpayer's ID No.</div>
+               </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>國內有無住所</div>
+                    <div>Residency</div>
+               </td>
+                <td width='140' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得人、執業別代號 或 其他所得給付項目</div>
+               </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>適用租稅協定</div>
+                    <div>Tax Agreement</div>
+               </td>
+            </tr>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>&nbsp;@item.IncomeTaxPerson.IDNumberEnc</span>
+               </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>有(Ｖ) 無(  )</div>
+               </td>
+                <td width='140' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div></div>
+               </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div></div>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得人姓名</div>
+                    <div>Name of Taxpayer</div>
+               </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>&nbsp;@item.IncomeTaxPerson.Name</span>
+                </td>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>居住地國或地區代碼</div>
+                    <div>Tax Jurisdiction Code</div>
+               </td>
+                <td width='19' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    &nbsp;@item.IncomeTaxPerson.TaxNationCode
+               </td>
+                <td width='121' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>本給付年度內按所得人護照入出境章戳日</div>
+                @if(item.IncomeTaxPerson.Check183=="2"){
+                    <div>期累計在華是否已滿 183 天? □是 ■否</div>
+                 }else if (item.IncomeTaxPerson.Check183 == "1")
+                 {
+                    <div>期累計在華是否已滿 183 天? ■是 □否</div>
+                 }else
+                {
+                    <div>期累計在華是否已滿 183 天? □是 □否</div>
+                }
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得人地址</div>
+                    <div>Present Address</div>
+               </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: left; vertical-align: central; font-size: 12px;'>
+                    <span>@item.IncomeTaxPerson.Address</span>
+                </td>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>稅務識別碼</div>
+                    <div style="font-size: 9px;">Tax Identification Number(TIN)</div>
+               </td>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='140' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得所屬年月Period of Income</div>
+               </td>
+                <td width='69' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>所得給付年度</div>
+                    <div>Year of Payment</div>
+               </td>
+                <td width='100' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>依勞退條例或教職員退撫條例自願提繳之金額 (E)</div>
+               </td>
+            </tr>
+            <tr>
+                <td width='140' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div><span>自</span>@item.IncomeTaxTrans.IncomeYear<span>年01月</span><span>至</span>@item.IncomeTaxTrans.IncomeYear<span>年12月</span></div>
+                    <div>From Year Month To Year Month</div>
+               </td>
+                <td width='69' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                     <span>@item.IncomeTaxTrans.IncomeYear</span>
+                </td>
+                <td width='100' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>@item.IncomeTaxTrans.RetireAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='100' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div style="font-size: 10px;">給付總額（Ａ）Total Amount Paid</div>
+                    <div style="font-size: 10px;">(結算申報時應按本欄數額填報)</div>
+                    <div style="font-size: 10px;">The amount should be reported in the</div>
+                    <div style="font-size: 10px;">Individual Income Tax Return</div>
+               </td>
+                <td width='40' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 12px;'>
+                    <div>扣繳率(B)</div>
+                    <div  style="font-size: 10px;">Withholding Rate</div>
+                </td>
+                <td width='85' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>扣繳稅額(C= A × B)</div>
+                    <div>Withholding Tax</div>
+               </td>
+                <td width='85' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <div>給付淨額(D =A–C)</div>
+                    <div>Net Payment</div>
+               </td>
+            </tr>            <tr>
+                <td width='100' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>@item.IncomeTaxTrans.TaxableIncome.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+                </td>
+                <td width='40' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 12px;'>
+                    <span></span>
+                </td>
+                <td width='85' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>@item.IncomeTaxTrans.IncomeTax.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+               </td>
+                <td width='85' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>@item.IncomeTaxTrans.PayAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='310' align='left' valign='middle' style='border-width: 0px 2px 1px 2px; height: 2px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td width='156' align='left' valign='middle' style='border-width: 1px 0px 1px 2px; height: 20px; text-align: center;'>
+                    <div>扣繳單位</div>
+                </td>
+                <td width='154' align='left' valign='middle' style='border-width: 1px 2px 1px 1px; height: 20px; text-align: center;'>
+                    <div>格式代號說明 Category of Income</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+     <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+           <tr>
+                <td width='30' align='left' valign='middle' style='border-width: 0px 1px 1px 2px; height: 20px; text-align: center;'>
+                    <span>名稱</span>
+                </td>
+                <td width='125' align='left' valign='middle' style='border-width: 0px 1px 1px 0px; height: 20px; text-align: left;'>
+                   @item.IncomeTaxArea.CompanyName
+                </td>
+                <td rowspan='4' width='155' align='left' valign='middle' style='border-width: 0px 2px 2px 0px; height: 20px; vertical-align:top; text-align: left;'>
+                    &nbsp;@item.IncomeTaxType.TaxTypeCode &nbsp; @item.IncomeTaxType.TaxDesc
+                </td>
+            </tr>
+            <tr>
+                <td width='30' align='left' valign='middle' style='border-width: 0px 1px 1px 2px; height: 20px; text-align: center;'>
+                    <span>地址</span>
+                </td>
+                <td width='125' align='left' valign='middle' style='border-width: 0px 1px 1px 0px; height: 20px; text-align: left;'>
+                   @item.IncomeTaxArea.TaxAddress
+                </td>
+            </tr>
+            <tr>
+                <td width='30' align='left' valign='middle' style='border-width: 0px 1px 2px 2px; height: 20px; text-align: center;'>
+                    <span>扣繳義務人</span>
+                </td>
+                <td width='125' align='left' valign='middle' style='border-width: 0px 1px 2px 0px; height: 20px; text-align: left;'>
+                   @item.IncomeTaxArea.WithholdingAgent
+                </td>
+            </tr>
+        </tbody>
+    </table>
+                <div style="font-size: 11px;">※依勞工退休金條例規定自願提繳之退休金或年金保險費，合計在每月工資6 ﹪範圍內，或依學校法人及其所屬私立學校教職員退休撫卹離職資</div>
+                <div style="font-size: 11px;">&nbsp;&nbsp;遣條例規定撥繳之款項，免計入薪資給付總額，其金額應另行填寫於 (E) 欄，該欄納稅義務人結算申報時無需填寫。</div>
+                @*<div style="font-size: 11px;">第1聯：存根聯 扣繳義務人存查。如需辦理扣繳更正事宜，本聯應由扣繳義務人併更正申請案送交稽徵機關。</div>*@
+                <br/>
+                <div style="font-size: 11px;">第2聯：備查聯 交所得人保存備查 Copy For the taxpayer's re ference.</div>
+
+<!--
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px;'>
+        <tbody>
+            <tr>
+                <td rowspan='4' width='10' align='left' valign='middle' style='border-width: 0px; height: 20px;'></td>
+                <td width='100' align='left' valign='middle' style='border-width: 0px; height: 20px;'></td>
+                <td rowspan='4' width='180' align='left' valign='middle' style='border-width: 0px; height: 20px; font-size: 30px; text-align: center; vertical-align: top; letter-spacing: 5px;'>
+                    <div>各類所得扣繳</div>
+                    <div>暨免扣繳憑單</div>
+                </td>
+                <td rowspan='4' width='20' align='left' valign='middle' style='border-width: 2px 0px 2px 2px; height: 20px; text-align: center; vertical-align: central; font-size: 14px;'>
+                    <span>扣繳單位</span></td>
+                <td width='20' align='left' valign='middle' style='border-width: 2px 0px 1px 1px; height: 20px; text-align: center;'>
+                    <span>統一編號</span></td>
+                <td width='130' align='left' valign='middle' style='border-width: 2px 2px 1px 1px; height: 20px;'>
+                    &nbsp;@item.IncomeTaxArea.UnifiedNo
+                </td>
+            </tr>
+            <tr>
+                <td width='100' align='left' valign='middle' style='border-width: 2px 2px 1px 2px; height: 20px; text-align: center;'>
+                    <span>利息所得存款帳號</span></td>
+                <td width='20' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center;'>
+                    <span>名稱</span></td>
+                <td width='130' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px;'>
+                    &nbsp;@item.IncomeTaxArea.CompanyName
+                </td>
+            </tr>
+            <tr>
+                <td rowspan='2' width='100' align='left' valign='middle' style='border-width: 0px 2px 2px 2px; height: 20px;'></td>
+                <td width='20' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 20px; text-align: center;'>
+                    <span>地址</span></td>
+                <td width='130' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 20px;'>
+                    &nbsp;@item.IncomeTaxArea.TaxAddress
+                </td>
+            </tr>
+            <tr>
+                <td width='20' align='left' valign='middle' style='border-width: 0px 0px 2px 1px; height: 20px; text-align: center; font-size: 10px;'>
+                    <div>扣&nbsp;&nbsp;繳</div><div>義務人</div></td>
+                <td width='130' align='left' valign='middle' style='border-width: 0px 2px 2px 1px; height: 20px;'>
+                    &nbsp;@item.IncomeTaxArea.WithholdingAgent
+                </td>
+            </tr>
+            <tr>
+                <td colspan='6' width='480' align='left' valign='bottom' style='border-width: 0px; height: 20px; font-size: 14px; vertical-align: sub;'>
+                    <span>編號:</span><span>　@item.IncomeTaxTrans.AUT</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 12px; margin-top:1px;'>
+        <tbody>
+            <tr>
+                <td colspan='4' width='480' align='left' valign='middle' style='border-width: 2px 2px 1px 2px; height: 20px; text-align: center;'>
+                    <span style="letter-spacing: 14px;">格式代號及所得類</span><span>別(請打■，不同類別應分開填寫)</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px;'>
+                    @if(item.IncomeTaxType.TaxTypeCode!="50"){
+                        <span>&nbsp;50□薪&nbsp;&nbsp;資</span>
+                    }
+                    else if (item.IncomeTaxType.TaxTypeCode == "50")
+                    {
+                        <span>&nbsp;50■薪&nbsp;&nbsp;資</span> 
+                    }
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height:  14px;'>
+                    <span>&nbsp;53□權利金</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height:  14px;'>
+                    @if(item.IncomeTaxType.TaxTypeCode!="9A"){
+                        <span>&nbsp;9A□執行業務</span>
+                    }
+                    else if (item.IncomeTaxType.TaxTypeCode == "9A")
+                    {
+                        <span>&nbsp;9A■執行業務</span>
+                    }
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height:  14px;'>
+                     @if(item.IncomeTaxType.TaxTypeCode!="93"){
+                        <span>&nbsp;93□退職所得</span>
+                     }
+                     else if (item.IncomeTaxType.TaxTypeCode == "93")
+                     {
+                        <span>&nbsp;93■退職所得</span>
+                      }
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px;'>
+                    <span>&nbsp;51□租&nbsp;&nbsp;賃</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px;'>
+                    <span>&nbsp;利息</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;執業業別或代號(&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height: 14px;'>
+                    <span>&nbsp;其他所得</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;固定資產&nbsp;&nbsp;□房屋</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;5A□金融業利息</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px;'>
+                    <span>&nbsp;9B□稿費及講演鐘點費等7項</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;97□受贈所得</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;□L土地</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;5B□其他利息</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;98□非自行出版</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;95政府輔助款□ A 實報實銷</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;□J其他(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 14px;'>
+                    <span>&nbsp;營利所得</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;99□自行出版</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;□ B 非實報實銷</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 2px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;非固定資產□K債劵租借</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;54□86年度或以前年度股利或盈餘</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 14px;'>
+                    <span>&nbsp;91□競技競賽及機會中獎獎金</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 0px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;94□行使員工認股權證所得</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;□I其他(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 14px; font-size: 10px;'>
+                    <span>&nbsp;&nbsp;&nbsp;54Y□其他(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 14px;'>
+                    <span></span>
+                </td>
+                <td width='120' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 14px; font-size: 10px;'>
+                     @if(item.IncomeTaxType.TaxTypeCode!="92"){
+                        <span>&nbsp;&nbsp;&nbsp;92□其他(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                     }
+                     else if (item.IncomeTaxType.TaxTypeCode == "92")
+                     {
+                         <span>&nbsp;&nbsp;&nbsp;92■其他(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span>
+                      }
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 14px;'>
+        <tbody>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 30px; text-align: center;'>
+                    <div>所得人姓名</div>
+                    <div>或單位名稱</div>
+                </td>
+                <td width='130' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px;'>
+                    <span>&nbsp;@item.IncomeTaxPerson.Name</span>
+                </td>
+                <td width='140' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center;'>
+                    <div>國民身分證統一編號</div>
+                    <div>或所得單位統一編號</div>
+                </td>
+                <td width='159' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 30px;'>
+                    <span>&nbsp;@item.IncomeTaxPerson.IDNumber</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 30px; text-align: center;'>
+                    <span>所得人地址</span>
+                </td>
+                <td colspan='3' width='419' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 30px;'>
+                    <span>&nbsp;@item.IncomeTaxPerson.Address</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 14px;'>
+        <tbody>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 30px; text-align: center;'>
+                    <span>所得所屬年月</span>
+                </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center; font-size: 10px;'>
+                    <span>所得給付年度</span>
+                </td>
+                <td width='80' align='left' valign='middle' style='border-width: 1px 1px 1px 1px; height: 30px; text-align: center;'>
+                    <span>給付總額(A)</span>
+                </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center;'>
+                    <span>扣繳率</span>
+                </td>
+                <td width='60' align='left' valign='middle' style='border-width: 1px 1px 1px 1px; height: 30px; text-align: center; font-size: 14px;'>
+                    <span>扣繳稅額(B)</span>
+                </td>
+                <td width='90' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center;'>
+                    <span>給付淨額(C=A-B)</span>
+                </td>
+                <td width='92' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 30px; text-align: center;'>
+                    <div>依勞退條例自願</div><div>提繳之退休金額(D)</div>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2" width='70' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 30px; text-align: center;'>
+                    <div><span>自</span>@item.IncomeTaxTrans.IncomeYear<span>年01月</span></div>
+                    <div><span>至</span>@item.IncomeTaxTrans.IncomeYear<span>年12月</span></div>
+                </td>
+                <td rowspan="2" width='50' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center; font-size: 12px;'>
+                    <span>@item.IncomeTaxTrans.IncomeYear 年度</span>
+                </td>
+                <td width='80' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center;'>
+                    <span>@item.IncomeTaxTrans.TaxableIncome.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+                </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center;'>
+                    <span></span>
+                </td>
+                <td width='60' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center; font-size: 14px;'>
+                    <span>@item.IncomeTaxTrans.IncomeTax.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+                </td>
+                <td width='90' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center;'>
+                    <span>@item.IncomeTaxTrans.PayAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+                </td>
+                <td width='92' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 30px; text-align: center;'>
+                    <span>@item.IncomeTaxTrans.RetireAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='70' align='left' valign='middle' style='border-width: 0px 1px 2px 1px; height: 30px; text-align: center; font-size: 10px;'>
+                    <span>(A)納稅義務人結算申報時，應按本欄數額填報。</span>
+                </td>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 1px 1px 1px; height: 30px; text-align: center; font-size: 12px;'>
+                    <span>照所得扣繳率標準填寫</span>
+                </td>
+                <td width='60' align='left' valign='middle' style='border-width: 0px 1px 2px 1px; height: 30px; text-align: center; font-size: 12px;'>
+                    <span>(B)扣繳稅額至元為止</span>
+                </td>
+                <td width='90' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center; font-size: 12px;'>
+                    <span>(C)本欄數字係供參考請扣繳義務人填寫</span>
+                </td>
+                <td width='92' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 30px; text-align: center; font-size: 12px;'>
+                    <span>(D)本欄數字係供參考請扣繳義務人填寫</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; font-size: 14px;'>
+        <tbody>
+            <tr>
+                <td rowspan="3" width='25' align='left' valign='middle' style='border-width: 0px 0px 1px 2px; height: 30px; text-align: center;'>
+                    <span>租賃房屋</span>
+                </td>
+                <td width='45' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center;'>
+                    <div>坐&nbsp;&nbsp;落</div><div>地&nbsp;&nbsp;址</div>
+                </td>
+                <td colspan="12" width='217' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 30px; text-align: center;'></td>
+                <td width='220' align='left' valign='middle' style='border-width: 0px 2px 1px 0px; height: 30px; text-align: center;'></td>
+            </tr>
+            <tr>
+                <td width='45' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>
+                    <div style="font-size: 12px;">稅籍編號</div>
+                </td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 0px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td rowspan="2" width='221' align='left' valign='middle' style='border-width: 0px 2px 1px 1px; height: 15px; text-align: center;'>
+                    <span>備&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;註</span>
+                </td>
+            </tr>
+            <tr>
+                <td width='50' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>
+                    <div style="font-size: 6px;">請依房稅繳款書上列印之稅籍編號填寫</div>
+                </td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+                <td width='18' align='left' valign='middle' style='border-width: 0px 0px 1px 1px; height: 15px; text-align: center;'>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="14" width='296' align='left' valign='middle' style='border-width: 0px 0px 2px 2px; height: 60px; text-align: center;'>
+                    <div>第2聯：備查聯</div><div>交所得人保存備查</div>
+                </td>
+                <td width='210' align='left' valign='middle' style='border-width: 0px 2px 2px 1px; height: 60px; text-align: center; vertical-align:top;'></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="font-size: 10px;">※依勞工退休金條例規定自願提繳之退休金或年金保險費，合計在每月工資6%範圍內，免計入薪資給付總額，其金額應另行填寫於(D)欄。</div>
+    -->
+
+}

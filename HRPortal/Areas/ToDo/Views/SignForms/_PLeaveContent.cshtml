@@ -1,0 +1,161 @@
+﻿@model HRPortal.Mvc.Models.LeaveDisplayModel
+<style type="text/css">
+    .col-md-22:before {
+        content: "：";
+        display: inline-block;
+        float: right;
+    }
+
+    .col-md-22 {
+        min-width: 120px;
+        width: 17%;
+    }
+
+    .dl-info > div {
+        clear: both;
+    }
+
+    .form-control-static {
+        float: left;
+        width: 60%;
+    }
+
+    .modal-footer {
+        clear:both;    
+    }
+</style>
+@RenderPage("_LeavePrintContent.cshtml")
+
+<div class="dl-info dl-horizontal">
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.applicant</label>
+        @if (Model.getLanguageCookie == "en-US")
+        {
+            <p class="form-control-static">@Model.SenderEmployeeEnglishName</p>
+        }
+        else
+        {
+            <p class="form-control-static">@Model.EmployeeName</p>
+        }
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Department</label>
+        <p class="form-control-static">@(Model.getLanguageCookie == "en-US" ? Model.DepartmentEnglishName : Model.DepartmentName)</p>
+    </div>
+    @if (Model.IsHRM == false)
+    {
+        <div>
+            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Date</label>
+            <p class="form-control-static">@Model.CreatedTime.ToString("yyyy/MM/dd")</p>
+        </div>
+    }
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+        @if (Model.getLanguageCookie == "en-US")
+        {
+            <p class="form-control-static">@Model.AbsentNameEn</p>
+        }
+        else
+        {
+            <p class="form-control-static">@Model.AbsentType</p>
+        }
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Startingandendingtime</label>
+        <p class="form-control-static">@Model.StartTime.ToString("yyyy/MM/dd HH:mm") <span>~</span> @Model.EndTime.ToString("yyyy/MM/dd HH:mm")</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Hours</label>
+        <p class="form-control-static">@String.Format("{0} {1}", Model.Amount.ToString("0.#"), Model.Unit == "h" ? HRPortal.MultiLanguage.Resource.Hour : HRPortal.MultiLanguage.Resource.Day)</p>
+    </div>
+    @* @if(Model.IsHRM==false)
+     {    
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.IfOutOfCountry</label>
+        <p class="form-control-static">
+            @if (Model.IsAbroad == true)
+            {
+                <span>@HRPortal.MultiLanguage.Resource.Yes</span>
+            }
+            else
+            {
+                <span>@HRPortal.MultiLanguage.Resource.No</span>
+            }
+        </p>
+     }*@
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Subjectt</label>
+        <p class="form-control-static">@Model.LeaveReason</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+        @if (Model.getLanguageCookie == "en-US")
+        {
+            <p class="form-control-static">@Model.AgentEmployeeEnglishName</p>
+        }
+        else
+        {
+            <p class="form-control-static">@Model.AgentName</p>
+        }
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Attachment</label>
+        <p class="form-control-static">
+            @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+            {
+                <a target="_blank"  href="@Url.Action("DownloadLeaveFormFile", new { formNo = Model.FormNo, formType = "Leave" })">@Html.DisplayFor(model => model.FileName) </a>
+            }
+            else
+            {
+                <span>@HRPortal.MultiLanguage.Resource.NoData</span>
+            }
+        </p>
+    </div>
+</div>
+
+@if (ViewBag.CanResend != null && ViewBag.CanResend)
+{
+    @*<div class="modal-footer">
+            <a class="btn btn-success" href="@ViewBag.ResendUrl">重送</a>
+        </div>*@
+    <script type="text/javascript">
+        $("#singFlowFooter").show();
+        //2019/09/18 Neo 簽核內容(請假單) 編輯重送按鈕增加confirm事件
+        //$("#Resend").show().attr("href", "@ViewBag.ResendUrl");
+        $("#Resend").unbind("click");
+        $("#Resend").show().click(function (event) {
+            var c = confirm('按下確定後此假單就會拉回，需重新送出');
+            if (c) {
+                window.location.href = '@ViewBag.ResendUrl';
+            }
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#Resend").hide();
+    </script>
+}
+
+
+@if (ViewBag.CanCancel != null && ViewBag.CanCancel == true)
+{
+
+    <script type="text/javascript">
+        $("#singFlowFooter").show();
+        $("#FormCancel").show().attr("href", "@ViewBag.CancelURL").html("@HRPortal.MultiLanguage.Resource.BtnCancelForm");
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#FormCancel").hide();
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('@HRPortal.MultiLanguage.Resource.Leavealone');
+    })   
+
+</script>

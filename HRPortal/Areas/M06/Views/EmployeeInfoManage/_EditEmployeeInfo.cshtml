@@ -1,0 +1,255 @@
+﻿@model HRPortal.Mvc.Models.EmployeeInfoManageViewModel
+
+@Scripts.Render("~/bundles/validate")
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">編輯員工基本資料</h4>
+        </div>
+
+        @using (Html.BeginForm("Index", "EmployeeInfoManage", FormMethod.Post, new { Id = "EditEmployeeInfoForm" }))
+        {
+            @Html.HiddenFor(m => m.employeeData.ID);
+            @Html.HiddenFor(m => m.employeeData.CompanyID);
+            @Html.HiddenFor(m => m.employeeData.EmployeeNO);
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">公司別</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">@Model.employeeData.Company.CompanyName</p>
+                        </div>
+                        <label class="col-sm-2 control-label">HRM所屬部門</label>
+                        <div class="col-sm-3">
+                            <p class="form-control-static">@Model.employeeData.Department.DepartmentName</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-4">
+
+                            <p class="form-control-static">@Model.employeeData.EmployeeName</p>
+                        </div>
+                        <label class="col-sm-2 control-label">工號</label>
+                        <div class="col-sm-3">
+                            <p class="form-control-static">@Model.employeeData.EmployeeNO</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">英文名:</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">@Model.employeeData.EmployeeEnglishName</p>
+                        </div>
+                        <label class="col-sm-2 control-label">性別</label>
+                        <div class="col-sm-3">
+                            <p class="form-control-static">@(Model.employeeData.Gender == (int)HRPortal.Mvc.Models.GenderType.Male ? "男" : "女")</p>
+                            @*@Html.TextBoxFor(model => model.ArriveDate, "{0:yyyy/MM/dd}", new { @class = "form-control", id = "datetimepicker1" })
+                                @Html.ValidationMessageFor(model => model.ArriveDate, "", new { @class = "text-danger" })*@
+                        </div>
+                         </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">到職日期</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">@Model.employeeData.ArriveDate.ToString("yyyy/MM/dd")</p>
+                        </div>
+                        <label class="col-sm-2 control-label">電子郵件</label>
+                       <div class="col-sm-4" data-bind="validationElement: email" title="">
+                    @Html.TextBoxFor(model => model.employeeData.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.employeeData.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">聯絡電話(O)</label>
+                        <div class="col-sm-4 mini-input-group">
+                            @Html.TextBoxFor(model => model.employeeData.TelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.TelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-sm-2 control-label">聯絡地址</label>
+                        <div class="col-sm-4" data-bind="validationElement: Address" title="">
+                            @Html.TextBoxFor(model => model.employeeData.Address, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.Address, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">戶籍電話(O)</label>
+                        <div class="col-sm-4 mini-input-group">
+                            @Html.TextBoxFor(model => model.employeeData.RegisterTelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RegisterTelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-sm-2 control-label">戶籍地址</label>
+                        <div class="col-sm-4" data-bind="validationElement: RegisterAddress" title="">
+                            @Html.TextBoxFor(model => model.employeeData.RegisterAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RegisterAddress, "", new { @class = "text-danger" })
+                        </div>
+                         </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">行動電話(O)</label>
+                        <div class="col-sm-4 mini-input-group">
+                            @Html.TextBoxFor(model => model.employeeData.CellphoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.CellphoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-sm-2 control-label">緊急聯絡人姓名</label>
+                        <div class="col-sm-3" data-bind="validationElement: EmergencyName" title="">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">緊急聯絡人電話(O)</label>
+                        <div class="col-sm-4 mini-input-group">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyTelephoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyTelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <label class="col-sm-2 control-label"><span style="color:red;">* </span>簽核部門</label>
+                        <div class="col-sm-3 mini-input-group">
+                            @Html.DropDownListFor(m => m.employeeData.SignDepartmentID, Model.signDepartmentLists, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.SignDepartmentID, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">緊急連絡人地址</label>
+                        <div class="col-sm-4" data-bind="validationElement: EmergencyAddress" title="">
+                            @Html.TextBoxFor(model => model.employeeData.EmergencyAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.EmergencyAddress, "", new { @class = "text-danger" })                      
+                    </div>
+                      @*  <label class="col-sm-2 control-label"><span style="color:red;">* </span>變更密碼</label>
+                        <div class="col-sm-3">
+                            @Html.PasswordFor(model => model.updatePasswordHash, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.updatePasswordHash, "", new { @class = "text-danger" })
+                        </div>*@
+                        </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">緊急連絡人關係</label>
+                            <div class="col-sm-4">
+                                @Html.DropDownListFor(model => model.employeeData.EmergencyRelation, (IEnumerable<SelectListItem>)ViewData["EmergencyRelativesList"], new { @class = "form-control"})
+                            </div>                       
+                        
+                        <label class="col-sm-2 control-label"> <span style="color:red;">* </span>使用權限</label>
+                       
+                        <div class="col-sm-3" title="">
+                            @Html.DropDownListFor(m => m.employeeData.RoleID, Model.roleLists, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeData.RoleID, "", new { @class = "text-danger" })
+                        </div>
+                        
+                    </div>
+                    <div class="form-group" >
+                        <span class="col-sm-5" style="color:red; float:right;">打*號欄位資訊並不會儲存到後台</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input id="btnPersonalInfoUpdate" type="submit" class="btn btn-success" value="@HRPortal.MultiLanguage.Resource.BtnSave" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+
+        }
+    </div>
+</div>
+    <script type="text/javascript">
+        
+        dodisabled(true);
+        function UpdateEmpData(serviceURL,methodType,submitData,callback){
+            $.ajax({
+                url: serviceURL,
+                type: methodType,
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (submitResult) {
+                    callback(submitResult);
+                }
+            })
+        }
+
+        $('#btnPersonalInfoUpdate').click(function (event) 
+        {   
+            var form = $('#EditEmployeeInfoForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            if ($("#employeeData_TelephoneNumber").val().trim() == "") {
+                showAlertMessage("請輸入聯絡電話(O)");
+                return false;
+            }
+
+            if ($("#employeeData_Address").val().trim() == "") {
+                showAlertMessage("請輸入聯絡地址");
+                return false;
+            }
+
+            if ($("#employeeData_RegisterAddress").val().trim() == "") {
+                showAlertMessage("請輸入戶籍地址");
+                return false;
+            }
+
+            if ($("#employeeData_CellphoneNumber").val().trim() == "") {
+                showAlertMessage("請輸入行動電話(O)");
+                return false;
+            }
+
+            if ($("#employeeData_EmergencyName").val().trim() == "") {
+                showAlertMessage("請輸入緊急聯絡人姓名");
+                return false;
+            }
+
+            if ($("#employeeData_EmergencyTelephoneNumber").val().trim() == "") {
+                showAlertMessage("請輸入緊急聯絡人電話(O)");
+                return false;
+            }
+
+            if ($("#employeeData_EmergencyAddress").val().trim() == "") {
+                showAlertMessage("請輸入緊急連絡人地址");
+                return false;
+            }
+
+            if ($("#employeeData_EmergencyRelation").val().trim() == "") {
+                showAlertMessage("請選擇緊急連絡人關係");
+                return false;
+            }
+
+            dodisabled(false);
+              
+            var submitData = new FormData(form[0]);
+            var empType=@Model.employeeData.EmployeeType
+                UpdateEmpData('EmployeeInfoManage/Update','POST',submitData,function(submitResult){
+                    if (submitResult.status == 'success') {
+                        if(empType==1){
+                            window.location.reload();
+                        }else if(empType!=1){
+                            UpdateEmpData('EmployeeInfoManage/UpdateToHRM','POST',submitData,function(submitResult){
+                                if (submitResult.status == 'success') {
+                                    $('#EmployeeInfoDialogDiv').modal('hide');
+                                    showAlertMessage(submitResult.message, function () {
+                                        window.location.reload();
+                                    }); 
+                                } else {
+                                    showAlertMessage(submitResult.message);
+                                }
+                            })
+                        }
+                    } else {
+                        showAlertMessage(submitResult.message);
+                    }
+                })
+                dodisabled(true);
+        });
+
+        function dodisabled(change) {
+            $('#employeeData_Email').prop('disabled', change);
+            $('#employeeData_SignDepartmentID').prop('disabled', change);
+            $('#employeeData_RoleID').prop('disabled', change);
+        }
+    </script>
+

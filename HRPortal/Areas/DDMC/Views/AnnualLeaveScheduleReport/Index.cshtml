@@ -1,0 +1,517 @@
+﻿@model HRPortal.Mvc.Models.AnnualLeaveScheduleReportViewModel
+@Scripts.Render("~/bundles/validate")
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+
+    .annua-leave-schedule th, .annua-leave-schedule td {
+        text-align: center;
+    }
+
+    .annua-leave-schedule .empal td:nth-child(2n) {
+        background-color: lightyellow;
+    }
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]))
+        showAlertMessage(message);
+    </script>
+}
+@using (Html.BeginForm("Export", "AnnualLeaveScheduleReport", FormMethod.Post, new { id = "AnnualLeaveScheduleReportForm" }))
+{
+    <div class=" row">
+        <div style="padding-left: 25px;">
+            <a class="btn btn-info" id ="btnSchedule" href="@Url.Action("Schedule")">特休排程設定</a>
+            <input id="btnSendMail" style="float:right"   name="btnSendMail" type="button" value="未填寫資料通知" class="btn btn-danger" /> 
+        </div>
+        <br />
+        <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>特休年度</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedYear, Model.YearListData, new { @class = "form-control" })
+                    </div>
+                </div>
+                @if (Model.DepartmentListData != null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var ddata = new ViewDataDictionary();
+                                ddata.Add("id", "DepartmentList");
+                                ddata.Add("class", "form-control");
+                                ddata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.DepartmentListData, ddata);
+                            }
+                            <input id="DeptID" name="DeptID" type="hidden" value="">
+                        </div>
+                    </div>
+                }
+                <div class="search-wrap divEmp">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var edata = new ViewDataDictionary();
+                            edata.Add("id", "EmployeeList");
+                            edata.Add("class", "form-control");
+                            edata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.EmployeeListData, edata);
+                        }
+                        <input id="EmpID" name="EmpID" type="hidden" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnQuery" style="width: 100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnClear" style="width: 100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnExport" style="width: 100%" name="btnExport" type="button" value="匯出" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div id='ScheduleDialogDiv' class='modal fade in' role="dialog">
+    <div id='ScheduleDialogContent'></div>
+</div>
+<div id="GetAnnualLeaveSchedule"></div>
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var $url = "@Url.Action()";
+        var checkType = 'd';
+    
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.selAll = false;
+     
+        $(function () {
+            $mutiSelect.setDepartmentList2();
+
+            $('#btnQuery').click(function () {
+                var form = $('#AnnualLeaveScheduleReportForm');
+
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+
+                var submitData = new FormData(form[0]);
+                submitData.append("SelectedYear", $('input[name=SelectedYear]').val());
+                $.ajax({
+                    url: $url + '/GetAnnualLeaveSchedule',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'html',
+                    success: function (result) {
+                        $('#GetAnnualLeaveSchedule').html(result);
+                    },
+                    error: function (xhr) {
+                        showAlertMessage(xhr.responseText);
+                        window.location.href = $url;
+                    }
+                });
+            });
+
+            $('#btnClear').click(function () {
+                window.location.href = $url;
+            });
+
+            $('#btnExport').click(function () {
+                var form = $('#AnnualLeaveScheduleReportForm');
+
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+                form.submit();
+            });
+
+            $('#btnSchedule').click(function () {
+                $('#ScheduleDialogContent').load(this.href, function () {
+                    $('#ScheduleDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true,
+                    }, 'show');
+                    bindForm(this, '#ScheduleDialogDiv', '#ScheduleDialogContent', false);
+                });
+                return false;
+            });
+
+            $('#ScheduleDialogDiv').on('change', '.schedule-table #SelectedYear', function () {
+                var url = $url + "/Schedule?SelectedYear=" + $(this).val();
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    contentType: false,
+                    processData: false,
+                    dataType: 'html',
+                    success: function (result) {
+                        $('#ScheduleDialogContent').html(result);                        
+                    },
+                    error: function (xhr) {
+                        showAlertMessage(xhr.responseText)
+                    }
+                });
+            }).on('click', '#btnSave', function () {
+                var chk = true;
+                var total = 0;
+                var totals = 0;
+                var totalD = 0;
+                var inputs = $('#ScheduleDialogDiv .schedule-table input');
+                var count = 0;
+                var monthCount = '@ViewBag.MonthCount';
+                var dCount = 1;
+                    //alert(monthCount);
+
+                var FillData = '@ViewBag.FillData';
+                //alert(FillData);
+                if (FillData == '1') {
+                    checkType = 's';
+                }
+                $.each(inputs, function () {
+                    var amt = parseFloat($(this).val())
+                    if (amt < 0 || isNaN(amt)) {
+                        $(this).focus();
+                        chk = false;
+                        showAlertMessage('請輸入大於等於0的數字');
+                        return false;
+                    }
+
+                    if( (dCount&1)===0 )//&& dCount <= (monthCount *2))
+                    {
+                        totals +=amt;
+                        dCount += 1;
+                    }
+                    else {    
+                        totalD +=amt;
+                        dCount += 1;
+                    }
+                    total += amt;
+                });
+                if (chk) {
+                    var als = parseFloat($('#ScheduleDialogDiv #AnnualLeaveHours').html())
+                    var alsD = parseFloat($('#ScheduleDialogDiv #AnnualDeferredLeaveHours').html())
+
+                    if(checkType == 'd')
+                    {
+                        var t01 = $('#D01').val();
+                        var t02 = $('#D02').val();
+                        var t03 = $('#D03').val();
+                        var t04 = $('#D04').val();
+                        var t05 = $('#D05').val();
+                        var t06 = $('#D06').val();
+                        var t07 = $('#D07').val();
+                        var t08 = $('#D08').val();
+                        var t09 = $('#D09').val();
+                        var t10 = $('#D10').val();
+                        var t11 = $('#D11').val();
+                        var t12 = $('#D12').val();
+                        if (totalD != alsD) {
+                            //showAlertMessage('1~' +monthCount + '月預估遞延特休總數(' + totalD + ')需等於遞延特休時數(' + alsD + ')。');
+                            showAlertMessage('提醒：遞延特休排定時數(' + totalD + ')需等於遞延特休總時數(' + alsD + ')。');
+                            return false;
+                        }
+                       bootbox.dialog({
+                            title: "遞延特休已設定確認",
+                            message: "<div style='text-align:center;color:red;font-size:20px;'>遞延特休是否已完成排定？<br/>提醒：確定後將無法進行修改！</div>",
+                            buttons: {
+                                success: {
+                                    label: "確定",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                        $('#PredictionDefHour').hide();
+                                        $('#PredictionDefHour').html("");
+                                        var checkM = 0;
+                                        checkM = Number(t01) > 0 ? 1 : checkM;
+                                        checkM = Number(t02) > 0 ? 2 : checkM;
+                                        checkM = Number(t03) > 0 ? 3 : checkM;
+                                        checkM = Number(t04) > 0 ? 4 : checkM;
+                                        checkM = Number(t05) > 0 ? 5 : checkM;
+                                        checkM = Number(t06) > 0 ? 6 : checkM;
+                                        checkM = Number(t07) > 0 ? 7 : checkM;
+                                        checkM = Number(t08) > 0 ? 8 : checkM;
+                                        checkM = Number(t09) > 0 ? 9 : checkM;
+                                        checkM = Number(t10) > 0 ? 10 : checkM;
+                                        checkM = Number(t11) > 0 ? 11 : checkM;
+                                        checkM = Number(t12) > 0 ? 12 : checkM;
+
+                                        closeAllText(false);
+                                        var form = $('#ScheduleDialogDiv #ScheduleSaveForm');
+                                        var submitData = new FormData(form[0]);
+                                        submitData.append("SelectedYear", $('#ScheduleDialogDiv .schedule-table #SelectedYear').val());
+
+                                        $.ajax({
+                                            url: $url + '/Schedule',
+                                            type: 'POST',
+                                            data: submitData,
+                                            contentType: false,
+                                            processData: false,
+                                            success: function (result) {
+                                                if (result.status == 'success') {
+                                                    checkType = 's';
+                                                } else {
+                                                    showAlertMessage(result.message);
+                                                }
+                                            },
+                                            error: function (xhr) {
+                                                showAlertMessage(xhr.responseText)
+                                            }
+                                        });
+
+                                        closDeferred(checkM);
+                                        
+                                    }
+                                },
+                                cancel: {
+                                    label: "取消",
+                                    className: "btn-default",
+                                    callback: function () {
+                                        chkdialog = false;
+                                    }
+                                }
+                            }
+                        });
+                        return false;        
+                    }
+                    if (total != (als+ alsD)) {
+                        //showAlertMessage('預估總數(' + total + ')需等於特休加遞延特休時數(' + (als+ alsD) + ')。');
+                        showAlertMessage('提醒：年度特休排定時數(' + totals + ')需等於特休總時數(' + als + ')。');
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+  
+                bootbox.dialog({
+                    title: "特休排程計畫表設定確認",
+                    message: "<div style='text-align:center;color:red;font-size:20px;'>年度特休是否已完成排定？ <br/>提醒：確定後將無法進行修改！</div>",
+                    buttons: {
+                        success: {
+                            label: "確定",
+                            className: "btn-primary",
+                            callback: function () {
+                                closeAllText(false);
+                                var form = $('#ScheduleDialogDiv #ScheduleSaveForm');
+                                var submitData = new FormData(form[0]);
+                                submitData.append("SelectedYear", $('#ScheduleDialogDiv .schedule-table #SelectedYear').val());
+
+                                $.ajax({
+                                    url: $url + '/Schedule',
+                                    type: 'POST',
+                                    data: submitData,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (result) {
+                                        if (result.status == 'success') {
+                                            showAlertMessage(result.message, function () {
+                                                $("#ScheduleDialogDiv #btnClose").trigger("click");
+                                                //$("#btnQuery").trigger("click");
+                                            });
+
+                                        } else {
+                                            showAlertMessage(result.message);
+                                        }
+                                    },
+                                    error: function (xhr) {
+                                        showAlertMessage(xhr.responseText)
+                                    }
+                                });
+                                closeAllText(true);
+                            }
+                        },
+                        cancel: {
+                            label: "取消",
+                            className: "btn-default"
+                        }
+                    }
+                });             
+
+            });
+
+            if ('@ViewBag.isALL' != 'True') {
+                //$("#btnQuery").trigger("click");
+                $("#btnSendMail").hide();
+            }
+            else {
+                //$mutiSelect.divEmp.hide();
+                $("#btnSendMail").show();
+            }
+    
+            $('#btnSendMail').click(function (event) {
+                //2018/12/26 Neo 按下送出就先disable送出按鈕(防止重複送出)
+                //EnableSubmitElement(false);
+                //showAlertMessage( $url);
+                var form = $('#AnnualLeaveScheduleReportForm');
+                form.submit(function (e) {
+                    e.preventDefault();
+                });
+                var submitData = new FormData(form[0]);
+                submitData.append("SelectedYear", $('input[name=SelectedYear]').val());
+
+                $.ajax({
+                    url:  $url + '/SetSendMail',
+                    type: 'POST',
+                    data: submitData,
+                    async: true,
+                    contentType: false,
+                    processData: false,
+                    success: function (checkResult) {
+                        //var checkResult = JSON.parse(result);
+                        if (checkResult.status == 'success') {
+                            //checkAgentLeave(data);
+                            showAlertMessage(checkResult.message);
+                        }
+                        else {
+                            showAlertMessage(checkResult.message);
+                        }
+                    }, 
+                    error: function (error) {
+
+                    }
+                }).always(function () {
+                    //重新開放file欄位
+                    //EnableUploadFileElement(true);
+                });;
+                //2018/12/26 Neo 以上動作執行完畢, 最後一步再讓送出按鈕enable
+                //EnableSubmitElement(true);
+
+            });
+        });
+
+        function closeAllText(show) {
+            $('#S01').prop('disabled', show);
+            $('#S02').prop('disabled', show);
+            $('#S03').prop('disabled', show);
+            $('#S04').prop('disabled', show);
+            $('#S05').prop('disabled', show);
+            $('#S06').prop('disabled', show);
+            $('#S07').prop('disabled', show);
+            $('#S08').prop('disabled', show);
+            $('#S09').prop('disabled', show);
+            $('#S10').prop('disabled', show);
+            $('#S11').prop('disabled', show);
+            $('#S12').prop('disabled', show);
+            $('#D01').prop('disabled', show);
+            $('#D02').prop('disabled', show);
+            $('#D03').prop('disabled', show);
+            $('#D04').prop('disabled', show);
+            $('#D05').prop('disabled', show);
+            $('#D06').prop('disabled', show);
+            $('#D07').prop('disabled', show);
+            $('#D08').prop('disabled', show);
+            $('#D09').prop('disabled', show);
+            $('#D10').prop('disabled', show);
+            $('#D11').prop('disabled', show);
+            $('#D12').prop('disabled', show);
+        }
+
+        function closeDefText() {
+            var t01 = $('#D01').val();
+            var t02 = $('#D02').val();
+            var t03 = $('#D03').val();
+            var t04 = $('#D04').val();
+            var t05 = $('#D05').val();
+            var t06 = $('#D06').val();
+            var t07 = $('#D07').val();
+            var t08 = $('#D08').val();
+            var t09 = $('#D09').val();
+            var t10 = $('#D10').val();
+            var t11 = $('#D11').val();
+            var t12 = $('#D12').val();
+           
+            if (!isNaN(t01) && !isNaN(t02) && !isNaN(t03) && !isNaN(t04) && !isNaN(t05) && !isNaN(t06) && !isNaN(t07) && !isNaN(t08) && !isNaN(t09) && !isNaN(t10) && !isNaN(t11) && !isNaN(t12)) {
+                var checkM = 0;
+                checkM = Number(t01) > 0 ? 1 : checkM;
+                checkM = Number(t02) > 0 ? 2 : checkM;
+                checkM = Number(t03) > 0 ? 3 : checkM;
+                checkM = Number(t04) > 0 ? 4 : checkM;
+                checkM = Number(t05) > 0 ? 5 : checkM;
+                checkM = Number(t06) > 0 ? 6 : checkM;
+                checkM = Number(t07) > 0 ? 7 : checkM;
+                checkM = Number(t08) > 0 ? 8 : checkM;
+                checkM = Number(t09) > 0 ? 9 : checkM;
+                checkM = Number(t10) > 0 ? 10 : checkM;
+                checkM = Number(t11) > 0 ? 11 : checkM;
+                checkM = Number(t12) > 0 ? 12 : checkM;
+                closDeferred(checkM);
+            }
+
+        }
+
+        function closDeferred(m) {
+            $('#D01').prop('disabled', true);
+            $('#D02').prop('disabled', true);
+            $('#D03').prop('disabled', true);
+            $('#D04').prop('disabled', true);
+            $('#D05').prop('disabled', true);
+            $('#D06').prop('disabled', true);
+            $('#D07').prop('disabled', true);
+            $('#D08').prop('disabled', true);
+            $('#D09').prop('disabled', true);
+            $('#D10').prop('disabled', true);
+            $('#D11').prop('disabled', true);
+            $('#D12').prop('disabled', true);
+            if (Number(m) <= 1) { $('#S01').prop('disabled', false) } else { $('#S01').prop('disabled', true) };
+            if (Number(m) <= 2) { $('#S02').prop('disabled', false) } else { $('#S02').prop('disabled', true) };
+            if (Number(m) <= 3) { $('#S03').prop('disabled', false) } else { $('#S03').prop('disabled', true) };
+            if (Number(m) <= 4) { $('#S04').prop('disabled', false) } else { $('#S04').prop('disabled', true) };
+            if (Number(m) <= 5) { $('#S05').prop('disabled', false) } else { $('#S05').prop('disabled', true) };
+            if (Number(m) <= 6) { $('#S06').prop('disabled', false) } else { $('#S06').prop('disabled', true) };
+            if (Number(m) <= 7) { $('#S07').prop('disabled', false) } else { $('#S07').prop('disabled', true) };
+            if (Number(m) <= 8) { $('#S08').prop('disabled', false) } else { $('#S08').prop('disabled', true) };
+            if (Number(m) <= 9) { $('#S09').prop('disabled', false) } else { $('#S09').prop('disabled', true) };
+            if (Number(m) <= 10) { $('#S10').prop('disabled', false) } else { $('#S10').prop('disabled', true) };
+            if (Number(m) <= 11) { $('#S11').prop('disabled', false) } else { $('#S11').prop('disabled', true) };
+            if (Number(m) <= 12) { $('#S12').prop('disabled', false) } else { $('#S12').prop('disabled', true) };
+
+        }
+    </script>
+} 

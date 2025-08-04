@@ -1,0 +1,53 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
+using System.Collections.Specialized;
+using YoungCloud.Configurations;
+using YoungCloud.SignFlow.Model;
+using YoungCloud.SignFlow.Conditions;
+using YoungCloud.SignFlow.Databases.Repositories;
+using YoungCloud.SignFlow.Databases.UnitOfWorks;
+
+namespace HRPortal.SignFlow.Conditions
+{
+
+    public class PatchCardCdCheck : ConditionCheck
+	{
+		public PatchCardCdCheck()
+		{
+		}
+
+        public PatchCardCdCheck(string DesignID)
+        {
+            this.DesignID = DesignID;
+        }
+        
+        public PatchCardCdCheck(string DesignID, string ChkLevel)
+		{
+            this.DesignID = DesignID;
+			this.CheckLevel = ChkLevel;
+		}
+
+        protected override List<ConditionHandler> GetConditions()
+        {
+            List<ConditionHandler> _result = new List<ConditionHandler>();
+
+            SignFlowConditionsRepository _repository = new SignFlowConditionsRepository();
+            List<SignFlowConditions> _conditions = _repository.GetConditions(DesignID, CheckLevel).ToList();
+
+            foreach(SignFlowConditions _condition in _conditions)
+            {
+                switch (_condition.ConditionType)
+                {
+                    default:
+                        break;
+                }
+            }
+
+            return _result;
+        }
+	}
+}

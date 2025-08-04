@@ -1,0 +1,54 @@
+/*此檔案為客製首頁畫面用檔案 如果登入畫面需要客製的話 將此檔名稱改為customerLoginCss.css*/
+
+/*最新消息*/
+.news .title{
+	background-color:#f39800;
+}
+
+.news .bottom{
+	border-top: #f39800 1px solid;
+	height:50px;
+}
+
+.news{
+	border:#f39800 0px solid;
+}
+
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+	background-color: #f39800;
+    border-color: #f39800;
+}
+
+/*待辦事項*/
+
+.todo .title{
+	background-color:#f39800;
+}
+
+.todo{
+	border:#f39800 0px solid;
+}
+
+/*今日請假人員*/
+.dayoff .title{
+	background-color:#f39800;
+}
+
+.dayoff{
+	border:#f39800 0px solid;
+}
+
+/*快速連結*/
+.links .title{
+	background-color:#f39800;
+}
+
+.links{
+	border:#f39800 0px solid;
+}
+
+/*背景顏色*/
+.container-fluid{
+	background-color:#e1e1e1;
+}

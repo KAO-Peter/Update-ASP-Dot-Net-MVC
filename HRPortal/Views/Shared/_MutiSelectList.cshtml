@@ -1,0 +1,23 @@
+﻿@model  IEnumerable<HRPortal.Mvc.Models.MutiSelectListItem>
+@{
+    Layout = null;
+    string ddlHTML = string.Format("<select id=\"{0}\" name=\"{0}\" class=\"{1}\"{2}>"
+                                   , (string)ViewData["id"], (string)ViewData["class"]
+                                   , ((string)ViewData["multiple"] == "true" ? " multiple=\"multiple\"" : ""));
+                                   
+    foreach (var item in Model)
+    {
+        ddlHTML += string.Format("<option value=\"{0}\"", item.Value);
+        if (!string.IsNullOrWhiteSpace(item.Title))
+        {
+            ddlHTML += string.Format(" title=\"{0}\"", item.Title);
+        }
+        if (item.Selected)
+        {
+            ddlHTML += " selected=\"selected\"";
+        }
+        ddlHTML += string.Format(">{0}</option>", item.Text);
+    }
+    ddlHTML += "</select>";
+}
+@Html.Raw(ddlHTML)

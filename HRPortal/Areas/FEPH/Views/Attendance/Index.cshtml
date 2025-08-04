@@ -1,0 +1,176 @@
+﻿@model HRPortal.Mvc.Models.AttendanceSummaryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+ 
+</style>
+
+@using (Html.BeginForm("Index", "Attendance", FormMethod.Post, new { id = "AttendanceSummaryForm" }))
+{
+  
+    <div class=" row">
+      @if (TempData["message"] != null)
+      {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+      }
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+    <div class="search-section">
+         @if (Model.DepartmentListData != null )
+         {
+            
+             <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+            </div>
+            <div class="search-input">
+             @Html.DropDownListFor(x => x.SelectedDepartment, Model.DepartmentListData, new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#DepartmentData');" })
+            </div>
+        </div>
+             
+         }
+         <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+            </div>
+            <div class="search-input">
+                <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+            </div>
+        </div>
+             
+         
+        
+         <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+            </div>
+            <div class="search-input">
+                <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+            </div>
+        </div>
+         @if (Model.DepartmentListData != null )
+         {
+            
+          <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+            </div>
+            <div class="search-input">
+             @Html.DropDownListFor(x => x.SelectedEmployee, Model.EmployeeListData, new { @class = "form-control" })
+            </div>
+        </div>
+         
+         }
+        @if (Model.Role!=null)
+        {
+              <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+            </div>
+            <div class="search-input">
+               @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+            </div>                      
+        </div>
+        }
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.ExcludedTemporary</label>
+                    </div>                  
+                        <div class="search-input" style="width:16px">
+                           @Html.CheckBoxFor(m => m.ChkHireId)
+                        </div>
+                </div>
+            </div>
+         <div class="search-wrap">
+           
+             <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                            </div>
+                            
+                      </div>      
+            </div>
+     <div class="col-sm-12" id="GetDutyScheduleSummary">
+            </div>
+      </div>
+}
+
+
+<script type="text/javascript">
+    var obj = null;
+    $("#SelectedDepartment").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null) {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+    $("#SelectedStatuslistData").change(function (event) {
+        $.getJSON('@Url.Action("GetStatusData")', { DepartmentId: $("#SelectedDepartment").val(), StatusData: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null) {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+    $(function () {
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            pickTime: false,
+            startView: 'decade',
+            minView: 'month',
+            autoclose: true,
+            language: 'zh-TW'
+        });
+        
+        $('#btnQuery').click(function (event) {
+            var form = $('#AttendanceSummaryForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            var submitData = new FormData(form[0]);
+            submitData.append("BeginDate", $('input[name=BeginTime]').val());
+            submitData.append("EndDate", $('input[name=EndTime]').val())
+            $.ajax({
+                url: 'Attendance/GetDutyScheduleSummary',
+                type: 'POST',
+                data: submitData,
+                contentType: false,
+                processData: false,
+                dataType: 'html',
+                success: function (result) {
+                    $('#GetDutyScheduleSummary').html(result);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText)
+
+                }
+            });
+        })
+    });
+</script>
+
+

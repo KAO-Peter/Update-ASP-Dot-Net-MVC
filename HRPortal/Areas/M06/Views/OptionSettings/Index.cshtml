@@ -1,0 +1,83 @@
+﻿@*@model List<HRPortal.DBEntities.OptionGroup>*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @if (TempData["GroupKey"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $('#CurrentOptionGroupKey').val('@TempData["GroupKey"]');
+            });
+        </script>
+    }
+    <div class="row btn-toolbar action-buttons">
+        <div class="col-md-4">
+            @Html.DropDownList("OptionGroupData", (IEnumerable<SelectListItem>)ViewData["GroupList"], new { @class = "form-control", onchange = "$('#CurrentOptionGroupKey').val(this.options[this.selectedIndex].value);loadOptionList(this.options[this.selectedIndex].value);" })
+            <input type="hidden" id="CurrentOptionGroupKey" />
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-info" id="btnCreateGroup" href="@Url.Action("CreateGroup")">@HRPortal.MultiLanguage.Resource.CreateOptionGroup</a>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive" id="OptionList">
+        </div>
+    </div>
+
+    <div id='GroupDialogDiv' class='modal fade in' role="dialog">
+        <div id='GroupDialogContent'></div>
+    </div>
+
+    <div id='OptionDialogDiv' class='modal fade in' role="dialog">
+        <div id='OptionDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('#btnCreateGroup').click(function () {
+                $('#GroupDialogContent').load(this.href, function () {
+                    $('#GroupDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#GroupDialogDiv', '#GroupDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+            if($('#CurrentOptionGroupKey').val() != '') {
+                $('#OptionGroupData option[value=' + $('#CurrentOptionGroupKey').val() + ']').attr('selected', true);
+                loadOptionList($('#CurrentOptionGroupKey').val());
+            }
+        });
+
+            function loadOptionList(optionGroupKey) {
+                if(optionGroupKey != '') {
+                    $.ajax({
+                        url: 'OptionSettings/LoadOptionList?groupKey=' + optionGroupKey,
+                        type: 'GET',
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            $('#OptionList').html(result);
+                        }
+                    });
+                }
+            }
+        </script>
+}
+

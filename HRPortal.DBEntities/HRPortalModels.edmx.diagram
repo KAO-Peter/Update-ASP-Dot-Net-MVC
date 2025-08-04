@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4a35497b4fdb48558ca341ad4d45301c" Name="Diagram1" ShowGrid="false" ZoomLevel="86">
+        <EntityTypeShape EntityType="NewHRPortalModel.C__MigrationHistory" Width="1.5" PointX="0.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Announcement" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Company" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Department" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Menu" Width="1.5" PointX="7.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.RoleMenuMap" Width="1.5" PointX="10" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Role" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.SystemSetting" Width="1.5" PointX="8.5" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Menus_dbo_Menus_Parent_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_RoleMenuMaps_dbo_Menus_Menu_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_RoleMenuMaps_dbo_Roles_Role_ID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NewHRPortalModel.MailAccount" Width="1.5" PointX="10.375" PointY="10.25" />
+        <EntityTypeShape EntityType="NewHRPortalModel.MailMessage" Width="1.5" PointX="12.625" PointY="10" />
+        <AssociationConnector Association="NewHRPortalModel.FK_MailMessage_MailAccount" />
+        <EntityTypeShape EntityType="NewHRPortalModel.DownloadFile" Width="1.5" PointX="7.875" PointY="0.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.SystemLog" Width="1.5" PointX="0.75" PointY="10.625" />
+        <EntityTypeShape EntityType="NewHRPortalModel.FAQ" Width="1.5" PointX="13.375" PointY="5.625" />
+        <EntityTypeShape EntityType="NewHRPortalModel.FAQType" Width="1.5" PointX="10.625" PointY="0.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_FAQ_TypeByFAQType" />
+        <EntityTypeShape EntityType="NewHRPortalModel.PatchCardForm" Width="1.5" PointX="7.5" PointY="14.625" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Companys_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Departments_dbo_Companys_CompanyID" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Employee" Width="2.375" PointX="5.375" PointY="3.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Announcement_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Announcement_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Employees_dbo_Companys_CompanyID" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Employees_dbo_Departments_DepartmentID" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Departments_Employees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_DownloadFiles_Employees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_DownloadFiles_Employees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_DownloadFiles_Employees2" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Employees_dbo_Employees_ReportTo_ID" />
+        <AssociationConnector Association="NewHRPortalModel.FK_dbo_Employees_dbo_Roles_RoleID" />
+        <AssociationConnector Association="NewHRPortalModel.FK_FAQ_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_FAQ_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_SystemLog_UserIDEmployees" />
+        <EntityTypeShape EntityType="NewHRPortalModel.LeaveForm" Width="1.5" PointX="15.625" PointY="12" />
+        <EntityTypeShape EntityType="NewHRPortalModel.OverTimeForm" Width="1.5" PointX="15.625" PointY="5.75" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Agent" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Employees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveForm_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Employee" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeForm_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardForm_Employees" />
+        <EntityTypeShape EntityType="NewHRPortalModel.SerialControl" Width="1.5" PointX="12.25" PointY="0.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.AnswerFAQ" Width="1.5" PointX="15.375" PointY="0.75" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Employee" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerFAQ_Respondents" />
+        <EntityTypeShape EntityType="NewHRPortalModel.OptionGroup" Width="1.5" PointX="7.625" PointY="21.625" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OptionGroup_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OptionGroup_Modifier" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Option" Width="1.5" PointX="9.875" PointY="14.375" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Options_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Options_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Options_Group" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Departments_SignParent" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Departments_Parent" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Employees_SignDepartment" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Departments_SignManager" />
+        <EntityTypeShape EntityType="NewHRPortalModel.AnnouncementFile" Width="1.5" PointX="14" PointY="0.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnnouncementFiles_ByAnnouncement" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnnouncementFiles_ByDownloadFiles" />
+        <EntityTypeShape EntityType="NewHRPortalModel.LeaveCancel" Width="1.5" PointX="7.625" PointY="30.875" />
+        <EntityTypeShape EntityType="NewHRPortalModel.OverTimeCancel" Width="1.75" PointX="7.625" PointY="26.375" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveCancel_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveCancel_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveCancel_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeCancel_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeCancel_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeCancel_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_LeaveCancel_LeaveForm" />
+        <AssociationConnector Association="NewHRPortalModel.FK_OverTimeCancel_OverTimeForm" />
+        <EntityTypeShape EntityType="NewHRPortalModel.CasualForm" Width="1.5" PointX="3" PointY="16.375" />
+        <EntityTypeShape EntityType="NewHRPortalModel.DeptCost" Width="1.5" PointX="3" PointY="12.875" />
+        <AssociationConnector Association="NewHRPortalModel.FK_CasualForm_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_DeptCost_Companys" />
+        <EntityTypeShape EntityType="NewHRPortalModel.CasualCycle" Width="1.5" PointX="3" PointY="25.75" />
+        <AssociationConnector Association="NewHRPortalModel.FK_CasualCycle_Companys" />
+        <EntityTypeShape EntityType="NewHRPortalModel.WebLinkList" Width="1.5" PointX="12.375" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortalModel.FormSetting" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.ReadToday" Width="1.5" PointX="7.625" PointY="35.875" />
+        <EntityTypeShape EntityType="NewHRPortalModel.ReadTodayFiles" Width="1.5" PointX="10.125" PointY="19.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_ReadTodayFiles_ByDownloadFiles" />
+        <AssociationConnector Association="NewHRPortalModel.FK_ReadToday_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_ReadToday_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_ReadTodayFiles_ByReadToday" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Personnelspecification" Width="1.5" PointX="7.625" PointY="41.25" />
+        <EntityTypeShape EntityType="NewHRPortalModel.PersonnelspecificationFiles" Width="1.5" PointX="10.125" PointY="23.25" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PersonnelspecificationFiles_ByDownloadFiles" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Personnelspecification_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Personnelspecification_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PersonnelspecificationFiles_ByPersonnelspecification" />
+        <EntityTypeShape EntityType="NewHRPortalModel.WebLinkListFEDS" Width="1.5" PointX="12.125" PointY="26.625" />
+        <AssociationConnector Association="NewHRPortalModel.FK_WebLinkListFEDS_CreatedByOptions" />
+        <EntityTypeShape EntityType="NewHRPortalModel.SignoffAgents" Width="1.5" PointX="18.375" PointY="3.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.EmployeeBenefits" Width="2.375" PointX="7.625" PointY="47.5" />
+        <EntityTypeShape EntityType="NewHRPortalModel.EmployeeBenefitsFiles" Width="1.5" PointX="13.125" PointY="23.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmployeeBenefitsFiles_ByDownloadFiles" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmployeeBenefits_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmployeeBenefits_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmployeeBenefitsFiles_ByEmployeeBenefits" />
+        <EntityTypeShape EntityType="NewHRPortalModel.CasualFormLog" Width="1.5" PointX="3" PointY="30.625" />
+        <AssociationConnector Association="NewHRPortalModel.FK_CasualFormLog_Companys" />
+        <EntityTypeShape EntityType="NewHRPortalModel.EffectiveDate" Width="1.5" PointX="18.375" PointY="7.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.PatchCardCancel" Width="1.5" PointX="18.75" PointY="15.125" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardCancel_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardCancel_Deleter" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardCancel_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_PatchCardCancel_PatchCardForm" />
+        <EntityTypeShape EntityType="NewHRPortalModel.Vacancies" Width="1.5" PointX="20.75" PointY="1.25" />
+        <EntityTypeShape EntityType="NewHRPortalModel.VacanciesType" Width="1.5" PointX="14.25" PointY="35.875" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Vacancies_CreatedByEmployees" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Vacancies_ModifiedByEmployees1" />
+        <AssociationConnector Association="NewHRPortalModel.FK_Vacancies_TypeByVacanciesType" />
+        <EntityTypeShape EntityType="NewHRPortalModel.AnswerVacancies" Width="1.5" PointX="8.5" PointY="0.75" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Creator" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Employee" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Modifier" />
+        <AssociationConnector Association="NewHRPortalModel.FK_AnswerVacancies_Respondents" />
+        <EntityTypeShape EntityType="NewHRPortalModel.PersonalSettings" Width="1.5" PointX="18.375" PointY="11.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHRHistoryLeaveForm" Width="1.5" PointX="17.375" PointY="20.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHRTimeOffType" Width="1.5" PointX="20.375" PointY="8.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHREmployeeMapping" Width="1.5" PointX="8.5" PointY="52.5" />
+        <AssociationConnector Association="NewHRPortalModel.FK_BambooHREmployeeMapping_Employees" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHRMailNotificationSetting" Width="1.5" PointX="19.375" PointY="20.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHRLeaveFormRecordLog" Width="1.5" PointX="21.375" PointY="12.75" />
+        <EntityTypeShape EntityType="NewHRPortalModel.BambooHRLeaveFormRecord" Width="1.5" PointX="17.875" PointY="25.375" />
+        <AssociationConnector Association="NewHRPortalModel.FK_BambooHRLeaveFormRecord_LeaveForm" />
+        <EntityTypeShape EntityType="NewHRPortalModel.EmpALSchedule" Width="1.5" PointX="20.5" PointY="0.75" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmpALSchedule_Companys" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmpALSchedule_Departments" />
+        <AssociationConnector Association="NewHRPortalModel.FK_EmpALSchedule_Employees" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

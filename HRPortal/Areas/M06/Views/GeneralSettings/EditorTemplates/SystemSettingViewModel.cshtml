@@ -1,0 +1,12 @@
+﻿@model HRPortal.Mvc.Models.SystemSettingViewModel
+
+<tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+    @Html.HiddenFor(m => m.SettingKey)
+    <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+        @Html.DisplayFor(m => m.DisplayName)
+    </td>
+    <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+        @Html.TextBoxFor(m => m.SettingValue, new { @class="form-control",style="width: 100%"})
+        @Html.ValidationMessageFor(m => m.SettingValue, "", new { @class = "text-danger" })
+    </td>
+</tr>

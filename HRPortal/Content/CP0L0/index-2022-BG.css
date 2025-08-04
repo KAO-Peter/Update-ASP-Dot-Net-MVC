@@ -1,0 +1,25 @@
+﻿@charset "UTF-8";
+
+/*2022 Login Page Background Image*/
+.defaultBackground_2022{
+	background: url("background_2022.jpg") center center fixed no-repeat;
+	background-size: cover;
+}
+
+#index #loginInnerBox {
+    margin-left:50%;
+}
+
+@media (max-width: 1024px) {
+    #index.defaultBackground_2022 {
+        background-position:left;
+    }
+    #index #loginInnerBox {
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+}
+
+
+

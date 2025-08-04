@@ -1,0 +1,392 @@
+﻿@model HRPortal.Mvc.Models.LeaveCancelFormViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+    .form-group .col-md-22:after {
+            content: "：";
+            display: inline-block;
+            float: right;
+            width: 20%;
+                  }
+    .needStar:before {
+        content: "*";
+        color: red;
+        float: left;
+    }
+</style>
+     @if (TempData["message"] != null)
+        {
+<script type="text/javascript">
+                $(function () {
+                    var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+</script>
+        }
+@if (Model != null && !string.IsNullOrWhiteSpace(Model.FormData.FormNo))
+{
+    using (Html.BeginForm("Index", "LeaveCancelForm", FormMethod.Post, new { id = "LeaveCancel" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+  
+        @Html.HiddenFor(model => model.FormData.FormNo);
+        @Html.HiddenFor(model => model.FormData.ID);
+        @Html.HiddenFor(model => model.FormData.Status);
+        @Html.HiddenFor(model => model.FormData.LeaveFormID);
+        <div class="row">
+            <div class="col-sm-12 col-md-7">
+                <div class="form-horizontal">
+                    <!--員工編號 & 員工姓名-->
+                    <div class="form-group">
+                        <div class="col-xs-10 col-sm-10 col-md-6">
+                            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.EmployeeNo</label>
+                            <div class="">
+                                <p class="form-control-static">@ViewBag.EmpID</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-10 col-sm-10 col-md-6">
+                            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+                            <div class="">
+                                <p class="form-control-static">@(ViewBag.LanguageCookie == "en-US" ? ViewBag.EmpEngName: ViewBag.EmpName)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--部門 & 填表日期-->
+                    <div class="form-group">
+                        <div class="col-xs-10 col-sm-10 col-md-6">
+                            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                            <div>
+                                <p class="form-control-static" data-bind="text: department_value">@(ViewBag.LanguageCookie == "en-US" ? Model.SourceData.DepartmentEnglishName : Model.SourceData.DepartmentName) @*ViewBag.SignDeptName*@</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-10 col-sm-10 col-md-6">
+                            <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Date</label>                       
+                            <div>
+                                <p class="form-control-static">@Model.SourceData.CreatedTime.ToString("yyyy/MM/dd")</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--起訖時間-->
+                    <div class="form-group">
+                        <div class="col-sm-11  col-md-12">
+                            <label class="col-md-22">
+                            @HRPortal.MultiLanguage.Resource.StartingDate
+                        </label>
+                            <div class="col-sm-8 col-md-9" style="padding-left:0px;">
+                                <div class="col-xs-8 col-sm-12 col-md-12" style="display:inline-block; padding-left:0px;">
+                                    <p class="form-control-static">@Model.SourceData.StartTime.ToString("yyyy/MM/dd HH:mm") ~ @Model.SourceData.EndTime.ToString("yyyy/MM/dd HH:mm")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!--時數-->
+                    <div class="form-group">
+                        <div class="col-sm-11  col-md-12">
+                            <label class="col-md-22">
+                                @HRPortal.MultiLanguage.Resource.Hours
+                            </label>
+                            <div class="col-sm-8 col-md-9" style="padding-left:0px;">
+                                <div class="col-xs-6 col-sm-10 col-md-11" style="display:inline-block; padding-left:0px;">
+                                    <p class="form-control-static">@String.Format("{0} {1}", Model.SourceData.Amount.ToString("0.#"), Model.SourceData.Unit == "h" ? HRPortal.MultiLanguage.Resource.Hour : HRPortal.MultiLanguage.Resource.Day)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--是否出國-->
+                    <div class="form-group" style="display:none">
+                        <label class="col-md-22">
+                            @HRPortal.MultiLanguage.Resource.IfOutOfCountry
+                        </label>
+                        <div class="">
+                            <p class="form-control-static">@if (Model.SourceData.IsAbroad == true)
+                            {
+                                <span> @HRPortal.MultiLanguage.Resource.Yes</span>
+                            }
+                            else
+                            {
+                                <span> @HRPortal.MultiLanguage.Resource.No</span>
+                            }</p>
+                        </div>
+                    </div>
+                    <!--請假原因-->
+                    <div class="form-group">
+                        <div class="col-sm-7 col-md-12">
+                            <label class="col-md-22">
+                                @HRPortal.MultiLanguage.Resource.AbsentReason
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">
+                                    @Model.SourceData.LeaveReason
+                                </p>
+                            </div>
+                        </div>
+                </div>
+                    <!--代理人-->
+                    <div class="form-group">
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6" style="margin-top:10px;"> 
+                            <label class="col-md-22">
+                            @HRPortal.MultiLanguage.Resource.ActingPerson
+                        </label>
+                            <div>
+                                <p class="form-control-static">
+                                    @(ViewBag.LanguageCookie == "en-US" ? Model.SourceData.AgentEmployeeEnglishName :Model.SourceData.AgentName)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--附加檔案-->
+                    <div class="form-group">
+                        <div class="col-sm-7 col-md-12">
+                            <label class="col-md-22">
+                            @HRPortal.MultiLanguage.Resource.Attachment
+                        </label>
+                            <div>
+                            @if (!string.IsNullOrWhiteSpace(Model.SourceData.FilePath))
+                            {
+                                <a target="_blank" class="form-control-static" href="@Url.Action("DownloadFile", new { formNo = Model.SourceData.FormNo })"> @Html.DisplayFor(model => model.SourceData.FileName) </a>
+                            }
+                            else
+                            {
+                                <p class="form-control-static">@HRPortal.MultiLanguage.Resource.NoData</p>
+                            }
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12">
+                            <label class="col-md-22 needStar">
+                             @HRPortal.MultiLanguage.Resource.Causesickleave
+                        </label>
+                            <div class="col-sm-9 col-md-9 form-control-static" style="padding-left: 0px; float:left;">
+                            @Html.TextAreaFor(model => model.FormData.CancelReason, new { @class = "form-control", style = "height:60px;width:95%" })
+                            <span style="padding-left: 18px; color:red;">(@HRPortal.MultiLanguage.Resource.Within200Words)</span>
+                            @Html.ValidationMessageFor(model => model.FormData.CancelReason, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    </div>
+                    @if (Model.FormData.Status == (int)HRPortal.Mvc.Models.FormStatus.Draft)
+                    {
+                        <div class="col-sm-offset-2" style="padding-bottom:10px;padding-left: 11px;">
+                            <button type="submit" class="btn btn-success" id="btnLeaveCancelSubmit">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                            @if (ViewBag.StatusEdit == "True")
+                        {
+                                <button type="submit" class="btn btn-danger" id="btnLeaveCancelDelete">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+          
+        </div>
+
+        @*hidden 元素*@
+        <input type="hidden" value="@ViewBag.LeaveAmountData" name="LeaveAmountData" id="LeaveAmountData" />
+        <input type="hidden" value="@ViewBag.AgentData" name="AgentData" id="AgentData" />
+
+
+    }
+    <script>
+        $(function () {
+            $.ajaxSetup({ cache: false });
+        })
+        $('#btnLeaveCancelSubmit').click(function (event) {
+            var form = $('#LeaveCancel');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            if (form.validate().form()) {
+                var submitData = new FormData(form[0]);
+                checkDeleteLeave(submitData);
+            }
+        });
+
+        $('#btnLeaveCancelDelete').click(function (event) {
+            var form = $('#LeaveCancel');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+            var submitData = new FormData(form[0]);
+            showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+                $.ajax({
+                    url: 'LeaveCancelForm/DeletedForm',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        if (submitResult.status == 'success')  {
+                            showAlertMessage(submitResult.message , function(){
+                                window.location='@Url.Action("Index")';
+                            });
+                        }                else                {
+                            showAlertMessage(submitResult.message);
+                        }
+
+                    }
+                });
+            });
+
+        });
+
+        function checkDeleteLeave(data) {
+            $.ajax({
+                url: 'LeaveCancelForm/CheckDeleteLeaveData',
+                type: 'POST',
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (checkResult) {
+                    if (checkResult.status == 'success')  {
+                        formSubmit(data);
+                    }                else                {
+                        showAlertMessage(checkResult.message);
+                    }
+                }
+            });
+        }
+
+        
+        function formSubmit(data) {
+            var form = $('#LeaveCancel');
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (submitResult) {
+                    if (submitResult.status == 'success') {
+                        showAlertMessage(submitResult.message, function(){
+                            window.location = '@Url.Action("Index")';
+                        });
+                    } else {
+                        showAlertMessage(submitResult.message, function(){
+                            window.location = '@Url.Action("Index")';
+                        });
+                    }
+                }
+            });
+
+        }
+    </script>
+
+}
+else
+{
+   <div class=" row">
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+    <div class="search-section">
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+            </div>
+            <div class="search-input">
+                <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+            </div>
+        </div>
+          <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+            </div>
+            <div class="search-input">
+                <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+            </div>
+        </div>
+         
+        
+                            
+        </div>
+         <div class="search-wrap">
+           
+             <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="@HRPortal.MultiLanguage.Resource.BtnClear" class="btn btn-warning" />
+                            </div>
+                            
+                      </div>         
+        </div>
+            </div>
+    <div id="ListData"  class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+    </div>
+    <script>
+         $(function() {
+             $.ajaxSetup({ cache: false });
+             /*
+             $("[type='datetime']").datetimepicker({
+                 format: 'yyyy/mm/dd',
+                 pickTime: false,
+                 startView: 'decade',
+                 minView: 'month',
+                 autoclose: true,
+                 language: 'zh-TW'
+             });
+             */
+
+             var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+             $('#BeginDate').appendDtpicker({
+                 "inline": false,
+                 "locale": locale,
+                 "minuteInterval": 10,
+                 "timelistScroll": false,
+                 "calendarMouseScroll": false,
+                 "closeOnSelected": true,
+                 "width":"300px",
+                 "dateFormat": "YYYY/MM/DD",
+                 "dateOnly":true
+                 //"current":formatToday+" 08:00"
+             });
+
+             $('#EndDate').appendDtpicker({
+                 "inline": false,
+                 "locale": locale,
+                 "minuteInterval": 10,
+                 "timelistScroll": false,
+                 "calendarMouseScroll": false,
+                 "closeOnSelected": true,
+                 "width":"300px",
+                 "dateFormat": "YYYY/MM/DD",
+                 "dateOnly":true
+                 //"current":formatToday+" 08:00"
+             });
+             // 20190911 小榜 日期帶入後，自動查一次
+             loadOptionList($('#BeginDate').val(),$('#EndDate').val());
+
+             $('#btnQuery').click(function() {
+                 if ($('#BeginDate').val() =='' || $('#EndDate').val()=='')
+                 {
+                     showAlertMessage('請選擇時間');
+                     return;
+                 }
+                 loadOptionList($('#BeginDate').val(),$('#EndDate').val());
+             });
+             $('#btnClear').click(function() {
+                 $('#BeginDate').val('@DateTime.Now.AddMonths(-1).ToShortDateString()');
+                 $('#EndDate').val('@DateTime.Now.ToShortDateString()');
+                 $('#ListData').html('');
+             });
+         });
+        function loadOptionList(begindate,enddate) {
+         
+                $.ajax({
+                    url: 'LeaveCancelForm/LoadSearchList?BeginDate=' + begindate+"&EndDate="+enddate,
+                    type: 'GET',
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        $('#ListData').html(result);
+                    }
+                });
+            
+        }
+    </script>
+    @*<h4 class="text-danger">※請先到<a href="@Url.Action("Index","FormQuery",new {Area="TODO" })">【表單查詢】</a>查詢欲刪除的假單申請單</h4>*@
+            }

@@ -1,0 +1,47 @@
+﻿@model HRPortal.Mvc.Models.HomeViewModel
+@{ Layout = null; }
+
+@section header{
+    @*@Scripts.Render("~/bundles/jquery2")*@
+
+}
+<style>
+    span#ToDoListTotalCount {
+        margin-right:0px;
+    }
+</style>
+<div class="todo box col-xs-6" style="border: #5cb85c 1px solid;">
+    <!--薪資查詢標題-->
+    <ul>
+        <li class="title col-xs-12" style="background-color: #5cb85c;">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.SalarySearch
+        </li>
+		<li class="blank col-xs-12"></li>
+        @if (Model != null && Model.SalarySearchList != null)
+        {
+
+            foreach (var item in Model.SalarySearchList)
+              {
+                    <li class="list col-xs-12">
+                        <a href="@item.URL">
+			                <p class="col-xs-11">@(ViewBag.LanguageCookie == "en-US" ? item.EngName : item.Name)</p>
+			                
+                        </a>
+		            </li>
+                    <li class="list col-xs-12">
+                        
+			                <p class="col-xs-11">&nbsp;</p>
+			                
+                        
+		            </li>
+              }
+        }
+        <li class="bottom col-xs-12"></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+   @* $(function () {
+        $("#ToDoListTotalCount").html('@ToDocount');
+    })*@
+</script>

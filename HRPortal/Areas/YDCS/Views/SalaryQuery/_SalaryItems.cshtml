@@ -1,0 +1,123 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryItems
+@{
+            var MaxCount = Model.TaxableItems.Count;
+            var MaxCountTotal = Model.TaxableItemsTotal.Count;
+            var _MaxCountTotal = Model.WithholdingItemsTotal.Count;
+            decimal TaxableAmounts = 0;
+            decimal NoTaxAmounts = 0;
+            decimal WithholdingAmounts = 0;
+            decimal TaxableItemsTotal = 0;
+            decimal WithholdingItemsTotal = 0;
+            if (Model.NoTaxItems.Count > MaxCount)
+            {
+                MaxCount = Model.NoTaxItems.Count;
+            }
+            if (Model.WithholdingItems.Count > MaxCount)
+            {
+                MaxCount = Model.WithholdingItems.Count;
+            }
+            for (int i = 0; i < MaxCountTotal; i++)
+            {
+              
+                    if (i < Model.TaxableItemsTotal.Count)
+                    {
+                     //TaxableItemsTotal
+                     TaxableItemsTotal += Model.TaxableItemsTotal[i].Amount;
+                    }
+            }
+            for (int i = 0; i < _MaxCountTotal; i++)
+            {
+
+                if (i < Model.WithholdingItemsTotal.Count)
+                {
+                    //WithholdingItemsTotal
+                    WithholdingItemsTotal += Model.WithholdingItemsTotal[i].Amount;
+                }
+            }
+}
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+         <tr>
+             <th style="text-align:center;height:30px;" colspan="6"  >
+               計薪期間:@Model.SalaryFirstDay~@Model.SalaryLastDay
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align:center;height:30px;" colspan="2">
+                應稅項目
+            </th>
+            <th style="text-align:center;height:30px;"  colspan="2">
+                免稅項目
+            </th>
+            <th style="text-align:center;height:30px;"  colspan="2">
+                代扣項目
+            </th>
+        </tr>
+     
+            @for (int i = 0; i < MaxCount; i++)
+            {
+                <tr>
+                    @if (i < Model.TaxableItems.Count)
+                    {
+                    //TaxableItems
+                    TaxableAmounts += Model.TaxableItems[i].Amount;
+                    <th style="height:30px;">
+                        @Model.TaxableItems[i].Name
+                    </th>
+                    <td style="text-align:right;height:30px;">@Model.TaxableItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+
+                    @if (i < Model.NoTaxItems.Count)
+                    {
+                        //NoTaxItems
+                        NoTaxAmounts += Model.NoTaxItems[i].Amount;
+                    <th style="height:30px;">
+                        @Model.NoTaxItems[i].Name
+                    </th>
+                    <td style="text-align:right;height:30px;">
+                        @Model.NoTaxItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)
+                    </td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+
+                    @if (i < Model.WithholdingItems.Count)
+                    {
+                        //WithholdingItems
+                        WithholdingAmounts += Model.WithholdingItems[i].Amount;
+                    <th style="height:30px;">
+                        @Model.WithholdingItems[i].Name
+                    </th>
+                    <td style="text-align:right;height:30px;">@Model.WithholdingItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+                </tr>
+            }
+        <tr>
+            <th style="height:30px;">應稅合計</th>
+            <td style="text-align:right;height:30px;">@TaxableAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">免稅合計</th>
+            <td style="text-align:right;height:30px;">@NoTaxAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">代扣合計</th>
+            <td style="text-align:right;height:30px;">@WithholdingAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+        <tr>
+            <th style="height:30px;" colspan="2">年度應稅薪資合計</th>
+            <td style="text-align:right;height:30px;" colspan="1" >@TaxableItemsTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;" colspan="2">年度所得稅合計</th>
+            <td style="text-align:right;height:30px;" colspan="1">@WithholdingItemsTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td> 
+        </tr>
+    </tbody>
+</table>

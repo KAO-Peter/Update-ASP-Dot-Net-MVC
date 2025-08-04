@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1A25D3F5-77F1-4E34-81DF-465220DC820C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YoungCloud</RootNamespace>
+    <AssemblyName>YoungCloud.Configurations</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configurations\AppSettings\AppSettingsConfigurationBase.cs" />
+    <Compile Include="Configurations\AppSettings\IAppSettingsConfiguration.cs" />
+    <Compile Include="Configurations\AutofacSettings\AutofacConfigurationBase.cs" />
+    <Compile Include="Configurations\AutofacSettings\AutofacInitializer.cs" />
+    <Compile Include="Configurations\AutoMapperSetting\AutoMapperInitializer.cs" />
+    <Compile Include="Configurations\AutoMapperSetting\CommonMapperProfile.cs" />
+    <Compile Include="Configurations\ClassBase.cs" />
+    <Compile Include="Configurations\ConfigurationUtility.cs" />
+    <Compile Include="Configurations\Db\DatabasesConfigurationBase.cs" />
+    <Compile Include="Configurations\Db\IDatabasesConfiguration.cs" />
+    <Compile Include="Configurations\Exceptions\ConfiguredExceptionHandler.cs" />
+    <Compile Include="Configurations\Exceptions\EventLogElement.cs" />
+    <Compile Include="Configurations\Exceptions\ExceptionHandlerSection.cs" />
+    <Compile Include="Configurations\Exceptions\ReceiverCollection.cs" />
+    <Compile Include="Configurations\Exceptions\ReceiverElement.cs" />
+    <Compile Include="Configurations\Exceptions\TextFileLogElement.cs" />
+    <Compile Include="Configurations\IConfiguration.cs" />
+    <Compile Include="Configurations\IProjectConfiguration.cs" />
+    <Compile Include="Configurations\ProjectConfigurationBase.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\IRemotingServicesConfiguration.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\RemotingServiceCollection.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\RemotingServiceElement.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\RemotingServicesConfigurationBase.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\RemotingServiceSection.cs" />
+    <Compile Include="Configurations\Runtime\Remoting\RemotingServicesSection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\YoungCloud.Exceptions\YoungCloud.Exceptions.csproj">
+      <Project>{47f56ad1-e100-4856-bf26-e5c7db074218}</Project>
+      <Name>YoungCloud.Exceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

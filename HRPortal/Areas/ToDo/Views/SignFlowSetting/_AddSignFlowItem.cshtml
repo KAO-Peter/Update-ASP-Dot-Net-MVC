@@ -1,0 +1,175 @@
+﻿@model HRPortal.Mvc.Models.SignFlowDesignViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "AddSignFlowItem";
+}
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.AddSignFlowItem</h4>
+        </div>
+
+        @using (Html.BeginForm("AddSignFlowItem", "SignFlowSetting", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.DesignID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 110px;">@HRPortal.MultiLanguage.Resource.FormSignLevel</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("FormLevelList", (IEnumerable<SelectListItem>)ViewData["FormLevelList"], new { @class = "form-control", onchange = "formLevelSelected();" })
+                            @Html.HiddenFor(model => model.FormLevelID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 110px;">@HRPortal.MultiLanguage.Resource.DeptType</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("DeptTypeList", (IEnumerable<SelectListItem>)ViewData["DeptTypeList"], new { @class = "form-control", onchange = "deptTypeSelected();" })
+                            @Html.HiddenFor(model => model.DeptType)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 110px;">@HRPortal.MultiLanguage.Resource.Company</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("CompanysList", (IEnumerable<SelectListItem>)ViewData["CompanysList"], new { @class = "form-control"})
+                            @Html.HiddenFor(model => model.CompanyID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 110px;">@HRPortal.MultiLanguage.Resource.SignerName</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("SignerList", (IEnumerable<SelectListItem>)ViewData["SignerList"], new { @class = "form-control", onchange = "signerSelected();" })
+                            @Html.HiddenFor(model => model.SignerID)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        if ($('#FormLevelID').val() != '') {
+            $('#FormLevelList option[value="' + $('#FormLevelID').val() + '"]').attr("selected", true);
+        } else {
+            formLevelSelected();
+        }
+        if ($('#DeptType').val() != '') {
+            $('#DeptTypeList option[value="' + $('#DeptType').val() + '"]').attr("selected", true);
+        }
+        deptTypeSelected();
+    })
+
+    //切換公司別 20160601 by Bee
+    $('#CompanysList').change(function(){
+        var signersSelect = $('#SignerList');
+        signersSelect.empty();
+        companySelected();
+        $.getJSON('@Url.Action("GetDiffCompanySignerOptions")',
+            {CompanyCode: $('#CompanyID').val() ,deptType:$('#DeptType').val()},
+            function(signers){
+                var signersSelect = $('#SignerList');
+                signersSelect.prop("disabled", false);
+                signersSelect.empty();
+                $.each(signers, function (index, signer) {
+                    signersSelect.append($("<option></option>").val(signer.Value).html(signer.Text));
+                });
+
+                if ($('#SignerID').val() != '') {
+                    $('#SignerList option[value="' + $('#SignerID').val() + '"]').attr("selected", true);
+                }
+
+                signerSelected();
+            }
+        )
+        
+    })
+
+    function formLevelSelected() {
+        $('#FormLevelID').val($('#FormLevelList option:selected').val());
+    }
+    function deptTypeSelected() {
+        $('#DeptType').val($('#DeptTypeList option:selected').val());
+        if ($('#DeptType').val() == '' || $('#DeptType').val() == '0' || $('#DeptType').val() == '15') {
+            $.getJSON('@Url.Action("GetSignerOptions")',
+                { designId: $('#DesignID').val(), deptType: $('#DeptType').val() },
+                function (signers) {
+                    var signersSelect = $('#SignerList');
+                    signersSelect.prop("disabled", false);
+                    signersSelect.empty();
+                    $.each(signers, function (index, signer) {
+                        signersSelect.append($("<option></option>").val(signer.Value).html(signer.Text));
+                    });
+
+                    if ($('#SignerID').val() != '') {
+                        $('#SignerList option[value="' + $('#SignerID').val() + '"]').attr("selected", true);
+                    }
+
+                    signerSelected();
+                }
+            );
+
+            $.getJSON('@Url.Action("GetSignerCompanyOption")',
+                {designId: $('#DesignID').val(), deptType: $('#DeptType').val()},
+                function (Companys) {
+                    var $CompanysSelect = $('#CompanysList');
+                    $CompanysSelect.prop("disabled",false);
+                    $CompanysSelect.empty();
+                    $.each(Companys, function (index, Company) {
+                        var $option=$('<option></option>').val(Company.Value).html(Company.Text);
+                        if ($('#CompanyID').val() != '' && Company.Value==$('#CompanyID').val() ) {
+                            $option.attr("selected", true);
+                        }else if(Company.Selected==true){
+                            $option.attr("selected", true);
+                        }
+                        $CompanysSelect.append($option);
+                    });
+                    companySelected();
+                }
+              );
+
+        } else {
+            var $signersSelect = $('#SignerList'),
+                $CompanysSelect = $('#CompanysList');
+            $signersSelect.prop("disabled", true);
+            $CompanysSelect.prop("disabled",true);
+            $signersSelect.empty();
+            $CompanysSelect.empty();
+            $('#SignerID').val('');
+
+        }
+    }
+    function signerSelected() {
+        $('#SignerID').val($('#SignerList option:selected').val());
+    }
+
+    function companySelected(){
+        $('#CompanyID').val($('#CompanysList option:selected').val());
+    }
+</script>

@@ -1,0 +1,189 @@
+﻿@model IEnumerable<HRPortal.ApiAdapter.HRMApiAdapterData.EmpDataCasual>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a class="btn btn-info" data-modal="" href="@Url.Action("Create", new { id = "btnCreate" })" data-action="4" style="margin-bottom: 10px;">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+@using (Html.BeginForm("Index", "EmpDataCasual", FormMethod.Post, new { Id = "EmpDataCasualForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchEmpID" name="SearchEmpID" type="text" class="form-control" value="@ViewBag.SearchEmpID" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchEmpName" name="SearchEmpName" type="text" class="form-control" value="@ViewBag.SearchEmpName" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>部門</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", id = "DepartmentListData", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#SearchDepartmentData');" })
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="search-name">
+                    <label>身份證字號</label>
+                </div>
+                <div class="search-input">
+                    <input id="SearchIDNumber" name="SearchIDNumber" type="text" class="form-control" value="@ViewBag.SearchIDNumber" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th class="" style="width:20%"> <div style="text-align:center;">部門</div></th>
+                        <th class="" style="width:10%"> <div style="text-align:center;">工號</div></th>
+                        <th class="" style="width:20%"> <div style="text-align:center;">姓名</div></th>
+                        <th class="" style="width:20%"> <div style="text-align:center;">身分證字號</div></th>
+                        <th class="" style="width:20%"> <div style="text-align:center;">離職日</div></th>
+                        <th style="width:10%"></th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.EmpID">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.DeptName)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmpID)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmpName)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.IDNumber)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.LeaveDate)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a class="btn btn-warning"  data-modal="" href="@Url.Action("Edit", new { deptCode = item.DeptCode, empNo = item.EmpID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="6" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.ApiAdapter.HRMApiAdapterData.EmpDataCasual>;
+                }
+                @{
+                    if (IsAjax)
+                    {
+                        Layout = "";
+                    }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "btnQuery", SearchDepartmentData = ViewBag.SearchDepartmentData, SearchEmpID = ViewBag.SearchEmpID, SearchEmpName = ViewBag.SearchEmpName, SearchIDNumber = ViewBag.SearchIDNumber }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "btnQuery", SearchDepartmentData = ViewBag.SearchDepartmentData, SearchEmpID = ViewBag.SearchEmpID, SearchEmpName = ViewBag.SearchEmpName, SearchIDNumber = ViewBag.SearchIDNumber }), new PagedListRenderOptions
+                                                                  {
+                                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToIndividualPages = false,
+                                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                                      //LinkToNextPageFormat = "後一頁>",
+                                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                                      DisplayPageCountAndCurrentLocation = true,
+                                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                                      DisplayItemSliceAndTotal = true,
+                                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                                  })
+                }
+            </div>
+        }
+    </div>
+
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.SearchDepartmentData" name="SearchDepartmentData" id="SearchDepartmentData" />
+}
+
+<div id='EmpDataCasualDialogDiv' class='modal fade in' role="dialog" style="overflow:auto">
+    <div id='EmpDataCasualDialogContent'></div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function ChangeStatus(form, fileId, formName) {
+            $('#SearchEmpID').val("");
+            $('#SearchEmpName').val("");
+            $('#SearchIDNumber').val("");
+            $(formName).val(fileId);
+        }
+
+        $(function () {
+            //Optional: turn the chache off
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#EmpDataCasualDialogContent').load(this.href, function () {
+                    $('#EmpDataCasualDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#EmpDataCasualDialogDiv', '#EmpDataCasualDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+        });
+    </script>
+}

@@ -1,0 +1,490 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+@using HRPortal.Mvc.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align:center;
+        vertical-align:middle !important;
+    }
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+
+    #grid-table th,#grid-table td {
+        text-align:center !important;
+        vertical-align:middle;
+    }
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+
+</style>
+@using System.Resources;
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div id="bodyContainer" class="row">
+    @using (Html.BeginForm("Index", "FormQuery", FormMethod.Post, new { id = "FormQuery" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class=" row" style="margin-right: 0px; margin-left: 0px;">
+            <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+                <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var ddata = new ViewDataDictionary();
+                                ddata.Add("id", "DepartmentListData");
+                                ddata.Add("class", "form-control");
+                                ddata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["DepartmentList"], ddata);
+                            }
+                            <input id="DeptID" name="DeptID" type="hidden" value="">
+                        </div>
+                    </div>
+                    <div class="search-wrap divEmp">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var edata = new ViewDataDictionary();
+                                edata.Add("id", "EmployeeListData");
+                                edata.Add("class", "form-control");
+                                edata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["EmployeeList"], edata);
+                            }
+                            <input id="EmpID" name="EmpID" type="hidden" value="">
+                        </div>
+                    </div>
+                    @if (ViewBag.Role != null)
+                    {
+                        <div class="search-wrap">
+                            <div class="search-name">
+                                <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                            </div>
+                            <div class="search-input">
+                                @Html.DropDownList("StatuslistData", (IEnumerable<SelectListItem>)ViewData["Statuslist"], new { @class = "form-control" })
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--20170510 Daniel 調整表單類別篩選欄位位置，以及在選取請假單時，新增假別篩選條件-->
+                <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.FAQType</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("FormTypelistData", (IEnumerable<SelectListItem>)ViewData["FormTypelist"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#course_category');" })
+                        </div>
+                    </div>
+                    <div class="search-wrap" id="AbsentCodeQuery" style="display: none">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("AbsentCodeListData", (IEnumerable<SelectListItem>)ViewData["AbsentCodeList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#AbsentCode');" })
+                        </div>
+                    </div>
+                </div>
+                <div class="search-section search-button">
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                    </div>
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                    </div>
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnExport" style="width: 100%" name="btnExport" type="submit" value="@HRPortal.MultiLanguage.Resource.Button_Export" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        </div>
+       <!--
+        <div class="col-xs-12">
+            @if (Model != null)
+            {
+                <div class="table-responsive">
+                    <table id="grid-table" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                             @*2019/04/15 Neo 調整部門欄位寬度變大*@
+                            <th id="grid-table_code" role="columnheader" class="" style="width: 8%">
+                                <div id="jqgh_grid-table_code" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.Date</div>
+                            </th>
+                            <th id="grid-table_classified_code_name" role="columnheader" class="" style="width: 6%">
+                                <div id="jqgh_grid-table_classified_code_name" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.Type</div>
+                            </th>
+                            <th id="grid-table_category_name" role="columnheader" class="" style="width: 35%;">
+                                <div id="jqgh_grid-table_category_name" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnouncementContentext</div>
+                            </th>
+                            <th id="grid-table_teacher_name" role="columnheader" class="" style="width: 17%; min-width: 130px;">
+                                <div id="jqgh_grid-table_teacher_name" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.Department</div>
+                            </th>
+                            <th id="grid-table_count" role="columnheader" class="" style="width: 8%;">
+                                <div id="jqgh_grid-table_count" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.applicant</div>
+                            </th>
+                            <th id="grid-table_notification_count" role="columnheader" class="" style="width: 8%;">
+                                <div id="jqgh_grid-table_notification_count" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.DeptType</div>
+                            </th>
+                            <th id="grid-table_notification_count2" role="columnheader" class="" style="width: 8%;">
+                                <div id="jqgh_grid-table_notification_count2" class="ui-jqgrid-sortable" style="text-align: center;">@HRPortal.MultiLanguage.Resource.Signstate</div>
+                            </th>
+                            <th id="grid-table_id" role="columnheader" class="" style="width: 10%;">
+                                <div id="jqgh_grid-table_id" class="ui-jqgrid-sortable"></div>
+                            </th>
+
+                        </tr>
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            ResourceManager _resourceManager = new ResourceManager("HRPortal.MultiLanguage.Resource", typeof(HRPortal.MultiLanguage.Resource).Assembly);
+                            foreach (var item in Model)
+                            {
+                            <tr role="row" id="@item.FormNo" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                @Html.HiddenFor(m => item.FormType)
+                                @Html.HiddenFor(m => item.FormNo)
+                                @*2019/04/15 Neo 調整填表日期欄請同其他欄位一樣置上*@
+                                <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_code">
+                                    @if (item.FormCreateDate > new DateTime(1911, 1, 1))
+                                    {
+                                        @item.FormCreateDate.ToString("yyyy/MM/dd")    
+                                    }
+                                </td>
+                                <td role="gridcell" style="" aria-describedby="grid-table_classified_code_name">@(_resourceManager.GetString(item.FormType.ToString()) ?? item.FormType.ToString())</td>
+                                <td role="gridcell" style="" aria-describedby="grid-table_category_name">@item.FormSummary</td>
+                                <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">@(ViewBag.LanguageCookie == "en-US" ? item.DepartmentEnglishName : item.DepartmentName)</td>
+                                <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">@(ViewBag.LanguageCookie == "en-US" ? item.SenderEmployeeEnglishName : item.SenderEmployeeName)</td>
+
+                                @if (item.SignFlowID == null || item.SignFlowID == "")
+                                {
+                                    <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count"></td>
+                                    <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count"></td>
+                                    @*<td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count"></td>*@
+                                }
+                                else
+                                {
+                                    <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">@(ViewBag.LanguageCookie == "en-US" ? item.SignerEmployeeEnglishName : item.SignerEmployeeName)</td>
+                                    <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">@(item.SignStatus == "W" ? (item.SignType == "S" ? HRPortal.MultiLanguage.Resource.SignStatus_NotSent : HRPortal.MultiLanguage.Resource.SignStatus_EnRoute) : (item.SignStatus == "R" ? HRPortal.MultiLanguage.Resource.SignStatus_Rejected : (item.SignStatus == "S" ? HRPortal.MultiLanguage.Resource.SignStatus_EnRoute : (item.SignStatus == "B" ? HRPortal.MultiLanguage.Resource.SignStatus_TakenBack : HRPortal.MultiLanguage.Resource.SignStatus_Approved))))</td>
+                                }
+                                <td role="gridcell" style="white-space: normal; text-align: center" aria-describedby="grid-table_notification_count">
+                                    <a class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="loadFormDetail('@item.FormType.ToString()', '@item.FormNo', '@item.SignFlowID', '@item.FormNoOrder')">@HRPortal.MultiLanguage.Resource.Detailss</a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td colspan="8" style="text-align: center">
+                                    @HRPortal.MultiLanguage.Resource.NoData
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div style="text-align: center">
+                    @* 在後面對pagelist做轉型 *@
+                    @using PagedList
+                    @using PagedList.Mvc
+                    @{
+                        var data = Model as IPagedList<HRPortal.SignFlow.Model.HRPotralFormSignStatus>;
+                    }
+                    @{
+                        if (IsAjax)
+                        { Layout = ""; }
+                    }
+                    @if (Model != null && Model.Count() > 0)
+                    {
+
+
+                        @Html.PagedListPager(data, page => Url.Action("Index",
+                                                      new { page, course_category = ViewBag.course_category, searchAction = ViewBag.searchAction, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime, DepartmentData = ViewBag.DepartmentData, EmployeeData = ViewBag.EmployeeData, StatusData = ViewBag.StatusData, AbsentCode = ViewBag.AbsentCode }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                        @Html.PagedListPager(data, page => Url.Action("Index",
+                                                  new { page, course_category = ViewBag.course_category, searchAction = ViewBag.searchAction, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime, DepartmentData = ViewBag.DepartmentData, EmployeeData = ViewBag.EmployeeData, StatusData = ViewBag.StatusData, AbsentCode = ViewBag.AbsentCode }), new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                      //LinkToNextPageFormat = "後一頁>",
+                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  })
+                    }
+                </div>
+            }
+        </div>
+        -->
+
+        <input type="hidden" value="@ViewBag.course_category" name="course_category" id="course_category" />
+        @*<input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentData" id="DepartmentData"  />
+        <input type="hidden" value="@ViewBag.EmployeeData" name="EmployeeData" id="EmployeeData" />*@
+        <input type="hidden" value="@ViewBag.StatusData" name="StatusData" id="StatusData" />
+        <input type="hidden" value="@ViewBag.AbsentCode" name="AbsentCode" id="AbsentCode" />
+        <input type="hidden" value="1" name="page" id="page" />
+    }
+
+</div>
+<div id="GetFormQuerySummary"></div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.FormDetails - <span id="detailFormTypeName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#BaseFormModel_form_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_form_tab_0">@HRPortal.MultiLanguage.Resource.Title_Tab_FormDetails</a></li>
+                    <li><a href="#BaseFormModel_flow_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_flow_tab_0">@HRPortal.MultiLanguage.Resource.Title_Tab_SignflowHistory</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="BaseFormModel_form_tab_0">
+                        <div id="formContent">
+                        </div>
+                        <input type="hidden" id="signingFormType" />
+                        <input type="hidden" id="signingFormNo" />
+                        <input type="hidden" id="signingFlowID" />
+                        @*詳細資料
+                            <div class="modal-footer"> </div>*@
+                    </div>
+                    @*簽核紀錄*@
+                    <div class="tab-pane" id="BaseFormModel_flow_tab_0">
+                        <div id="signFlowContent">
+                        </div>
+                    </div>
+                </div>
+                <div id="singFlowFooter" class="modal-footer">
+                    <a class="btn btn-success" style="display:none" id="PrintBtn">@HRPortal.MultiLanguage.Resource.Button_PrintForm</a>
+                    <a class="btn btn-success" style="display: none" id="Resend">@HRPortal.MultiLanguage.Resource.Button_ResendForm</a>
+                    <a class="btn btn-warning" style="display: none" id="Pullback">@HRPortal.MultiLanguage.Resource.Button_EditForm</a>
+                    <a class="btn btn-danger" style="display: none" id="FormCancel"></a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.Resource.BtnClose</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var $url = "@Url.Action("Index")";
+     
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.deptSelect = $('#DepartmentListData');
+        $mutiSelect.empSelect = $('#EmployeeListData');
+        $mutiSelect.statusSelect = $('#StatuslistData');
+        $mutiSelect.empvalmode = "ID";
+ 
+        $(function () {
+            $mutiSelect.setDepartmentList2();
+
+            $('#BeginDate,#EndDate').appendDtpicker({
+                "inline": false,
+                "locale": "cn",
+                "minuteInterval": 10,
+                "timelistScroll": false,
+                "calendarMouseScroll": false,
+                "closeOnSelected": true,
+                "width":"300px",
+                "dateFormat": "YYYY/MM/DD",
+                "dateOnly":true
+            });
+            $('#BeginDate,#EndDate,#DepartmentListData,#EmployeeListData').change(function () {
+                $('#page').val('1');
+            });
+
+            $('#btnQuery,#btnExport').click(function (event) {
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+
+                if (event.target.id == "btnQuery") {
+                    var form = $('#FormQuery');
+                    var submitData = new FormData(form[0]);
+                    $.ajax({
+                        url: $url + '/GetFormQuerySummary',
+                        type: 'POST',
+                        data: submitData,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'html',
+                        success: function (result) {
+                            $('#GetFormQuerySummary').html(result);
+                        },
+                        error: function (xhr) {
+                            showAlertMessage(xhr.responseText);
+                            //alert(xhr.responseText);
+                            console.log(xhr.responseText);
+                            console.log(xhr);
+                            window.location.href = $url;
+                        }
+                    });
+                } else {
+                    var formexport = $('#FormQuery');
+                    formexport.attr('action', '@Url.Action("Export")');
+                    formexport.submit();
+                }
+            });
+
+            $('#btnClear').click(function () {
+                window.location.href = $url;
+            });
+        
+            $('#StatuslistData').change(function () {
+                $('#page').val('1');
+                $('#StatusData').val($(this).val());
+            });
+        $('a').click(function () {
+            if ($(this).data('toggle')=='tab') {
+                var $currentTab = $('#' + $(this).attr('modalID')).find('div.tab-content');
+                $currentTab.children().hide();
+                $currentTab.find("#" + $(this).attr('tabID')).show();
+            }
+        })
+       
+        $('#FormTypelistData').trigger('change');
+
+        if ('@ViewBag.isALL' != 'True') {
+            // $("#btnQuery").trigger("click");
+        }
+        else {
+            $mutiSelect.divEmp.hide();
+        }
+        })
+
+    function goPage(p) {
+        $('#page').val(p);
+        $('#btnQuery').trigger('click');
+    }
+
+    function ChangeStatus(form, fileId, formName) {
+        $('#page').val('1');
+
+        $(formName).val(fileId);
+        //form.submit();
+        
+        if (formName=="#course_category")
+        {
+            //20170510 Daniel 增加假別代碼篩選判斷
+            if (fileId.toUpperCase()=='LEAVE') //類別選擇請假單時才顯示假別篩選欄位
+            {
+                $('#AbsentCodeQuery').show();
+            }
+            else
+            {
+                $('#AbsentCodeListData option')[0].selected=true;
+                $('#AbsentCodeListData').trigger('change');
+                $('#AbsentCodeQuery').hide();
+            }
+        }
+    }
+
+    //function ChangeStatuss(form, fileId, formName) {
+    //    $(formName).val(fileId);
+    //    //抓取部門id值 
+    //    var DepartmentId=$('input[name="DepartmentData"]').val();
+    //    //form.submit();
+    //    if (formName == "#StatusData" && fileId != null) {
+    //        $('#EmployeeData').val('All');
+    //        $.getJSON('@Url.Action("GetStatusData")', { DepartmentId:DepartmentId,StatusData: fileId }, function (months) {
+    //            var monthsSelect = $('#EmployeeListData');
+    //            monthsSelect.empty();
+    //            $.each(months, function (index, month) {
+    //                monthsSelect.append($("<option></option>").val(month.Value).html(month.Text));
+    //            });
+    //        });
+    //    }
+    //}
+    function loadFormDetail(formType, formNo, signFlowId,FormNoOrder) {
+        $('#signingFormType').val(formType);
+        $('#signingFormNo').val(formNo);
+        $('#signingFlowID').val(signFlowId);
+        $("#PrintBtn").hide();
+
+        var action;
+        if (formType == 'Leave') {
+            action = 'GetLeaveDetail';
+        } else if (formType == 'OverTime') {
+            action = 'GetOverTimeDetail';
+        } else if (formType == 'PatchCard') {
+            action = 'GetPatchCardDetail';
+        }else if (formType == 'LeaveCancel') {
+            action = 'GetLeaveCancelDetail';
+        }else if (formType='OverTimeCancel'){
+            action='GetOverTimeCancelDetail';
+        };
+
+        $('#formContent').load('SignForms/' + action + '?formNo=' + formNo+'&FormNoOrder='+FormNoOrder ,function(){
+            if (formType == 'Leave') {
+                $("#PrintBtn").show();
+            }
+        });
+        $('#signFlowContent').load('SignForms/GetSignFlow?formNo=' + formNo);
+        
+    }
+
+</script>
+<script src="@Url.Content("~/areas/ToDo/Scripts/LeavePrint.js")"></script>
+}

@@ -1,0 +1,164 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaCycleRationCreateViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "DeletePfaCycleRation";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog" style="width:1200px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">評等人數配比設定</h4>
+        </div>
+        @using (Html.BeginForm("Delete", "PfaCycleRation", FormMethod.Post, new { @id = "DeletePfaCycleRationForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body" style="height:500px; overflow-y:scroll">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">考核批號</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("PfaCycleID", Model.CycleList, new { @id = "PfaCycleID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">部門組織</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("PfaOrgID", Model.OrgList, new { @id = "PfaOrgID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                        <div style="margin: 10px 0px 0px 15px">
+                            <span>@Model.DeptName</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">總人數</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.OrgTotal, new { @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table id="tableData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                            <thead>
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width: 15%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">Performance</div>
+                                    </th>
+                                    <th style="width: 7%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">佔比(%)</div>
+                                    </th>
+                                    <th style="width: 8%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">band</div>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">Multiplier</div>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">總人數</div>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">計算人數</div>
+                                    </th>
+                                    <th style="width: 30%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">分配人數</div>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">核對試算</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyData">
+                                @if (Model.Data != null)
+                                {
+                                    foreach (var item in Model.Data)
+                                    {
+                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                            @Html.Hidden("CycleRationDeleteID", item.ID)
+                                            @Html.Hidden("PfaCycleRationID", item.PfaCycleRationID)
+                                            @Html.Hidden("PfaPerformanceID", item.PfaPerformanceID)
+                                            <td style="white-space:normal; text-align:center">
+                                                @item.Performance
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.Rates
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.band
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.Multiplier
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.Total
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.BudgetTotal
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("Staffing", item.Staffing, new { @class = "form-control", @disabled = true })
+                                            </td>
+                                            <td style="white-space: normal; text-align: center">
+                                                @item.TotalScore
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tbody id="tbodyEnd">
+                                <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                    <td style="white-space:normal;text-align:right;" colspan="6">合計</td>
+                                    <td style="white-space:normal;text-align:center;">
+                                        @Model.StaffingTotal
+                                    </td>
+                                    <td style="white-space:normal;text-align:center;">
+                                        @Model.ScoreTotal
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnDelete" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#btnDelete').click(function () {
+            showConfirm("<div style='text-align:center'>是否要刪除?</div>", function () {
+                var jsonObj = { "id": $("#ID").val() };
+                $.ajax({
+                    url: "PfaCycleRation/DeletePfaCycleRation",
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaAbilityDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>

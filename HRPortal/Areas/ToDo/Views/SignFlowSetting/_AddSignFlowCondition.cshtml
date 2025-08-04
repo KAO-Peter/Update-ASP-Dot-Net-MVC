@@ -1,0 +1,150 @@
+﻿@model HRPortal.Mvc.Models.SignFlowConditionViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "AddSignFlowCondition";
+}
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.SignFlowConditionCreateTitle</h4>
+        </div>
+
+        @using (Html.BeginForm("AddSignFlowCondition", "SignFlowSetting", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "SignFlowConditionForm" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.DesignID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.FormSignLevel</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("FormLevelList", (IEnumerable<SelectListItem>)ViewData["FormLevelList"], new { @class = "form-control", onchange = "formLevelSelected();" })
+                            @Html.HiddenFor(model => model.LevelID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.SignFlowConditionType</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("ConditionTypeList", (IEnumerable<SelectListItem>)ViewData["ConditionTypeList"], new { @class = "form-control", onchange = "conditionTypeSelected();" })
+                            @Html.HiddenFor(model => model.ConditionType)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.SignFlowConditionParameters</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.EditorFor(model => model.Parameters, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAbsentCode" style="display:none">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                        <div class="col-sm-44" style="width:61.333333%">
+                            @Html.DropDownList("AbsentList", (IEnumerable<SelectListItem>)ViewData["AbsentList"], new { @class = "form-control", onchange = "absentSelected();" })
+                            @Html.HiddenFor(model => model.AbsentCode)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input id="btnSave" type="button" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        if ($('#LevelID').val() != '') {
+            $('#FormLevelList option[value="' + $('#LevelID').val() + '"]').attr("selected", true);
+        } else {
+            formLevelSelected();
+        }
+
+        if ($('#ConditionType').val() != '') {
+            $('#ConditionTypeList option[value="' + $('#ConditionType').val() + '"]').attr("selected", true);
+            if ($('#ConditionType').val()=="NDays")
+            {
+                $('#divAbsentCode').show();
+            }
+            else
+            {
+                $('#divAbsentCode').hide();
+            }
+        } else {
+            conditionTypeSelected();
+        }
+
+        if ($('#AbsentCode').val() != '') {
+            $('#AbsentList option[value="' + $('#AbsentCode').val() + '"]').attr("selected", true);
+        } else {
+            absentSelected();
+        }
+
+        //儲存
+        $("#btnSave").click(function (event) {
+            var form = $("#SignFlowConditionForm");
+            var submitData = new FormData(form[0]);
+
+            if (form.validate().form()) {
+                $.ajax({
+                    url: "SignFlowSetting/AddSignFlowCondition",
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        if (submitResult.status == "success") {
+                            $("#AddSignFlowDiv").modal("hide");
+                            showAlertMessage(submitResult.message, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            showAlertMessage(submitResult.message);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    function formLevelSelected() {
+        $('#LevelID').val($('#FormLevelList option:selected').val());
+    }
+
+    function conditionTypeSelected() {
+        $('#ConditionType').val($('#ConditionTypeList option:selected').val());
+
+        if ($('#ConditionType').val()=="NDays")
+        {
+            $('#divAbsentCode').show();
+        }
+        else
+        {
+            $('#divAbsentCode').hide();
+        }
+    }
+
+    function absentSelected() {
+        $('#AbsentCode').val($('#AbsentList option:selected').val());
+    }
+</script>

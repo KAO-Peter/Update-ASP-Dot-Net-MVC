@@ -1,0 +1,129 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script>
+
+	$(document).ready(function() {
+	    //http://saas99.com/blog/?p=32
+	    var today = new Date();
+		$('#calendar').fullCalendar({
+		    defaultDate: formatDate(today),
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'], //默认为英文月分，这里可以改成中文
+			dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'], //换成中文星期
+			dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
+			buttonText: {
+			    today: '今天'
+			},
+			businessHours: true,
+			events: function (start, end, timezone, callback) {
+			    var startDate = new Date(start);
+			    var endDate = new Date(end);
+			    $.ajax({
+			        url: '@Url.Action("EmpScheduleClassTime","Home")',
+			        type: 'POST',
+			        dataType: 'JSON',
+			        data: {
+			            startTime: startDate.toISOString(),
+			            endTime: endDate.toISOString()
+			        },
+			        success: function (doc) {
+			            var events = [];
+			            $(doc).each(function () {
+			                if (this.ClassName != "") {
+			                    events.push({
+			                        title: this.StartTime + ' ~ ' + this.EndTime,
+			                        start: this.StartDate,
+			                        end: this.EndDate,
+			                        allDay: true,
+			                        
+			                        
+			                    })
+			                } else {
+			                    events.push({
+			                        title: this.TimetableName,
+			                        start: this.StartDate,
+			                        end: this.EndDate,
+			                        allDay: true,
+			                        textColor: 'red',		                       
+			                        constraint: 'businessHours',
+			                        borderColor: '#ffffb3',
+			                        backgroundColor:'#ffffb3'
+			                    })
+
+			                }
+			            })
+			            callback(events);
+			            //alert("sucess");
+			        },
+			        error: function (xhr) {
+			            console.log(xhr);
+			            alert("error");
+			        }
+			    });
+			},
+		    eventClick: function (event, jsEvent, view) {
+		        //alert(event.title);
+		       // $("#eventContent").dialog({ modal: true, title: event.title });
+		    },  
+		    eventMouseover: function (event, jsEvent, view) {
+		        $(this).attr('title', event.title);
+		    }
+		});	
+	});
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+</script>
+<style>
+
+	#calendar {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+    .fc-nonbusiness {
+        background-color:yellow;
+    }
+    .fc-unthemed .fc-content {
+        font-size:15px;
+        text-align:center;
+    }
+   
+</style>
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_scheduleCalendar</title>
+</head>
+<body>
+    <div class="links box col-xs-6">
+        <ul>
+            <li class="title col-xs-12"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.ScheduleCalendar</li>
+			<li class="blank col-xs-12"></li>
+            <li>
+                <div id='calendar'></div>
+            </li>
+            <li class="bottom col-xs-12"></li>
+        </ul>    
+    </div>
+    <div id="eventContent"></div>
+</body>
+</html>

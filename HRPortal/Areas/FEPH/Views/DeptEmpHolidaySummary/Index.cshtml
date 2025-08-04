@@ -1,0 +1,168 @@
+﻿@model HRPortal.Mvc.Models.HolidaySummaryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "DeptEmpHolidaySummary", FormMethod.Post, new { id = "HolidaySummaryForm" }))
+{
+    <div class=" row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+        }
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                @if (Model.DepartmentListData != null|| (Model.Role!=null))
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Department</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedDepartment, Model.DepartmentListData, new { @class = "form-control" })
+                        </div>
+                    </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedEmployee, Model.EmployeeListData, new { @class = "form-control" })
+                    </div>
+                </div>
+                }
+                @if (Model.Role!=null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+                        </div>
+                    </div>
+                }
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.yearr</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedYear, Model.YearListData, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                    </div>
+                    <div class="search-input">
+                    </div>
+                </div>
+                @if (Model.DepartmentListData != null)
+                {
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.ExcludedTemporary</label>
+                    </div>
+                    <div class="search-input" style="width: 16px">
+                        @Html.CheckBoxFor(m => m.ChkHireId)
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left: 0px">
+                    <input id="btnQuery" style="width: 100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left: 0px">
+                    <input id="btnClear" style="width: 100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+            <div class="col-sm-12" id="SummaryDetail" style="padding-right: 13px;overflow-x:auto">
+            </div>
+    </div>
+}
+
+<script type="text/javascript">
+    var obj = null;
+
+    $("#SelectedDepartment").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val(),StatusData:$("#SelectedStatuslistData").val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+    $("#SelectedStatuslistData").change(function (event) {
+        $.getJSON('@Url.Action("GetStatusData")', { DepartmentId: $("#SelectedDepartment").val(), StatusData: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null) {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+    $("#btnQuery").click(function (event) {
+        var form = $("#HolidaySummaryForm");
+        var submitData = new FormData(form[0]);
+
+        $.ajax({
+            url: "DeptEmpHolidaySummary/SummaryDetail",
+            type: "POST",
+            data: submitData,
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            success: function (result) {
+                $("#SummaryDetail").html(result);
+            }
+        });
+    });
+
+    $("#btnClear").click(function (event) {
+        empno = "";
+
+        var form = $("#HolidaySummaryForm");
+        var submitData = new FormData(form[0]);
+
+        $.ajax({
+            url: "DeptEmpHolidaySummary/Index",
+            type: "POST",
+            data: submitData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (result) {
+                obj = result;
+
+                $("#SelectedDepartment").val(result.Dept);
+                $("#SelectedDepartment").change();
+                $("#SelectedYear").val(result.Year);
+            }
+        });
+    });
+</script>
+
+

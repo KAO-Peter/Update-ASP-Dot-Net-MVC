@@ -1,0 +1,52 @@
+﻿@model HRPortal.Mvc.Models.HomeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+    <div class="links box col-xs-6" style="border: rgba(80, 20, 111, 0.91) 1px solid;">
+        <ul>
+            <li class="title col-xs-12" style="background-color: rgba(80, 20, 111, 0.91);"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.QuickLinks</li>
+			<li class="blank col-xs-12"></li>
+            
+             @foreach (var item in GetOptionsList())
+            {       
+                 foreach(var i in item.Options)
+                 {
+                     if (i.DisplayName == "無")
+                     {
+                         foreach (var a in i.WebLinkListFEDS.Where(x => x.IsDeleted == false && x.IsUsed == true).OrderBy(x => x.Number))
+                     {
+                    <li class="list col-xs-12">
+					     <a href="@a.WebLink" target="_blank">
+						     <p class="col-xs-10">@a.WebName</p>
+						     <p class="col-xs-2 text-right">></p>
+					     </a>        
+				    </li>
+                     }
+                     }else
+                     {
+                         if (i.WebLinkListFEDS.Where(x => x.IsDeleted == false && x.IsUsed == true).Count()>0)
+                         {
+                         <div class="col-xs-11" style="font-size: 18px;font-weight: bold;color: blue;">@i.DisplayName</div>
+                         }
+                         foreach (var a in i.WebLinkListFEDS.Where(x => x.IsDeleted == false && x.IsUsed == true).OrderBy(x => x.Number))
+                      {
+                              <li class="list col-xs-12">
+					             <a href="@a.WebLink" target="_blank">
+                                    <p class="col-xs-2 text-right">></p>
+						            <p class="col-xs-10">@a.WebName</p>
+					            </a>        
+				             </li>  
+                      }
+                      }
+                }
+                
+            }
+            <li class="bottom col-xs-12"></li>
+            
+        </ul>    
+    </div>
+   
+

@@ -1,0 +1,182 @@
+﻿@model  HRPortal.Mvc.Models.HolidaySummaryViewModel
+@{  decimal total = 0,leaveTotal=0, Jan = 0, Feb = 0, Mar = 0, Apr = 0, May = 0, Jun = 0, Jul = 0, Aug = 0, Sep = 0, Oct = 0, Nov = 0, Dec = 0, ApprovedHours = 0, AnnualLeaveHours = 0;
+    string bgClass = "", empTitle = "";
+ }
+
+<style type="text/css">
+    th, td {
+        text-align: center;
+    }
+    th.ebc {
+        background-color: pink;
+    }
+    th.dbc {
+        background-color: bisque;
+    }
+    .trTop {
+        background-color: lightgray;
+    }
+    .trSummary {
+        background-color: gray; color: white;
+    }
+</style>
+@if (Model == null || Model.DeptDetailDatas.Sum(x => x.PersonalDetailDatas.Count()) == 0)
+{
+    <table class="table table-outline table-bordered fe-table">
+        <tr>
+            <th>@HRPortal.MultiLanguage.Resource.NoData</th>
+        </tr>
+    </table>
+}
+else
+{
+    foreach (var DeptDetailDatas in Model.DeptDetailDatas)
+    {
+        if (DeptDetailDatas != null && DeptDetailDatas.PersonalDetailDatas != null && DeptDetailDatas.PersonalDetailDatas.Count() > 0)
+        {
+        var lastItem = DeptDetailDatas.PersonalDetailDatas.Last();
+        <h4>@DeptDetailDatas.DeptCode @DeptDetailDatas.DeptName</h4>
+<table class="table table-outline table-bordered fe-table">
+    @foreach (var EmployeeItem in DeptDetailDatas.PersonalDetailDatas)
+            {
+                Jan = 0; Feb = 0; Mar = 0; Apr = 0; May = 0; Jun = 0; Jul = 0; Aug = 0; Sep = 0; Oct = 0; Nov = 0; Dec = 0; ApprovedHours = 0; AnnualLeaveHours = 0;
+
+                if (EmployeeItem.EmployeeNo == "SummaryTable")
+	            {
+                    bgClass = "dbc";
+                    empTitle = @EmployeeItem.EmployeeName;
+	            }
+                else
+                {
+                    bgClass = "ebc";
+                    empTitle = string.Format("{0} {1}", @EmployeeItem.EmployeeNo, @EmployeeItem.EmployeeName);
+                }
+                <tr class="trTop">
+                    <th style="text-align: center; background-color: pink">@empTitle
+                    </th>
+                    <th style="text-align: center; background-color: pink">@HRPortal.MultiLanguage.Resource.AnnualLeaveHours</th>
+                    <th style="text-align: center; background-color: pink">@HRPortal.MultiLanguage.Resource.RemainingHours</th>
+                    <th style="text-align: center; background-color: pink">@HRPortal.MultiLanguage.Resource.WaitiAapproval</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_January</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_February</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_March</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_April</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_May</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_June</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_July</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_August</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_September</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_October</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_November</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_December</th>
+                    <th style="text-align: center">@HRPortal.MultiLanguage.Resource.Header_Total</th>
+                </tr>
+    foreach (var EmployeeSummery in EmployeeItem.SummaryDetail)
+                {
+                    if(EmployeeSummery.AnnualLeaveHours != "" && EmployeeSummery.AnnualLeaveHours != "0")
+                        {
+                    total = 0;
+                    ApprovedHours += Decimal.Parse((EmployeeSummery.ApprovedHours == "") ? "0.0" : EmployeeSummery.ApprovedHours);
+                    <tr>
+                        <th style="text-align: center">@EmployeeSummery.TypeName 
+                        </th>
+                        <td style="text-align: center">@((EmployeeSummery.AnnualLeaveHours=="" || EmployeeSummery.AnnualLeaveHours=="0")?"0.0":EmployeeSummery.AnnualLeaveHours)                 
+                        </td>
+                        <td style="text-align: center">@EmployeeSummery.RemainderLeaveHours
+                        </td>
+                        <td style="text-align: center">@((EmployeeSummery.ApprovedHours=="" || EmployeeSummery.ApprovedHours=="0")?"0.0":EmployeeSummery.ApprovedHours)
+                        </td>
+                        @for (int i = 0; i < 12; i++)
+                        {
+                            
+                            switch (i+1)
+                            {
+                                case 1:
+                                    Jan += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 2:
+                                    Feb += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 3:
+                                    Mar += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 4:
+                                    Apr += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 5:
+                                    May += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 6:
+                                    Jun += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 7:
+                                    Jul += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 8:
+                                    Aug += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 9:
+                                    Sep += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 10:
+                                    Oct += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 11:
+                                    Nov += EmployeeSummery.EachMonth[i];
+                                    break;
+                                case 12:
+                                    Dec += EmployeeSummery.EachMonth[i];
+                                    break;
+                                default:
+                                    break;
+                            }
+                            total += EmployeeSummery.EachMonth[i];
+                            <td style="text-align: center">@EmployeeSummery.EachMonth[i]</td>
+                        }
+                        <td style="text-align: center">@total</td>
+                    </tr>
+				}
+			}	
+                <tr class="trSummary">
+                    <th style="text-align: center">總計
+                    </th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center">@ApprovedHours</th>
+                    <th style="text-align: center">@Jan</th>
+                    <th style="text-align: center">@Feb</th>
+                    <th style="text-align: center">@Mar</th>
+                    <th style="text-align: center">@Apr</th>
+                    <th style="text-align: center">@May</th>
+                    <th style="text-align: center">@Jun</th>
+                    <th style="text-align: center">@Jul</th>
+                    <th style="text-align: center">@Aug</th>
+                    <th style="text-align: center">@Sep</th>
+                    <th style="text-align: center">@Oct</th>
+                    <th style="text-align: center">@Nov</th>
+                    <th style="text-align: center">@Dec</th>
+                    <th style="text-align: center"></th>
+                </tr>
+                if (EmployeeItem != lastItem)
+                {
+                  <tr>
+                      <td colspan="17">&nbsp;</td>
+                  </tr>
+                }  
+}
+</table>
+<hr />
+<br />
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+

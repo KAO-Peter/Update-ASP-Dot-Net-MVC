@@ -1,0 +1,133 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.SelJobTitleFunction
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "SelPfaEmpTypeTargets";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">適用職稱</h4>
+        </div>
+        @using (Html.BeginForm("SelPfaEmpTypeTargets", "PfaEmpType", FormMethod.Post, new { @id = "SelPfaEmpTypeTargetsForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.PfaEmpTypeID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">身分類別代碼</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DisplayFor(model => model.PfaEmpTypeCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">身分類別名稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DisplayFor(model => model.PfaEmpTypeName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">適用職稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            <button type="button" id="btnAllSelect" class="btn btn-info">全選</button>
+                            <button type="button" id="btnAllClear" class="btn btn-default">取消</button>
+                            <div style="margin: 10px 0px 0px 15px">
+                                @{var n = 0;
+                                    foreach (var item in Model.JobTitleItems)
+                                    {
+                                        n = n + 1;
+
+                                        if (item.Chk)
+                                        {
+                                            <input type="checkbox" name="chkJobTitle" value="@item.ID" checked="checked" style="width:15px" /><span style="width:190px;display:inline-block">@item.Name</span>
+                                        }
+                                        else
+                                        {
+                                            if (item.Setucompleted)
+                                            {
+                                                <input type="checkbox" name="chkJobTitle" value="@item.ID" style="width:15px" /><span style="width:190px;display:inline-block">@item.Name</span>
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="chkJobTitle" value="@item.ID" style="width:15px" /><span style="width:190px;display:inline-block;color:red;">@item.Name</span>
+                                            }
+                                        }
+                                        if (n % 2 == 0)
+                                        {
+                                            <br />
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        //全選
+        $("button[id='btnAllSelect']").click(function () {
+            $("input[name='chkJobTitle']").prop("checked", true);
+        });
+
+        //取消
+        $("button[id='btnAllClear']").click(function () {
+            $("input[name='chkJobTitle']").prop("checked", false);
+        });
+
+        $('#btnSave').click(function () {
+            var chk = "";
+
+            $("input[name='chkJobTitle']:checked").each(function () {
+                if (chk.length > 0)
+                    chk = chk + "|";
+                chk = chk + $(this).val();
+            });
+
+            if (chk == "") {
+                showAlertMessage("請選擇適用職稱");
+            }
+            else {
+                var submitData = new FormData();
+                submitData.append("PfaEmpTypeID", $("#PfaEmpTypeID").val());
+                submitData.append("SelJboTitleID", chk);
+
+                $.ajax({
+                    url: "PfaEmpType/SelPfaEmpTypeTargets",
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#SelPfaEmpTypeTargetsDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

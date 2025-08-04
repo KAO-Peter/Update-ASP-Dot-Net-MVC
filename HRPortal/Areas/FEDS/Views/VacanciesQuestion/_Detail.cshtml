@@ -1,0 +1,92 @@
+﻿@model HRPortal.Mvc.Models.VacanciesQuestionViewModel
+@Scripts.Render("~/bundles/validate")
+@{
+    ViewBag.Title = "FAQ Detail";
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+     .col-sm-9:before {
+             content: "：";
+            display: inline-block;
+            height: 50px;
+            vertical-align: bottom;
+                  }
+</style>
+<div class="form-horizontal modal-dialog modal-lg">
+@using (Html.BeginForm("CreateReply", "VacanciesQuestion", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.AnswerData.ID);
+    @Html.HiddenFor(m => m.AnswerData.Title);
+    @Html.HiddenFor(m => m.AnswerData.ContentText);
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@Model.AnswerData.Title - @HRPortal.MultiLanguage.Resource.BtnDetail</h4>
+        </div>
+        <div class="modal-body">
+            <div class="tab-content">
+                <div class="form-group">
+                    <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.EmployeeNo</label>
+                    <div class="col-sm-44">
+                        <p class="form-control-static">@ViewBag.EmpID</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+                    <div class="col-sm-44">
+                        <p class="form-control-static">@ViewBag.EmpName</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                    <div class="col-sm-44">
+                        <p class="form-control-static" data-bind="text: department_value">@ViewBag.DeptName</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.Label("提問者", new { @class = "col-md-22", style = "width:15%" })
+                    <div class="col-sm-44" style="margin-top: 6px;">
+                        [@Model.AnswerData.Employee.Department.DepartmentName]
+                        @Html.DisplayFor(model => model.AnswerData.Employee.EmployeeName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("提問時間", new { @class = "col-md-22", style = "width:15%" })
+                    <div class="col-sm-44" style="margin-top: 6px;">
+                        @Html.DisplayFor(model => model.AnswerData.ModifiedTime)
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    @Html.Label("詢問內容", new { @class = "col-md-22", style = "width:15%" })
+                    <div class="col-sm-44" style="margin-top: 6px;word-break: break-all; ">
+                        @Html.Raw(Model.AnswerData.ContentText.Replace("\r\n", "<br/>"))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.ContentText, new { @class = "col-md-2 control-label" })*@
+                    @Html.Label("回覆", new { @class = "col-md-22", style = "width:15%" })
+                    <div class="col-sm-9">
+                        @Html.TextAreaFor(model => model.ReplyData, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReplyData, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" class="btn btn-success" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.Resource.BtnClose</button>
+        </div>
+    </div>
+}
+</div>
+
+

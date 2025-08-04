@@ -1,0 +1,89 @@
+﻿@model IList<HRPortal.DBEntities.Option>
+
+<a style="margin-bottom:10px" class="btn btn-info" id="btnCreateOption" data-modal="" href="@Url.Action("EditOption")">@HRPortal.MultiLanguage.Resource.CreateOption</a>
+<table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+        <th style="width:30%">
+            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.OptionValue
+        </th>
+        <th style="width:25%">
+            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.OptionResourceName
+        </th>
+        <th style="width:30%">
+            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.OptionDisplayName
+        </th>
+        <th style="width:15%">
+        </th>
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.OptionValue)
+                </td>
+
+                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.DisplayResourceName)
+                </td>
+
+                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+
+                <td style="text-align:center"><a style="margin-right: 5px;" class="btn btn-warning" id="btnEdit@(item.ID)" data-modal="" href="@Url.Action("EditOption", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a><a style="" class="btn btn-danger delete-option" id="btnDelete@(item.ID)" href="@Url.Action("DeleteOption", new { optionId = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnDelete</a></td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td colspan="6" style="text-align:center">
+                @HRPortal.MultiLanguage.Resource.NoData
+            </td>
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        $('a[data-modal]').click(function () {
+            $('#OptionDialogContent').load(this.href, function () {
+                $('#OptionDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#OptionDialogDiv', '#OptionDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });
+
+        $('a.delete-option').click(function () {
+            $.ajax({
+                url: this.href,
+                type: 'POST',
+                success: function (result) {
+                    if (result.status == 'success') {
+                        window.location = '@Url.Action("Index")';
+                        location.reload();
+                    } else {
+                        showAlertMessage(result.message);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+    @*$('#btnEditOption').click(function () {
+            $('#OptionDialogContent').load(this.href, function () {
+                $('#OptionDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#OptionDialogDiv', '#OptionDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });*@
+</script>

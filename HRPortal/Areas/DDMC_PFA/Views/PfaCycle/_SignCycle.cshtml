@@ -1,0 +1,196 @@
+﻿@model IEnumerable<HRPortal.Mvc.DDMC_PFA.Models.PfaCycleEmpViewModel>
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "SignCycle";
+}
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Sign", "PfaCycle", FormMethod.Post, new { Id = "SignForm" }))
+{
+    <div class="modal-dialog" style="width:1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">啟動送簽</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 10px; margin-left: 0px;">
+                    @if (ViewBag.Status == "m")
+                    {
+                        <button id="btnEnabled" name="@ViewBag.ID" type="button" class="btn btn-info">啟動送簽</button>
+                    }
+                    <label style="color:red;"> 啟動送簽前，請先設定評等人數配比。送簽後就無法修改該績效考核批號的設定評等人數配比。</label>
+                </div>
+                <div>
+                    <div class="search-container">
+                        <div class="search-section">
+                            <label class="col-md-22" style="width: 20%;">績效考核批號</label>
+                            <div class="col-sm-44" style="width:79%;padding-top:8px">
+                                @ViewBag.PfaFormNo
+                            </div>
+                            <label class="col-md-22" style="width: 20%;">績效考核年度</label>
+                            <div class="col-sm-44" style="width:79%;padding-top:8px">
+                                @ViewBag.PfaYear
+                            </div>
+                            <label class="col-md-22" style="width: 20%;">備註</label>
+                            <div class="col-sm-44" style="width:79%;padding-top:8px">
+                                @ViewBag.Remark
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive" style="height:380px">
+                            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">員工編號</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">員工姓名</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">考核單位</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">職稱</div>
+                                    </th>
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">雇用別</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">到職日</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">離職日</div>
+                                    </th>
+                                    <th style="width:12%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">簽核類別</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">身份類別</div>
+                                    </th>
+                                    <th style="width:5%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">代理<br />自評</div>
+                                    </th>
+                                    <th style="width:10%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">狀態</div>
+                                    </th>
+                                </tr>
+                                @if (Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                           <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.EmployeeNo)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.EmployeeName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.PfaDeptName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.JobTitleName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.HireName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.ArriveDate)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.LeaveDate)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DropDownList("ddlSignType", item.SignTypeList, new { @id = "ddlSignType", @class = "form-control", @disabled =true })
+                                            </td>
+                                             <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.PfaEmpTypeName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.CheckBoxFor(modelItem => item.IsAgent, new { @id = "checkIsAgent", @disabled = true })
+                                            </td>
+                                            <td role="gridcell" style="text-align:center;white-space:normal" aria-describedby="grid-table_notification_count">
+                                                @*m:未送簽 a:考評中 e:考評完成 y:已鎖定(新增時=未送簽，啟動送單=改考評中，全批號簽核結束=考評完成)*@
+                                                @{
+                                                    var tmpStatus = "";
+                                                    switch (item.Status)
+                                                    {
+                                                        case "m":
+                                                            tmpStatus = "未送簽";
+                                                            break;
+                                                        case "a":
+                                                            tmpStatus = "考評中";
+                                                            break;
+                                                        case "e":
+                                                            tmpStatus = "考評完成";
+                                                            break;
+                                                        case "y":
+                                                            tmpStatus = "已鎖定";
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                                @tmpStatus
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td colspan="2" style="text-align:center">@HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        $("#PfaCycleDialogDiv").on("hidden.bs.modal", function () {
+            location.reload();
+        });
+
+        $("#btnEnabled").click(function () {
+            var jsonObj = { "Id": $(this).attr("name")};
+            $.ajax({
+                url: "PfaCycle/Sign",
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    var message = result.message;
+                    showAlertMsg(message, function () {
+                        if (result.success) {
+                            $("#PfaCycleDialogContent").load('@Url.Action("Sign", new { Id = ViewBag.ID })');
+                        }
+                        setModalopen();
+                    });
+                }
+            });
+        });
+    });
+</script>

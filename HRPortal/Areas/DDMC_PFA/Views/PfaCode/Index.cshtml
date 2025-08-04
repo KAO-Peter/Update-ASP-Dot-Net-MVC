@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @if (TempData["PfaCodeGroup"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $('#CurrentPfaCodeGroup').val('@TempData["PfaCodeGroup"]');
+            });
+        </script>
+    }
+    <div class="row btn-toolbar action-buttons">
+        <div class="col-md-4">
+            @Html.DropDownList("PfaCodeGroupList", (IEnumerable<SelectListItem>)ViewData["PfaCodeGroupList"], new { @class = "form-control", onchange = "$('#CurrentPfaCodeGroup').val(this.options[this.selectedIndex].value);loadPfaCodeList(this.options[this.selectedIndex].value);" })
+            <input type="hidden" id="CurrentPfaCodeGroup" />
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="table-responsive" id="PfaCodeList"></div>
+    </div>
+    <div id='PfaCodeDialogDiv' class='modal fade in' role="dialog">
+        <div id='PfaCodeDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        if($('#CurrentPfaCodeGroup').val() != '') {
+            $('#PfaCodeGroupList option[value=' + $('#CurrentPfaCodeGroup').val() + ']').attr('selected', true);
+        } else {
+            $('#CurrentPfaCodeGroup').val($('#PfaCodeGroupList option:selected').val());
+        }
+        loadPfaCodeList($('#CurrentPfaCodeGroup').val());
+    });
+
+    function loadPfaCodeList(PfaCodeGroup) {
+        if(PfaCodeGroup != '') {
+            $.ajax({
+                url: 'PfaCode/LoadPfaCodeList?PfaCodeGroup=' + PfaCodeGroup,
+                type: 'GET',
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#PfaCodeList').html(result);
+                }
+            });
+        }
+    }
+    </script>
+}

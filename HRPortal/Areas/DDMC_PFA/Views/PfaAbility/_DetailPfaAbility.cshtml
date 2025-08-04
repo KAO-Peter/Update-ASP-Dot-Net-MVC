@@ -1,0 +1,119 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaAbilityCreateViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "DetailPfaAbility";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog" style="width:1200px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">勝任能力設定</h4>
+        </div>
+        @using (Html.BeginForm("Detail", "PfaAbility", FormMethod.Post, new { @id = "DetailPfaAbilityForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body" style="height:500px; overflow-y:scroll">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">身分類別</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("EmpTypeID", Model.EmpTypeList, new { @id = "EmpTypeID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">排序</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.Ordering, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.Ordering, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">勝任能力代碼</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.PfaAbilityCode, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.PfaAbilityCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">勝任能力名稱</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.PfaAbilityName, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.PfaAbilityName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">總分</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.TotalScore, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.TotalScore, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">定義</label>
+                        <div class="col-sm-44" style="width:60%">
+                            @Html.TextAreaFor(model=> model.Description, new { @class = "form-control", @disabled = true })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table id="tableData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                            <thead>
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:80px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">排序</div>
+                                    </th>
+                                    <th style="width:300px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">關鍵行為指標</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">上限</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">下限</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyData">
+                                @if (Model.Data != null)
+                                {
+                                    foreach (var item in Model.Data)
+                                    {
+                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td style="white-space:normal; text-align:center">
+                                                @item.Ordering
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("PfaAbilityKey", item.PfaAbilityKey, new { @class = "form-control", @style = "width:70%", @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("UpperLimit", item.UpperLimit, new { @class = "form-control", @style = "width:70%", @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("LowerLimit", item.LowerLimit, new { @class = "form-control", @style = "width:70%", @disabled = true })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>

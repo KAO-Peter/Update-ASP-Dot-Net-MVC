@@ -1,0 +1,327 @@
+﻿@model IEnumerable<HRPortal.Mvc.DDMC_PFA.Models.PfaCycleEmpViewModel>
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "PfaCycleEmp";
+}
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("PfaCycleEmpQuery", "PfaCycle", FormMethod.Post, new { Id = "PfaCycleEmpForm" }))
+{
+    <div class="modal-dialog" style="width:1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">績效考核員工</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 10px; margin-left: 0px;">
+                    @if (ViewBag.Status == "m")
+                    {
+                        <button id="btnConfirm" name="@Url.Action("PfaCycleEmpConfirm", new { @ID = ViewBag.ID })" type="button" class="btn btn-success" data-toggle="modal">確認</button>
+                    }
+                </div>
+                <div>
+                    <div class="search-container">
+                        <div class="search-section">
+                            <div class="col-xs-4">
+                                <div class="search-name">
+                                    <label>部門</label>
+                                </div>
+                                <div class="search-input">
+                                    @Html.DropDownList("DepartmentID", (List<SelectListItem>)ViewBag.DepartmentList, new { @id = "DepartmentID", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-section">
+                            <div class="col-xs-4">
+                                <div class="search-name">
+                                    <label>員工編號</label>
+                                </div>
+                                <div class="search-input">
+                                    <input type="text" id="EmployeeNo" name="EmployeeNo" value="@ViewBag.EmployeeNo" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="search-name">
+                                    <label>員工姓名</label>
+                                </div>
+                                <div class="search-input">
+                                    <input type="text" id="EmployeeName" name="EmployeeName" value="@ViewBag.EmployeeName" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-wrap">
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnSubQuery" style="width:100%" name="btnQuery" type="button" value="查詢" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnSubClear" style="width:100%" name="btnClear" type="button" value="清除" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive" style="height:520px">
+                            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    @if (ViewBag.Status == "m")
+                                    {
+                                        <th style="width:5%">
+                                            <div id="jqgh_grid-table_code" style="text-align:center;">
+                                                <input type="checkbox" id="chkAll" name="chkAll" />
+                                            </div>
+                                        </th>
+                                    }
+                                    <th style="width:7%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">員工編號</div>
+                                    </th>
+                                    <th style="width:9%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">員工姓名</div>
+                                    </th>
+                                    <th style="width:9%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">考核單位</div>
+                                    </th>
+                                    <th style="width:9%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">職稱</div>
+                                    </th>
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">雇用別</div>
+                                    </th>
+                                    <th style="width:9%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">到職日</div>
+                                    </th>
+                                    <th style="width:9%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">離職日</div>
+                                    </th>
+                                    <th style="width:12%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">簽核類別</div>
+                                    </th>
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">身份類別</div>
+                                    </th>
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">是否<br/>配比</div>
+                                    </th>
+                                    <th style="width:8%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">代理<br/>自評</div>
+                                    </th>
+                                </tr>
+                                @if (Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                            @if (ViewBag.Status == "m")
+                                            {
+                                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                                    <div id="jqgh_grid-table_code" name="@item.EmployeeID" style="text-align:center;">
+                                                        @if (item.Status == "m")
+                                                        {
+                                                            <input type="checkbox" id="chkData" name="chkData" />
+                                                        }
+                                                    </div>
+                                                </td>
+                                            }
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.EmployeeNo)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.EmployeeName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.PfaDeptName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.JobTitleName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.HireName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.ArriveDate)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.LeaveDate)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @if (item.Status == "m")
+                                                {
+                                                    @Html.DropDownList("ddlSignType", item.SignTypeList, new { @id = "ddlSignType", @class = "form-control" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.DropDownList("ddlSignType", item.SignTypeList, new { @id = "ddlSignType", @class = "form-control", @disabled = true })
+                                                }
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.PfaEmpTypeName)
+                                            </td>
+                                             <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @if (item.Status == "m")
+                                                {
+                                                    @Html.CheckBoxFor(modelItem => item.IsRatio, new { @id = "checkIsRatio" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.CheckBoxFor(modelItem => item.IsRatio, new { @id = "checkIsRatio", @disabled = true })
+                                                }
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                @if (item.Status == "m")
+                                                {
+                                                    @Html.CheckBoxFor(modelItem => item.IsAgent, new { @id = "checkIsAgent" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.CheckBoxFor(modelItem => item.IsAgent, new { @id = "checkIsAgent", @disabled = true })
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td colspan="10" style="text-align:center">@HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div style="text-align:center;height:158px">
+                            @* 在後面對pagelist做轉型 *@
+                            @using PagedList
+                            @using PagedList.Mvc
+                            @{
+                                var data = Model as IPagedList<HRPortal.Mvc.DDMC_PFA.Models.PfaCycleEmpViewModel>;
+                            }
+                            @{
+                                if (IsAjax)
+                                { Layout = ""; }
+                            }
+                            @if (Model.Count() > 0)
+                            {
+                                @Html.PagedListPager(data, page => Url.Action("PfaCycleEmpQuery",
+                                new { page, Cmd = "Query", DepartmentID = ViewBag.DepartmentID, EmployeeNo = ViewBag.EmployeeNo, EmployeeName = ViewBag.EmployeeName }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                                @Html.PagedListPager(data, page => Url.Action("PfaCycleEmpQuery",
+                                new { page, Cmd = "Query", DepartmentID = ViewBag.DepartmentID, EmployeeNo = ViewBag.EmployeeNo, EmployeeName = ViewBag.EmployeeName }), new PagedListRenderOptions
+                                {
+                                    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                    DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                    DisplayLinkToIndividualPages = false,
+                                    //LinkToFirstPageFormat = "<<第一頁",
+                                    //LinkToPreviousPageFormat = "<前一頁",
+                                    //LinkToNextPageFormat = "後一頁>",
+                                    //LinkToLastPageFormat = "最末頁>>",
+                                    DisplayPageCountAndCurrentLocation = true,
+                                    PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.Pageof,
+                                    DisplayItemSliceAndTotal = true,
+                                    ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.ofrow
+                                })
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    var url = '@Url.Action("PfaCycleEmpQuery")';
+
+    $(function () {
+        $("#chkAll").click(function () {
+            $("input[type='checkbox'][name='chkData']").prop("checked", $(this).prop("checked"));
+        });
+
+        $("#btnSubQuery").click(function (event) {
+            var sID = $("#ID").val();
+            var sDepartmentID = $("#DepartmentID").val();
+            var sEmployeeNo = $("#EmployeeNo").val();
+            var sEmployeeName = $("#EmployeeName").val();
+
+            var href = url + "?Cmd=Query" +
+                "&DepartmentID=" + sDepartmentID +
+                "&EmployeeNo=" + sEmployeeNo +
+                "&EmployeeName=" + sEmployeeName
+
+            if (href != null) {
+                $("#PfaCycleDialogContent").load(href);
+            }
+        });
+
+        $("#btnSubClear").click(function (event) {
+            var sID = $("#ID").val();
+
+            var href = url + "?Cmd=Clear";
+
+            if (href != null) {
+                $("#PfaCycleDialogContent").load(href);
+            }
+        });
+
+        $("div[id='PfaCycleDialogContent'] li a").click(function (event) {
+            event.preventDefault();
+
+            var href = $(this).attr("href");
+
+            if (href != null) {
+                $("#PfaCycleDialogContent").load(href);
+            }
+        });
+
+        $("#btnConfirm").click(function () {
+            var nidx = 0;
+            var item = [];
+
+            $("input[type='checkbox'][name='chkData']:checked").each(function () {
+                item[nidx] = new Object();
+                item[nidx].EmployeeID = $(this).parent("div").attr("name");
+                item[nidx].SignTypeID = $(this).parent("div").parent("td").parent("tr").find("select[name='ddlSignType']").val();
+                item[nidx].IsAgent = $(this).parent("div").parent("td").parent("tr").find("input[id='checkIsAgent']").is(':checked');
+                item[nidx].IsRatio = $(this).parent("div").parent("td").parent("tr").find("input[id='checkIsRatio']").is(':checked');
+                nidx += 1;
+            });
+
+            if (nidx == 0) {
+                showAlertMsg("請選擇要調整的員工資料");
+                return false;
+            }
+
+            var jsonObj = { "model": item };
+
+            $.ajax({
+                url: $(this).attr("name"),
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    var message = result.message;
+
+                    showAlertMsg(message, function () {
+                        if (result.success) {
+                            $('#btnSubQuery').click();
+                        }
+                        setModalopen();
+                    });
+                }
+            });
+        });
+    });
+</script>

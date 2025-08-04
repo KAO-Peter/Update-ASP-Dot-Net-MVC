@@ -1,0 +1,245 @@
+﻿@model HRPortal.Mvc.Models.LoginViewModel
+@{
+    Layout = "_Login.cshtml";
+    ViewBag.Title = "HR PORTAL SYSTEM";
+}
+@section login_scripts {
+    <script>
+        $('button[type=submit]').on('click', function () {
+            var $btn = $(this).button('loading');
+        })
+
+        $(function () {
+            $("#CompanyList").change(function () {
+                $("#Company").val($(this).val());
+            });
+            $("#Company").val($("#CompanyList").val());
+
+            $.ajaxSetup({ cache: false });
+
+            $('#linkResetPassword').click(function () {
+                $('#ResetPasswordDialogContent').load(this.href, function () {
+                    $('#ResetPasswordDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+
+                    $('form', this).submit(function () {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            success: function (result) {
+                                if (result.success) {
+                                    $('#ResetPasswordDialogDiv').modal('hide');
+                                } else {
+                                    $('#ResetPasswordDialogContent').html(result);
+                                }
+                            }
+                        });
+                        return false;
+                    });
+
+                });
+                return false;
+            });
+
+            $('#loginForm button[type=submit]').click(function () { postLogin(loginResultHandler) });
+
+            //偵測背景圖檔是否存在
+            if ('@ViewBag.customerBackground.ToString().ToLower()' == 'true') {
+                $('#index').addClass('customBackground')
+            } else {
+                $('#index').addClass('defaultBackground');
+            }
+
+            //偵測登入區LOGO檔
+            if ('@ViewBag.customerLogoPicture.ToString().ToLower()' == 'false') {
+                $('#index header').remove();
+            }
+            
+            //偵測登入區右邊圖檔
+            if ('@ViewBag.customerRightPicture.ToString().ToLower()' == 'false') {
+                $('div#rightIndexPic').remove();
+                //$('div#loginBox').css({ 'margin-left': '25%' }); //遠百沒有客製化登入首頁 先註解(平板直立的時候會有問題)
+                $('#index .login .box h2').css({ 'color': '#333' });
+            }
+
+        });
+
+        function loginResultHandler(result) {
+            if (result.Status == 0) {   // Success
+                var url = '@Url.Action("Index", "Home")';
+                window.location.replace(url);
+            } else if (result.Status == 1) {    // Failed
+                //$('#loginForm .validation-summary-valid ul').append('<li>' + result.Message + '</li>');
+                showAlertMessage(result.Message);
+                //20170410 Start 
+                $('#loginForm button[type=submit]').button('reset');
+                //20170410 End
+            } else if (result.Status == 2) {    // Password Expired
+                var url = '@Url.Action("ChangePassword", "Login")';
+                $('#ChangePasswordDialogContent').load(url, function () {
+                    $('#ChangePasswordForm #CurrentPassword').val($('#loginForm #Password').val());
+                    $('#ChangePasswordForm #CurrentPassword').change();
+                    $('#ChangePasswordForm #CurrentPassword').attr("readonly", "readonly");
+                    $('button.close').click(function () { location.reload() });
+
+                    $('#ChangePasswordDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                });
+                //20170410 Start
+                $('#loginForm button[type=submit]').button('reset');
+                //20170410 End
+            }
+            //20170410 Start
+            //$('#loginForm button[type=submit]').button('reset');
+            //20170410 End
+        }
+
+        function postLogin(successCallback) {
+            $("#loginForm").submit(function (e) {
+                e.preventDefault();
+            });
+            if ($('#loginForm').validate().form()) {
+                //20170331 Start 增加 by Daniel，增加Session Timeout檢查
+                $.post('@Url.Action("CheckEncryptKey", "Login")', null,
+                    function (response)
+                    {
+                        var encryptKey = $('#encryptKey').val();
+                        if (response.SessionExpired) //Session Timeout會產生新的Key
+                        {
+                            encryptKey=response.NewKey;
+                        }
+
+                        var loginData = new FormData();
+                        loginData.append('__RequestVerificationToken', $('input[name=__RequestVerificationToken]').val());
+                        loginData.append('Company', $('#loginForm #Company').val());
+                        loginData.append('Account', $('#loginForm #Account').val());
+
+                        //loginData.append('Password', encryptString($('#loginForm #Password').val(), $('#encryptKey').val()));
+                        loginData.append('Password', encryptString($('#loginForm #Password').val(), encryptKey));
+
+                        $.ajax({
+                            url: $('#loginForm').attr('action'),
+                            type: $('#loginForm').attr('method'),
+                            data: loginData,
+                            contentType: false,
+                            processData: false,
+                            success: successCallback,
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                showAlertMessage('登入時發生錯誤，請重新操作', function () {
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                    },"json"
+                )
+                //20170331 End
+ 
+            }
+            else {
+                $('#loginForm button[type=submit]').button('reset');
+            }
+        }
+
+        function onChangePasswordSuccess() {
+            var url = '@Url.Action("Index", "Home")';
+            window.location.replace(url);
+        }
+    </script>
+@Scripts.Render("~/bundles/validate")
+
+}
+
+
+<input type="hidden" id="encryptKey" value='@Session["PublicKey"]' />
+@using (Html.BeginForm("Index", "Login", FormMethod.Post, new { role = "form", id = "loginForm", autocomplete = "off" }))
+{
+     
+    <div id="index" class="container-fluid">
+        <header>
+			<div class="row">
+				<ul class="col-xs-12">
+					<li class="col-xs-12 col-sm-4 pull-right"><div id="logoIcon" class="img-responsive"></div></li>
+					<li class="col-xs-12 col-sm-8 pull-left"><h1 id="companyName">@ViewBag.OriginalCompanyName</h1></li>
+				</ul>
+			</div>
+		</header>
+        <section class="login">
+			<div class="col-xs-12 col-md-6 pull-right">
+				<div id="rightIndexPic" class="index-pic img-responsive"></div>
+			</div>
+			<div id="loginBox" class="col-xs-12 col-md-5 col-md-offset-1">
+				<ul class="box" style="max-height: 530px;">
+					<li class="text-center title"><h2>@ViewBag.title</h2></li>
+                    @Html.ValidationSummary("", new { @class = "h4 text-danger" ,style="display:none;"})
+                    @Html.AntiForgeryToken()
+					<li>
+						<form role="form">
+						  <div class="form-group">
+						    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><label for="Department">DEPARTMENT</label>
+							@Html.DropDownList("CompanyList", (List<SelectListItem>)ViewBag.CompanyList, new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#CompanyData');" })
+                            @Html.HiddenFor(m => m.Company)
+						  </div>
+						  <div class="form-group">
+						    <span class="glyphicon glyphicon-user" aria-hidden="true"></span><label for="Code">CODE</label>
+						    @Html.TextBoxFor(m => m.Account, new { @class = "form-control", placeholder = "Code" })
+						  </div>
+                            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+						  <div class="form-group">
+						    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span><label for="Password">PASSWORD</label>
+						    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+						    <a id="linkResetPassword" href="@Url.Action("ResetPassword", "Login")" class="help-block">Forgot Your Password?</a>
+						  </div>
+                          @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            <label for="Password" style="font-weight: bold;color: red;text-align:left; ">提醒您：密碼連續輸入錯誤3次，將被鎖定，請逕洽HR。</label>
+						  <button type="submit" class="btn btn-primary btn-lg btn-block" data-loading-text="Login...">LOGIN</button>
+						  <p id="mainContent" style="word-wrap:break-word; word-break:normal;font-weight:bolder;color:black;text-align:left; " class="small text-center">@ViewBag.ContactPrincipal</p>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</section>
+    </div>
+    <input type="hidden" value="@ViewBag.CompanyData" name="CompanyData" id="CompanyData"  />
+}
+
+<div id='ChangePasswordDialogDiv' class='modal fade in' role="dialog">
+    <div id='ChangePasswordDialogContent'></div>
+</div>
+
+<div id='ResetPasswordDialogDiv' class='modal fade in' role="dialog">
+    <div id='ResetPasswordDialogContent'></div>
+</div>
+<script>
+    function ChangeStatus(form, fileId, formName) {
+       
+        var loginData = new FormData();
+
+        loginData.append('CompanyID', fileId);      
+        $.ajax({
+                 url: '@Url.Action("CompanyData")',
+                 type: 'POST',
+                 data: loginData,
+                 contentType: false,
+                 processData: false,
+                 success: function (result) {
+                     $('#mainContent').html(result.ContactPrincipal);
+                     $('h1#companyName').html(result.CompanyName)
+                 },
+                 error: function (request, error) {
+                     //your code here
+                     console.log(arguments);
+                     alert(" Can't do because: " + error);
+                 }
+             });
+
+    }
+
+
+
+</script>
+

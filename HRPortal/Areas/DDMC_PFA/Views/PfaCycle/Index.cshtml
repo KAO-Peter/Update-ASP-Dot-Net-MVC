@@ -1,0 +1,312 @@
+﻿@model IEnumerable<HRPortal.DBEntities.DDMC_PFA.PfaCycle>
+@using HRPortal.Services.DDMC_PFA.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a class="btn btn-info" data-modal="" href="@Url.Action("Create", new { id = "btnCreate" })" data-action="4" style="margin-bottom: 10px;">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnCreate</a>
+
+@using (Html.BeginForm("Index", "PfaCycle", FormMethod.Post, new { Id = "PfaCycleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMsg(message);
+            });
+        </script>
+    }
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>績效考核年度</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtFormNo" name="txtFormNo" value="@ViewBag.txtFormNo" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>績效考核批號</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtFormNo" name="txtFormNo" value="@ViewBag.txtFormNo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">績效考核批號</div>
+                        </th>
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">績效考核年度</div>
+                        </th>
+                        <th style="width:29%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">備註</div>
+                        </th>
+                        <th style="width:15%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">狀態</div>
+                        </th>
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.ID">
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnPfaCycleEmp" data-modal="" href="@Url.Action("PfaCycleEmpQuery", new { Id = item.ID })">@item.PfaFormNo</a>
+                                </td>
+                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaYear)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Desription)
+                                </td>
+                                <td role="gridcell" style="white-space:normal ; text-align:center" aria-describedby="grid-table_notification_count">
+                                    @*狀態 m:未送簽 a:考評中 e:考評完成 y:已鎖定(新增時=未送簽，啟動送單=改考評中，全批號簽核結束=考評完成)*@
+                                    @{
+                                        var tmpStatus = "";
+                                        switch (item.NowStatus)
+                                        {
+                                            case PfaCycle_Status.NotSubmitted:
+                                                tmpStatus = "未送簽";
+                                                break;
+                                            case PfaCycle_Status.InApprovalProcess:
+                                                tmpStatus = "考評中";
+                                                break;
+                                            case PfaCycle_Status.PfaFinish:
+                                                tmpStatus = "考評完成";
+                                                break;
+                                            case PfaCycle_Status.Lock:
+                                                tmpStatus = "已鎖定";
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                    @tmpStatus
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.IsEdit)
+                                    {
+                                        <a id="btnRation" class="btn btn-info" data-modal="" href="@Url.Action("Index", "PfaCycleRation", new { txtCycleID = item.ID })" data-action="4">人數配比</a>
+                                    }
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.IsSign)
+                                    {
+                                        <a id="btnSign" class="btn btn-primary" data-modal="" href="@Url.Action("Sign", new { Id = item.ID })" data-action="4">啟動送簽</a>
+                                    }
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.canReject)
+                                    {
+                                        <a id="btnReject" class="btn btn-warning" data-modal=""
+                                           href="@Url.Action("RejectQuery", new { pfaCycleId = item.ID })"
+                                           data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.Button_RejectForm</a>
+
+                                    }
+                                    @if (item.IsLock)
+                                    {
+                                        <a id="btnLock" class="btn btn-danger" data-modal=""
+                                           href="@Url.Action("Lock", new { Id = item.ID })"
+                                           data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.IsLocked</a>
+                                    }
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.IsEdit)
+                                    {
+                                        <a id="btnEdit" class="btn btn-warning" data-modal="" href="@Url.Action("Edit", new { Id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnEdit</a>
+                                    }
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnDetail" class="btn btn-warning" data-modal="" href="@Url.Action("Detail", new { Id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDetail</a>
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.IsEdit)
+                                    {
+                                        <a id="btnDel" class="btn btn-danger" data-modal="" href="@Url.Action("Delete", new { Id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.DBEntities.DDMC_PFA.PfaCycle>;
+                }
+                @{
+                    if (IsAjax)
+                    { Layout = ""; }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, txtFormNo = ViewBag.txtFormNo, cmd = "Query" }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, txtFormNo = ViewBag.txtFormNo, cmd = "Query" }), new PagedListRenderOptions
+                            {
+                                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                DisplayLinkToIndividualPages = false,
+                                //LinkToFirstPageFormat = "<<第一頁",
+                                //LinkToPreviousPageFormat = "<前一頁",
+                                //LinkToNextPageFormat = "後一頁>",
+                                //LinkToLastPageFormat = "最末頁>>",
+                                DisplayPageCountAndCurrentLocation = true,
+                                PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.Pageof,
+                                DisplayItemSliceAndTotal = true,
+                                ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.ofrow
+                            })
+                }
+            </div>
+        }
+    </div>
+}
+
+<div id='PfaCycleDialogDiv' class='modal fade in' role="dialog"><div id='PfaCycleDialogContent'></div></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var selUrl = "";
+        var reload = "1";
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $('a[data-modal]').click(function () {
+                selUrl = this.href;
+                reload = "1";
+                var datareload = $(this).attr("data-reload");
+
+                if (!(datareload === undefined) && datareload == '0') {
+                    console.log(datareload);
+                    reload = "0";
+                }
+
+                $('#PfaCycleDialogContent').load(selUrl, function () {
+                    $('#PfaCycleDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                });
+                return false;
+            });
+
+            $("#PfaCycleDialogDiv").on("hidden.bs.modal", function () {
+                if (reload == "1") location.reload();
+            });
+
+            $("a[id='btnRation']").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr("href");
+                window.location.href = href;
+            });
+
+            var $btnReject = $('#btnReject');
+            var $btnLock = $('#btnLock');
+
+            $btnLock.click(function (event) {
+                event.preventDefault();
+
+                var href = $(this).attr("href");
+
+                showConfirm("<div style='text-align:center'>是否鎖定該筆資料?</div>", function () {
+                    $.ajax({
+                        url: href,
+                        type: "POST",
+                        async: true,
+                        dataType: "json",
+                        success: function (result) {
+                            var message = result.message;
+
+                            showAlertMsg(message, function () {
+                                if (result.success) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                });
+                $('.bootbox.modal').on('hidden.bs.modal', function () {
+                    $('#PfaCycleDialogDiv').modal('hide');
+                });
+            });
+
+
+            function rejectSubmit() {
+                var $this = $btnReject;
+                var href = '@Url.Action("Reject")';
+                var PfaCycleId = $this.attr('PfaCycleId');
+
+                showConfirm("<div style='text-align:center'>是否退回</div>", function () {
+                    $.ajax({
+                        url: href,
+                        type: "POST",
+                        async: true,
+                        data: {
+                            PfaCycleId: PfaCycleId,
+                        },
+                        dataType: "json",
+                        success: function (result) {
+
+                            var message = result.message;
+
+                            showAlertMsg(message, function () {
+                                if (result.success) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                });
+
+                $('.bootbox.modal').on('hidden.bs.modal', function () {
+                    $('#PfaCycleDialogDiv').modal('hide');
+                });
+            }
+
+        });
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@model HRPortal.Mvc.Models.ElectronicSignViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_SmallElectronicSign</title>
+</head>
+<body>
+    <div class="links box col-xs-6"style="border: #337ab7 1px solid;">
+        <ul>
+            <li class="title col-xs-12 " style="background-color: #337ab7;"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.SmallElectronicSign</li>
+			<li class="blank col-xs-12"></li>
+            <li class="col-xs-12">
+                <label class="col-sm-2" style="line-height:30px; font-size: 13px;">@HRPortal.MultiLanguage.Resource.Passinandout</label>
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(m => m.ClockInWayType, Model.ClockInWay, new { @class = "form-control" })
+                </div>
+            </li>
+            <li class="col-xs-12">
+                <div class="col-sm-12" style="margin-top:10px;">
+                    <button type="button" id="btnElectronicSignFormSubmit" class="btn btn-success" style="background-color: #337ab7;border-color: #337ab7; float:right;">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                </div>
+            </li>
+            <li class="bottom col-xs-12"></li>
+        </ul>    
+    </div>
+</body>
+</html>
+
+<script>
+    $('#btnElectronicSignFormSubmit').click(function () {
+        $.ajax({
+            url: '@Url.Action("ElectronicSignToHRM","Home")',
+            type: 'POST',
+            data: {
+                ClockInWayType: $("select#ClockInWayType option:selected").val()
+            },
+            error: function (xhr) {
+                alert('Ajax request 發生錯誤');
+            },
+            success: function (response) {
+                bootbox.dialog({
+                    title: "電子簽到送出確認",
+                    message: "打卡時間:"+response.message,
+                    buttons: {
+                        success: {
+                            label: "確定",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+    })
+</script>

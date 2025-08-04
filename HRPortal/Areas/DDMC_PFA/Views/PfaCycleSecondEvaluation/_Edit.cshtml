@@ -1,0 +1,1150 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaCycleEmpSignViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditForm";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 2px 4px;
+        cursor: pointer;
+        font-weight: normal;
+        box-shadow: 1px 1px 2px #bcbcbc;
+    }
+
+    .ui-jqgrid td input[type="file"] {
+        position: fixed;
+        right: 100%;
+        bottom: 100%;
+    }
+
+    .needstar:before {
+        content: "*";
+        color: red;
+    }
+</style>
+
+<div class="modal-dialog" style="width:85%;max-width:1200px;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">績效考核複核</h4>
+        </div>
+        <div id="form" class="modal-body">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a id="tabDetail" href="#detail" data-toggle="tab">詳細資料</a>
+                </li>
+                <li>
+                    <a id="tabHistory" href="#history" data-toggle="tab">簽核紀錄</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <style>
+                    .form-control-static:before {
+                        content: "：";
+                        display: inline-block;
+                    }
+                </style>
+                <div class="tab-pane active" id="detail">
+                    <div>
+                        @using (Html.BeginForm("Edit", "PfaCycleSecondEvaluation", FormMethod.Post, new { @id = "EditForm", @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.ValidationSummary(true)
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(x => x.PfaSignProcessID)
+                            @Html.HiddenFor(x => x.PfaCycleID)
+                            @Html.HiddenFor(x => x.PfaCycleEmpID)
+                            @Html.HiddenFor(x => x.PfaOrgID)
+                            @Html.HiddenFor(x => x.SignStatus)
+                            @Html.HiddenFor(x => x.IsRatio)
+                            <div id="modal-body">
+                                <table id="FormTable" class="table-bordered ui-jqgrid" style="width:100%">
+                                    <tbody>
+                                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                            <td align="left" colspan="4" style="padding-left: 15px">編輯</td>
+                                        </tr>
+                                        <tr role="row" class="ui-widget-content ui-row-ltr">
+                                            <td style="white-space:normal" colspan="4">
+                                                <table class="table-bordered ui-jqgrid" style="width:100%">
+                                                    <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                        <td class="col-xs-2" style="text-align:center">部門組織</td>
+                                                        <td class="col-xs-4" style="text-align:center">@Model.PfaOrgName</td>
+                                                        <td class="col-xs-2" style="text-align:center">部門</td>
+                                                        <td class="col-xs-4" style="text-align:center">@Model.PfaDeptName</td>
+                                                    </tr>
+                                                    <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                        <td class="col-xs-2" style="text-align:center">員工編號</td>
+                                                        <td class="col-xs-4" style="text-align:center">@Model.EmployeeNo</td>
+                                                        <td class="col-xs-2" style="text-align:center">員工姓名</td>
+                                                        <td class="col-xs-4" style="text-align:center">@Model.EmployeeName</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr role="row" class="ui-widget-content ui-row-ltr">
+                                            <td align="left" colspan="4" style="padding-left: 15px">
+                                                <ul class="nav nav-tabs">
+                                                    <li class="active">
+                                                        <a id="tabBasicInf" href="#basicInf" data-toggle="tab">同仁基本資料</a>
+                                                    </li>
+                                                    <li>
+                                                        <a id="tabPerformance" href="#performance" data-toggle="tab">工作績效評核</a>
+                                                    </li>
+                                                    <li>
+                                                        <a id="tabAbility" href="#ability" data-toggle="tab">勝任能力評核</a>
+                                                    </li>
+                                                    <li>
+                                                        <a id="tabCheck" href="#check" data-toggle="tab">主管複核</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <style>
+                                                        .form-control-static:before {
+                                                            content: "：";
+                                                            display: inline-block;
+                                                        }
+                                                    </style>
+                                                    <div class="tab-pane active" id="basicInf">
+                                                        <table id="FormBasicInfTable" class="table-bordered ui-jqgrid" style="width:100%">
+                                                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                <td align="left" colspan="4" style="padding-left: 15px">基本資料</td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">到職日期</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.ArriveDate</td>
+                                                                <td class="col-xs-2" style="text-align:center">教育程度</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.Education</td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">學歷</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.SchoolName</td>
+                                                                <td class="col-xs-2" style="text-align:center">科系</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.DeptDescription</td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">職稱</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.JobTitleName</td>
+                                                                <td class="col-xs-2" style="text-align:center">職務</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.JobFunctionName</td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td style="text-align:center">
+                                                                    考勤紀錄<br />
+                                                                    <span style="font-size:small;color:#777">@Model.DutyBeginEndDate</span>
+                                                                </td>
+                                                                <td style="white-space:normal;text-align:center">
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-5 control-label">
+                                                                            <label style="font-weight:normal;font-size:14px;color:#333">早退</label>
+                                                                        </div>
+                                                                        <div class="col-sm-7" style="padding-top:7px">
+                                                                            @{var strLateLE = Model.LateLE.HasValue ? Model.LateLE.Value.ToString() : "";}
+                                                                            <span id="LateLE" name="LateLE" class="col-sm-3">@strLateLE</span>
+                                                                            <span>次</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-5 control-label">
+                                                                            <label style="font-weight:normal;font-size:14px;color:#333">事假</label>
+                                                                        </div>
+                                                                        <div class="col-sm-7" style="padding-top:7px">
+                                                                            @{var strPersonalLeave = Model.PersonalLeave.HasValue ? Model.PersonalLeave.Value.ToString() : "";}
+                                                                            <span id="PersonalLeave" name="PersonalLeave" class="col-sm-3">@strPersonalLeave</span>
+                                                                            <span>小時</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-5 control-label">
+                                                                            <label style="font-weight:normal;font-size:14px;color:#333">病假</label>
+                                                                        </div>
+                                                                        <div class="col-sm-7" style="padding-top:7px">
+                                                                            @{var strSickLeave = Model.SickLeave.HasValue ? Model.SickLeave.Value.ToString() : "";}
+                                                                            <span id="SickLeave" name="SickLeave" class="col-sm-3">@strSickLeave</span>
+                                                                            <span>小時</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-5 control-label">
+                                                                            <label style="font-weight:normal;font-size:14px;color:#333">曠職</label>
+                                                                        </div>
+                                                                        <div class="col-sm-7" style="padding-top:7px">
+                                                                            @{var strAWL = Model.AWL.HasValue ? Model.AWL.Value.ToString() : "";}
+                                                                            <span id="AWL" name="AWL" class="col-sm-3">@strAWL</span>
+                                                                            <span>小時</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="text-align:center">績效考核紀錄</td>
+                                                                <td style="text-align:center">
+                                                                    <span style="white-space:pre-line;">@Model.StrPerformance</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                <td align="left" colspan="4" style="padding-left: 15px">薪給資料</td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">目前職等</td>
+                                                                <td class="col-xs-4" style="text-align:center">@Model.GradeName</td>
+                                                                <td class="col-xs-2" style="text-align:center">本薪</td>
+                                                                <td class="col-xs-4" style="text-align:center">
+                                                                    @{var salary01 = Model.Salary01.HasValue ? Model.Salary01.Value.ToString("N0") : "";}
+                                                                    @salary01
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">主管加給</td>
+                                                                <td class="col-xs-4" style="text-align:center">
+                                                                    @{var salary02 = Model.Salary02.HasValue ? Model.Salary02.Value.ToString("N0") : "";}
+                                                                    @salary02
+                                                                </td>
+                                                                <td class="col-xs-2" style="text-align:center">免稅伙食津貼</td>
+                                                                <td class="col-xs-4" style="text-align:center">
+                                                                    @{var salary04 = Model.Salary04.HasValue ? Model.Salary04.Value.ToString("N0") : "";}
+                                                                    @salary04
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">交通津貼</td>
+                                                                <td class="col-xs-4" style="text-align:center">
+                                                                    @{var salary03 = Model.Salary03.HasValue ? Model.Salary03.Value.ToString("N0") : "";}
+                                                                    @salary03
+                                                                </td>
+                                                                <td class="col-xs-2" style="text-align:center">薪資合計</td>
+                                                                <td class="col-xs-4" style="text-align:center">
+                                                                    @{var fullSalary = Model.FullSalary.HasValue ? Model.FullSalary.Value.ToString("N0") : "";}
+                                                                    @fullSalary
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="tab-pane" id="performance">
+                                                        <table id="FormPerformanceTable" class="table-bordered ui-jqgrid" style="width:100%">
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td colspan="4">
+                                                                    <table id="tableTrainingData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                                                                        <thead>
+                                                                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                                <th colspan="5">
+                                                                                    <div style="text-align:center;">員工訓練紀錄</div>
+                                                                                </th>
+                                                                            </tr>
+                                                                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                                <th style="width:80px">
+                                                                                    <div style="text-align:center;">課程代碼</div>
+                                                                                </th>
+                                                                                <th style="width:170px">
+                                                                                    <div style="text-align:center;">課程名稱</div>
+                                                                                </th>
+                                                                                <th style="width:80px">
+                                                                                    <div style="text-align:center;">時數</div>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="tbodyTrainingData">
+                                                                            @if (Model.PfaEmpTraining.Count > 0)
+                                                                            {
+                                                                                foreach (var item in Model.PfaEmpTraining)
+                                                                                {
+                                                                                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                                                                        <td style="white-space:normal;">
+                                                                                            @Html.TextBox("CoursesCode", item.CoursesCode, new { @class = "form-control", @id = "CoursesCode", @disabled = true })
+                                                                                        </td>
+                                                                                        <td style="white-space:normal;">
+                                                                                            @Html.TextBox("CoursesName", item.CoursesName, new { @class = "form-control", @id = "CoursesName", @disabled = true })
+                                                                                        </td>
+                                                                                        <td style="white-space:normal;">
+                                                                                            @Html.TextBox("TrainingHours", item.TrainingHours, new { @class = "form-control", @id = "TrainingHours", @type = "number", @min = "0", @disabled = true })
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            @{ var editFirstEvaluation = Model.EditFirstEvaluation; }
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td colspan="4">
+                                                                    <table id="tablePerformanceData" class="table-bordered ui-jqgrid" style="width:100%">
+                                                                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                            <th style="width:25%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">指標名稱</div>
+                                                                            </th>
+                                                                            <th style="width:35%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">定義</div>
+                                                                            </th>
+                                                                            <th style="width:15%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">權重占比</div>
+                                                                            </th>
+                                                                            <th style="width:10%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">自評</div>
+                                                                            </th>
+                                                                            <th style="width:15%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">主管評</div>
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tbody id="tbodyPerformanceData">
+                                                                            @if (Model.PfaEmpIndicator.Count() > 0)
+                                                                            {
+                                                                                var totalScale = 0;
+                                                                                var totalManagerIndicator = (double)0;
+                                                                                foreach (var item in Model.PfaEmpIndicator)
+                                                                                {
+                                                                                    totalScale = totalScale + (item.Scale.HasValue ? item.Scale.Value : 0);
+                                                                                    totalManagerIndicator = totalManagerIndicator + (item.ManagerIndicator.HasValue ? item.ManagerIndicator.Value : 0);
+                                                                                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.ID" name="@item.PfaIndicatorCode">
+                                                                                        <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                            <span id="PfaIndicatorName" name="PfaIndicatorName">@item.PfaIndicatorName</span>
+                                                                                        </td>
+                                                                                        <td role="gridcell" style="white-space:normal; text-align:left" aria-describedby="grid-table_notification_count">
+                                                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                                                        </td>
+                                                                                        <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                            <span id="Scale" name="Scale">@item.Scale</span>
+                                                                                            <i class="fa fa-book" data-toggle="tooltip" data-placement="top" title="@item.PfaIndicatorDesc"></i>
+                                                                                        </td>
+                                                                                        <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                            @Html.DisplayFor(modelItem => item.SelfIndicator)
+                                                                                        </td>
+                                                                                        <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                            @if (editFirstEvaluation)
+                                                                                            {
+                                                                                                @Html.TextBoxFor(modelItem => item.ManagerIndicator, new { @class = "form-control managerIndicator", @id = "ManagerIndicator", @type = "number", @min = "0", @max = item.Scale })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                @Html.TextBoxFor(modelItem => item.ManagerIndicator, new { @class = "form-control managerIndicator", @id = "ManagerIndicator", @type = "number", @min = "0", @max = item.Scale, @disabled = true })
+                                                                                            }
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                                <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                                    <th role="gridcell" class="ui-jqgrid-labels" style="white-space:normal;text-align:center;color:#777;" aria-describedby="grid-table_notification_count" colspan="2">
+                                                                                        工作績效得分合計
+                                                                                    </th>
+                                                                                    <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                        @totalScale
+                                                                                        分
+                                                                                    </td>
+                                                                                    <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                        @Model.PfaSelfScore
+                                                                                        分
+                                                                                    </td>
+                                                                                    <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                        <span id="TotalManagerIndicator">@totalManagerIndicator</span>
+                                                                                        分
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">個人工作意願及建議事項&年度工作說明</td>
+                                                                <td class="col-xs-4" style="text-align:center" colspan="3">
+                                                                    @Html.TextAreaFor(model => model.SelfAppraisal, new { @class = "form-control", @style = "width:100%;height:80px;resize:none;", @maxlength = 500, @disabled = true })
+                                                                    <span style="color:red;margin-top:0px;float:left;">*請盡量精簡在500字以內</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">上傳附件</td>
+                                                                <td class="col-xs-10" style="text-align:left" colspan="3">
+                                                                    @if (Model.SignUploadCount > 0)
+                                                                    {
+                                                                        <label class="custom-file-upload" name="@Url.Action("Upload", "PfaSignUpload", new { pfaCycleEmpId = Model.PfaCycleEmpID, pfaSignProcessId = Model.PfaSignProcessID, cmd = "Detail" })" style="white-space: nowrap; color: #fff; background-color: #5bc0de;">
+                                                                            <i id="btnUpload" class="fa fa-cloud-upload" style="color: #fff"></i>
+                                                                            其他說明
+                                                                        </label>
+                                                                        <span id="SignUploadSpan" style="color:red;margin-left:20px;">*此單有附件檔</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="custom-file-upload" name="@Url.Action("Upload", "PfaSignUpload", new { pfaCycleEmpId = Model.PfaCycleEmpID, pfaSignProcessId = Model.PfaSignProcessID, cmd = "Detail" })" style="white-space:nowrap;">
+                                                                            <i id="btnUpload" class="fa fa-cloud-upload" style="color: #777"></i>
+                                                                            其他說明
+                                                                        </label>
+                                                                        <span id="SignUploadSpan" style="color:red;margin-left:20px;"></span>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="tab-pane" id="ability">
+                                                        <table id="FormAbilityTable" class="table-bordered ui-jqgrid" style="width:100%">
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td colspan="4">
+                                                                    <table id="tableAbilityData" class="table-bordered ui-jqgrid" style="width:100%">
+                                                                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                            <th style="width:12%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">勝任能力</div>
+                                                                            </th>
+                                                                            <th style="width:22%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">定義</div>
+                                                                            </th>
+                                                                            <th style="width:22%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">關鍵行為指標</div>
+                                                                            </th>
+                                                                            <th style="width:22%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">能力符合程度評核</div>
+                                                                            </th>
+                                                                            <th style="width:11%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">總分</div>
+                                                                            </th>
+                                                                            <th style="width:11%">
+                                                                                <div id="jqgh_grid-table_code" style="text-align:center;">分數</div>
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tbody id="tbodyAbilityData">
+                                                                            @if (Model.PfaEmpAbility.Count() > 0)
+                                                                            {
+                                                                                var totalTotalScore = (double)0;
+                                                                                var totalManagerAbility = (double)0;
+                                                                                foreach (var item in Model.PfaEmpAbility)
+                                                                                {
+                                                                                    var i = 0;
+                                                                                    totalTotalScore = totalTotalScore + (item.TotalScore.HasValue ? item.TotalScore.Value : 0);
+                                                                                    totalManagerAbility = totalManagerAbility + (item.ManagerAbility.HasValue ? item.ManagerAbility.Value : 0);
+                                                                                    foreach (var itemDetail in item.PfaEmpAbilityDetail)
+                                                                                    {
+                                                                                        if (i == 0)
+                                                                                        {
+                                                                                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@itemDetail.ID" name="@item.PfaAbilityCode" data="@item.ID">
+                                                                                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count" rowspan="@item.PfaEmpAbilityDetail.Count">
+                                                                                                    <span id="PfaAbilityName" name="PfaAbilityName">@item.PfaAbilityName</span>
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:left" aria-describedby="grid-table_notification_count" rowspan="@item.PfaEmpAbilityDetail.Count">
+                                                                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space: normal;text-align:left" aria-describedby="grid-table_notification_count">
+                                                                                                    @Html.Hidden("Ordering", itemDetail.Ordering)
+                                                                                                    <span id="PfaAbilityKey" name="PfaAbilityKey">@itemDetail.PfaAbilityKey</span>
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                                    @foreach (var score in itemDetail.ScoreInterval)
+                                                                                                    {
+                                                                                                        if (editFirstEvaluation)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(item.PfaAbilityCode + itemDetail.Ordering, score, itemDetail.AbilityScore == score, new { @class = "score" })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(item.PfaAbilityCode + itemDetail.Ordering, score, itemDetail.AbilityScore == score, new { @class = "score", @disabled = true })
+                                                                                                        }
+                                                                                                        <span style="margin-right:5px;">@score</span>
+                                                                                                    }
+                                                                                                    @Html.Hidden("AbilityScore", itemDetail.AbilityScore)
+                                                                                                </td>
+                                                                                                <td id="tdTotalScore" role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count" rowspan="@item.PfaEmpAbilityDetail.Count">
+                                                                                                    @Html.DisplayFor(modelItem => item.TotalScore)
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space:normal; text-align:center" aria-describedby="grid-table_notification_count" rowspan="@item.PfaEmpAbilityDetail.Count">
+                                                                                                    @{ var tempName = "Manager" + item.PfaAbilityCode;}
+                                                                                                    <input type="text" class="form-control managerAbility" name="@tempName" value="@item.ManagerAbility" disabled="disabled" />
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@itemDetail.ID" name="@item.PfaAbilityCode">
+                                                                                                <td role="gridcell" style="white-space:normal; text-align:left" aria-describedby="grid-table_notification_count">
+                                                                                                    @Html.Hidden("Ordering", itemDetail.Ordering)
+                                                                                                    <span id="PfaAbilityKey" name="PfaAbilityKey">@itemDetail.PfaAbilityKey</span>
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                                    @foreach (var score in itemDetail.ScoreInterval)
+                                                                                                    {
+                                                                                                        if (editFirstEvaluation)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(item.PfaAbilityCode + itemDetail.Ordering, score, itemDetail.AbilityScore == score, new { @class = "score" })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(item.PfaAbilityCode + itemDetail.Ordering, score, itemDetail.AbilityScore == score, new { @class = "score", @disabled = true })
+                                                                                                        }
+                                                                                                        <span style="margin-right:5px;">@score</span>
+                                                                                                    }
+                                                                                                    @Html.Hidden("AbilityScore", itemDetail.AbilityScore)
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        }
+                                                                                        i++;
+                                                                                    }
+                                                                                }
+                                                                                <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                                    <th role="gridcell" class="ui-jqgrid-labels" style="white-space:normal;text-align:center;color:#777;" aria-describedby="grid-table_notification_count" colspan="4">
+                                                                                        勝任能力得分合計
+                                                                                    </th>
+                                                                                    <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                        @totalTotalScore
+                                                                                        分
+                                                                                    </td>
+                                                                                    <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                        <span id="TotalManagerAbility">@totalManagerAbility</span>分
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                <th colspan="4">
+                                                                    <div style="text-align:center;">評估結果</div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">與過去表現結果比較</td>
+                                                                <td class="col-xs-4" style="text-align:left" colspan="3">
+                                                                    @if (Model.PastPerformanceData.Count() > 0)
+                                                                    {
+                                                                        var pastPerformanceValue = Model.PastPerformance.HasValue ? Model.PastPerformance.Value.ToString() : "";
+                                                                        foreach (var pastPerformance in Model.PastPerformanceData)
+                                                                        {
+                                                                            if (editFirstEvaluation)
+                                                                            {
+                                                                                @Html.RadioButton("PastPerformance", pastPerformance.Value, pastPerformanceValue == pastPerformance.Value, new { @class = "pastPerformance" })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @Html.RadioButton("PastPerformance", pastPerformance.Value, pastPerformanceValue == pastPerformance.Value, new { @class = "pastPerformance", @disabled = true })
+
+                                                                            }
+                                                                            <span style="margin-right:5px;">@pastPerformance.Text</span>
+                                                                        }
+                                                                        @Html.Hidden("PastPerformance", Model.PastPerformance)
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">評價目前工作</td>
+                                                                <td class="col-xs-4" style="text-align:left" colspan="3">
+                                                                    @if (Model.NowPerformanceData.Count() > 0)
+                                                                    {
+                                                                        var nowPerformanceValue = Model.NowPerformance.HasValue ? Model.NowPerformance.Value.ToString() : "";
+                                                                        foreach (var nowPerformance in Model.NowPerformanceData)
+                                                                        {
+                                                                            if (editFirstEvaluation)
+                                                                            {
+                                                                                @Html.RadioButton("NowPerformance", nowPerformance.Value, nowPerformanceValue == nowPerformance.Value, new { @class = "nowPerformance" })
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @Html.RadioButton("NowPerformance", nowPerformance.Value, nowPerformanceValue == nowPerformance.Value, new { @class = "nowPerformance", @disabled = true })
+                                                                            }
+                                                                            <span style="margin-right:5px;">@nowPerformance.Text</span>
+                                                                        }
+                                                                        @Html.Hidden("NowPerformance", Model.NowPerformance)
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td class="col-xs-2" style="text-align:center">未來發展評斷</td>
+                                                                <td class="col-xs-4" style="text-align:left" colspan="3">
+                                                                    @if (Model.DevelopmentData.Count() > 0)
+                                                                    {
+                                                                        var developmentValue = Model.Development.HasValue ? Model.Development.Value.ToString() : "";
+                                                                        foreach (var development in Model.DevelopmentData)
+                                                                        {
+                                                                            if (editFirstEvaluation)
+                                                                            {
+                                                                                @Html.RadioButton("Development", development.Value, developmentValue == development.Value, new { @class = "development" })
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @Html.RadioButton("Development", development.Value, developmentValue == development.Value, new { @class = "development", @disabled = true })
+                                                                            }
+                                                                            <span style="margin-right:5px;">@development.Text</span>
+                                                                        }
+                                                                        @Html.Hidden("Development", Model.Development)
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div id="check" class="tab-pane">
+                                                        <table id="FormCheckTable" class="table-bordered ui-jqgrid" style="width:100%">
+                                                            @if (Model.IsRatio == true)
+                                                            {
+                                                                <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                    <td colspan="5" id="divCheckData">
+                                                                        <table id="tableCheckData" class="table-bordered ui-jqgrid" style="width:100%">
+                                                                            <thead>
+                                                                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                                                                    <th style="width:8%">
+                                                                                        <div id="jqgh_grid-table_code" style="text-align:center;"></div>
+                                                                                    </th>
+                                                                                    <th style="width:8%">
+                                                                                        <div id="jqgh_grid-table_code" style="text-align:center;">部門</div>
+                                                                                    </th>
+                                                                                    <th style="width:8%">
+                                                                                        <div id="jqgh_grid-table_code" style="text-align:center;">應配比人數</div>
+                                                                                    </th>
+                                                                                    @if (Model.PfaCycleRationData.PfaPerformance.Count > 0)
+                                                                                    {
+                                                                                        foreach (var pfaPerformance in Model.PfaCycleRationData.PfaPerformance)
+                                                                                        {
+                                                                                            <th>
+                                                                                                <div id="jqgh_grid-table_code" style="text-align:center;color:red;">
+                                                                                                    @pfaPerformance.Name <br />
+                                                                                                    @pfaPerformance.Scores <br />
+                                                                                                    @pfaPerformance.Rates
+                                                                                                    %
+                                                                                                </div>
+                                                                                            </th>
+                                                                                        }
+                                                                                    }
+                                                                                    <th colspan="2" style="width:10%">
+                                                                                        <div id="jqgh_grid-table_code" style="text-align:center;">配比正確</div>
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="tbodyCheckData">
+                                                                                @if (Model.PfaCycleRationData.PfaCycleRationDetail.Count() > 0)
+                                                                                {
+                                                                                    foreach (var itemDetail in Model.PfaCycleRationData.PfaCycleRationDetail)
+                                                                                    {
+                                                                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@itemDetail.RowType">
+                                                                                            <td role="gridcell" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                                                                                <span id="RowTypeName" name="RowTypeName">@itemDetail.RowTypeName</span>
+                                                                                            </td>
+                                                                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                                <span id="PfaDeptName" name="PfaDeptName">@itemDetail.PfaDeptName</span>
+                                                                                            </td>
+                                                                                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                                                                <span id="OrgTotal" name="OrgTotal">@itemDetail.OrgTotal</span>
+                                                                                            </td>
+                                                                                            @foreach (var number in itemDetail.Number)
+                                                                                            {
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count" id="@number.PfaPerformanceID" name="RationNumber">
+                                                                                                    @if (itemDetail.RowType == "Calculat")
+                                                                                                    {
+                                                                                                        @Html.TextBox("RationNumber", number.Number, new { @class = "form-control calculatRationNumber", @type = "number", @min = "0" })
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        if (Model.IsRatio && itemDetail.RowType == "Last")
+                                                                                                        {
+                                                                                                            <a href="@Url.Action("Index", new {txtOrgID = Model.PfaOrgID, txtPerformanceID = @number.PfaPerformanceID, cmd="Query" })">@number.Number</a>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <span id="RationNumber" name="RationNumber">@number.Number</span>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                            }
+                                                                                            @if (itemDetail.RowType == "Calculat")
+                                                                                            {
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center;width:5%;" aria-describedby="grid-table_notification_count">
+                                                                                                    <button type="button" id="btnCalculat" class="btn btn-primary">試算</button>
+                                                                                                </td>
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center;width:5%;" aria-describedby="grid-table_notification_count">
+                                                                                                    <span id="CalculatIsRation" name="CalculatIsRation">@itemDetail.IsRation</span>
+                                                                                                </td>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count" colspan="2">
+                                                                                                    <span id="IsRation" name="IsRation">@itemDetail.IsRation</span>
+                                                                                                </td>
+                                                                                            }
+                                                                                        </tr>
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td style="text-align:center;width:15%;" rowspan="4">主管綜合考評</td>
+                                                                <td style="text-align:center;" rowspan="2">初核</td>
+                                                                <td style="text-align:center;" rowspan="2">
+                                                                    @Html.TextAreaFor(model => model.FirstAppraisal, new { @class = "form-control", @style = "width:100%;height:80px;resize:none;", @disabled = true })
+                                                                </td>
+                                                                <th colspan="2" class="ui-jqgrid-labels" style="text-align:center;width:22%;color:#777;height:30px">
+                                                                    總分
+                                                                </th>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                    初核
+                                                                </td>
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                    <span id="PfaFirstScore" name="PfaFirstScore">@Model.PfaFirstScore</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td style="text-align:center;" rowspan="2">複核</td>
+                                                                <td style="text-align:center;" rowspan="2">
+                                                                    @Html.TextAreaFor(model => model.LastAppraisal, new { @class = "form-control", @style = "width:100%;height:80px;resize:none;" })
+                                                                </td>
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                    複核
+                                                                </td>
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                    @Html.TextBoxFor(modelItem => Model.PfaLastScore, new { @class = "form-control", @type = "number", @min = "0" })
+                                                                    @if (Model.IsRatio == true)
+                                                                    {
+                                                                        <button type="button" id="btnChangeRation" class="btn btn-primary">更新配比</button>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                    核決
+                                                                </td>
+                                                                <td style="text-align:center;width:11%;height:10%;">
+                                                                </td>
+                                                            </tr>
+                                                            @if (Model.IsRatio == false)
+                                                            {
+                                                                <tr role="row" class="ui-widget-content ui-row-ltr">
+                                                                    <td style="text-align:center">簽核意見</td>
+                                                                    <td colspan="4" style="text-align:center">
+                                                                        @Html.TextAreaFor(model => model.Assessment, new { @class = "form-control", @style = "width:100%;height:80px;resize:none;", @maxlength = 120 })
+                                                                        <span style="color:red;margin-top:0px;float:left;">*退回修改時請輸入退回原因</span>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="tab-pane" id="history">
+                    <div>
+                        @if (Model.PfaSignRecord != null)
+                        {
+                            <table class="table">
+                                <tr>
+                                    <th width="8%">簽核順序</th>
+                                    <th width="12%">簽核層級</th>
+                                    <th width="12%">考核關卡</th>
+                                    <th width="8%">簽核狀態</th>
+                                    <th width="12%">簽核人員</th>
+                                    <th width="20%">簽核意見</th>
+                                    <th width="15%">簽核日期</th>
+                                    <th width="8%">代理</th>
+                                </tr>
+                                <tbody>
+                                    @foreach (var item in Model.PfaSignRecord)
+                                    {
+                                        <tr>
+                                            <td>@item.SignStep</td>
+                                            <td>@item.SignLevelName</td>
+                                            <td>@item.AssessmentName</td>
+                                            <td>@item.StatusName</td>
+                                            <td>@item.EmployeeName</td>
+                                            <td>@item.Assessment</td>
+                                            <td>@item.SignTime</td>
+                                            @if (item.IsAgent)
+                                            {
+                                                <td>Y</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btnSave" class="btn btn-primary">@HRPortal.MultiLanguage.DDMC_PFA.Resource.Save</button>
+            @if (Model.IsRatio == false)
+            {
+                <button type="button" id="btnSent" class="btn btn-success">@HRPortal.MultiLanguage.DDMC_PFA.Resource.OK_Sent</button>
+                <button type="button" id="btnReject" class="btn btn-warning">@HRPortal.MultiLanguage.DDMC_PFA.Resource.Button_RejectForm</button>
+            }
+            <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="Y" name="txtIsRation" id="txtIsRation" />
+<script type="text/javascript">
+    $(function () {
+        showAlertMsg("提醒您，閒置時間若超過20分鐘，系統將自動登出，請先暫存確保資料完整性，謝謝。");
+
+        $(document).ready(function () {
+            $("#Last").children().each(function () {
+                $(this).attr("style", "white-space:normal;text-align:center;background-color:peachpuff");
+            });
+        });
+
+        $(".pastPerformance").change(function () {
+            $(this).closest('td').find("input[id='PastPerformance']").val($(this).val());
+        });
+
+        $(".nowPerformance").change(function () {
+            $(this).closest('td').find("input[id='NowPerformance']").val($(this).val());
+        });
+
+        $(".development").change(function () {
+            $(this).closest('td').find("input[id='Development']").val($(this).val());
+        });
+
+        $(".calculatRationNumber").change(function () {
+            $("#CalculatIsRation").text("");
+        });
+
+        $("#btnChangeRation").click(function () {
+            if ($("#IsRatio").val() == "True") {
+                var obj = new Object();
+                obj.PfaLastScore = $("#PfaLastScore").val();
+                obj.PfaCycleID = $("#PfaCycleID").val();
+                obj.PfaOrgID = $("#PfaOrgID").val();
+                obj.IsRatio = $("#IsRatio").val();
+                obj.PfaCycleEmpID = $("#PfaCycleEmpID").val();
+
+                var jsonObj = { "model": obj };
+                $.ajax({
+                    url: "PfaCycleSecondEvaluation/LastPerformanceRation",
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success) {
+                            $("#divCheckData").empty().append(result.data);
+                            $("#Last").children().each(function () {
+                                $(this).attr("style", "white-space:normal;text-align:center;background-color:peachpuff");
+                            });
+                            if (result.IsRation != "Y") {
+                                if (result.IsRation == "N") {
+                                    showAlertMsg("提醒: 等第配比試算結果尚大於人數");
+                                }
+                            }
+                            $("#txtIsRation").val(result.IsRation);
+                        } else {
+                            showAlertMsg(result.message);
+                        }
+                    }
+                });
+            }
+        });
+
+        $(".managerIndicator").change(function () {
+            var obj = new Object();
+            var objManagerIndicatorList = [];
+            $("input.managerIndicator[type=number]").each(function () {
+                if ($(this).val() != "") {
+                    var managerIndicatorNumber = parseFloat($(this).val());
+                    if (checkSelfIndicator(managerIndicatorNumber) == false) {
+                        managerIndicatorNumber = Math.floor(managerIndicatorNumber * 10) / 10;
+                        showAlertMsg("主管評分數只能輸入到小數第一位");
+                        $(this).val(managerIndicatorNumber)
+                    }
+                    var objManagerIndicator = new Object();
+                    objManagerIndicator.ManagerIndicator = $(this).val();
+                    objManagerIndicatorList.push(objManagerIndicator);
+                }
+            });
+            obj.PfaEmpIndicator = objManagerIndicatorList;
+
+            var managerAbility = 0;
+            if ($("#TotalManagerAbility").text() != "") {
+                managerAbility = parseFloat($("#TotalManagerAbility").text());
+            }
+            obj.ManagerAbility = managerAbility;
+
+            var jsonObj = { "model": obj };
+            $.ajax({
+                url: "PfaCycleFirstEvaluation/ManagerIndicatorTotalSum",
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    if (result.success) {
+                        $("#TotalManagerIndicator").text(result.Total)
+                        $("#PfaFirstScore").text(result.FirstScore)
+                    } else {
+                        showAlertMsg(result.message);
+                    }
+                }
+            });
+        });
+
+        function checkSelfIndicator(v_compare) {
+            re = /^[0-9]+(\.[0-9]{1,1})?$/;
+            if (!re.test(v_compare)) {
+                return false
+            }
+            return true;
+        }
+
+        $(".score").change(function () {
+            var obj = new Object();
+            var objManagerAbilityList = [];
+            var total = 0;
+            var icnt = 0;
+            $(this).closest('td').find("input[id='AbilityScore']").val($(this).val());
+            var pfaAbilityCode = $(this).closest("td").closest("tr").attr("name");
+            $("#tableAbilityData tbody[id='tbodyAbilityData']").find("tr[name='" + pfaAbilityCode + "']").each(function () {
+                var td = $(this).children();
+                $(td).each(function () {
+                    var tempTd = $(this);
+                    var abilityScore = $(tempTd).find("input[id='AbilityScore']").val();
+                    if (abilityScore > 0) {
+                        icnt = icnt + 1;
+                        total = parseInt(total) + parseInt(abilityScore);
+                        total = Math.round(total * 10) / 10;
+                    }
+                });
+            });
+            var managerAbility = Math.round(parseInt(total) / parseInt(icnt) * 10) / 10;
+            $("input[name=Manager" + pfaAbilityCode + "]").val(managerAbility);
+
+            $("input.managerAbility").each(function () {
+                if ($(this).val() != "") {
+                    var ManagerAbilityNumber = parseFloat($(this).val());
+                    var objManagerAbility = new Object();
+                    objManagerAbility.ManagerAbility = ManagerAbilityNumber;
+                    objManagerAbilityList.push(objManagerAbility);
+                }
+            })
+            obj.PfaEmpAbility = objManagerAbilityList;
+
+            var managerIndicator = 0;
+            if ($("#TotalManagerAbility").text() != "") {
+                managerIndicator = parseFloat($("#TotalManagerIndicator").text());
+            }
+            obj.ManagerIndicator = managerIndicator;
+
+            var jsonObj = { "model": obj };
+            $.ajax({
+                url: "PfaCycleFirstEvaluation/ManagerAbilityTotalSum",
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    if (result.success) {
+                        $("#TotalManagerAbility").text(result.Total)
+                        $("#PfaFirstScore").text(result.FirstScore)
+                    } else {
+                        showAlertMsg(result.message);
+                    }
+                }
+            });
+        });
+
+        $("#FormCheckTable").delegate("button[id='btnCalculat']", "click", function () {
+            var obj = new Object();
+            obj.PfaCycleID = $("#PfaCycleID").val();
+            obj.PfaOrgID = $("#PfaOrgID").val();
+            obj.Number = [];
+            $("#tbodyCheckData tr[id='Calculat'] td").each(function () {
+                if ($(this).attr("name") == "RationNumber") {
+                    var objDetail = new Object();
+                    objDetail.PfaPerformanceID = $(this).attr("id");
+                    objDetail.Number = $(this).find("input[id='RationNumber']").val();
+                    obj.Number.push(objDetail);
+                }
+            });
+            var jsonObj = { "model": obj };
+            $.ajax({
+                url: "PfaCycleSecondEvaluation/Calculation",
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    if (result.success) {
+                        $("#CalculatIsRation").text(result.data);
+                        if (result.data != "Y") {
+                            if (result.data == "N") {
+                                showAlertMsg("提醒:等第配比試算結果不符");
+                            } else {
+                                showAlertMsg("分配人數要完整才能試算!");
+                            }
+                        } else {
+                            showAlertMsg("等第配比試算正確");
+                        }
+                    } else {
+                        showAlertMsg(result.message);
+                    }
+                }
+            });
+        });
+
+        //附件
+        $("label.custom-file-upload").click(function () {
+            var uploadUrl = $(this).attr("name");
+
+            $('#UploadDialogContent').load(uploadUrl, function () {
+                $('#UploadDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }, 'show');
+            });
+        });
+
+        $("#btnSave,#btnReject,#btnSent").mousedown(function () {
+            var form = $('#EditForm');
+
+            var obj = new Object();
+            obj.PfaSignProcessID = $("#PfaSignProcessID").val();
+            obj.PfaCycleEmpID = $("#PfaCycleEmpID").val();
+            obj.SignStatus = $("#SignStatus").val();
+            obj.FirstAppraisal = $("#FirstAppraisal").val();
+            obj.LastAppraisal = $("#LastAppraisal").val();
+            obj.PastPerformance = $("input[name='PastPerformance']:checked").val();
+            obj.NowPerformance = $("input[name='NowPerformance']:checked").val();
+            obj.Development = $("input[name='Development']:checked").val();
+            obj.Assessment = $("#Assessment").val();
+            obj.PfaLastScore = $("#PfaLastScore").val();
+            obj.IsRatio = $("#IsRatio").val();
+
+            var objPerformanceList = [];
+            $("#tablePerformanceData tbody[id='tbodyPerformanceData']").each(function () {
+                var tr = $(this).children();
+                $(tr).each(function () {
+                    var objPerformance = new Object();
+                    var tempTr = $(this);
+                    if (tempTr.attr("name") != undefined) {
+                        objPerformance.ID = tempTr.attr("id");
+                        objPerformance.PfaIndicatorCode = tempTr.attr("name");
+                        objPerformance.PfaIndicatorName = $(tempTr).find("span[id='PfaIndicatorName']").text();
+                        objPerformance.ManagerIndicator = $(tempTr).find("input[id='ManagerIndicator']").val();
+                        objPerformance.Scale = $(tempTr).find("span[id='Scale']").text();
+                        if (objPerformance.ManagerIndicator == '') {
+                            objPerformance.ManagerIndicator = null
+                        }
+                        objPerformanceList.push(objPerformance);
+                    }
+                });
+            });
+            obj.PfaEmpIndicator = objPerformanceList;
+
+            var tempAbilityCode = [];
+            var objAbilityList = [];
+            var objAbility = new Object();
+            $("#tableAbilityData tbody[id='tbodyAbilityData']").each(function () {
+                var tr = $(this).children();
+                $(tr).each(function () {
+                    var tempTr = $(this);
+                    if (tempTr.attr("name") != undefined) {
+                        if (tempAbilityCode.indexOf(tempTr.attr("name")) < 0) {
+                            if (tempAbilityCode.length > 0) {
+                                objAbilityList.push(objAbility);
+                            }
+                            tempAbilityCode.push(tempTr.attr("name"));
+                            objAbility = new Object();
+                            if (tempTr.attr("data") != undefined) {
+                                objAbility.ID = tempTr.attr("data");
+                            } else {
+                                objAbility.ID = null;
+                            }
+                            objAbility.PfaAbilityCode = tempTr.attr("name");
+                            objAbility.PfaAbilityName = $(tempTr).find("span[id='PfaAbilityName']").text();
+                            var tempManagerAbility = $("input[name=Manager" + objAbility.PfaAbilityCode + "]").val();
+                            if (tempManagerAbility != "") {
+                                objAbility.ManagerAbility = parseFloat(tempManagerAbility);
+                            } else {
+                                objAbility.ManagerAbility = null;
+                            }
+                            objAbility.PfaEmpAbilityDetail = [];
+                        }
+
+                        var objAbilityDetail = new Object();
+                        if (tempTr.attr("id") != undefined) {
+                            objAbilityDetail.ID = tempTr.attr("id");
+                        } else {
+                            objAbilityDetail.ID = null;
+                        }
+                        objAbilityDetail.Ordering = parseInt($(tempTr).find("input[id='Ordering']").val());
+                        var tempAbilityScore = $(tempTr).find("input[id='AbilityScore']").val();
+                        if (tempAbilityScore != "0") {
+                            objAbilityDetail.AbilityScore = parseFloat(tempAbilityScore);
+                        } else {
+                            objAbilityDetail.AbilityScore = null;
+                        }
+                        objAbilityDetail.PfaAbilityKey = $(tempTr).find("span[id='PfaAbilityKey']").text();
+                        objAbility.PfaEmpAbilityDetail.push(objAbilityDetail);
+                    }
+                });
+            });
+            objAbilityList.push(objAbility);
+            obj.PfaEmpAbility = objAbilityList;
+
+            var jsonObj = { "model": obj, "cmd": $(this).attr("id") };
+
+            if ($(this).attr("id") == "btnSave") {
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: $(form).attr("method"),
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $("#btnClose").click();
+                            }
+                            else {
+                                setModalopen();
+                            }
+                        });
+                    }
+                });
+            }
+
+            if ($(this).attr("id") == "btnReject" || $(this).attr("id") == "btnSent") {
+                var msg = "";
+                if ($(this).attr("id") == "btnReject") {
+                    msg = "請問是否要退回?";
+                } else {
+                    msg = "請問是否確認送出?";
+                }
+                showConfirm("<div style='text-align:center'>" + msg + "</div>", function () {
+                    $.ajax({
+                        url: $(form).attr("action"),
+                        type: $(form).attr("method"),
+                        data: jsonObj,
+                        async: true,
+                        dataType: "json",
+                        success: function (result) {
+                            var message = result.message;
+
+                            showAlertMsg(message, function () {
+                                if (result.success) {
+                                    $("#btnClose").click();
+                                } else {
+                                    setModalopen();
+                                }
+                            });
+                        }
+                    });
+                });
+                setModalopen();
+            }
+        });
+    });
+</script>

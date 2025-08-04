@@ -1,0 +1,26 @@
+﻿@model HRPortal.Mvc.Models.HomeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+ @if (Model != null && Model.WebLinikList != null && Model.WebLinikList.Count()>0)
+ {
+    <div class="links box col-xs-6">
+        <ul>
+            <li class="title col-xs-12"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>網頁連結</li>
+			<li class="blank col-xs-12"></li>
+            @foreach (var item in Model.WebLinikList)
+            {
+                <li class="list col-xs-12">
+					<a href="@item.URL" target="_blank">
+						<p class="col-xs-11">@item.Name</p>
+						<p class="col-xs-1 text-right">></p>
+					</a>
+				</li>
+            }
+            <li class="bottom col-xs-12"></li>
+        </ul>    
+    </div>
+     
+ }

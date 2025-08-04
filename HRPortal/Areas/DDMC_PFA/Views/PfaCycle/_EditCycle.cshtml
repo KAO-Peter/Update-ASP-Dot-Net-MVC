@@ -1,0 +1,119 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaCycleViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditCycle";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">編輯</h4>
+        </div>
+        @using (Html.BeginForm("Edit", "PfaCycle", FormMethod.Post, new { @id = "EditForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">績效考核批號</label>
+                        <div class="col-sm-44" style="width:79%;padding-top:8px">
+                            @Model.PfaFormNo
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">績效考核年度</label>
+                        <div class="col-sm-44" style="width:79%;padding-top:8px">
+                            @Html.TextBoxFor(model => model.PfaYear, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.PfaYear, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">備註</label>
+                        <div class="col-sm-44" style="width:79%;padding-top:8px">
+                            @Html.TextBoxFor(model => model.Desription, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Desription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">狀態</label>
+                        <div class="col-sm-44" style="width:79%;padding-top:8px">
+                            @*m:未送簽 a:考評中 e:考評完成 y:已鎖定(新增時=未送簽，啟動送單=改考評中，全批號簽核結束=考評完成)*@
+                            @{
+                                var tmpStatus = "";
+                                switch (Model.Status)
+                                {
+                                    case "m":
+                                        tmpStatus = "未送簽";
+                                        break;
+                                    case "a":
+                                        tmpStatus = "考評中";
+                                        break;
+                                    case "e":
+                                        tmpStatus = "考評完成";
+                                        break;
+                                    case "y":
+                                        tmpStatus = "已鎖定";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            @tmpStatus
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#btnSave').click(function () {
+            var obj = new Object();
+            obj.ID = $("#ID").val();
+            obj.PfaYear = $("#PfaYear").val();
+            obj.Desription = $("#Desription").val();
+
+            showConfirm("<div style='text-align:center'>修改批號資料，績效考核員工資料會刪除後重新匯入，請確認要修改批號資料?</div>", function () {
+                var jsonObj = { "model": obj };
+
+                $.ajax({
+                    url: "PfaCycle/Edit",
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaCycleDialogDiv').modal('hide');
+                                location.reload();
+                            } else {
+                                setModalopen();
+                            }
+                        });
+                    }
+                });
+            });
+            setModalopen();
+        });
+    });
+</script>
+

@@ -1,0 +1,100 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmpHolidayTimeSpanQuotaViewModel
+<style>
+    .align-center {
+        text-align:center;
+    }
+
+    .align-right {
+        text-align:right;
+    }
+
+    .font-darker {
+        color:#111;
+    }
+
+    .detail-link {
+        text-decoration:underline;
+        cursor:pointer;
+    }
+
+
+</style>
+<div>
+    @Html.Hidden("Detail_QueryBeginDate", Model.QueryCondition.QueryBeginDate.ToString("yyyy/MM/dd"))
+    @Html.Hidden("Detail_QueryEndDate",Model.QueryCondition.QueryEndDate.ToString("yyyy/MM/dd"))
+
+    <table id="QuotaDetailTable" class="display cell-border" style="display:none;">
+        @*Header資料*@
+        <thead>
+            <tr role="rowheader">
+         
+                <th role="columnheader" class="" style="width: 10%">
+                    <div style="text-align: center;">Employee No</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%">
+                    <div style="text-align: center;">Employee</div>
+                </th>
+                <th role="columnheader" class="" style="width: 10%;">
+                    <div style="text-align: center;">Type</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%;" data-memo="beginning">
+                    <div style="text-align: center;">Beginning Balance<br />(Hours)</div>
+                </th>
+                <th role="columnheader" class="" style="width: 8%;" data-memo="used">
+                    <div style="text-align: center;">Used</div>
+                </th>
+                <th role="columnheader" class="" style="width: 8%;" data-memo="scheduled">
+                    <div style="text-align: center;">Scheduled</div>
+                </th>
+                <th role="columnheader" class="" style="width: 13%;" data-memo="ending">
+                    <div style="text-align: center;">Ending Balance<br />(Hours)</div>
+                </th>
+
+                @if (Model!=null && Model.QueryCondition!=null && Model.QueryCondition.IncludingPendingData)
+                {
+                    <th role="columnheader" class="" style="width: 10%;" data-memo="pending">
+                        <div>Pending Hours</div>
+                    </th>
+                }
+
+            </tr>
+        </thead>
+
+        <tbody class="font-darker">
+        @*明細資料*@
+        @if (Model != null && Model.QuotaData!=null && Model.QuotaData.Count>0)
+        {
+           
+            foreach (var item in Model.QuotaData)
+            {
+              
+            <tr role="row" tabindex="-1">
+               
+                <td class="align-center" style="width: 10%">@item.EmpID</td>
+
+                <td class="align-center" style="width: 13%">@(item.EmpName == item.EmpNameEN ? item.EmpNameEN  : item.EmpNameEN + "(" + item.EmpName + ")")</td>
+
+                <td class="align-center" style="width: 10%;" title="@item.AbsentName">@item.AbsentNameEN</td>
+
+                <td class="align-right" style="width: 13%;" title="@("核假總時數" + item.CanUseCountHours.ToString() + " - 之前已用時數" + item.HoursBefore.ToString() + " = " + item.BeginningBalance.ToString())">@item.BeginningBalance.ToString()</td>
+
+                <td class="align-right" style="width: 8%;" data-detaillist="@(string.IsNullOrWhiteSpace(item.InRangeUsedString) ? "" : item.InRangeUsedString)"><span class="@(item.HoursUsed == 0 ? "" : "detail-link")">@item.HoursUsed.ToString()</span></td>
+
+                <td class="align-right" style="width: 8%;" data-detaillist="@(string.IsNullOrWhiteSpace(item.InRangeScheduledString) ? "" : item.InRangeScheduledString)"><span class="@(item.HoursScheduled == 0 ? "" : "detail-link")">@item.HoursScheduled.ToString()</span></td>
+
+                <td class="align-right" style="width: 13%;">@item.EndingBalance.ToString()</td>
+
+                @if (Model.QueryCondition.IncludingPendingData)
+                {
+                    <td class="align-right" style="width: 10%;" data-detaillist="@(string.IsNullOrWhiteSpace(item.PendingString) ? "" : item.PendingString)"><span class="@(item.HoursPending == 0 ? "" : "detail-link")">@item.HoursPending.ToString()</span></td>
+                }
+
+              
+            </tr>
+            }
+        }
+ 
+        </tbody>
+    </table>
+    
+</div>

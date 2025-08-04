@@ -1,0 +1,232 @@
+﻿@model HRPortal.Mvc.Models.SignoffAgentsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+</style>
+     @if (TempData["message"] != null)
+        {
+<script type="text/javascript">
+    $(function () {
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        showAlertMessage(message);
+    });
+</script>
+}
+@using (Html.BeginForm("Index", "SignoffAgents", FormMethod.Post, new { id = "SignoffAgentsForm" }))
+{
+    <div class=" row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+        }
+         @if (Model.DepartmentListData != null&& (Model.Role!=null))
+         {
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Department</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedDepartment, Model.DepartmentListData, new { @class = "form-control", @id= "SelectedDepartment"})
+                        </div>
+                    </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedEmployee, Model.EmployeeListData, new { @class = "form-control" ,@id= "SelectedEmployee"})
+                    </div>
+                </div>               
+            </div>            
+        </div>
+         }
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">           
+            <div class="search-section">
+                @if (Model.DepartmentListData1 != null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.ActingPersonDepartment</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedDepartment1, Model.DepartmentListData1, new { @class = "form-control", @id= "SelectedDepartment1"})
+                        </div>
+                    </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedEmployee1, Model.EmployeeListData1, new { @class = "form-control" ,@id= "SelectedEmployee1"})
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="search-section">
+                @if (Model.DepartmentListData2 != null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.ActingPersonDepartment</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedDepartment2, Model.DepartmentListData2, new { @class = "form-control", @id= "SelectedDepartment2"})
+                        </div>
+                    </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedEmployee2, Model.EmployeeListData2, new { @class = "form-control", @id= "SelectedEmployee2"})
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="search-section">
+                @if (Model.DepartmentListData3 != null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.ActingPersonDepartment</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedDepartment3, Model.DepartmentListData3, new { @class = "form-control",@id= "SelectedDepartment3"})
+                        </div>
+                    </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedEmployee3, Model.EmployeeListData3, new { @class = "form-control" ,@id= "SelectedEmployee3"})
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="search-wrap">
+                <div class="col-sm-offset-2" style="padding-bottom: 10px">
+                    <button type="submit" class="btn btn-success" id="btnSignoffAgentsSubmit">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    var obj = null;
+    $('#btnSignoffAgentsSubmit').click(function (event) 
+    {   
+        var form = $('#SignoffAgentsForm');
+        form.submit(function (e) {
+            e.preventDefault();
+        });
+        if (form.validate().form()) {
+            var submitData = new FormData(form[0]);
+            formSubmit(submitData);
+        }      
+    });
+
+    function formSubmit(data) {
+        var form = $('#SignoffAgentsForm');
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (submitResult) {
+                if (submitResult.status == 'success') {
+                    showAlertMessage(submitResult.message, function(){
+                        window.location = '@Url.Action("Index")';
+                    });
+                } else {
+                    showAlertMessage(submitResult.message, function(){
+                        window.location = '@Url.Action("Index")';
+                    });
+                }
+            }
+        });
+
+    }
+
+    $("#SelectedDepartment").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+
+    $("#SelectedDepartment1").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee1");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee1").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+
+    $("#SelectedDepartment2").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee2");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee2").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+  
+    $("#SelectedDepartment3").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee3");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee3").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+</script>
+
+

@@ -1,0 +1,361 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Resources;
+
+
+<div class="row">
+
+    <div class="col-md-5 col-sm-12 mini-input-group">
+
+    </div>
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table id="grid-table" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                    <th id="grid-table_id" role="columnheader" class="" style="width:5%;">
+                         <!-- 2019/09/10 Neo 第一個框增加編輯文字 -->
+                        <div id="jqgh_grid-table_id" class="ui-jqgrid-sortable">@HRPortal.MultiLanguage.Resource.BtnEdit</div>
+                    </th>
+                    <!-- 2019/09/10 Neo 第二個框增加查詢欄位 -->
+                    <th id="grid-table_id2" role="columnheader" class="" style="width:5%;">
+                        <div id="jqgh_grid-table_id2" class="ui-jqgrid-sortable">@HRPortal.MultiLanguage.Resource.statuss</div>
+                    </th>
+                    @*<th class="">
+
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormCreateDate)
+                </th>
+                <th class="" >
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormType)
+                </th>
+                <th class="" style="width:40%">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FormSummary)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DepartmentName)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().SenderEmployeeName)
+                </th>
+                <th class="">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().SignerEmployeeName)
+                </th>
+                <th class="" style="width:15px">
+                </th>*@
+                    <th id="grid-table_code" role="columnheader" class="" style="width: 15%">
+                        <div id="jqgh_grid-table_code" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Date</div>
+                    </th>
+                    <th id="grid-table_classified_code_name" role="columnheader" class="" style="width: 10%">
+                        <div id="jqgh_grid-table_classified_code_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Type</div>
+                    </th>
+                    <th id="grid-table_category_name" role="columnheader" class="" style="width: 35%;">
+                        <div id="jqgh_grid-table_category_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.FAQContentText</div>
+                    </th>
+                    <th id="grid-table_teacher_name" role="columnheader" class="" style="width: 10%; min-width: 130px;">
+                        <div id="jqgh_grid-table_teacher_name" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Department</div>
+                    </th>
+                    <!-- 2019/09/11 Neo 註解移除申請人欄位 -->
+                    @*<th id="grid-table_count" role="columnheader" class="" style="width: 10%;">
+                        <div id="jqgh_grid-table_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.applicant</div>
+                    </th>*@
+                    <th id="grid-table_notification_count" role="columnheader" class="" style="width: 10%;">
+                        <div id="jqgh_grid-table_notification_count" class="ui-jqgrid-sortable" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Attachment</div>
+                    </th>
+                </tr>
+                @if (Model != null && Model.Count() > 0)
+                {
+                    ResourceManager _resourceManager = new ResourceManager("HRPortal.MultiLanguage.Resource", typeof(HRPortal.MultiLanguage.Resource).Assembly);
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" id="@item.FormNo" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            @Html.HiddenFor(m => item.FormType)
+                            @Html.HiddenFor(m => item.FormNo)
+                            @Html.HiddenFor(m => item.SignFlowID)
+                            <!-- 2019/09/10 Neo 調整第一個框編輯欄位的連結事件 -->
+                            @*<td role="gridcell" style="white-space:normal;text-align:center;cursor:pointer;" aria-describedby="grid-table_notification_count" data-toggle="modal" data-target="#myModal" onclick="loadFormDetail('@item.FormType.ToString()', '@item.FormNo', '@item.SignFlowID')">*@
+                            <td role="gridcell" style="white-space:normal;text-align:center;cursor:pointer;" aria-describedby="grid-table_notification_count" onclick="EditReject('@item.FormType.ToString()', '@item.FormNo', '@item.SignFlowID', '@item.SignType')">
+                                @* 20180425 Frank 簽核按鈕改成圖示 *@
+                                <span class="glyphicon glyphicon-file" style="font-size:large;" aria-hidden="true"></span>
+                            </td>
+                            <!-- 2019/09/10 Neo 增加第二個框查詢欄位 -->
+                            <td role="gridcell" style="white-space:normal;text-align:center;cursor:pointer;" aria-describedby="grid-table_notification_count" data-toggle="modal" data-target="#myModal" onclick="loadFormDetail('@item.FormType.ToString()', '@item.FormNo', '@item.SignFlowID');$('#tab2').click();"><a>@(item.SignStatus == "W" ? (item.SignType == "S"? @HRPortal.MultiLanguage.Resource.Notsent : @HRPortal.MultiLanguage.Resource.Nosignofnuclear) : item.SignStatus == "R" ? @HRPortal.MultiLanguage.Resource.returnn : item.SignStatus == "S" ? @HRPortal.MultiLanguage.Resource.Hasbeensent : item.SignStatus == "B" ? @HRPortal.MultiLanguage.Resource.modify : @HRPortal.MultiLanguage.Resource.Ithassignednuclear)</a></td>    
+
+                            <td role="gridcell" style="" aria-describedby="grid-table_code">@item.FormCreateDate.ToString("yyyy/MM/dd")</td>    
+                            <td role="gridcell" style="text-align:center;" aria-describedby="grid-table_classified_code_name" class="formType">@(_resourceManager.GetString(item.FormType.ToString()) ?? item.FormType.ToString())</td>
+                            <td role="gridcell" style="" aria-describedby="grid-table_category_name" class="formSummary">@item.FormSummary</td>
+                            <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count">@(item.getLanguageCookie == "en-US" ? item.DepartmentEnglishName : item.DepartmentName)</td>        
+                            <!-- 2019/09/11 Neo 註解移除申請人欄位 -->
+                            @*@if (item.getLanguageCookie == "en-US")
+                            {  
+                            <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count" class="sender">@item.SenderEmployeeEnglishName</td>
+                            }
+                            else
+                            {
+                             <td role="gridcell" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count" class="sender">@item.SenderEmployeeName</td>
+                            }*@
+                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                @*<a target="_blank" class="glyphicon glyphicon-paperclip" href="@Url.Action("DownloadLeaveFormFile")"> </a>*@
+                               @* <button class="glyphicon glyphicon-paperclip" onclick="location.href="@Url.Action("DownloadLeaveFormFile")""></button>*@
+                                 @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                                   {
+                                <a  class="glyphicon glyphicon-paperclip" style="text-decoration: none;color: #333;" href="@Url.Action("DownloadLeaveFormFile", new { formNo = item.FormNo,formType = item.FormType })"></a>
+                                 }
+                            </td>
+                            @* @if (item.getLanguageCookie == "en-US")
+                             {  
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">@item.SignerEmployeeEnglishName</td>
+                             }
+                             else
+                             {
+                              <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">@item.SignerEmployeeName</td>
+                             }*@
+                            
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="8" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div style="text-align:center">
+            @* 在後面對pagelist做轉型 *@
+            @using PagedList
+            @using PagedList.Mvc
+            @{
+                var data = Model as IPagedList<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+                    ;
+            }
+            @{
+                if (IsAjax)
+                { Layout = ""; }
+            }
+            @if (Model != null && Model.Count() > 0)
+            {
+
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                         new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                     new { page }), new PagedListRenderOptions
+                                     {
+                                         DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToIndividualPages = false,
+                                         //LinkToFirstPageFormat = "<<第一頁",
+                                         //LinkToPreviousPageFormat = "<前一頁",
+                                         //LinkToNextPageFormat = "後一頁>",
+                                         //LinkToLastPageFormat = "最末頁>>",
+                                         DisplayPageCountAndCurrentLocation = true,
+                                         PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                         DisplayItemSliceAndTotal = true,
+                                         ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                     })
+            }
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.FormDetails - <span id="detailFormTypeName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#BaseFormModel_form_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_form_tab_0">@HRPortal.MultiLanguage.Resource.BtnDetail</a></li>
+                    <!-- 2019/09/10 Neo 增加id="tab2" -->
+                    <li><a id="tab2" href="#BaseFormModel_flow_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_flow_tab_0">@HRPortal.MultiLanguage.Resource.Signoffrecord</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="BaseFormModel_form_tab_0">
+                        <div id="formContent">
+                        </div>
+                        <input type="hidden" id="signingFormType" />
+                        <input type="hidden" id="signingFormNo" />
+                        <input type="hidden" id="signingFlowID" />
+                        @*詳細資料
+                            <div class="modal-footer"> </div>*@
+                    </div>
+                    @*簽核紀錄*@
+                    <div class="tab-pane" id="BaseFormModel_flow_tab_0">
+                        <div id="signFlowContent">
+                        </div>
+                    </div>
+                </div>
+                <div id="singFlowFooter" class="modal-footer" style="clear:both">
+                    <a class="btn btn-success" style="display:none" id="PrintBtn">@HRPortal.MultiLanguage.Resource.Button_PrintForm</a>
+                    <a class="btn btn-success" style="display:none" id="Resend">@HRPortal.MultiLanguage.Resource.Button_ResendForm</a>
+                    <a class="btn btn-warning" style="display:none" id="Pullback">@HRPortal.MultiLanguage.Resource.modify</a>
+                    <a class="btn btn-danger" style="display:none" id="FormCancel"></a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('div.action-buttons').children('button').hide();
+        $('input#cb_grid-table').click(function () {
+            if ($(this).prop('checked') == true) {
+                $('#grid-table').find('input[type=checkbox]').prop('checked', true);
+                $('div.action-buttons').children('button').show();
+            } else {
+                $('#grid-table').find('input[type=checkbox]').prop('checked', false);
+                $('div.action-buttons').children('button').hide();
+            }
+        });
+        $('#grid-table').find('input[type=checkbox]').click(function () {
+            if ($(this).prop('checked') == true) {
+                $('div.action-buttons').children('button').show();
+            } else if ($(this).prop('checked') == false) {
+                $('div.action-buttons').children('button').hide();
+            }
+        })
+
+        $('a').click(function () {// 這寫法是有問題的要改......................
+            if ($(this).attr('tabid') == 'BaseFormModel_form_tab_0' || $(this).attr('tabid') == 'BaseFormModel_flow_tab_0') {
+                var $currentTab = $('#' + $(this).attr('modalID')).find('div.tab-content');
+                $currentTab.children().hide();
+                $currentTab.find("#" + $(this).attr('tabID')).show();
+            }
+        })
+
+        $('#btnAccept').click(function () {
+            var submitData = {
+                FormType: $('#signingFormType').val(),
+                FormNo: $('#signingFormNo').val(),
+                SignFlowID: $('#signingFlowID').val(),
+                Instruction: $('#instruction').val()
+            };
+            $.ajax({
+                url: 'SignForms/Accept',
+                method: 'POST',
+                data: JSON.stringify(submitData),
+                contentType: 'application/json',
+                dataType: 'text json',
+                success: function (result) {
+                    bootbox.alert(result.message, function () {
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+    })
+
+    function loadFormDetail(formType, formNo, signFlowId) {
+        $("#PrintBtn").hide();
+        $('#signingFormType').val(formType);
+        $('#signingFormNo').val(formNo);
+        $('#signingFlowID').val(signFlowId);
+        $('#instruction').val('');
+        
+        var action;
+        if (formType == 'Leave') {
+            action = 'GetPLeaveDetail';
+        } else if (formType == 'OverTime') {
+            action = 'GetOverTimeDetail';
+        } else if (formType == 'PatchCard') {
+            action = 'GetPatchCardDetail';
+        } else if (formType == 'LeaveCancel') {
+            action = 'GetLeaveCancelDetail';
+        } else if (formType == 'OverTimeCancel') {
+            action = 'GetOverTimeCancelDetail';
+        } else if (formType == 'PatchCardCancel') {
+            action = 'GetPatchCardCancelDetail';
+        };
+
+        $('#formContent').empty();
+        
+        $('#formContent').load('SignForms/' + action + '?formNo=' + formNo, function () {
+            if (formType == 'Leave') {
+                $("#PrintBtn").show();
+            }
+        });
+
+
+        $('#signFlowContent').load('SignForms/GetSignFlow?formNo=' + formNo);
+    }
+
+    //2019/09/10 Neo 增加送件/退簽的編輯按鈕事件
+    //formType:送件/退簽表單類別, formNo:送件/退簽表單編號, signFlowId:簽核流程表單編號, signType:簽核類別
+    function EditReject(formType, formNo, signFlowId, signType) {
+        if (confirm('按下確定後此假單就會拉回，需重新送出')) {
+            if (signType == 'S') {
+                var locationHref = ''
+
+                switch (formType) {
+                    case 'Leave':
+                        locationHref = '@Url.Action("Index", "../M02/LeaveForm")' + '?formNo=' + formNo;
+                        break;
+                    case 'LeaveCancel':
+                        locationHref = '@Url.Action("Index", "../M02/LeaveCancelForm")' + '?formNo=' + formNo;
+                        break;
+                    case 'OverTime':
+                        locationHref = '@Url.Action("Index", "../M02/OverTimeForm")' + '?formNo=' + formNo;
+                        break;
+                    case 'OverTimeCancel':
+                        locationHref = '@Url.Action("Index", "../M02/OverTimeCancelForm")' + '?formNo=' + formNo;
+                        break;
+                    case 'PatchCard':
+                        locationHref = '@Url.Action("Index", "../M02/PatchCardForm")' + '?formNo=' + formNo;
+                        break;
+                    case 'PatchCardCancel':
+                        locationHref = '@Url.Action("Index", "../M02/PatchCardCancelForm")' + '?formNo=' + formNo;
+                        break;
+                }
+                window.location.href = locationHref;
+            } else {
+                EditRejectPullBack(formType, formNo, signFlowId);
+            }
+        }
+    }
+
+    //2019/09/10 Neo 增加送件/退簽的查詢按鈕事件
+    //formType:送件/退簽表單類別, formNo:送件/退簽表單編號, signFlowId:簽核流程表單編號
+    function EditRejectPullBack(formType, formNo, SignFlowID) {
+        var submitData = {
+            FormType: formType,
+            FormNo: formNo,
+            SignFlowID: SignFlowID,
+            Instruction: ''
+        };
+        $.ajax({
+            url: '@Url.Action("PullBack", "SignForms")',
+            method: 'POST',
+            data: JSON.stringify(submitData),
+            contentType: 'application/json',
+            success: function (result) {
+                if (result.status) {
+                    window.location.href = result.message;
+                }
+            }
+        });
+    }
+</script>
+<!-- 2019/09/11 Neo 增加Include LeavePrint.js -->
+<script src="@Url.Content("~/areas/ToDo/Scripts/LeavePrint.js")"></script>
+

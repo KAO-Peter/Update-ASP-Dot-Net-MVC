@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC3BA0A4-28BE-45AE-9F5B-5A992C861AE9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HRPortal.ApiAdapter</RootNamespace>
+    <AssemblyName>HRPortal.ApiAdapter</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.WinControls, Version=2015.2.728.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.UI, Version=2015.2.728.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="TelerikCommon, Version=2015.2.728.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HRMApiAdapterData\AbsentCountAll.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\AbsentDataForBambooHR.cs" />
+    <Compile Include="HRMApiAdapterData\AbsentDetail.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\AbsentFormData.cs" />
+    <Compile Include="HRMApiAdapterData\AbsentType.cs" />
+    <Compile Include="HRMApiAdapterData\BpmModelForFEDS.cs" />
+    <Compile Include="HRMApiAdapterData\CasualAttendPayrollChecklist.cs" />
+    <Compile Include="HRMApiAdapterData\CasualCycleData.cs" />
+    <Compile Include="HRMApiAdapterData\CasualCycleResult.cs" />
+    <Compile Include="HRMApiAdapterData\CasualDailyPayrollChecklist.cs" />
+    <Compile Include="HRMApiAdapterData\CasualFormData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\CasualFormLabor.cs" />
+    <Compile Include="HRMApiAdapterData\CasualFormMonthly.cs" />
+    <Compile Include="HRMApiAdapterData\CasualFormResult.cs" />
+    <Compile Include="HRMApiAdapterData\ClassData.cs" />
+    <Compile Include="HRMApiAdapterData\DeleteRequestData.cs" />
+    <Compile Include="HRMApiAdapterData\DeleteResponse.cs" />
+    <Compile Include="HRMApiAdapterData\DepartmentLeaveSummaryItem.cs" />
+    <Compile Include="HRMApiAdapterData\DepartmentLeaveSummaryPostData.cs" />
+    <Compile Include="HRMApiAdapterData\DepartmentSalarySummary.cs" />
+    <Compile Include="HRMApiAdapterData\DepartmentSalarySummaryPostData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpAbsentCheckDetail.cs" />
+    <Compile Include="HRMApiAdapterData\EmpChangeK9Data.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\EmpChangeK9Result.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\EmpDutyCardData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpDutyCardInfoData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpDutyCardK9Data.cs" />
+    <Compile Include="HRMApiAdapterData\EmpDutyCardK9Result.cs" />
+    <Compile Include="HRMApiAdapterData\EmpHolidayData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpInsureGetReq.cs" />
+    <Compile Include="HRMApiAdapterData\EmpInsurePersonalMoney.cs" />
+    <Compile Include="HRMApiAdapterData\EmpLaborK9Data.cs" />
+    <Compile Include="HRMApiAdapterData\EmpLaborK9Result.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeAbsentItems.cs" />
+    <Compile Include="HRMApiAdapterData\CheckOverTimeResponse.cs" />
+    <Compile Include="HRMApiAdapterData\DepartmentData.cs" />
+    <Compile Include="HRMApiAdapterData\CompanyData.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeAbsentItemsFEDS.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeBasicData.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeSalaryInfo.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeSalaryInfoFEDS.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeSalaryItemsFEDS.cs" />
+    <Compile Include="HRMApiAdapterData\EmpOverTimeTotal.cs" />
+    <Compile Include="HRMApiAdapterData\EmpScheduleK9Data.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\EmpScheduleK9Result.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\EmpScheduleTimeK9Data.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\EmpScheduleTimeK9DelData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpScheduleTimeK9DelResult.cs" />
+    <Compile Include="HRMApiAdapterData\EmpScheduleTimeK9Result.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\DutyScheduleSummary.cs" />
+    <Compile Include="HRMApiAdapterData\GetDutyResultWorking.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\GetEmpDataCasual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapterData\GetEmpDataCasualDetail.cs" />
+    <Compile Include="HRMApiAdapterData\GetEmpScheduleClassTimeByStartEndTimeResponse.cs" />
+    <Compile Include="HRMApiAdapterData\GetEmpScheduleClassTimeResponse.cs" />
+    <Compile Include="HRMApiAdapterData\IncomeTaxCycleGetRes.cs" />
+    <Compile Include="HRMApiAdapterData\IncomeTaxGetRes.cs" />
+    <Compile Include="HRMApiAdapterData\LeaveSummaryItem.cs" />
+    <Compile Include="HRMApiAdapterData\NationData.cs" />
+    <Compile Include="HRMApiAdapterData\OvertimeFormData.cs" />
+    <Compile Include="HRMApiAdapterData\PortalFormDetailData.cs" />
+    <Compile Include="HRMApiAdapterData\PostLeaveData.cs" />
+    <Compile Include="HRMApiAdapterData\CheckLeaveResponse.cs" />
+    <Compile Include="HRMApiAdapterData\PostModifyEmpData.cs" />
+    <Compile Include="HRMApiAdapterData\PostOverTimeData.cs" />
+    <Compile Include="HRMApiAdapterData\RelativesData.cs" />
+    <Compile Include="HRMApiAdapterData\RequestResult.cs" />
+    <Compile Include="HRMApiAdapterData\PostDutyData.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeData.cs" />
+    <Compile Include="HRMApiAdapterData\LeaveDetail.cs" />
+    <Compile Include="HRMApiAdapterData\OverTimeReasonItem.cs" />
+    <Compile Include="HRMApiAdapterData\EmployeeSalaryItems.cs" />
+    <Compile Include="HRMApiAdapterData\SalaryFormNo.cs" />
+    <Compile Include="HRMApiAdapterData\SaveDutyResultWorking.cs" />
+    <Compile Include="HRMApiAdapterData\BambooHRCheckLeaveResponse.cs" />
+    <Compile Include="HRMApiAdapterData\EmpHolidayTimeSpanQuotaData.cs" />
+    <Compile Include="HRMApiAdapterData\EmpAbsentDataForLeaveFormSignStatus.cs" />
+    <Compile Include="HRMApiAdapterData\SalaryChangeNoteSingleNo.cs" />
+    <Compile Include="HRMApiAdapterData\SalaryChangeNoteInfo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAnnualLeaveCode.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAnnualLeaveSummary.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDeptSalaryMapping.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCanUseCount.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckDeleteOverTime.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckDeleteLeave.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckDeletePatchCard.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckScheduleResult.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateCasualForm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateEmpChangeK9.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateEmpDutyCardK9.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateEmpLaborK9.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateEmpScheduleK9.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CreateEmpScheduleTimeK9.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeleteCasualForm.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeleteEmpScheduleTimeK9.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeleteOverTime.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeletePatchCard.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeletePortalFormDetail.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualAttendPayrollChecklist.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualDailyPayrollChecklist.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualFormMonthly.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualMinSalaryPerHour.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpHolidayData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeAbsent2.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeAbsentDetailFEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeBasicData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryDetailFEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryFormNoFEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryInfoFEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpScheduleClassTime.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GeneralGetLeaveEmployee.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAbsentFormData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAllAbsent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAllAbsentData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAllEmpDutyCard.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualFormLabor.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCasualList.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetClassByID.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetClassData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDutyResultWorking.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDutyScheduleSummary.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpDataCasual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpDataCasualDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpDutyCard.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryFormNo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDeptSalaryFormNo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeIDNumber.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeAbsentDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeSalaryInfo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckLeave.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckOverTime.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDepartment.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCompany.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpScheduleClassTimeByStartEndTime.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetIncomeTaxCycleInfoList.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetIncomeTaxTransList.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetInsureAndLaborCertificateDataList.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetInsureBasicInfo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetLeaveFormDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetLeaveSummary.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetLeaveEmployee.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.DeleteLeave.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetNationData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetOverTimeFormData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetOvertimeFormDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetOverTimeTotal.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetRelatives.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetUnLockRestLeaveInfo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostDutyAddFormNo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostDuty_FEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostEmpSignDeptImportFEDS.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostModifyEmpData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostOverTime .cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostLeave.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.PostDuty.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckDuty.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeAbsent.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDeptLeaveEmployee.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.CheckIfEmployeeLeave.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetOverTimeReasons.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDeptEmployee.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmployeeData.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.SaveDutyResultWorking.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.SaveEmpDataCasual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.SavePortalFormDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.UpdateCasualCycle.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.UpdateCasualForm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.UpdateEmpScheduleTimeK9.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.UpdatePortalFormDetail.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.AbsentAmount.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetLeaveSalaryFormNo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDeptAgentQueryMapping.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetLeaveSummary2.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.WarmUpHRMAPI.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetAbsentDataForBambooHR.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.BambooHRCheckAbsentAmount.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpHolidayTimeSpanQuota.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetEmpAbsentDataForLeaveFormSignStatus.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetSalaryChangeNoteList.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetSalaryChangeNoteInfo.cs" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetCheckFormNo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Compile Include="HRMApiAdapter\HRMApiAdapter.GetDepartmentSalarySummary.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HRPortal.DBEntities\HRPortal.DBEntities.csproj">
+      <Project>{111010b5-8234-474d-9312-f1051bf42420}</Project>
+      <Name>HRPortal.DBEntities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NewHRPortalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SignFlowAssignDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DesignID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="FormType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CompanyID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DeptID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="EmpID" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SignFlowConditions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DesignID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="LevelID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ConditionType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Parameters" Type="nvarchar" MaxLength="50" />
+          <Property Name="AbsentCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SignFlowDesign">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DesignID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SignOrder" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="FormLevelID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DeptType" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="SignDeptID" Type="nvarchar" MaxLength="10" />
+          <Property Name="SignerID" Type="nvarchar" MaxLength="20" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SignCompanyID" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SignFlowFormLevel">
+          <Key>
+            <PropertyRef Name="FormLevelID" />
+          </Key>
+          <Property Name="FormLevelID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="LevelID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FormType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SignFlowLevel">
+          <Key>
+            <PropertyRef Name="LevelID" />
+          </Key>
+          <Property Name="LevelID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SignFlowRec">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FormNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FormType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FormLevelID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SignOrder" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SignStatus" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SignType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="SignerID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ActSignerID" Type="nvarchar" MaxLength="20" />
+          <Property Name="Instruction" Type="nvarchar" MaxLength="1000" />
+          <Property Name="SignDate" Type="datetime2" Precision="7" />
+          <Property Name="IsUsed" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="GroupId" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CUser" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="MUser" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="SenderID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SignCompanyID" Type="nvarchar" MaxLength="10" />
+          <Property Name="SenderCompanyID" Type="nvarchar" MaxLength="10" />
+          <Property Name="OrgSignerID" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="SystemSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SettingKey" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SettingValue" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedTime" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="NewHRPortalModelStoreContainer">
+          <EntitySet Name="SignFlowAssignDept" EntityType="Self.SignFlowAssignDept" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignFlowConditions" EntityType="Self.SignFlowConditions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignFlowDesign" EntityType="Self.SignFlowDesign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignFlowFormLevel" EntityType="Self.SignFlowFormLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignFlowLevel" EntityType="Self.SignFlowLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignFlowRec" EntityType="Self.SignFlowRec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemSetting" EntityType="Self.SystemSetting" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewHRPortalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SignFlowEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SignFlowAssignDept" EntityType="NewHRPortalModel.SignFlowAssignDept" />
+          <EntitySet Name="SignFlowDesign" EntityType="NewHRPortalModel.SignFlowDesign" />
+          <EntitySet Name="SignFlowFormLevel" EntityType="NewHRPortalModel.SignFlowFormLevel" />
+          <EntitySet Name="SignFlowLevel" EntityType="NewHRPortalModel.SignFlowLevel" />
+          <EntitySet Name="SystemSetting" EntityType="NewHRPortalModel.SystemSetting" />
+          <EntitySet Name="SignFlowConditions" EntityType="NewHRPortalModel.SignFlowConditions" />
+          <EntitySet Name="SignFlowRec" EntityType="NewHRPortalModel.SignFlowRec" />
+        </EntityContainer>
+        <EntityType Name="SignFlowAssignDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="FormType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeptID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DesignID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EmpID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SignFlowDesign">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="DesignID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FormLevelID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DeptType" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="SignDeptID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SignerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SignOrder" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="IsUsed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SignCompanyID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SignFlowFormLevel">
+          <Key>
+            <PropertyRef Name="FormLevelID" />
+          </Key>
+          <Property Name="LevelID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FormType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="FormLevelID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SignFlowLevel">
+          <Key>
+            <PropertyRef Name="LevelID" />
+          </Key>
+          <Property Name="LevelID" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Name" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="IsUsed" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" Type="String" />
+        </EntityType>
+        <EntityType Name="SystemSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="SettingKey" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SettingValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="SignFlowConditions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="DesignID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LevelID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ConditionType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Parameters" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AbsentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SignFlowRec">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FormNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FormType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FormLevelID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SignOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SignStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SignType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SignerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ActSignerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Instruction" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="SignDate" Type="DateTime" Precision="7" />
+          <Property Name="IsUsed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="GroupId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CUser" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="MUser" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="SenderID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SignCompanyID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SenderCompanyID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OrgSignerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NewHRPortalModelStoreContainer" CdmEntityContainer="SignFlowEntities">
+          <EntitySetMapping Name="SignFlowAssignDept">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowAssignDept">
+              <MappingFragment StoreEntitySet="SignFlowAssignDept">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="DesignID" ColumnName="DesignID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="FormType" ColumnName="FormType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignFlowDesign">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowDesign">
+              <MappingFragment StoreEntitySet="SignFlowDesign">
+                <ScalarProperty Name="SignCompanyID" ColumnName="SignCompanyID" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="SignOrder" ColumnName="SignOrder" />
+                <ScalarProperty Name="SignerID" ColumnName="SignerID" />
+                <ScalarProperty Name="SignDeptID" ColumnName="SignDeptID" />
+                <ScalarProperty Name="DeptType" ColumnName="DeptType" />
+                <ScalarProperty Name="FormLevelID" ColumnName="FormLevelID" />
+                <ScalarProperty Name="DesignID" ColumnName="DesignID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignFlowFormLevel">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowFormLevel">
+              <MappingFragment StoreEntitySet="SignFlowFormLevel">
+                <ScalarProperty Name="FormLevelID" ColumnName="FormLevelID" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FormType" ColumnName="FormType" />
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignFlowLevel">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowLevel">
+              <MappingFragment StoreEntitySet="SignFlowLevel">
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemSetting">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SystemSetting">
+              <MappingFragment StoreEntitySet="SystemSetting">
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="SettingKey" ColumnName="SettingKey" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignFlowConditions">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowConditions">
+              <MappingFragment StoreEntitySet="SignFlowConditions">
+                <ScalarProperty Name="AbsentCode" ColumnName="AbsentCode" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="Parameters" ColumnName="Parameters" />
+                <ScalarProperty Name="ConditionType" ColumnName="ConditionType" />
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+                <ScalarProperty Name="DesignID" ColumnName="DesignID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignFlowRec">
+            <EntityTypeMapping TypeName="NewHRPortalModel.SignFlowRec">
+              <MappingFragment StoreEntitySet="SignFlowRec">
+                <ScalarProperty Name="OrgSignerID" ColumnName="OrgSignerID" />
+                <ScalarProperty Name="SenderCompanyID" ColumnName="SenderCompanyID" />
+                <ScalarProperty Name="SignCompanyID" ColumnName="SignCompanyID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="MDate" ColumnName="MDate" />
+                <ScalarProperty Name="MUser" ColumnName="MUser" />
+                <ScalarProperty Name="CDate" ColumnName="CDate" />
+                <ScalarProperty Name="CUser" ColumnName="CUser" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="SignDate" ColumnName="SignDate" />
+                <ScalarProperty Name="Instruction" ColumnName="Instruction" />
+                <ScalarProperty Name="ActSignerID" ColumnName="ActSignerID" />
+                <ScalarProperty Name="SignerID" ColumnName="SignerID" />
+                <ScalarProperty Name="SignType" ColumnName="SignType" />
+                <ScalarProperty Name="SignStatus" ColumnName="SignStatus" />
+                <ScalarProperty Name="SignOrder" ColumnName="SignOrder" />
+                <ScalarProperty Name="FormLevelID" ColumnName="FormLevelID" />
+                <ScalarProperty Name="FormType" ColumnName="FormType" />
+                <ScalarProperty Name="FormNumber" ColumnName="FormNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

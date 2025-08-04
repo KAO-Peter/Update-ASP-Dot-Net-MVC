@@ -1,0 +1,185 @@
+﻿@model List<HRPortal.Mvc.Models.SignFlowDesignViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+        </script>
+    }
+    <div>
+        @Html.ActionLink(HRPortal.MultiLanguage.Resource.BackToSignFlowSetting, "Index")
+    </div>
+    <div class="h4">
+        @HRPortal.MultiLanguage.Resource.EditSignFlow
+    </div>
+    @*<table>
+            <tr>
+                <td class="" style="text-align:right;">@HRPortal.MultiLanguage.Resource.Company:</td>
+                <td class="">@ViewBag.CompanyName</td>
+            </tr>
+            <tr>
+                <td class="" style="text-align:right;">@HRPortal.MultiLanguage.Resource.Department:</td>
+                <td class="">@ViewBag.DepartmentName</td>
+            </tr>
+            <tr>
+                <td class="" style="text-align:right;">@HRPortal.MultiLanguage.Resource.FormType:</td>
+                <td class="">@ViewBag.FormType</td>
+            </tr>
+        </table>
+        <br/>*@
+    <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+        <a class="btn btn-info" id="btnAddSignFlowItem" data-modal="" href="@Url.Action("AddSignFlowItem", new{ designId = TempData["DesignID"] })">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777;">
+                    <th class="col-xs-2" style="white-space:normal">
+
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.SignOrder
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.FormSignLevelName
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.DeptType
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+                        @HRPortal.MultiLanguage.Resource.SignerName
+                    </th>
+                    <th class="col-xs-2" style="white-space:normal">
+
+                    </th>
+                </tr>
+                @if (Model != null && Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td style="white-space:normal;text-align:center;width:2%">
+                                <a class="btn btn-success btn-move" id="btnMoveUp@(item.ID)" href="@Url.Action("MoveUpFlowItem", new { designId = item.DesignID, order = item.SignOrder })" data-action="4">@HRPortal.MultiLanguage.Resource.MoveUp</a>
+                                <a class="btn btn-success btn-move" id="btnMoveDown@(item.ID)" href="@Url.Action("MoveDownFlowItem", new { designId = item.DesignID, order = item.SignOrder })" data-action="4">@HRPortal.MultiLanguage.Resource.MoveDown</a>
+                                @if (item.SignOrder == "1")
+                                {
+                                    <script>
+                                        $(function () {
+                                            var btn = $('#btnMoveUp'+'@(item.ID)');
+                                            btn.removeClass('btn-move');
+                                            btn.click(function(){return false;});
+                                        })
+                                    </script>
+                                }
+                                @if (item.SignOrder == Model.Count.ToString())
+                                {
+                                    <script>
+                                        $(function () {
+                                            var btn = $('#btnMoveDown'+'@(item.ID)');
+                                            btn.removeClass('btn-move');
+                                            btn.click(function(){return false;});
+                                        })
+                                    </script>
+                                }
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.SignOrder)
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.FormLevelName)
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.DeptTypeName)
+                            </td>
+
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.SignerName)
+                            </td>
+
+                            <td style="white-space:normal;text-align:center;width:10%">
+                                <a class="btn btn-warning" id="btnEdit@(item.ID)" data-modal="" href="@Url.Action("EditSignFlowItem", new { itemId = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                <a class="btn btn-danger btn-delete" id="btnDelete@(item.ID)" href="@Url.Action("DeleteSignFlowItem", new { designId = item.DesignID, order = item.SignOrder })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnDelete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="6" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id='SignFlowItemDiv' class='modal fade in' role="dialog">
+        <div id='SignFlowItemContent'></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#SignFlowItemContent').load(this.href, function () {
+                    $('#SignFlowItemDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#SignFlowItemDiv', '#SignFlowItemContent', true, window.location.href);
+                });
+                return false;
+            });
+
+
+            $('a.btn-delete').click(function () {
+                $.ajax({
+                    url: this.href,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.status == 'success') {
+                            window.location = window.location.href;
+                            location.reload();
+                        } else {
+                            showAlertMessage(result.message);
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('a.btn-move').click(function () {
+                $.ajax({
+                    url: this.href,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.status == 'success') {
+                            window.location = window.location.href;
+                            location.reload();
+                        } else {
+                            showAlertMessage(result.message);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+
+    </script>
+}

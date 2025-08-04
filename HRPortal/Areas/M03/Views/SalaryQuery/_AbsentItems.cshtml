@@ -1,0 +1,114 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeAbsentItems
+@{
+    var MaxCount = Model.Leaves.Count;
+    //decimal TaxableAmounts = 0;
+    //decimal NoTaxAmounts = 0;
+    decimal OverTimesAmounts = 0;
+    if (Model.Absents.Count > MaxCount)
+    {
+        MaxCount = Model.Absents.Count;
+    }
+    if (Model.OverTimes.Count > MaxCount)
+    {
+        MaxCount = Model.OverTimes.Count;
+    }
+
+}
+
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th style="text-align:center">
+                假別
+            </th>
+            <th style="text-align:center">
+                當月
+            </th>
+            <th style="text-align:center">
+                年累
+            </th>
+            <th style="text-align:center"> 
+                出缺勤
+            </th>
+            <th style="text-align:center">
+                當月
+            </th>
+            <th style="text-align:center">
+                年累
+            </th>
+            <th style="text-align:center">
+                加班
+            </th>
+            <th style="text-align:center">
+                當月
+            </th>
+        </tr>
+
+        @for (int i = 0; i < MaxCount; i++)
+            {
+            <tr>
+                @if (i < Model.Leaves.Count)
+                {
+                    //Leaves
+                    //TaxableAmounts += Model.TaxableItems[i].Amount;
+                    <th>
+                        @Model.Leaves[i].Name
+                    </th>
+                    <td style="text-align:right">@Model.Leaves[i].ThisMonth</td>
+                    <td style="text-align:right">@Model.Leaves[i].ThisYear</td>
+                }
+                else
+                {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    <td style="text-align:right"></td>
+                }
+
+                @if (i < Model.Absents.Count)
+                {
+                    //Absents
+                    //NoTaxAmounts += Model.Absents[i].Amount;
+                    <th>
+                        @Model.Absents[i].Name
+                    </th>
+                    <td style="text-align:right">@Model.Absents[i].ThisMonth</td>
+                    <td style="text-align:right">@Model.Absents[i].ThisYear</td>
+                }
+                else
+                {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    <td style="text-align:right"></td>
+                }
+
+                @if (i < Model.OverTimes.Count)
+                {
+                    //OverTimes
+                    OverTimesAmounts += Model.OverTimes[i].ThisMonth;
+                    <th>
+                        @Model.OverTimes[i].Name
+                    </th>
+                    <td style="text-align:right">@Model.OverTimes[i].ThisMonth</td>
+                    @*<td style="text-align:right">@Model.OverTimes[i].ThisYear</td>*@
+                }
+                else
+                {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    @*<td style="text-align:right"></td>*@
+                }
+            </tr>
+        }
+        <tr>
+            @*<th>應稅合計</th>
+            <td style="text-align:right">@TaxableAmounts</td>
+            <th>免稅合計</th>
+            <td style="text-align:right">@NoTaxAmounts</td>
+            <th>代扣合計</th>
+            <td style="text-align:right">@WithholdingAmounts</td>*@
+            <td colspan="6"/>
+            <th>加班合計</th>
+            <td style="text-align:right">@OverTimesAmounts</td>
+        </tr>
+    </tbody>
+</table>

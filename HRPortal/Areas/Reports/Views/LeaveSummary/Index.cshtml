@@ -1,0 +1,190 @@
+﻿@model IPagedList<HRPortal.SignFlow.Model.HRPotralLeaveSummary>
+@using System.Resources
+@using PagedList
+@using PagedList.Mvc
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ls = new HRPortal.Areas.Reports.Controllers.LeaveSummaryController();    
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+
+    #grid-table tr > td, #grid-table tr > th {
+        text-align: center!important;
+        vertical-align: middle;
+    }
+
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+<div id="bodyContainer" class="row">
+    @using (Html.BeginForm("Index", "LeaveSummary", FormMethod.Post, new { }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="row" style="margin-right: 0px; margin-left: 0px;">
+            <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+                <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Department</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", onchange = "ChangeStatus(this.options[this.selectedIndex].value,'#DepartmentData');" })
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Signstate</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("SignStatuslistData", (IEnumerable<SelectListItem>)ViewData["SignStatuslist"], new { @class = "form-control", onchange = "ChangeStatus(this.options[this.selectedIndex].value,'#SignStatusdate');" })
+                        </div>
+                    </div>
+                </div>
+                <div class="search-section search-button">
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                    </div>
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                    </div>
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnExport" style="width: 100%" name="btnExport" type="submit" value="匯出" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*hidden 元素*@
+        <input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentData" id="DepartmentData" />
+        <input type="hidden" value="@ViewBag.SignStatusdate" name="SignStatusdate" id="SignStatusdate" />
+    }
+    <div class="col-xs-12">
+        @if (Model != null)
+        {
+            string year = DateTime.Parse((string)ViewBag.StartTime).Year.ToString();
+                <div class="table-responsive">
+                    <table id="grid-table" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777;">
+                            <th style="width:5%;">Item<br />項目</th>
+                            <th style="width:10%;">Names<br />姓名</th>
+                            <th style="width:10%;">Leave reason<br />請假假別</th>
+                            <th style="width:20%;">Leave date<br />請假起訖日期</th>
+                            <th style="width:7%;">Days<br />請假天數</th>
+                            <th style="width:15%;">Total annual days earned in @year<br />@year 年休假天數</th>
+                            <th style="width:15%;">Total annual days used<br />已經請假天數</th>
+                            <th style="width:15%;">Total annual days left<br />剩下未請假天數</th>
+                            <th style="width:7%;">Sign<br />簽核</th>
+                    </tr>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        ResourceManager _resourceManager = new ResourceManager("HRPortal.MultiLanguage.Resource", typeof(HRPortal.MultiLanguage.Resource).Assembly);
+                        int index = 1;
+                        foreach (var item in Model)
+                        {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td style="white-space: normal">@(Model.PageSize * (Model.PageNumber - 1) + index)</td>
+                            <td style="white-space: normal" class="sender">@Html.Raw(string.IsNullOrWhiteSpace(item.SenderEmployeeNameEn) ? item.SenderEmployeeName : string.Format("{0}<br />{1}", item.SenderEmployeeNameEn, item.SenderEmployeeName))</td>
+                            <td style="white-space: normal">@Html.Raw(string.IsNullOrWhiteSpace(item.AbsentNameEn) ? item.AbsentName : string.Format("{0}<br />{1}", item.AbsentNameEn, item.AbsentName))</td>
+                            <td style="white-space: normal">@item.FormSummary</td>
+                            <td style="white-space: normal">@item.LeaveAmount.ToString("0.####") @ls.GetAbsentUnit(item.LeaveAmount)</td>
+                            <td style="white-space: normal">@item.TotalAnnualAmount.ToString("0.####") @ls.GetAbsentUnit(item.TotalAnnualAmount)</td>
+                            <td style="white-space: normal">@item.TotalLeaveAmount.ToString("0.####") @ls.GetAbsentUnit(item.TotalLeaveAmount)</td>
+                            <td style="white-space: normal">@item.TotalUseAmount.ToString("0.####") @ls.GetAbsentUnit(item.TotalUseAmount)</td>
+                            <td style="white-space: normal">@(item.SignStatus == "A" ? "Signed" : "Unsigned")</td>
+                        </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="9" style="text-align: center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align: center">
+                @if (Model != null && Model.Count() > 0)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchAction = ViewBag.searchAction, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime, DepartmentData = ViewBag.DepartmentData, SignStatusdate = ViewBag.SignStatusdate }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                                                  new { page, searchAction = ViewBag.searchAction, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime, DepartmentData = ViewBag.DepartmentData, SignStatusdate = ViewBag.SignStatusdate }), new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  })
+                }
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+        $('#BeginDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+        });
+
+        $('#EndDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+        });
+    });
+
+    function ChangeStatus(fileId, formName) {
+        $(formName).val(fileId);
+    }
+</script>

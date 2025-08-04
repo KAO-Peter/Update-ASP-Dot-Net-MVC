@@ -1,0 +1,116 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryItems
+@{
+            var MaxCount = Model.TaxableItems.Count;
+            var MaxCountTotal = Model.TaxableItemsTotal.Count;
+            var _MaxCountTotal = Model.WithholdingItemsTotal.Count;
+            decimal TaxableAmounts = 0;
+            decimal NoTaxAmounts = 0;
+            decimal WithholdingAmounts = 0;
+            decimal TaxableItemsTotal = 0;
+            decimal WithholdingItemsTotal = 0;
+            if (Model.NoTaxItems.Count > MaxCount)
+            {
+                MaxCount = Model.NoTaxItems.Count;
+            }
+            if (Model.WithholdingItems.Count > MaxCount)
+            {
+                MaxCount = Model.WithholdingItems.Count;
+            }
+            for (int i = 0; i < MaxCountTotal; i++)
+            {
+              
+                    if (i < Model.TaxableItemsTotal.Count)
+                    {
+                     //TaxableItemsTotal
+                     TaxableItemsTotal += Model.TaxableItemsTotal[i].Amount;
+                    }
+            }
+            for (int i = 0; i < _MaxCountTotal; i++)
+            {
+
+                if (i < Model.WithholdingItemsTotal.Count)
+                {
+                    //WithholdingItemsTotal
+                    WithholdingItemsTotal += Model.WithholdingItemsTotal[i].Amount;
+                }
+            }
+}
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+         <tr>
+             <th style="text-align:center;height:30px;" colspan="6"  >
+               @HRPortal.MultiLanguage.Resource.SalaryReceipt_PayPeriod:@Model.SalaryFirstDay~@Model.SalaryLastDay
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align:center;height:30px;" colspan="2">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_TaxableItem
+            </th>
+            <th style="text-align:center;height:30px;"  colspan="2">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_TaxExemption
+            </th>
+            <th style="text-align:center;height:30px;"  colspan="2">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_SubtotalOfDeductions
+            </th>
+        </tr>
+     
+            @for (int i = 0; i < MaxCount; i++)
+            {
+                <tr>
+                    @if (i < Model.TaxableItems.Count)
+                    {
+                    //TaxableItems
+                    TaxableAmounts += Model.TaxableItems[i].Amount;
+                    <th style="height:30px;">
+                        @(Model.LanguageCookie == "en-US" ? Model.TaxableItems[i].NameEN : Model.TaxableItems[i].Name)
+                    </th>
+                    <td style="text-align:right;height:30px;">@Model.TaxableItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+
+                    @if (i < Model.NoTaxItems.Count)
+                    {
+                        //NoTaxItems
+                        NoTaxAmounts += Model.NoTaxItems[i].Amount;
+                    <th style="height:30px;">
+                        @(Model.LanguageCookie == "en-US" ? Model.NoTaxItems[i].NameEN : Model.NoTaxItems[i].Name)
+                    </th>
+                    <td style="text-align:right;height:30px;">@Model.NoTaxItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+
+                    @if (i < Model.WithholdingItems.Count)
+                    {
+                        //WithholdingItems
+                        WithholdingAmounts += Model.WithholdingItems[i].Amount;
+                    <th style="height:30px;">
+                        @(Model.LanguageCookie == "en-US" ? Model.WithholdingItems[i].NameEN : Model.WithholdingItems[i].Name)
+                    </th>
+                    <td style="text-align:right;height:30px;">@Model.WithholdingItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th style="height:30px;"></th>
+                    <td style="text-align:right;height:30px;"></td>
+                    }
+                </tr>
+            }
+        <tr>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_TotalTaxable</th>
+            <td style="text-align:right;height:30px;">@TaxableAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_TaxExemptionTotal</th>
+            <td style="text-align:right;height:30px;">@NoTaxAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_Deductions</th>
+            <td style="text-align:right;height:30px;">@WithholdingAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+       
+    </tbody>
+</table>

@@ -1,0 +1,218 @@
+﻿@model HRPortal.Mvc.Models.ElectronicSignViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+         
+<style type="text/css">
+    @@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('../../../../Content/Clock/BebasNeue-webfont.eot');
+     src: url('../../../../Content/Clock/BebasNeue-webfont.eot') format('embedded-opentype');
+    src: url('../../../../Content/Clock/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../../../Content/Clock/BebasNeue-webfont.woff') format('woff'),
+         url('../../../../Content/Clock/BebasNeue-webfont.ttf') format('truetype'),
+         url('../../../../Content/Clock/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.container {width: 330px; margin: 0; padding-left:0; overflow: hidden;}
+
+ .clock {width:330px; margin:0 auto; padding:30px;  color:#fff; }
+
+#Date { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:24px; text-align:center; }
+
+#ShowClock ul {  margin:0 auto; padding:0px; list-style:none; text-align:center; }
+#ShowClock ul li { display:inline; font-size:4em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; }
+
+#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+
+@@-webkit-keyframes mymove
+{
+0% {opacity:1.0; }
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; }
+}
+
+
+@@-moz-keyframes mymove
+{
+0% {opacity:1.0; }
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; }
+}
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+// Create two variable with the names of the months and days in an array
+    //var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+var dayNames= ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"]
+
+var newDate = new Date();
+
+newDate.setDate(newDate.getDate());
+
+$('#Date').html(newDate.getFullYear() + ' 年 ' + monthNames[newDate.getMonth()] + " " + newDate.getDate() + ' 日 ' + dayNames[newDate.getDay()]);
+
+setInterval( function() {
+	var seconds = new Date().getSeconds();
+	$("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+	},1000);
+
+setInterval( function() {
+	var minutes = new Date().getMinutes();
+	$("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+    },1000);
+
+setInterval( function() {
+	var hours = new Date().getHours();
+	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
+    }, 1000);
+
+});
+</script>
+@using (Html.BeginForm("Index", "ElectronicSign", FormMethod.Post, new {id = "ElectronicSignForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">@HRPortal.MultiLanguage.Resource.EmployeeNo</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">@ViewBag.EmpID</p>
+        </div>
+        <div class="col-sm-2 control-label">
+            <label>@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+        </div>
+        <div class="col-sm-4">
+            <p class="form-control-static">@ViewBag.EmpName</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+        <div class="col-sm-4">
+            <p class="form-control-static" data-bind="text: department_value">@ViewBag.SignDeptName</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.Passinandout</label>
+        <div class="col-sm-3">
+            @Html.DropDownListFor(m => m.ClockInWayType, Model.ClockInWay, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.ComplementcardCause</label>
+        <div class="col-sm-3">
+            @Html.DropDownListFor(m => m.ClockInReasonType, Model.ClockInReason, new { @class = "form-control" })
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-sm-2 control-label">臨時卡註記</label>
+        <div class="col-sm-8">
+            <select id="TempCard_Flag" name="TempCard_Flag" class="valid" style="width: 150px;">
+                <option value="Y">是</option>
+                <option value="N">否</option>
+            </select>
+        </div>
+    </div>*@
+    <div class="form-group">
+    <label class="col-sm-2 control-label">@HRPortal.MultiLanguage.Resource.NowTime</label>
+    <div class="col-sm-6" style="width:340px">
+        <div id="ShowClock" style="background-color: #5cb85c;width: 350px;" >
+            <div class="container">
+                <div class="clock" style="font-size: 10px;width: 360px;color: #333;">
+                    <div id="Date"></div>
+                    <ul>
+                        <li id="hours"> </li>
+                        <li id="point">:</li>
+                        <li id="min"> </li>
+                        <li id="point">:</li>
+                        <li id="sec"> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+   
+</div>
+<div class="row" style="padding-top:10px">
+    <div class="col-sm-offset-2">
+        <button type="submit" id="btnElectronicSignFormSubmit" class="btn btn-success">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+    </div>
+</div>
+}
+
+
+@section Scripts {
+<script>
+    $('#btnElectronicSignFormSubmit').click(function (event) {
+        var form = $('#ElectronicSignForm');
+        form.submit(function (e) {
+            e.preventDefault();
+        });
+        if (form.validate().form()) {
+            var submitData = new FormData(form[0]);
+            submitData.append('DateTimeNow', new Date().toLocaleString());
+            checkData(submitData);
+        }
+    });
+
+    function checkData(data) {
+        $.ajax({
+            url: 'ElectronicSign/CheckData',
+            type: 'POST',
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (checkResult) {
+                if (checkResult.status == 'success') {
+                    bootbox.dialog({
+                        title: "電子簽到送出確認",
+                        message: checkResult.message,
+                        buttons: {
+                            success: {
+                                label: "確定",
+                                className: "btn-primary",
+                                callback: function () {
+                                    formSubmit(data);
+                                }
+                            },
+                            cancel: {
+                                label: "取消",
+                                className: "btn-default"
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    
+    }
+
+    function formSubmit(data) {
+        var form = $('#ElectronicSignForm');
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (submitResult) {
+                if (submitResult.status == 'success') {
+                    showAlertMessage(submitResult.message, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    showAlertMessage(submitResult.message);
+                }
+            }
+        });
+
+    }
+</script>
+}
+

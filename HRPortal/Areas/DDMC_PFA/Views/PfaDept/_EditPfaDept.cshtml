@@ -1,0 +1,158 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.CreatePfaDept
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditPfaDept";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">考核部門資料</h4>
+        </div>
+        @using (Html.BeginForm("Edit", "PfaDept", FormMethod.Post, new { @id = "EditPfaDeptForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(model => model.PfaDeptCode)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">公司別</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("CompanyID", Model.CompanyList, new { @id = "CompanyID", @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核部門代碼</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaDeptCode, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.PfaDeptCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核部門名稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaDeptName, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.PfaDeptName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核上層部門</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("SignParentID", Model.SignParentList, new { @id = "SignParentID", @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.SignParentID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核簽核主管</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.SignManagerName, new { @class = "form-control", @style = "width:77%", @disabled = true })
+                            <button id="btnEmp" name="@Url.Action("Emp")" type="button" class="btn btn-primary" data-toggle="modal">查詢</button>
+                            @Html.HiddenFor(model => model.SignManagerID)<br />
+                            @Html.ValidationMessageFor(model => model.SignManagerID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">部門階級</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("DeptClassID", Model.DeptClassList, new { @id = "DeptClassID", @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.DeptClassID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">有效起日</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.BeginDate, "{0:yyyy/MM/dd}", new { @class = "form-control", @id = "datetimepicker1" })<br />
+                            @Html.ValidationMessageFor(model => model.BeginDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">有效迄日</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy/MM/dd}", new { @class = "form-control", @id = "datetimepicker1" })<br />
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("input[id='datetimepicker1']").datetimepicker({
+            language: 'zh-TW',
+            minView: 2,
+            format: 'yyyy/mm/dd',
+            autoclose: true,
+            showMeridian: true
+        });
+
+        //工號小視窗
+        $("#btnEmp").click(function () {
+            var company = $("#CompanyID").val();
+            $("#EmpDialogContent").load($(this).attr("name") + "?id=" + company, function () {
+                $('#EmpDialog').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }, 'show');
+            });
+        });
+
+        $("#CompanyID").change(function () {
+            $("#SignManagerID").val("");
+            $("#SignManagerName").val("");
+
+            var jsonObj = { "companyid": $(this).val(), "selecteddata": "" };
+
+            $.ajax({
+                url: "PfaDept/GetSignParentStr",
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (data) {
+                    $("#SignParentID").empty().html(data.result);
+                }
+            });
+        });
+
+        $('#btnSave').click(function () {
+            var form = $('#EditPfaDeptForm');
+            var isValid = $(form).valid();
+
+            if (isValid) {
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: $(form).attr("method"),
+                    data: $(form).serialize(),
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaDeptDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

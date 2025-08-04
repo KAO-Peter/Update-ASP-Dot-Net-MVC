@@ -1,0 +1,89 @@
+﻿@model HRPortal.Mvc.Models.PatchCardDisplayModel
+<style type="text/css">
+    .col-md-22:before {
+        content: "：";
+        display: inline-block;
+        float: right;
+    }
+
+    .col-md-22 {
+        min-width: 120px;
+        width: 17%;
+    }
+
+    .dl-info > div {
+        clear: both;
+    }
+
+    .form-control-static {
+        float: left;
+        width: 60%;
+    }
+</style>
+<div class="dl-info dl-horizontal">
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.applicant</label>
+        <p class="form-control-static">@Model.EmployeeName</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Department</label>
+        <p class="form-control-static">@Model.DepartmentName</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Timecard</label>
+        <p class="form-control-static">@Model.Time.ToString("yyyy/MM/dd HH:mm")</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Outofthecompany</label>
+        <p class="form-control-static">@Model.Type</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Subjectt</label>
+        <p class="form-control-static">@Model.ReasonType</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Fillcreditcardreasons</label>
+        <p class="form-control-static">@Model.Reason</p>
+    </div>
+    @*<label class="col-md-22">@HRPortal.MultiLanguage.Resource.Attachment</label>
+    <p class="form-control-static">
+        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <a target="_blank" class="form-control-static" href="@Url.Action("DownloadPatchCardFormFile", new { formNo = Model.FormNo })"> @Html.DisplayFor(model => model.FileName) </a>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.NoData</span>
+        }
+    </p>*@
+</div>
+@if (ViewBag.CanResend != null && ViewBag.CanResend)
+{
+    @*<a class="btn btn-success" href="@ViewBag.ResendUrl">重送</a>*@
+    <script type="text/javascript">
+      $("#singFlowFooter").show();
+      $("#FormCancel").hide();
+        //2019/09/18 Neo 簽核內容(補刷卡單) 編輯重送按鈕增加confirm事件
+        //$("#Resend").show().attr("href", "@ViewBag.ResendUrl");
+        $("#Resend").unbind("click");
+        $("#Resend").show().click(function (event) {
+            var c = confirm('按下確定後此假單就會拉回，需重新送出');
+            if (c) {
+                window.location.href = '@ViewBag.ResendUrl';
+            }
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#FormCancel").hide();
+        $("#Resend").hide();
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('@HRPortal.MultiLanguage.Resource.Upcreditcardapplicationform');
+    })
+</script>

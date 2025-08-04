@@ -1,0 +1,27 @@
+﻿@model IEnumerable<HRPortal.Mvc.Models.SystemSettingViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using HRPortal.MultiLanguage
+
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "GeneralSettings", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col-xs-12">
+            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                @Html.EditorForModel()
+            </table>
+        </div>
+    </div>
+    <input type="submit" style="margin-top:10px" value="@Resource.BtnSave" class="btn btn-success" />
+}

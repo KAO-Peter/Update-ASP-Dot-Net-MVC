@@ -1,0 +1,294 @@
+﻿@model IEnumerable<HRPortal.Mvc.Models.DepartmentManagerViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+@if (TempData["CompanyID"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#CompanyID').val('@TempData["CompanyID"]');
+        });
+    </script>
+}
+
+<div class="col-xs-12">
+    @*<div class="table-responsive">*@
+    <table class="table table-outline table-bordered fe-table">
+        <tbody>
+            <tr>
+                <td class="col-xs-4">
+                    @Html.DropDownList("CompanyListData", (IEnumerable<SelectListItem>)ViewData["CompanyList"],
+            new
+            {
+                id = "CompanyListData",
+                onchange = "$('#CompanyID').val(this.options[this.selectedIndex].value);loadDepartmentList(this.options[this.selectedIndex].value);$('#txtkeyword').val('');",
+                @class = "form-control"
+            })
+                </td>
+                <td class="col-xs-3" colspan="2" style="text-align:center">
+                    <a class="btn btn-info" id="btnCreate" href="@Url.Action("CreateDepartment")">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+                    <a class="btn btn-success" id="btnExpand">@HRPortal.MultiLanguage.Resource.ExpandAll</a>
+                    <a class="btn btn-warning" id="btnCollapse">@HRPortal.MultiLanguage.Resource.CollapseAll</a>
+                </td>
+                 <td colspan="6">
+                    <input type="hidden" id="CompanyID" name="CompanyID" value="@ViewBag.CompanyData" />
+                    <div class="input-group col-xs-12">
+                            <input id="txtkeyword" name="txtkeyword" type="text" class="form-control" value="@ViewBag.keyworddata" placeholder="請輸入部門代號或名稱">
+                            <span class="input-group-btn">
+                                <button id="btn_filter" name="btn_filter" class="btn btn-primary" type="button"><i class="fa fa-filter"></i></button>
+                            </span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+               
+            </tr>
+        </tbody>
+    </table>
+    @*</div>*@
+</div>
+
+<div class="col-md-12">
+    <div id="treeview" class="treeview">
+        <ul id="departmentTreeRoot" class="list-group"></ul>
+    </div>
+</div>
+
+<div id='DepartmentDialogDiv' class='modal fade in' role="dialog">
+    <div id='DepartmentDialogContent'></div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        //Popup
+        $.ajaxSetup({ cache: false });
+        $('#btnCreate').click(function () {
+            $('#DepartmentDialogContent').load(this.href + '?companyId=' + $('#CompanyID').val(), function () {
+                $('#DepartmentDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#DepartmentDialogDiv', '#DepartmentDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });
+
+        $('a[data-modal]').click(function () {
+            $('#DepartmentDialogContent').load(this.href, function () {
+                $('#DepartmentDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#DepartmentDialogDiv', '#DepartmentDialogContent', true, '@Url.Action("Index")');
+            });
+            return false;
+        });
+
+        $('#btnExpand').click(function(){
+            $('.expand-icon').removeClass('glyphicon-plus');
+            $('.expand-icon').addClass('glyphicon-minus');
+            $('.child-departments').show();
+        });
+
+        $('#btnCollapse').click(function(){
+            $('.expand-icon').removeClass('glyphicon-minus');
+            $('.expand-icon').addClass('glyphicon-plus');
+            $('.child-departments').hide();
+        });
+
+        if($('#CompanyID').val() != '') {
+            $('#CompanyListData option[value=' + $('#CompanyID').val() + ']').attr('selected', true);
+        } else {
+            $('#CompanyID').val($('#CompanyListData').val());
+        }
+        loadDepartmentList($('#CompanyID').val());
+
+        $('#btn_filter').click(function (event) {
+            if ($('#txtkeyword').val()!=""){
+                loadFilterDepartmentList($('#CompanyID').val(), $('#txtkeyword').val());
+            } else {
+                showAlertMessage("請輸入部門代號或名稱");
+            }
+        });
+    });
+
+    function loadDepartmentList(companyId) {
+        $.ajax({
+            url: 'DepartmentManager/GetDepartmentList?companyId=' + companyId,
+            type: 'GET',
+            success: function (result) {
+                $('#departmentTreeRoot').html('');
+                renderDepartmentTree(result, null, $('#departmentTreeRoot'), 0);
+
+                $('.expand-icon').click(function () {
+                    if ($(this).hasClass('glyphicon-plus')) {
+                        $('#' + $(this).attr('target')).show();
+                        $(this).removeClass('glyphicon-plus');
+                        $(this).addClass('glyphicon-minus');
+                    } else {
+                        $('#' + $(this).attr('target')).hide();
+                        $(this).removeClass('glyphicon-minus');
+                        $(this).addClass('glyphicon-plus');
+                    }
+                });
+
+                $('a[data-modal]').click(function () {
+                    $('#DepartmentDialogContent').load(this.href, function () {
+                        $('#DepartmentDialogDiv').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        }, 'show');
+                        bindForm(this, '#DepartmentDialogDiv', '#DepartmentDialogContent', true, '@Url.Action("Index")');
+                    });
+                    return false;
+                });
+
+                $('a.btn-delete').click(function () {
+                    $.ajax({
+                        url: this.href,
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.status == 'success') {
+                                window.location = window.location.href;
+                                location.reload();
+                            } else {
+                                showAlertMessage(result.message);
+                            }
+                        }
+                    });
+                    return false;
+                });
+            }
+        });
+    }
+
+    function renderDepartmentTree(allDepartment, parentId, parentDom, level) {
+        var departments = $.grep(allDepartment, function (item) { return item.ParentID == parentId; });
+
+        var indent = '';
+        for (i = 0; i < level; i++) {
+            indent += '<span class="indent"></span>';
+        }
+
+        $.each(departments, function (index, value) {
+            var childDivId = 'child_' + value.ID;
+            var hasChild = $.grep(allDepartment, function (item) { return item.ParentID == value.ID; }).length > 0;
+
+            var dom = $('<li class="list-group-item node-treeview2"></li>');
+            var icon = $('<span class="icon glyphicon"></span>');
+            var link = $('<a data-modal=""></a>');
+            var deleteBtn = $('<a></a>');
+
+            link.html(value.DepartmentCode + ' ' + value.DepartmentName);
+            link.attr('href', 'DepartmentManager/EditDepartment?departmentId=' + value.ID);
+
+            deleteBtn.addClass('btn');
+            deleteBtn.addClass('btn-xs');
+            deleteBtn.addClass('btn-danger');
+            deleteBtn.addClass('btn-delete');
+            deleteBtn.attr('style', 'float: right;margin-right: 20px;')
+            deleteBtn.html('@HRPortal.MultiLanguage.Resource.BtnDisable');
+            deleteBtn.attr('href', 'DepartmentManager/DeleteDepartment?departmentId=' + value.ID);
+
+            if (hasChild) {
+                icon.addClass('expand-icon');
+                icon.addClass('glyphicon-minus');
+                icon.attr('target', childDivId);
+            }
+
+            dom.append($(indent));
+            dom.append(icon);
+            dom.append(link);
+            dom.append(deleteBtn);
+            parentDom.append(dom);
+
+            if (hasChild) {
+                parentDom.append('<div id="' + childDivId + '" class="child-departments" style="margin-bottom: -1px;"></div>');
+                renderDepartmentTree(allDepartment, value.ID, $('#' + childDivId), level + 1);
+            }
+        });
+    }
+
+    function loadFilterDepartmentList(companyId, txtkeyword) {
+        $.ajax({
+            url: 'DepartmentManager/GetFilterDepartmentList?companyId=' + companyId + '&txtkeyword=' + txtkeyword,
+            type: 'GET',
+            success: function (result) {
+                $('#departmentTreeRoot').html('');
+                renderDepartmentList(result, $('#departmentTreeRoot'), 0);
+
+                $('a[data-modal]').click(function () {
+                    $('#DepartmentDialogContent').load(this.href, function () {
+                        $('#DepartmentDialogDiv').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        }, 'show');
+                        bindForm(this, '#DepartmentDialogDiv', '#DepartmentDialogContent', true, '@Url.Action("Index")');
+                    });
+                    return false;
+                });
+
+                $('a.btn-delete').click(function () {
+                    $.ajax({
+                        url: this.href,
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.status == 'success') {
+                                window.location = window.location.href;
+                                location.reload();
+                            } else {
+                                showAlertMessage(result.message);
+                            }
+                        }
+                    });
+                    return false;
+                });
+            }
+        });
+    }
+
+    function renderDepartmentList(departments, listDom) {
+        $.each(departments, function (index, value) {
+            var dom = $('<li class="list-group-item node-treeview2"></li>');
+            var icon = $('<span class="icon glyphicon"></span>');
+            var link = $('<a data-modal=""></a>');
+            var deleteBtn = $('<a></a>');
+
+            link.html(value.DepartmentCode + ' ' + value.DepartmentName);
+            link.attr('href', 'DepartmentManager/EditDepartment?departmentId=' + value.ID);
+
+            deleteBtn.addClass('btn');
+            deleteBtn.addClass('btn-xs');
+            deleteBtn.addClass('btn-danger');
+            deleteBtn.addClass('btn-delete');
+            deleteBtn.attr('style', 'float: right;margin-right: 20px;')
+            deleteBtn.html('@HRPortal.MultiLanguage.Resource.BtnDisable');
+            deleteBtn.attr('href', 'DepartmentManager/DeleteDepartment?departmentId=' + value.ID);
+
+            dom.append(icon);
+            dom.append(link);
+            dom.append(deleteBtn);
+            listDom.append(dom);
+        });
+    }
+</script>
+
+

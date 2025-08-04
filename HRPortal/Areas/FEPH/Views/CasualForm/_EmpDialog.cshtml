@@ -1,0 +1,148 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.GetEmpDataCasual
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button id="btnExit" type="button" class="close">&times;</button>
+        <h4 class="modal-title">臨時工查詢</h4>
+    </div>
+    <div class="modal-body">
+        <div>
+            <table class="table table-outline table-bordered fe-table">
+                <tr>
+                    <th class="col-xs-2">工號</th>
+                    <td class="col-xs-4">
+                        <input id="txtEmpNo" name="txtEmpNo" type="text" value="" class="form-control">
+                    </td>
+                    <th class="col-xs-2">身份證號碼</th>
+                    <td class="col-xs-4">
+                        <input id="txtIDNumber" name="txtIDNumber" type="text" value="" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-12" colspan="4" style="text-align:center">
+                        <input id="btnEmpQuery" name="btnEmpQuery" type="button" value="查詢" class="btn btn-info" />
+                        <input id="btnEmpClear" name="btnEmpClear" type="button" value="清除" class="btn btn-warning" />
+                    </td>
+                </tr>     
+            </table>
+        </div>
+        <div>
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:25%">工號</th>
+                        <th style="width:25%">姓名</th>
+                        <th style="width:25%">身份證號碼</th>
+                        <th style="width:25%">部門</th>
+                    </tr>
+                    <tbody id="resultDataTbody"></tbody>
+                </table>
+            </div>
+            <div id="pageDataDiv"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btnClose" type="button" class="btn btn-default"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var page = 1, pageCount = 1;
+    var sEmpNo = "", sIDNumber = "";
+
+    $(function () {
+        //關閉
+        $("#btnClose,#btnExit").click(function () {
+            $("#EmpDialog").modal('hide');
+        });
+
+        //清除
+        $("#btnEmpClear").click(function () {
+            $("#txtEmpNo").val("");
+            $("#txtIDNumber").val("");
+            $("#resultDataTbody").empty();
+            $("#pageDataDiv").empty();
+        });
+
+        //查詢
+        $("#btnEmpQuery").click(function () {
+            page = 1;
+            sEmpNo = $("#txtEmpNo").val();
+            sIDNumber = $("#txtIDNumber").val();
+
+            var submitData = new FormData();
+            submitData.append("page", page);
+            submitData.append("txtEmpNo", sEmpNo);
+            submitData.append("txtIDNumber", sIDNumber);
+
+            $.ajax({
+                url: "CasualForm/Emp",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $("#resultDataTbody").empty().append(result.data);
+                    $("#pageDataDiv").empty().append(result.page);
+                    pageCount = result.pagecount;
+                }
+            });
+        });
+
+        $("div.modal-body").on("click", "li[name='pagelist']", function () {
+            if ($(this).attr("class") == null || $(this).attr("class").indexOf("disabled") == -1)
+            {
+                switch ($(this).attr("id")) {
+                    //case "btnEmpQuery":  //查詢
+                    //    page = 1;
+                    //    sEmpNo = $("#txtEmpNo").val();
+                    //    sIDNumber = $("#txtIDNumber").val();
+                    //    break;
+                    case "first":  //第一頁
+                        page = 1;
+                        break;
+                    case "prev":  //上一頁
+                        page -= 1;
+                        break;
+                    case "next":  //下一頁
+                        page += 1;
+                        break;
+                    case "last":  //最末頁
+                        page = pageCount;
+                        break;
+                    case "page":  //頁數
+                        if (page == parseInt($($(this).find("a")[0]).text())) return false;
+
+                        page = parseInt($($(this).find("a")[0]).text());
+                        break;
+                    default:
+                        break;
+                }
+
+                var submitData = new FormData();
+                submitData.append("page", page);
+                submitData.append("txtEmpNo", sEmpNo);
+                submitData.append("txtIDNumber", sIDNumber);
+
+                $.ajax({
+                    url: "CasualForm/Emp",
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        $("#resultDataTbody").empty().append(result.data);
+                        $("#pageDataDiv").empty().append(result.page);
+                        pageCount = result.pagecount;
+                    }
+                });
+            }
+        });
+
+        //點選資料
+        $("#resultDataTbody").on("click", "tr[id='resultDataTr']", function () {
+            $("#casualFormData_EmployeeNO").val($(this).attr("name")).change();
+            $("#EmpDialog").modal("hide");
+        });
+    });
+</script>

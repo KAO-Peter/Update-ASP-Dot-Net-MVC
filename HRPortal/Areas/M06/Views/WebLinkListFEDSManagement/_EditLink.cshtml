@@ -1,0 +1,83 @@
+﻿@model HRPortal.Mvc.Models.HomeWebLinkFEDSModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    Layout = null;
+    ViewBag.Title = "CreateLink";
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+     .col-md-33 {
+    color: #777;
+    width: 100px;
+    height: 15px;
+    text-align: justify;
+    -ms-text-justify: distribute;
+    padding: 3px 0 8px 35px;
+    float: left;
+}
+    .col-md-33:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.EditLink</h4>
+        </div>
+         @using (Html.BeginForm("Edit", "WebLinkListFEDSManagement", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-body">
+             <div class="tab-content">
+                 <div class="form-group">
+                    <Label class="col-md-33" style="width:15%;">類型</Label>
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.OptionName, new { @disabled = "disabled" })
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        @Html.LabelFor(model => model.Number, new { @class = "col-md-33", style = "width:15%" })
+                        <div class="col-sm-44">
+                            @Html.EditorFor(model => model.Number)
+                        </div>
+                    </div>
+                 <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "col-md-33", style = "width:15%" })
+                        <div class="col-sm-44">
+                            @Html.EditorFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                  </div>
+                 <div class="form-group">
+                        @Html.LabelFor(model => model.URL, new { @class = "col-md-33", style = "width:15%" })
+                        <div class="col-sm-44">
+                            @Html.EditorFor(model => model.URL)
+                            @Html.ValidationMessageFor(model => model.URL, "", new { @class = "text-danger" })
+                        </div>
+                  </div>
+                 <div class="form-group">
+                        @Html.LabelFor(model => model.IsUsed, new {@class = "col-md-22", style = "width:15%" })
+                        <div class="col-sm-44" style="margin-top:6px;">                         
+                            @Html.RadioButtonFor(model => model.IsUsed, true, new { id = "haveSticky",Checked = "checked", style = "width:10%" })
+                            @Html.Label("haveSticky", HRPortal.MultiLanguage.Resource.WebLinkListStatusShow)
+                            @Html.RadioButtonFor(model => model.IsUsed, false, new { id = "nohaveSticky", style = "width:10%"})
+                            @Html.Label("nohaveSticky", HRPortal.MultiLanguage.Resource.WebLinkListStatusHide)                           
+                            @Html.ValidationMessageFor(model => model.IsUsed, "", new { @class = "text-danger" })
+                        </div>
+                  </div>
+             </div>
+        </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+         }
+    </div>
+</div>

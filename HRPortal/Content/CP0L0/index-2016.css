@@ -1,0 +1,206 @@
+﻿@charset "UTF-8";
+
+@media (min-width: 1024px) {
+body{overflow: hidden;}
+}
+#index {
+	width: 100%;
+	min-height: 100vh;
+	height: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding:0;
+	/*background: url("CP0L0/bg-01.png") top center;*/
+	}
+
+#index ul{
+	list-style: none;
+	}
+#index ul,
+#index ul li{
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+	}
+
+#index header{
+	background-color: #FFF;
+	height: 80px;
+	}
+#index header div{
+	margin: 0;
+	}
+#index header ul{
+	padding:20px 30px 0 50px;
+	}
+#index header h1{
+	font-family: '微軟正黑體';
+	color: #444;
+	font-size:33px;
+	font-weight: bold;
+	letter-spacing: 0.075em;
+	margin-top: 3px;
+	}
+#index header img{
+	float: right;
+	}
+#index .login{
+	margin-top: 60px;
+	}
+#index .login div.index-pic{
+	max-height: 500px;
+	float: left;
+	}
+#index .login .box{
+	width: 500px;
+	max-height: 500px;
+	height: auto;
+	background-color: #fff;
+	border: #FFC13A 0px solid;
+	padding:20px 40px;
+	margin-bottom: 60px;
+	/*float: right;*/
+    margin-left:calc(100% - 55%);
+	}
+#index .login .box li{
+	width: 100%;
+	}
+#index .login .box .form-group{
+	margin: 0 0 15px 0;
+	}
+#index .login .box .title{
+	padding-bottom: 15px;
+	margin-bottom: 40px;
+	border-bottom:#000000 1px solid;
+	}
+#index .login .box h2{
+	color: #FFC13A;
+	font-family: arial;
+	font-size: 26px;
+	font-weight: bold;
+	}
+#index .login .box label{
+	font-weight: normal;
+	font-size: 15px;
+	text-indent: 10px;
+	}
+#index .login .box a{
+	color: #FFC13A;
+}
+#index .login .box a:hover{
+	color: #0288d1;
+}
+#index .login .box .btn-primary{
+	margin-top: 25px;
+	font-size: 22px;
+	background-color: #0288d1;
+	padding: 12px 0;
+	}
+#index .login .box .btn-primary:hover{
+	background-color: #2e6da4;
+	}
+#index .login .box .small{
+	font-size: 16px;
+	color: #777;
+	margin-top: 10px;
+	}
+
+@media (max-width: 992px) and (min-width: 768px) {
+	#index .login div.index-pic{
+		min-height: auto;
+		float: none;
+		margin: 0 auto;
+	}
+	#index .login .box{
+		width:508px;
+		min-height: auto;
+		margin: 30px auto 60px auto;
+		float: none;
+		display: block;
+		}
+}
+
+
+@media (max-width: 767px) {
+	#index {
+		background-position: center center;
+		-webkit-background-size:auto 100%;
+		     -o-background-size:auto 100%;
+		        background-size:auto 100%;
+	}
+	#index header{
+		height: 150px;
+	}
+	#index header ul{
+	padding: 15px 0 0 0;
+	}
+	#index header h1{
+		text-align: center;
+		text-indent: 20px;
+		letter-spacing: 0;
+		font-size: 24px;
+	}
+	#index header img{
+		float: none;
+		margin: 0 auto;
+	}
+	#index .login .box{
+		width:100%;
+		margin: 15px;
+		min-height: auto;
+		margin: 30px auto 60px auto;
+		float: none;
+		display: block;
+		}
+	#index .login div.index-pic{
+		min-height: auto;
+		float: none;
+		margin: 0 auto;
+	}
+}
+/*For BlackBerry Playbook & Google Nexus 7 Only*/
+@media (max-width: 600px) and (min-width: 600px) {
+		#index .login .box{
+		width:505px;
+		}
+		
+		
+}
+
+/*Logo Image*/
+div#logoIcon{
+	background:url("header-logo.png") no-repeat;
+    height: 60px;
+    width: 181px;
+    float: inherit;
+}
+
+/*Right Index pic*/
+div#rightIndexPic{
+	background:url("index-pic.png") no-repeat;
+    background-size: cover;
+    height: 500px;
+    width: 466px;
+}
+
+/*Default Background*/
+.defaultBackground{
+	background: url("04.jpg") center center fixed no-repeat;
+	background-size: cover;
+}
+
+
+/*Custom Background*/
+.customBackground{
+	background: url("bg-01.png") center center fixed no-repeat;
+	background-size: cover;
+}
+
+/*20170519 Daniel 增加密碼錯誤達上限被鎖定的文字Style*/
+.passwordLockNotice {
+    color:red;
+    font-size:18px;
+}
+

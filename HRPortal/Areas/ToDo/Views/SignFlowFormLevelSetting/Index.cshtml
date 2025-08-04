@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @if (TempData["FormType"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $('#CurrentFormType').val('@TempData["FormType"]');
+            });
+        </script>
+    }
+    <div class="col-md-8 btn-toolbar action-buttons">
+        <div class="col-md-4">
+            @Html.DropDownList("FormTypeList", (IEnumerable<SelectListItem>)ViewData["FormTypeList"], new { @class = "form-control", onchange = "$('#CurrentFormType').val(this.options[this.selectedIndex].value);loadFormLevelList(this.options[this.selectedIndex].value);" })
+            <input type="hidden" id="CurrentFormType" />
+        </div>
+        @*<div class="col-md-4">
+            <a class="btn btn-info" id="btnCreateGroup" href="@Url.Action("CreateGroup")">@HRPortal.MultiLanguage.Resource.CreateOptionGroup</a>
+        </div>*@
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive" id="FormLevelList">
+        </div>
+    </div>
+
+    <div id='FormLevelDiv' class='modal fade in' role="dialog">
+        <div id='FormLevelContent'></div>
+    </div>
+
+    <div id='OptionDialogDiv' class='modal fade in' role="dialog">
+        <div id='OptionDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('#btnCreateGroup').click(function () {
+                $('#GroupDialogContent').load(this.href, function () {
+                    $('#GroupDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#GroupDialogDiv', '#GroupDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+            if($('#CurrentFormType').val() != '') {
+                $('#FormTypeList option[value=' + $('#CurrentFormType').val() + ']').attr('selected', true);
+            } else {
+                $('#CurrentFormType').val($('#FormTypeList option:selected').val());
+            }
+            loadFormLevelList($('#CurrentFormType').val());
+        });
+
+            function loadFormLevelList(formType) {
+                if(formType != '') {
+                    $.ajax({
+                        url: 'SignFlowFormLevelSetting/LoadFormLevelList?formType=' + formType,
+                        type: 'GET',
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            $('#FormLevelList').html(result);
+                        }
+                    });
+                }
+            }
+        </script>
+}
+

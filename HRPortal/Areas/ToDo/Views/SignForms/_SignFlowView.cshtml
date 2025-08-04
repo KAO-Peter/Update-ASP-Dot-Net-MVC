@@ -1,0 +1,116 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralSignFlowStatus>
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+            @HRPortal.MultiLanguage.Resource.SignOrder
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.FormSignLevel
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.Signstate
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.Signoffstaff
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.Theactualsignoffstaff
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.Signviews
+        </th>
+        <th>
+            @HRPortal.MultiLanguage.Resource.Signdatee
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.OrderNumber
+            </td>
+            <td>
+                @item.FormLevelName
+            </td>
+            <td>
+                @(item.SignStatus == "W" ? (item.SignType == "S"? @HRPortal.MultiLanguage.Resource.SignStatus_NotSent : @HRPortal.MultiLanguage.Resource.SignStatus_EnRoute) : item.SignStatus == "R" ? @HRPortal.MultiLanguage.Resource.SignStatus_Rejected : item.SignStatus == "S" ? @HRPortal.MultiLanguage.Resource.SignStatus_EnRoute : item.SignStatus == "B" ? @HRPortal.MultiLanguage.Resource.SignStatus_TakenBack : @HRPortal.MultiLanguage.Resource.SignStatus_Approved)
+            </td>
+            @if(item.getLanguageCookie== "en-US")
+            {
+            <td>
+                @item.SignerEmployeeEnglishName
+            </td>
+            }else
+            {
+            <td>
+                @item.SignerEmployeeName
+            </td>
+            
+            }
+             @if(item.getLanguageCookie== "en-US")
+            {
+            <td>
+                @item.ActSignerEmployeeEnglishName
+            </td>
+             }else
+             {
+               <td>
+                @item.ActSignerEmployeeName
+            </td>
+             
+             }
+            <td>
+                @item.Instruction
+            </td>
+            <td>
+                @if (item.SignDate.HasValue)
+                {
+                    @item.SignDate.Value.ToString("yyyy/MM/dd HH:mm:ss")
+                }
+            </td>
+        </tr>
+    }
+</table>
+</div>
+@if (ViewBag.CanPullback != null && ViewBag.CanPullback)
+{
+    @*<a class="btn btn-warning" onclick="pullback('@ViewBag.FormType', '@ViewBag.FormNo', '@ViewBag.SignFlowID')">修改</a>*@
+        <script type="text/javascript">
+            $("#singFlowFooter").show();
+            $("#Pullback").unbind("click");
+            $("#Pullback").show().click(function (event) {
+                //2019/09/18 Neo 簽核內容 修改按鈕增加confirm事件
+                var c = confirm('按下確定後此假單就會拉回，需重新送出');
+                if (c) {
+                    pullback($('#signingFormType').val(), $('#signingFormNo').val(), $('#signingFlowID').val());
+                }
+            });
+            function pullback(formType, formNo, SignFlowID) {
+                var submitData = {
+                    FormType: formType,
+                    FormNo: formNo,
+                    SignFlowID: SignFlowID,
+                    Instruction: ''
+                };
+                $.ajax({
+                    url: 'SignForms/PullBack',
+                    method: 'POST',
+                    data: JSON.stringify(submitData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.status) {
+                            window.location.href = result.message;
+                        }
+                    }
+                });
+            }
+        </script>
+}
+else
+{
+    <script type="text/javascript">
+       $("#Pullback").hide();
+    </script>
+}

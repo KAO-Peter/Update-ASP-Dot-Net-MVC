@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47F56AD1-E100-4856-BF26-E5C7DB074218}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YoungCloud</RootNamespace>
+    <AssemblyName>YoungCloud.Exceptions</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="Exceptions\ExceptionBase.cs" />
+    <Compile Include="Exceptions\EventLogExceptionHandler.cs" />
+    <Compile Include="Exceptions\EventLogExceptionHandlerInfoData.cs" />
+    <Compile Include="Exceptions\ExceptionHandlerAdapter.cs" />
+    <Compile Include="Exceptions\ExceptionHandlerDelegate.cs" />
+    <Compile Include="Exceptions\ExceptionHandlerEventArgs.cs" />
+    <Compile Include="Exceptions\ExceptionInfoData.cs" />
+    <Compile Include="Exceptions\ExceptionLevel.cs" />
+    <Compile Include="Exceptions\ExceptionMessageBuilder.cs" />
+    <Compile Include="Exceptions\ExtraInfo.cs" />
+    <Compile Include="Exceptions\ExtraInfoCollection.cs" />
+    <Compile Include="Exceptions\ExtraInfoType.cs" />
+    <Compile Include="Exceptions\HandleType.cs" />
+    <Compile Include="Exceptions\IEventLogExceptionHandlerInfoData.cs" />
+    <Compile Include="Exceptions\IExceptionHandler.cs" />
+    <Compile Include="Exceptions\IExceptionHandlerInfoData.cs" />
+    <Compile Include="Exceptions\IExceptionMessageBuilder.cs" />
+    <Compile Include="Exceptions\IExtraInfo.cs" />
+    <Compile Include="Exceptions\IExtraInfoCollection.cs" />
+    <Compile Include="Exceptions\ITxtFileExceptionHandlerInfoData.cs" />
+    <Compile Include="Exceptions\LogMessageException.cs" />
+    <Compile Include="Exceptions\TxtFileExceptionHandler.cs" />
+    <Compile Include="Exceptions\TxtFileExceptionHandlerInfoData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\YoungCloud.Extensions\YoungCloud.Extensions.csproj">
+      <Project>{b7463ed1-104c-4037-8905-5bbf56552ea2}</Project>
+      <Name>YoungCloud.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud\YoungCloud.csproj">
+      <Project>{715dedc3-83aa-440a-ad41-0d8a0247adaf}</Project>
+      <Name>YoungCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

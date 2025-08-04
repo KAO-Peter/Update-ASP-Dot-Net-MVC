@@ -1,0 +1,408 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/content/DataTable")
+@Styles.Render("~/content/jqueryuiMultiSelect")
+@Scripts.Render("~/bundles/DataTable")
+@Scripts.Render("~/bundles/jqueryuiMultiSelect")
+
+
+<style>
+    th {
+        padding-left: 5px;
+    }
+  
+    .ui-multiselect {
+        height:33px; 
+        overflow-x:hidden; 
+        /*padding:0px 0 0px 4px;*/
+        text-align:left 
+    }
+
+    .ui-multiselect span {
+        padding:0px 0 0px 4px;
+        font-size:14px;
+    }
+
+    .ui-multiselect-checkboxes label {
+        margin-bottom:1px;
+        padding-top:0px;
+    }
+
+    .ui-multiselect-checkboxes span:before {
+        content:' ';
+    }
+
+    .ui-multiselect-menu {
+        z-index:2000;
+    }
+
+    .large-checkbox {
+        width:16px !important; 
+        height:16px;
+        margin-top:1px !important;
+    }
+
+    table.dataTable thead .sorting:after {
+        /* all:initial;*/
+        content: "";
+        float: initial;
+        font-family: initial;
+        color: initial;
+    }
+
+    
+    .row-selected {
+        outline: thin dashed #1080fa;
+    }
+
+    .asterisk {
+        color:red;
+        text-transform:uppercase;
+    }
+
+     
+    .datepicker_header span {
+        width:100px;
+        display:inline-block;
+        font-size:14px;
+    }
+
+    .datepicker_header a {
+        font-size:16px;
+    }
+
+    .datepicker_header a.icon-home {
+        line-height:21px;
+    }
+
+    .datepicker_header svg {
+        vertical-align:middle;
+    }
+
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+
+</style>
+
+
+@using System.Resources;
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div id="bodyContainer" class="row">
+    @using (Html.BeginForm("Index", "FormQuery", FormMethod.Post, new { }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class=" row" style="margin-right: 0px; margin-left: 0px;">
+            <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px; overflow:visible">
+                <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Department</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#DepartmentData');" })
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+                        </div>
+                        <div class="search-input">
+                            <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="search-section">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("EmployeeListData", ViewData["EmployeeList"] != null ? (IEnumerable<SelectListItem>)ViewData["EmployeeList"] : Enumerable.Empty<SelectListItem>(), new { @class = "form-control", id = "EmployeeListData", @multiple = "multiple" })
+                        </div>
+                    </div>
+                 
+                </div>
+                @*
+                <div class="search-section">
+                    <div class="search-wrap" id="AbsentCodeQuery">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("AbsentCodeListData", (IEnumerable<SelectListItem>)ViewData["AbsentCodeList"], new { @class = "form-control", @multiple = "multiple" }) 
+
+                        </div>
+                    </div>
+
+                </div>
+                *@
+                <div class="search-section" style="padding-top:3px;height:40px">
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                        </div>
+                        <div class="search-input" id="radioDiv">
+                            <input type="radio" name="radio-used" id="radio-used" value="true" checked />
+                            <label for="radio-used">Used</label>
+                            <input type="radio" name="radio-used" id="radio-scheduled" value="false" />
+                            <label for="radio-scheduled">Scheduled</label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="search-section search-button">
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                    </div>
+                    <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                        <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.BtnClear" class="btn btn-warning" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+     
+        <div class="col-md-12" id="divContent">
+           
+        </div>
+        
+        <input type="hidden" value="@ViewBag.course_category" name="course_category" id="course_category" />
+        <input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentData" id="DepartmentData"  />
+        <input type="hidden" value="@ViewBag.EmployeeData" name="EmployeeData" id="EmployeeData" />
+        <input type="hidden" value="@ViewBag.StatusData" name="StatusData" id="StatusData" />
+        <input type="hidden" value="@ViewBag.AbsentCode" name="AbsentCode" id="AbsentCode" />
+    }
+
+</div>
+
+
+
+
+<script>
+    var deptEmployeeCache;
+
+    $(function () {
+      
+        deptEmployeeCache = new Map();
+
+        $('#btnQuery').on('click',function (e) {
+            e.preventDefault();
+            //console.log('Department:'+$('#DepartmentListData').val());
+            //console.log('Employee:'+$('#EmployeeListData').val());
+            //console.log('Absent:'+$('#AbsentCodeListData').val());
+            var requestData={
+                DepartmentCode:$('#DepartmentListData').val(),
+                QueryBeginDate:$('#BeginDate').val(),
+                QueryEndDate:$('#EndDate').val(),
+                EmpIDList:$('#EmployeeListData').val(),
+                isUsed:$('input[name="radio-used"]:checked').val()
+                //AbsentCodeList:$('#AbsentCodeListData').val(),
+                //IncludingPendingData:$('#FlagIncludingPendingData').prop('checked')
+            };
+            
+            $.post('@Url.Action("QueryData")', 
+                //JSON.stringify(requestData),
+                requestData,
+                function(data) {
+                    $('#divContent').html(data);
+                    
+                    $('#DetailTable').DataTable( {
+                        //"order": [[ 3, "desc" ]],
+                        autoWidth: false,
+                        paging:false,
+                        searching:false,
+                        fixedHeader:true,
+                        select:{
+                            className:"row-selected"
+                        },
+                        //responsive:true
+                        
+                    } );
+
+                    $('#DetailTable').show();
+
+                    var table=$('#DetailTable').DataTable();
+                    //table.order([[0,'asc'],[3,'asc'],[2,'asc']]).draw();
+                   
+                    $(window).trigger('resize');
+                    
+                    $('#divContent .detail-link').on('click',ShowDetailTable);
+
+                });
+            
+        });
+
+        var locale='@(Request.Cookies["lang"].Value == "en-US" ? "en" : "cn")';
+        $('#BeginDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+            //"current":formatToday+" 08:00"
+        });
+
+        $('#EndDate').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly":true
+            //"current":formatToday+" 08:00"
+        });
+
+        $('a').click(function () {
+            if ($(this).data('toggle')=='tab') {
+                var $currentTab = $('#' + $(this).attr('modalID')).find('div.tab-content');
+                $currentTab.children().hide();
+                $currentTab.find("#" + $(this).attr('tabID')).show();
+            }
+        })
+        
+      
+
+        $('#EmployeeListData').multiselect({
+            selectedList: 1,
+            menuHeight: 400,
+            buttonWidth: 380
+        });
+        
+        /*
+        $('#AbsentCodeListData').multiselect({
+            selectedList: 1,
+            menuHeight: 300,
+            buttonWidth: 280
+        });
+        */
+        $('#DepartmentListData').trigger('change');
+
+
+  
+    })
+
+    function ShowDetailTable() {
+        //console.log($(this).text());
+        var total = $(this).text();
+        var cell = $(this).parents('td');
+        var index = cell.index();
+        var column = cell.parents('table').find('th').eq(index).data('memo');
+        var detail = cell.data('detaillist');
+        var row = cell.parents('tr').find('td');
+        var empID = row.eq(0).text();
+        var empName = row.eq(1).text();
+        var absentName = row.eq(2).text();
+        var queryBDate = $('#Detail_QueryBeginDate').val();
+        var queryEDate = $('#Detail_QueryEndDate').val();
+
+        var title = '';
+        switch (column) {
+            case 'used':
+                title = '查詢區間內目前已發生的假單資料';
+                break;
+            case 'scheduled':
+                title = '查詢區間內目前尚未發生的假單資料';
+                break;
+            case 'pending':
+                title = '目前所有簽核中的假單資料';
+                break;
+        }
+
+        var message = '<div>' + empID + ' ' + empName + '&nbsp;&nbsp;&nbsp;&nbsp;' + absentName + '<br/>' + queryBDate + " - " + queryEDate + '</div><p/>';
+        message += GetDetailTable(detail, total);
+
+        bootbox.dialog({
+            title: title,
+            message: message,
+            buttons: {
+                success: {
+                    label: "@HRPortal.MultiLanguage.Resource.Confirm",
+                }
+            },
+        });
+    }
+
+    function GetDetailTable(detailList,totalAmount)
+    {
+        var html = '';
+        if (detailList.length>0)
+        {
+            html = '<table id="AbsentDetailTable" style="width:100%"><thead class="ui-widget-header"><tr><th style="width:30%;">Form No</th><th style="width:55%;">Begin - End</th><th style="width:15%;">Hours</th></tr></thead><tbody class="ui-widget-content">';
+            for(var i = 0 ; i < detailList.length ; i++) {
+                var item = detailList[i];
+                var remark = item.Adj == true ? '<span class="asterisk">*</span>' : '';
+                html += '<tr><td>' + detailList[i].FNo + remark + '</td><td>' + item.BTime + ' - ' + item.ETime + '</td><td style="text-align:right;">' + item.Hours + '</td></tr>';
+            }
+            html += '<tbody><tfoot class="ui-widget-footer"><td colspan="2" style="text-align:right">Total:</td><td style="text-align:right">' + totalAmount + '</td></tfoot></table>';
+        }
+        
+        return html;
+    }
+
+    function ChangeStatus(form, fileId, formName) {
+        
+        if (formName == "#DepartmentData" && fileId != null) {
+           
+            if (deptEmployeeCache.has(fileId))
+            {
+                UpdateEmployeeList(deptEmployeeCache.get(fileId));
+            }
+            else
+            {
+
+                $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: fileId }, function (data) {
+                    
+                    deptEmployeeCache.set(fileId,data);
+                    UpdateEmployeeList(data)
+
+                });
+            }
+
+        }
+    }
+
+    function UpdateEmployeeList(data)
+    {
+        var elementSelect = $('#EmployeeListData');
+        elementSelect.empty();
+           
+        $.each(data, function (index, item) {
+            elementSelect.append($("<option></option>").val(item.Value).html(item.Key));
+        });
+            
+        elementSelect.multiselect('refresh');
+            
+    }
+  
+   
+
+</script>

@@ -1,0 +1,120 @@
+﻿@model List<HRPortal.ApiAdapter.HRMApiAdapterData.DepartmentSalarySummaryItem>
+
+@{
+    ViewBag.Title = "CreateDepartment";
+}
+@{ 
+    decimal TaxableSumAmount = 0;
+    decimal NoTaxSumAmount = 0;
+    decimal WithholdingAmount = 0;
+    decimal OtherWithholdingAmount = 0;
+    decimal StandardAmountAmount = 0;
+    decimal RealAmountAmount = 0;
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="resettime()" >&times;</button>
+            <h4 class="modal-title">部門薪資彙總查詢</h4>
+        </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <table class="table table-outline table-bordered fe-table">
+                        <tbody>
+                            <tr>
+                                <th style="text-align:center">
+                                    姓名
+                                </th>
+                                <th style="text-align:center">工號</th>
+                                <th style="text-align:center">職稱</th>
+                                <th style="text-align:center">職等</th>
+                                <th style="text-align:center">應稅合計</th>
+                                <th style="text-align:center">免稅合計</th>
+                                <th style="text-align:center">代扣稅款合計</th>
+                                <th style="text-align:center">其它代扣合計</th>
+                                <th style="text-align:center">應發金額</th>
+                                <th style="text-align:center">實發金額</th>
+                            </tr>
+                            @if (Model != null && Model.Count > 0)
+                            {
+
+                                foreach (var DeptItem in Model)
+                                {
+                                    if (DeptItem.DeptMember != null && DeptItem.DeptMember.Count > 0)
+                                    {
+                                        TaxableSumAmount = 0;
+                                        NoTaxSumAmount = 0;
+                                        WithholdingAmount = 0;
+                                        OtherWithholdingAmount = 0;
+                                        StandardAmountAmount = 0;
+                                        RealAmountAmount = 0;
+                                        foreach (var EmployeeItem in DeptItem.DeptMember)
+                                        {
+                                        <tr id="@EmployeeItem.EmpID">
+                                            <td>@EmployeeItem.Name</td>
+                                            <td><a target="_blank" onclick="resettime()"  data-show="" id="btnPersonalQuery" href="@Url.Action("PersonalSalary", new { formNO = ViewBag.ShowFormNo, employeeNO = EmployeeItem.EmpID })">@EmployeeItem.EmpID</a></td>
+                                            <td>@EmployeeItem.JobTitle</td>
+                                            <td>@EmployeeItem.Grade</td>
+                                            <td style="text-align:right">@EmployeeItem.TaxableSum.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                            <td style="text-align:right">@EmployeeItem.NoTaxSum.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                            <td style="text-align:right">@EmployeeItem.Withholding.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                            <td style="text-align:right">@EmployeeItem.OtherWithholding.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                            <td style="text-align:right">@EmployeeItem.StandardAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                            <td style="text-align:right">@EmployeeItem.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+
+                                        </tr>
+                                            TaxableSumAmount += EmployeeItem.TaxableSum;
+                                            NoTaxSumAmount += EmployeeItem.NoTaxSum;
+                                            WithholdingAmount += EmployeeItem.Withholding;
+                                            OtherWithholdingAmount += EmployeeItem.OtherWithholding;
+                                            StandardAmountAmount += EmployeeItem.StandardAmount;
+                                            RealAmountAmount += EmployeeItem.RealAmount;
+                                        }
+                                    }
+                                    <tr style="background-color:dimgray;color:white"  >
+                                        <td colspan="4">@DeptItem.DeptCode  @DeptItem.DeptName  部門合計</td>
+                                        <td style="text-align:right">@TaxableSumAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                        <td style="text-align:right">@NoTaxSumAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                        <td style="text-align:right">@WithholdingAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                        <td style="text-align:right">@OtherWithholdingAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                        <td style="text-align:right">@StandardAmountAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                                        <td style="text-align:right">@RealAmountAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" style="text-align:center">
+                                    @HRPortal.MultiLanguage.Resource.NoData 
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="resettime()"  data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('a[data-show]').click(function (event) {
+            var href = $(this).attr('href');
+            @{Session["PersonalSalaryGuid"] = Guid.NewGuid().ToString().Split('-')[0];}
+            if (href.indexOf("&key=")>=0)
+            {
+                href = href.split('&key=')[0];
+            }
+            $(this).attr("href", href + "&key=@Session["PersonalSalaryGuid"]");
+
+        });
+
+    });
+
+</script>

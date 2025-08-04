@@ -1,0 +1,362 @@
+﻿@model IEnumerable<HRPortal.Mvc.Models.CasualFormViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-info" data-modal="" href="@Url.Action("Create", new { id = "btnCreate" })" data-action="4" style="margin-bottom: 10px;">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+@using (Html.BeginForm("Index", "CasualForm", FormMethod.Post, new { Id = "CasualForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    @Html.Hidden("cmd", "Search", new { id = "cmd" })
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>日期</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtDate" name="txtDate" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTime" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>上班時數</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlTimeType", (IEnumerable<SelectListItem>)ViewBag.TimeTypeList, new { @class = "form-control", id = "ddlTimeType" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>部門</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlDepartment", (IEnumerable<SelectListItem>)ViewBag.DepartmentList, new { @class = "form-control", id = "ddlDepartment", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#txtDepartmentData');" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtEmpID" name="txtEmpID" type="text" class="form-control" value="@ViewBag.EmpID" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtEmpName" name="txtEmpName" type="text" class="form-control" value="@ViewBag.EmpName" />
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnPDF" style="width:100%" name="btnPDF" type="submit" value="PDF" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:8%"><div style="text-align:center;">工號</div></th>
+                        <th style="width:8%"><div style="text-align:center;">姓名</div></th>
+                        <th colspan="3" style="width:24%"><div style="text-align:center;">預計排班時間/工作時數</div></th>
+                        <th colspan="3" style="width:24%"><div style="text-align:center;">實際上班時間/工作時數</div></th>
+                        <th colspan="2" style="width:14%"><div style="text-align:center;">本次核薪</div></th>
+                        <th rowspan="2" style="width:8%"><div style="text-align:center;">車馬費</div></th>
+                        <th rowspan="2" style="width:8%"><div style="text-align:center;">出勤卡號</div></th>
+                        <th rowspan="2" style="width:6%"></th>
+                    </tr>
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th class="" style="width:8%"><div style="text-align:center;">Casual ID</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Name</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Time In</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Time Out</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Total Hrs</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Time In</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Time Out</div></th>
+                        <th class="" style="width:8%"><div style="text-align:center;">Total Hrs</div></th>
+                        <th class="" style="width:7%"><div style="text-align:center;">計薪單位</div></th>
+                        <th class="" style="width:7%"><div style="text-align:center;">薪資</div></th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.casualFormData.ID">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.EmployeeNO)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.EmpName)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.DefaultStartTime)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.DefaultEndTime)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.DefaultWorkHours)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.StartTime)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.EndTime)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.WorkHours)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @{
+                                        var salaryUnitName = "";
+                                        switch (item.casualFormData.SalaryUnit)
+                                        { 
+                                            case "d":
+                                                salaryUnitName = "日薪";
+                                                break;
+                                            case "h":
+                                                salaryUnitName = "時薪";
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+
+                                    @Html.DisplayFor(modelItem => salaryUnitName)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.Salary)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.Allowance)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.casualFormData.CardNo)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    @if (item.LockFlag == "n")
+                                    {
+                                        if (item.IsUpdate)
+                                        {
+                                            <a class="btn btn-warning" data-modal="" href="@Url.Action("Edit", new { id = item.casualFormData.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                        }
+
+                                        if (item.IsDelete)
+                                        {
+                                            <button type="button" class="btn btn-danger delete-ann" id="btnDelete" name="@(item.casualFormData.ID)">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.Mvc.Models.CasualFormViewModel>;
+                }
+                @{
+                    if (IsAjax)
+                    {
+                        Layout = "";
+                    }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "Search", txtDate = ViewBag.DateTime, ddlTimeType = ViewBag.TimeType, ddlDepartment = ViewBag.Department, txtEmpID = ViewBag.EmpID, txtEmpName = ViewBag.EmpName }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "Search", txtDate = ViewBag.DateTime, ddlTimeType = ViewBag.TimeType, ddlDepartment = ViewBag.Department, txtEmpID = ViewBag.EmpID, txtEmpName = ViewBag.EmpName }), new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                      //LinkToNextPageFormat = "後一頁>",
+                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  })
+                }
+            </div>
+        }
+    </div>
+
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.txtDepartmentData" name="txtDepartmentData" id="txtDepartmentData" />
+}
+
+<div id='CasualFormDialogDiv' class='modal fade in' role="dialog" style="overflow:auto">
+    <div id='CasualFormDialogContent'></div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    function ChangeStatus(form, fileId, formName) {
+        $('#txtEmpID').val("");
+        $('#txtEmpName').val("");
+        $(formName).val(fileId);
+    }
+
+    $(function () {
+        //Optional: turn the chache off
+        //Popup
+        $.ajaxSetup({ cache: false });
+
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        $("a[data-modal]").click(function () {
+            $("#CasualFormDialogContent").load(this.href, function () {
+                $("#CasualFormDialogDiv").modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, "show");
+                bindForm(this, "#CasualFormDialogDiv", "#CasualFormDialogContent", true, "@Url.Action("Index")");
+            });
+            return false;
+        });
+
+        //清除
+        $("#btnClear").click(function () {
+            $("#cmd").val("Clear");
+            $("#CasualForm").submit();
+        });
+
+        //查詢
+        $("#btnQuery").click(function () {
+            $("#cmd").val("Search");
+
+            if ($("#txtDate").val()=="")
+            {
+                showAlertMessage("請輸入日期");
+                return false;
+            }
+            else
+            {
+                $("#CasualForm").submit();
+            }
+        });
+
+        //PDF
+        $("#btnPDF").click(function () {
+            $("#cmd").val("PDF");
+
+            if ($("#txtDate").val()=="")
+            {
+                showAlertMessage("請輸入日期");
+                return false;
+            }
+            else
+            {
+                $("#CasualForm").submit();
+            }
+        });
+
+        //依工號或姓名查詢
+        $("#btn_filter").click(function (event) {
+            $("#cmd").val("Search");
+
+            if ($("#txtDate").val()=="")
+            {
+                showAlertMessage("請輸入日期");
+                return false;
+            }
+
+            if ($("#txtSearchVal").val()=="")
+            {
+                showAlertMessage("請輸入工號或姓名");
+                return false;
+            }
+            else
+            {
+                $("#CasualForm").submit();
+            }
+        });
+
+        //刪除
+        $(".delete-ann").click(function (event) {
+            var form = $("#CasualForm");
+
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            var submitData = new FormData();
+            submitData.append("id", $(this).attr("name"));
+
+            showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+                $.ajax({
+                    url: "CasualForm/Delete",
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        if (submitResult.status == "success")  {
+                            showAlertMessage( submitResult.message , function(){
+                                window.location="@Url.Action("Index")";
+                            });
+                        }
+                        else
+                        {
+                            showAlertMessage(submitResult.message);
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+}

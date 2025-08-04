@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="pEncrypt">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pToEncrypt" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="pEncryptResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pEncryptResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="pDecrypt">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pToDecrypt" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="pDecryptResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pDecryptResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="pEncryptSoapIn">
+    <wsdl:part name="parameters" element="tns:pEncrypt" />
+  </wsdl:message>
+  <wsdl:message name="pEncryptSoapOut">
+    <wsdl:part name="parameters" element="tns:pEncryptResponse" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptSoapIn">
+    <wsdl:part name="parameters" element="tns:pDecrypt" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptSoapOut">
+    <wsdl:part name="parameters" element="tns:pDecryptResponse" />
+  </wsdl:message>
+  <wsdl:message name="pEncryptHttpGetIn">
+    <wsdl:part name="pToEncrypt" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="pEncryptHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptHttpGetIn">
+    <wsdl:part name="pToDecrypt" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="pEncryptHttpPostIn">
+    <wsdl:part name="pToEncrypt" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="pEncryptHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptHttpPostIn">
+    <wsdl:part name="pToDecrypt" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="pDecryptHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="EncryptSoap">
+    <wsdl:operation name="pEncrypt">
+      <wsdl:input message="tns:pEncryptSoapIn" />
+      <wsdl:output message="tns:pEncryptSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <wsdl:input message="tns:pDecryptSoapIn" />
+      <wsdl:output message="tns:pDecryptSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="EncryptHttpGet">
+    <wsdl:operation name="pEncrypt">
+      <wsdl:input message="tns:pEncryptHttpGetIn" />
+      <wsdl:output message="tns:pEncryptHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <wsdl:input message="tns:pDecryptHttpGetIn" />
+      <wsdl:output message="tns:pDecryptHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="EncryptHttpPost">
+    <wsdl:operation name="pEncrypt">
+      <wsdl:input message="tns:pEncryptHttpPostIn" />
+      <wsdl:output message="tns:pEncryptHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <wsdl:input message="tns:pDecryptHttpPostIn" />
+      <wsdl:output message="tns:pDecryptHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EncryptSoap" type="tns:EncryptSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="pEncrypt">
+      <soap:operation soapAction="http://tempuri.org/pEncrypt" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <soap:operation soapAction="http://tempuri.org/pDecrypt" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EncryptSoap12" type="tns:EncryptSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="pEncrypt">
+      <soap12:operation soapAction="http://tempuri.org/pEncrypt" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <soap12:operation soapAction="http://tempuri.org/pDecrypt" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EncryptHttpGet" type="tns:EncryptHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="pEncrypt">
+      <http:operation location="/pEncrypt" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <http:operation location="/pDecrypt" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EncryptHttpPost" type="tns:EncryptHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="pEncrypt">
+      <http:operation location="/pEncrypt" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pDecrypt">
+      <http:operation location="/pDecrypt" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Encrypt">
+    <wsdl:port name="EncryptSoap" binding="tns:EncryptSoap">
+      <soap:address location="http://10.1.7.204/ad_auth/encrypt.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EncryptSoap12" binding="tns:EncryptSoap12">
+      <soap12:address location="http://10.1.7.204/ad_auth/encrypt.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EncryptHttpGet" binding="tns:EncryptHttpGet">
+      <http:address location="http://10.1.7.204/ad_auth/encrypt.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EncryptHttpPost" binding="tns:EncryptHttpPost">
+      <http:address location="http://10.1.7.204/ad_auth/encrypt.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

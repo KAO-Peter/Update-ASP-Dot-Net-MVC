@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style>
+        .form-horizontal .form-group {
+            margin-right: -15px;
+            margin-left: 5px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid #000;
+            border-spacing: 0;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        td, th {
+            border: 1px solid #000;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab-pane active" id="detail">
+        <div>
+            <table id="FormTable" class="table-bordered ui-jqgrid" style="width:100%">
+                <tbody>
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="color:#000">
+                        <td colspan="20">
+                            <table style="border-collapse:collapse;border:0px solid #fff;">
+                                <tr>
+                                    <td style="text-align:center;font-size:16px;border:0px solid #fff;padding: 0 0 0 0;font-weight: bold; width:85%; height:38px;">
+                                        @TitleImg@
+                                        鼎鼎企業管理顧問股份有限公司
+                                    </td>
+                                    <td style="text-align:center;font-size:12px;border:1px solid #000;padding: 0 0 0 0;width:15%;">
+                                        密件
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;font-size:14px;border:0px solid #fff;padding: 0 0 0 0;width:85%;">
+                                        職員@PfaYear@年度考績表
+                                    </td>
+                                    <td style="border:0px solid #fff;padding: 0 0 0 0;width:15%;">
+                                        製表：行政管理部
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:0px solid #fff;padding: 0 0 0 0;width:85%;"></td>
+                                    <td style="text-align:left;border:0px solid #fff;padding: 0 0 0 0;width:15%;">
+                                        日期：@NowDate@
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" width="5%">單位</td>
+                        <td style="text-align:left" width="40%" colspan="6">@DeptName@</td>
+                        <td style="text-align:center" width="5%">姓名</td>
+                        <td style="text-align: left" width="20%" colspan="4">@EmployeeName@</td>
+                        <td style="text-align:center" width="5%">工號</td>
+                        <td style="text-align: left" width="10%" colspan="3">@EmployeeNo@</td>
+                        <td style="text-align:center" width="5%">性別</td>
+                        <td style="text-align: left" width="10%" colspan="3">@Gender@</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: center; writing-mode: vertical-lr" rowspan="2">資位</td>
+                        <td style="text-align: left" colspan="3" rowspan="2">@JobFunctionName@</td>
+                        <td style="text-align: center; writing-mode: vertical-lr" rowspan="2">職位</td>
+                        <td style="text-align: left" colspan="2" rowspan="2">@JobTitleName@</td>
+                        <td style="text-align:center" colspan="2">學校</td>
+                        <td style="text-align:left" colspan="11">@SchoolName@</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2">科系</td>
+                        <td style="text-align:left" colspan="11">@DeptDescription@</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2">到職日期</td>
+                        <td style="text-align: left" colspan="3">@ArriveDate@</td>
+                        <td style="text-align:center" colspan="2">遲到早退</td>
+                        <td style="text-align:right" colspan="2">@LateLE@次</td>
+                        <td style="text-align:center" rowspan="4">獎懲記錄</td>
+                        <td style="text-align:center" colspan="7"></td>
+                        <td style="text-align: center; vertical-align: bottom" colspan="3" rowspan="2">加分</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2">出生日期</td>
+                        <td style="text-align: left" colspan="3">@Birthday@</td>
+                        <td style="text-align:center" colspan="2">事假</td>
+                        <td style="text-align:right" colspan="2">@PersonalLeave@小時</td>
+                        <td style="text-align:center" colspan="7"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" rowspan="2">考勤記錄</td>
+                        <td style="text-align: left" colspan="4" rowspan="2">@DutyBeginEndDate@</td>
+                        <td style="text-align:center" colspan="2">病假</td>
+                        <td style="text-align:right" colspan="2">@SickLeave@小時</td>
+                        <td style="text-align:center" colspan="7"></td>
+                        <td style="text-align: center;" colspan="3" rowspan="2">不得考列<br />等以上</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2">曠職</td>
+                        <td style="text-align:right" colspan="2">@AWL@小時</td>
+                        <td style="text-align:center" colspan="7"></td>
+                    </tr>
+                    @TrainData@
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: center; writing-mode: vertical-lr" rowspan="3">考績記錄</td>
+                        <td style="text-align:left" colspan="5">@Performance1@</td>
+                        <td style="text-align: center; writing-mode: vertical-lr" colspan="2" rowspan="3">目前職等</td>
+                        <td style="text-align:center" colspan="4" rowspan="3">@GradeName@</td>
+                        <td style="text-align:center" colspan="3">免稅伙食津貼</td>
+                        <td style="text-align:center" colspan="5">@Salary04@</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left" colspan="5">@Performance2@</td>
+                        <td style="text-align:center" colspan="3"></td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left" colspan="5">@Performance3@</td>
+                        <td style="text-align:center" colspan="3">合計</td>
+                        <td style="text-align:center" colspan="5">@FullSalary@</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: center; writing-mode: vertical-lr" rowspan="5">本年度考績最後結果</td>
+                        <td style="text-align:center" rowspan="5">等</td>
+                        <td style="text-align:left" colspan="2" rowspan="5">□升資<br />□升職<br />□升等</td>
+                        <td style="text-align:left" colspan="4" rowspan="5">晉　　　　　 薪級<br /><br />給　　個月考績獎金</td>
+                        <td style="text-align:center" colspan="2" rowspan="2">資位</td>
+                        <td style="text-align:center" colspan="2" rowspan="2"></td>
+                        <td style="text-align:center" colspan="3">本薪</td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="3">主管加給</td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2" rowspan="2">職位</td>
+                        <td style="text-align:center" colspan="2" rowspan="2"></td>
+                        <td style="text-align:center" colspan="3">交通津貼</td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="3">免稅伙食津貼</td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align:center" colspan="2">薪給</td>
+                        <td style="text-align:center" colspan="2">等　　級　　點</td>
+                        <td style="text-align:center" colspan="3">合計</td>
+                        <td style="text-align:center" colspan="5"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td align="left" colspan="20">
+                            一、工作績效評核(總分70分)-本欄由受評者先自評，再呈送主管評核<br />
+                            說明：1.權重設定為5的倍數，如0、5、15、20、25、30。2.各級主管得依部屬績效表現，可在「主管評」欄位予以加減分調整
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <th style="text-align:center" colspan="2">指標名稱</th>
+                        <th style="text-align:center" colspan="6">定義</th>
+                        <th style="text-align:center" colspan="2">權重</th>
+                        <th style="text-align:center" colspan="6">程度說明</th>
+                        <th style="text-align:center" colspan="2">自評</th>
+                        <th style="text-align:center;" colspan="2" width="10%">主管評</th>
+                    </tr>
+                    @PfaIndicator@
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="color:#000">
+                        <td align="right" colspan="20">
+                            (@PfaEmpTypeName@適用)
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left; writing-mode: vertical-lr" colspan="2">
+                            個人工作意願及建議事項
+                        </td>
+                        <td style="text-align: left;" colspan="10">@SelfAppraisal@</td>
+                        <td style="text-align: left; height:62px">簽名</td>
+                        <td style="text-align: right;" colspan="7">年　　　月　　　日</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <p style="page-break-after:always"></p>
+    <div class="tab-pane">
+        <div>
+            <table>
+                <tbody>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left; writing-mode: vertical-lr" rowspan="2" width="4%">考核單位</td>
+                        <td style="text-align: center;" colspan="5" width="24%">總經理</td>
+                        <td style="text-align: center;" colspan="5" width="24%">協理</td>
+                        <td style="text-align: center;" colspan="5" width="24%">經理</td>
+                        <td style="text-align: center;" colspan="4" width="24%">單位主管</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left;height:80px" colspan="5"></td>
+                        <td style="text-align: left;" colspan="5"></td>
+                        <td style="text-align: left;" colspan="5"></td>
+                        <td style="text-align: left;" colspan="4"></td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left; writing-mode: vertical-lr" rowspan="2">總經理</td>
+                        <td style="text-align: left;" colspan="5" rowspan="2"></td>
+                        <td style="text-align: left; writing-mode: vertical-lr" rowspan="2">行政管理部</td>
+                        <td style="text-align: center;" colspan="5">核決</td>
+                        <td style="text-align: center;" colspan="5">複核</td>
+                        <td style="text-align: center;" colspan="3">初核</td>
+                    </tr>
+                    <tr class="ui-widget-content ui-row-ltr" role="row">
+                        <td style="text-align: left; height: 80px " colspan="5"></td>
+                        <td style="text-align: left;" colspan="5"></td>
+                        <td style="text-align: left;" colspan="3"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    @Appendix@
+</body>
+</html>

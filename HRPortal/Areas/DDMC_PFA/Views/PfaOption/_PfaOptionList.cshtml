@@ -1,0 +1,116 @@
+﻿@model List<HRPortal.DBEntities.DDMC_PFA.PfaOption>
+
+<a style="margin-bottom:10px" class="btn btn-info" id="btnAddPfaOption" data-modal="" href="@Url.Action("AddPfaOption")">@HRPortal.MultiLanguage.DDMC_PFA.Resource.CreateOption</a>
+<table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+        <th class="col-xs-5">
+            @HRPortal.MultiLanguage.DDMC_PFA.Resource.OptionValue
+        </th>
+        <th class="col-xs-5">
+            @HRPortal.MultiLanguage.DDMC_PFA.Resource.OptionDisplayName
+        </th>
+        <th class="col-xs-2">
+        </th>
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.OptionCode)
+                </td>
+                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                    @Html.DisplayFor(modelItem => item.OptionName)
+                </td>
+                <td style="text-align:center"><a class="btn btn-warning" id="btnEdit" data-modal="" href="@Url.Action("EditPfaOption", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnEdit</a> <a class="btn btn-danger" id="btnDel" data-modal="" href="@Url.Action("DelPfaOption", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</a></td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td colspan="6" style="text-align:center">
+                @HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData
+            </td>
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        $('a[data-modal]').click(function () {
+            $('#PfaOptionDialogContent').load(this.href, function () {
+                $('#PfaOptionDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+
+                $('#btnSave').click(function () {
+                    var form = $('#AddPfaOptionForm');
+                    var isValid = $(form).valid();
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(form).attr("action"),
+                            type: $(form).attr("method"),
+                            data: $(form).serialize(),
+                            success: function (result) {
+                                var message = result.message;
+                                showAlertMsg(message, function () {
+                                    if (result.success) {
+                                        $('#PfaOptionDialogDiv').modal('hide');
+                                        loadPfaOptionList($('#CurrentPfaOptionGroup').val());
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                $('#btnUpdate').click(function () {
+                    var form = $('#EditPfaOptionForm');
+                    var isValid = $(form).valid();
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(form).attr("action"),
+                            type: $(form).attr("method"),
+                            data: $(form).serialize(),
+                            success: function (result) {
+                                var message = result.message;
+                                showAlertMsg(message, function () {
+                                    if (result.success) {
+                                        $('#PfaOptionDialogDiv').modal('hide');
+                                        loadPfaOptionList($('#CurrentPfaOptionGroup').val());
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                $('#btnDelete').click(function () {
+                    showConfirm("<div style='text-align:center'>是否要刪除?</div>", function () {
+                        var form = $('#DelPfaOptionForm');
+                        $.ajax({
+                            url: $(form).attr("action"),
+                            type: $(form).attr("method"),
+                            data: $(form).serialize(),
+                            success: function (result) {
+                                var message = result.message;
+                                showAlertMsg(message, function () {
+                                    if (result.success) {
+                                        $('#PfaOptionDialogDiv').modal('hide');
+                                        loadPfaOptionList($('#CurrentPfaOptionGroup').val());
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            });
+            return false;
+        });
+    });
+</script>

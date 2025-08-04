@@ -1,0 +1,73 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryInfo
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th style="height:30px;">
+              @HRPortal.MultiLanguage.Resource.SalaryReceipt_EmployeeName
+            </th>
+            <td style="height:30px;">&nbsp;@(Model.LanguageCookie == "en-US" ? Model.EmpEnglishName : Model.Name)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_EmpID</th>
+            <td style="height:30px;">@Model.EmpID</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_SalaryYM</th>
+            <td style="text-align:right;height:30px;">@Model.SalaryYM</td>
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_DepartmentCode
+            </th>
+            <td style="height:30px;">@Model.DeptCode</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_DepartmentName</th>
+            <td style="height:30px;">@(Model.LanguageCookie == "en-US" ? Model.DeptEnglishName : Model.DeptName)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_NumberOfDependents</th>
+            <td style="text-align:right;height:30px;">@Model.BringNumber</td>
+            
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_Grade
+            </th>
+            <td style="height:30px;">@Model.GradeName</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_JobTitle</th>
+            <td style="height:30px;">@(Model.LanguageCookie == "en-US" ? Model.JobTitleEnglishName : Model.JobTitle)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_NHIFamilyMembers</th>
+            <td style="text-align:right;height:30px;">@Model.HealthNumber</td>         
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_BankCode
+            </th>
+            <td style="height:30px;">@Model.BankCode </td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_BankAccountNo</th>
+            <td style="height:30px;">@Model.BankAccount</td>
+             <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_GrossSalary</th>
+            <td style="text-align:right;height:30px;">@Model.StandardAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+        <tr>
+            <th style="height:30px;"> 
+                @HRPortal.MultiLanguage.Resource.SalaryReceipt_PensionPaidByCompany
+            </th>
+            <td style="text-align:right;height:30px;">@Model.RetirementAllocate.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_TotalTaxable</th>
+            <td style="text-align:right;height:30px;">@Model.TaxTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>   
+            @if (Model.PaidTotal>0) //有已發才顯示已發金額
+            {   
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_PaidTotal</th>
+            <td style="text-align:right;height:30px;">@Model.PaidTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td> 
+            }
+            else
+            {
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_NetSalary</th>
+            <td style="text-align:right;height:30px;">@Model.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td> 
+            }     
+        </tr>
+        @if (Model.PaidTotal > 0) //有已發才需要額外顯示一行實發
+        {
+        <tr>
+            <td colspan="4" style="height:30px;">&nbsp;</td>
+            <th style="height:30px;">@HRPortal.MultiLanguage.Resource.SalaryReceipt_NetSalary</th>
+            <td style="text-align:right;height:30px;">@Model.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>  
+        </tr>
+        }
+        
+    </tbody>
+</table>

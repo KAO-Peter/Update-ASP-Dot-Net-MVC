@@ -1,0 +1,57 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralSignFlowStatus>
+
+<table class="table">
+    <tr>
+        <th>
+            簽核順序
+        </th>
+        <th>
+            簽核層級
+        </th>
+        <th>
+            簽核狀態
+        </th>
+        <th>
+            簽核人員
+        </th>
+        <th>
+            實際簽核人員
+        </th>
+        <th>
+            簽核意見
+        </th>
+        <th>
+            簽核日期
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.OrderNumber
+            </td>
+            <td>
+                @item.FormLevelName
+            </td>
+            <td>
+                @(item.SignStatus == "W" ? (item.SignType == "S"? "未送出" : "未簽核") : item.SignStatus == "R" ? "退回" : item.SignStatus == "S" ? "己送出" : item.SignStatus == "B" ? "修改" : "已簽核")
+            </td>
+            <td>
+                @item.SignerEmployeeName
+            </td>
+            <td>
+                @item.ActSignerEmployeeName
+            </td>
+            <td>
+                @item.Instruction
+            </td>
+            <td>
+                @if (item.SignDate.HasValue)
+                {
+                    @item.SignDate.Value.ToString("yyyy/MM/dd HH:mm:ss")
+                }
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "";
+    ViewBag.Title = "HR PORTAL SYSTEM";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>
+ 
+@if (ViewBag.Message != null)
+{
+<script>
+    window.alert('@ViewBag.Message');
+    location.href = '@Url.Action("Index", "ADLogin")';
+</script>    
+}   

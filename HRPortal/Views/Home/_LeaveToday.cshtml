@@ -1,0 +1,167 @@
+﻿@model IEnumerable<HRPortal.Mvc.Models.HomwLeaveModel>
+@{ Layout = null; }
+
+@section header{
+    @*@Scripts.Render("~/bundles/jquery2")*@
+
+}
+<style>
+    div#displayall:hover {
+        text-decoration:underline;
+    }
+    .dall {
+        font-weight:bold;
+    }
+</style>
+<div id="mainContent"   >
+<div class="dayoff box col-xs-6" style="border: #337ab7 1px solid;">
+    
+    <ul>
+        @if ((ViewBag.Count.Count>0) || ViewBag.Role != null)
+        {
+            <li class="title col-xs-12 leaveToday" style="background-color: #337ab7;">
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.TodayLeaveDeptStaff
+                <!-- 2019/03/05 Neo 增加顯示全部/簽核按鈕 -->
+                <div id="displayall" data-modal="" data-action="4" style=" cursor: pointer; display:inline; margin-left:10px;">(@HRPortal.MultiLanguage.Resource.Whole)</div>
+                <div id="displaySigned" data-modal="" data-action="4" style=" cursor: pointer; display:inline; margin-left:10px;display:none;">(@HRPortal.MultiLanguage.Resource.Signed)</div>
+                
+                <!-- 2019/03/05 Neo 增加HR, 副總, 協理有權限顯示主管按鈕 -->
+                @if(ViewBag.IsSuperintendent != null && ViewBag.IsSuperintendent == true)
+                {
+                <div id="displaySuperintendent" data-modal="" data-action="4" style=" cursor: pointer; display:inline; margin-left:10px;">(@HRPortal.MultiLanguage.Resource.Superintendent)</div>
+                }
+                <p class="num pull-right">@Model.Count()</p>
+            </li>
+        }
+        else
+        {
+            <li class="title col-xs-12" style="background-color: #337ab7;"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.TodayLeaveDeptStaff<p class="num pull-right">@Model.Count()</p></li>
+        }
+		<li class="blank col-xs-12"></li>
+        @if (Model != null && Model.Count() > 0)
+            {
+                <ul class="list col-xs-12 " style="height:150px; overflow:auto;">
+                @foreach (var item in Model)
+                {
+                    <li class="list col-xs-12 ">
+                        <span class="label label-primary">@(ViewBag.LanguageCookie == "en-US" ? item.AbsentNameEN : item.AbsentName)</span> @(ViewBag.LanguageCookie == "en-US" ? item.SenderEmployeeEnglishName : item.Name) (@item.EmployeeNo)-@item.AbsentAmount @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)
+                        <span class="pull-right">@item.StartTime.ToString("yyyy/MM/dd")@item.StartTime.ToShortTimeString() ~ @item.EndTime.ToString("yyyy/MM/dd")@item.EndTime.ToShortTimeString()</span>
+                    </li>
+                }
+                </ul>
+            }
+        else
+        {
+                <li class="list col-xs-12" style="height:150px;">
+                    <p class="col-xs-12 text-center">@HRPortal.MultiLanguage.Resource.NoStaff</p>
+				</li>
+        }
+        <li class="blank col-xs-12"></li>
+		<li class="bottom col-xs-12"></li>
+    </ul>
+</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#displayall').addClass('dall');
+
+        //2019/03/05 Neo 增加主管按鈕增加css判斷
+        var isSuperintendent = '@(ViewBag.IsSuperintendent != null && ViewBag.IsSuperintendent == true)';
+        if (isSuperintendent == 'True') {
+            $('#displaySuperintendent').addClass('dall');
+        }
+
+        $('#displayall').click(function (event) {
+            console.log(actionIndex);
+            actionIndex = 0;//GetAllSignedLeaveToday
+
+            $.ajax({
+                url: urlleaveToDay[actionIndex],
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                dataType: 'html',
+                success: function (result) {
+
+                    $('#divToDayList').empty();
+                    $('#divToDayList').html(result);                   
+
+                    if (actionIndex == 0) {
+                        actionIndex = 1;
+                        //2019/03/05 Neo 增加全部/簽核按鈕顯示隱藏
+                        $('#displayall').css('display', 'none');
+                        $('#displaySigned').css('display', 'inline');
+
+                        $('#displayall').removeClass('dall');
+                        $('#displaySigned').addClass('dall');
+                    } else {
+                        actionIndex = 0;
+                        //$('#displayall').removeClass('dall');
+                    }
+
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText)
+                }
+            });
+        });
+
+        //2019/03/05 Neo 增加簽核按鈕事件
+        $('#displaySigned').click(function (event) {
+            console.log(actionIndex);
+            actionIndex = 1;//GetDeptLeaveToday
+
+            $.ajax({
+                url: urlleaveToDay[actionIndex],
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                dataType: 'html',
+                success: function (result) {
+                    $('#divToDayList').empty();
+                    $('#divToDayList').html(result);
+
+                    if (actionIndex == 1) {
+                        actionIndex = 0;
+
+                        $('#displayall').css('display', 'inline');
+                        $('#displaySigned').css('display', 'none');
+
+                        $('#displayall').addClass('dall');
+                        $('#displaySigned').removeClass('dall');
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText)
+                }
+            });
+        });
+
+        //2019/03/05 Neo 增加主管按鈕事件
+        $('#displaySuperintendent').click(function (event) {
+            console.log(actionIndex);
+            actionIndex = 2;//GetSuperintendentLeaveToday
+
+            $.ajax({
+                url: urlleaveToDay[actionIndex],
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                dataType: 'html',
+                success: function (result) {
+
+                    $('#divToDayList').empty();
+                    $('#divToDayList').html(result);
+
+                    if (actionIndex == 2) {
+                        actionIndex = 0;
+                    } 
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText)
+                }
+            });
+        });
+    });
+</script>

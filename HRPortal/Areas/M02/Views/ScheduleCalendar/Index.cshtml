@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ @section header{
+
+
+    @Scripts.Render("~/bundles/jquery2")
+    @Styles.Render("~/content/CP0L0/HomeSite")
+
+    @Scripts.Render("~/bundles/CalendarJs")
+    @Styles.Render("~/content/CalendarCSS")
+
+}
+ <div class="col-sm-5" style="padding-left: 10px; padding-right: 10px; width: 90%; clear: both;">
+    @{Html.RenderPartial("_scheduleCalendar");}@*個人班表*@
+</div> 
+@section Scripts {
+    @Scripts.Render("~/bundles/site")
+    <script type="text/javascript">
+        $(function () {
+            //alert($("div.row > div").length);
+            var $Item = $("div.row > div");
+            $Item.eq(2).css("clear", "both");
+            $Item.eq(4).css("clear", "both");
+            $Item.eq(6).css("clear", "both");
+            $Item.eq(8).css("clear", "both");
+        })
+    </script>
+}

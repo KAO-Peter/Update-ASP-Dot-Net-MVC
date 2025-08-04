@@ -1,0 +1,202 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.EmployeeViewModel
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button id="btnExit" type="button" class="close">&times;</button>
+            <h4 class="modal-title">員工查詢</h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div class="search-container" style="margin-right: 0px; border-left-width: 5px; margin-left: 0px;">
+                    <div class="search-section">
+                        <div class="col-xs-6">
+                            <div class="search-name">
+                                <label>公司別</label>
+                            </div>
+                            <div class="search-input">
+                                @Html.DropDownList("ddlCompany", (IEnumerable<SelectListItem>)ViewBag.CompanyList, new { @id = "ddlCompany", @class = "form-control" })
+                                @Html.Hidden("txtPfaCycleID")
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="search-name">
+                                <label>部門</label>
+                            </div>
+                            <div class="search-input">
+                                @Html.DropDownList("ddlDept", (IEnumerable<SelectListItem>)ViewBag.DeptList, new { @id = "ddlDept", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-section">
+                        <div class="col-xs-6">
+                            <div class="search-name">
+                                <label>員工編號</label>
+                            </div>
+                            <div class="search-input">
+                                <input id="txtEmpNo" name="txtEmpNo" type="text" value="" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-section">
+                        <div class="col-xs-12" style="text-align:center">
+                            <input id="btnEmpQuery" name="btnEmpQuery" type="button" value="查詢" class="btn btn-info" />
+                            <input id="btnEmpClear" name="btnEmpClear" type="button" value="清除" class="btn btn-warning" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="table-responsive" style="height:380px;">
+                    <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                            <th style="width:40%">
+                                <div id="jqgh_grid-table_code" style="text-align:center;">部門名稱</div>
+                            </th>
+                            <th style="width:30%">
+                                <div id="jqgh_grid-table_code" style="text-align:center;">員工編號</div>
+                            </th>
+                            <th style="width:30%">
+                                <div id="jqgh_grid-table_code" style="text-align:center;">員工姓名</div>
+                            </th>
+                        </tr>
+                        <tbody id="resultDataTbody"></tbody>
+                    </table>
+                </div>
+                <div id="pageDataDiv" style="height:120px;"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btnClose" type="button" class="btn btn-default"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@ViewBag.cmd" name="cmd" id="cmd" />
+<script type="text/javascript">
+    var page = 1, pageCount = 1;
+    var txtPfaCycleID = "", txtCompany = "", txtEmpNo = "", txtDept = "";
+
+    $(function () {
+        //關閉
+        $("#btnClose,#btnExit").click(function () {
+            $("#EmpDialog").modal('hide');
+        });
+
+        //清除
+        $("#btnEmpClear").click(function () {
+            $("#ddlCompany").val("");
+            $("#ddlDept").val("");
+            $("#txtEmpNo").val("");
+            $("#resultDataTbody").empty();
+            $("#pageDataDiv").empty();
+        });
+
+        //查詢
+        $("#btnEmpQuery").click(function () {
+            page = 1;
+            txtPfaCycleID = $("#txtPfaCycleID").val();
+            txtCompany = $("#ddlCompany").val();
+            txtDept = $("#ddlDept").val();
+            txtEmpNo = $("#txtEmpNo").val();
+
+            var submitData = new FormData();
+            submitData.append("page", page);
+            submitData.append("txtPfaCycleID", txtPfaCycleID);
+            submitData.append("ddlCompany", txtCompany);
+            submitData.append("ddlDept", txtDept);
+            submitData.append("txtEmpNo", txtEmpNo);
+
+            $.ajax({
+                url: "PfaStepTransfer/Emp",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $("#resultDataTbody").empty().append(result.data);
+                    $("#pageDataDiv").empty().append(result.page);
+                    pageCount = result.pagecount;
+                }
+            });
+        });
+
+        //公司別
+        $("#ddlCompany").change(function () {
+            var submitData = new FormData();
+            submitData.append("company", $(this).val());
+
+            $.ajax({
+                url: "PfaStepTransfer/GetDept",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $("#ddlDept").html(result.data);
+                    $("#resultDataTbody").empty();
+                    $("#pageDataDiv").empty();
+                }
+            });
+        });
+
+        $("#EmpDialog").on("click", "li[name='pagelist']", function () {
+            if ($(this).attr("class") == null || $(this).attr("class").indexOf("disabled") == -1) {
+                switch ($(this).attr("id")) {
+                    case "first":  //第一頁
+                        page = 1;
+                        break;
+                    case "prev":  //上一頁
+                        page -= 1;
+                        break;
+                    case "next":  //下一頁
+                        page += 1;
+                        break;
+                    case "last":  //最末頁
+                        page = pageCount;
+                        break;
+                    case "page":  //頁數
+                        if (page == parseInt($($(this).find("a")[0]).text())) return false;
+
+                        page = parseInt($($(this).find("a")[0]).text());
+                        break;
+                    default:
+                        break;
+                }
+
+                var submitData = new FormData();
+                submitData.append("page", page);
+                submitData.append("txtPfaCycleID", txtPfaCycleID);
+                submitData.append("ddlCompany", txtCompany);
+                submitData.append("ddlDept", txtDept);
+                submitData.append("txtEmpNo", txtEmpNo);
+
+                $.ajax({
+                    url: "PfaStepTransfer/Emp",
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        $("#resultDataTbody").empty().append(result.data);
+                        $("#pageDataDiv").empty().append(result.page);
+                        pageCount = result.pagecount;
+                    }
+                });
+            }
+        });
+
+        //點選資料
+        $("#resultDataTbody").on("click", "tr[id='resultDataTr']", function () {
+            if ($("#cmd").val() == "Sign") {
+                $("#txtSignEmpID").val($(this).attr("name"));
+                $("#txtSignEmpNo").val($($(this).children("td")[1]).text());
+                $("#txtSignEmpName").val($($(this).children("td")[2]).text());
+            } else {
+                $("#txtAgentSignEmpID").val($(this).attr("name"));
+                $("#txtAgentSignEmpNo").val($($(this).children("td")[1]).text());
+                $("#txtAgentSignEmpName").val($($(this).children("td")[2]).text());
+            }
+            $("#EmpDialog").modal("hide");
+        });
+    });
+</script>

@@ -1,0 +1,204 @@
+﻿@using HRPortal.Mvc.Models
+@model HRPortal.Mvc.Models.LeaveHoursQueryViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+</style>
+
+<div id="bodyContainer" class="row">
+     @using (Html.BeginForm("Index", "LeaveHoursQuery", FormMethod.Post, new { id = "LeaveHoursQuery" }))
+     {
+        <div class=" row"  style="margin-right: 0px;margin-left: 0px;">
+         <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+             <div>
+                 <div class="search-wrap">
+                     <div class="search-name"><label>@HRPortal.MultiLanguage.Resource.Department</label></div>
+                    <div class="search-input">
+                        @{
+                            var ddata = new ViewDataDictionary();
+                            ddata.Add("id", "SelectedDepartment");
+                            ddata.Add("class", "form-control");
+                            ddata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["DepartmentList"], ddata);
+                        }
+                        <input id="DeptID" name="DeptID" type="hidden" value="">
+                    </div>
+                   @*  <div class="search-input">
+                        @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control" })
+                    </div>*@
+                 </div>
+                 <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var edata = new ViewDataDictionary();
+                            edata.Add("id", "SelectedEmployee");
+                            edata.Add("class", "form-control");
+                            edata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["EmployeeList"], edata);
+                        }
+                        <input id="EmpID" name="EmpID" type="hidden" value="">
+                    </div>
+                    @*<div class="search-input">
+                        @Html.DropDownList("EmployeeListData", (IEnumerable<SelectListItem>)ViewData["EmployeeList"], new { @class = "form-control", id = "EmployeeListData" })
+                    </div>*@
+                    
+                </div>
+                @if (ViewBag.Role == true)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownList("SelectedStatuslistData", (IEnumerable<SelectListItem>)ViewData["Statuslist"], new { @class = "form-control" })
+                        </div>                      
+                    </div>
+                }
+                <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.BtnClear" class="btn btn-warning" />
+                </div>
+                </div>
+             </div>
+         </div>
+
+        <div class="col-sm-12" id="LeaveHoursDetail" style="padding-right: 13px;">
+        </div>
+
+     </div>
+
+
+        <input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentCode" id="DepartmentCode"  />
+        <input type="hidden" value="@ViewBag.EmployeeData" name="EmployeeNO" id="EmployeeNO" />
+        <input type="hidden" value="@ViewBag.StatusData" name="StatusData" id="StatusData" />    
+     }
+    
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var obj = null;
+        var $url = "@Url.Action("Index")";
+
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.deptSelect = $('#SelectedDepartment');
+        $mutiSelect.empSelect = $('#SelectedEmployee');
+        $mutiSelect.statusSelect = $('#SelectedStatuslistData');
+        $mutiSelect.empvalmode = "ID";
+        $mutiSelect.selAll = false;
+
+
+        $(function () {
+            $mutiSelect.setDepartmentList2();
+            //$('#SelectedEmployee').removeAttr('multiple');
+           
+            $("#btnQuery").click(function (event) {
+
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+
+
+                var form = $("#LeaveHoursQuery");
+                var submitData = new FormData(form[0]);
+                $.ajax({
+                    url: $url + '/GetLeaveHoursQuery',
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    dataType: "html",
+                    success: function (result) {
+                        $("#LeaveHoursDetail").html(result);
+                    }
+                });
+            });
+
+            $('#btnClear').click(function () {
+                window.location.href = $url;
+            });
+
+            if ('@ViewBag.isALL' != 'True') {
+                //$("#btnQuery").trigger("click");
+            }
+            else {
+                $mutiSelect.divEmp.hide();
+            }
+
+            //部門 & 在離職狀態
+            //$('#DepartmentListData,#StatuslistData').change(function () {
+            //    var defaultParameter = {
+            //        DepartmentCode: $('#DepartmentListData option:selected').val(),
+            //        StatusData: $('#StatuslistData option:selected').val(),
+            //        EmployeeNo: $('#EmployeeListData option:selected').val()
+            //    }
+            //    if (defaultParameter.DepartmentCode == null) {
+            //        defaultParameter.DepartmentCode = 'All';
+            //    }
+            //    $("#DepartmentCode").val(defaultParameter.DepartmentCode);
+            //    $("#EmployeeNO").val(defaultParameter.EmployeeNo);
+            //    $("#StatusData").val(defaultParameter.StatusData);
+
+            //    $.getJSON('@Url.Action("GetEmployee")', defaultParameter, function (employeeList) {
+            //        var $employeeListData = $('#EmployeeListData');
+            //        $employeeListData.empty();
+            //        $.each(employeeList, function (index, val) {
+            //            if (index == 0) {
+            //                $("#EmployeeNO").val(val.Value);
+            //            }
+            //            $employeeListData.append($("<option></option>").val(val.Value).html(val.Text));
+            //        });
+            //    })
+            //})
+
+            ////員工切換
+            //$('#EmployeeListData').change(function () {
+            //    var employeeNo = $('#EmployeeListData option:selected').val();
+            //    $("#EmployeeNO").val(employeeNo);
+            //})
+
+        });
+    </script>
+}

@@ -1,0 +1,206 @@
+﻿@model IEnumerable<HRPortal.DBEntities.SystemLog>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "QueryLog", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class=" row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+        }
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+    <div class="search-section">
+        <div class="search-wrap">
+            <div class="search-name">
+                <label>部門</label>
+            </div>
+            <div class="search-input">
+              @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#DepartmentData');" })
+            </div>
+        </div>
+          <div class="search-wrap">
+            <div class="search-name">
+                <label>開始日期</label>
+            </div>
+            <div class="search-input">
+                <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control">
+            </div>
+        </div>
+         <div class="search-wrap">
+            <div class="search-name">
+                <label>結束日期</label>
+            </div>
+            <div class="search-input">
+                <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" />
+            </div>
+        </div>
+        
+                            
+        </div>
+         <div class="search-wrap">
+            <div class="search-name">
+                <label>操作者</label>
+            </div>
+            <div class="search-input">
+              @Html.DropDownList("EmployeeListData", (IEnumerable<SelectListItem>)ViewData["EmployeeList"], new { @class = "form-control",id= "EmployeeListData", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#EmployeeData');" })
+            </div>
+             <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                            </div>
+                            
+                               
+        </div>
+            </div>
+        <div class="col-xs-12">
+            @if (Model != null)
+                {
+                <div class="table-responsive">
+                    <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                            <th class="" style="width:20%">
+                                 <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().LogTime)</div>
+                            </th>
+                            <th class="" style="width:5%">
+                                <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Controller)</div> 
+                            </th>
+                            <th class="" style="width:5%">
+                                <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Action)</div> 
+                            </th>
+                            <th class="" style="width:20%">
+                                <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().UserID)</div> 
+                            </th>
+                            <th class="" style="width:30%">
+                                <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Remark)</div> 
+                            </th>
+                            <th class="" style="width:40%">
+                                <div id="jqgh_grid-table_code" class="" style="text-align:center;">@Html.DisplayNameFor(model => model.FirstOrDefault().UserIP)</div>
+                            </th>
+                        </tr>
+                        @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.LogTime)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Controller)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Action)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    <span>[@item.Employee.Department.DepartmentName]@item.Employee.EmployeeName</span>
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Remark)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.UserIP)
+                                </td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td colspan="6" style="text-align:center">
+                                    @HRPortal.MultiLanguage.Resource.NoData
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div style="text-align:center">
+                    @* 在後面對pagelist做轉型 *@
+                    @using PagedList
+                    @using PagedList.Mvc
+                    @{
+                            var data = Model as IPagedList<HRPortal.DBEntities.SystemLog>
+                                ;
+                    }
+                    @{
+                            if (IsAjax)
+                            { Layout = ""; }
+                    }
+                    @if (Model.Count() > 0)
+                    {
+
+
+                        @Html.PagedListPager(data, page => Url.Action("Index",
+                                                      new { page, EmployeeData = ViewBag.EmployeeData, DepartmentData = ViewBag.DepartmentData, BeginDate = ViewBag.StartTime, EndDate = ViewBag.EndTime }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                        @Html.PagedListPager(data, page => Url.Action("Index",
+                                                  new { page, EmployeeData = ViewBag.EmployeeData, DepartmentData = ViewBag.DepartmentData, BeginDate = ViewBag.StartTime, EndDate = ViewBag.EndTime }), new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                      //LinkToNextPageFormat = "後一頁>",
+                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  })
+                        }
+                </div>
+                            }
+        </div>
+    </div>
+        @*hidden 元素*@
+                        <input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentData" id="DepartmentData" />
+                        <input type="hidden" value="@ViewBag.EmployeeData" name="EmployeeData" id="EmployeeData" />
+                        }
+
+
+<script type="text/javascript">
+    function ChangeStatus(form, fileId, formName) {
+        $(formName).val(fileId);
+        if (formName == "#DepartmentData" && fileId != null) {
+            $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: fileId }, function (months) {
+                var monthsSelect = $('#EmployeeListData');
+                monthsSelect.empty();
+                $.each(months, function (index, month) {
+                    monthsSelect.append($("<option></option>").val(month.Value).html(month.Text));
+                });
+            });
+        }
+    }
+
+    $(function () {
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            pickTime: false,
+            startView: 'decade',
+            minView: 'month',
+            autoclose: true,
+            language: 'zh-TW'
+        });
+    })
+
+
+</script>
+
+

@@ -1,0 +1,81 @@
+﻿@model HRPortal.DBEntities.Department
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "CreateDepartment";
+}
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.CreateDepartment</h4>
+        </div>
+
+        @using (Html.BeginForm("CreateDepartment", "DepartmentManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.CompanyID)
+            @Html.HiddenFor(model => model.ID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label for="DepartmentCode" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.DeptCode</label>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.DepartmentCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DepartmentCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DepartmentName" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.DeptName</label>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DepartmentEnglishName" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.DeptEngName</label>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.DepartmentEnglishName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SignParentID" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.DeptParent</label>
+                        <div class="col-md-6">
+                            @Html.DropDownList("DepartmentList", (IEnumerable<SelectListItem>)ViewData["Departments"], new { @class = "form-control", onchange = "$('#SignParentID').val(this.options[this.selectedIndex].value);" })
+                            @Html.HiddenFor(model => model.SignParentID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SignManagerId" class="control-label col-md-3">@HRPortal.MultiLanguage.Resource.SignDeptManager</label>
+                        <div class="col-md-6">
+                            @Html.DropDownList("EmployeeList", (IEnumerable<SelectListItem>)ViewData["Employees"], new { @class = "form-control", onchange = "$('#SignManagerId').val(this.options[this.selectedIndex].value);" })
+                            @Html.HiddenFor(model => model.SignManagerId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>

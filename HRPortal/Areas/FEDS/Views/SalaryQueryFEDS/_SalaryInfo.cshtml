@@ -1,0 +1,56 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryInfoFEDS
+
+<table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; margin-bottom: 5px; font-size: 10px;'>
+    <tbody>
+        <tr>
+            <td colspan='2' width='226' align='left' valign='middle' style='border-width: 0px; height: 20px;'>
+                <label>工號:</label><span>@Model.EmpID</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>單位代碼:</label><span>@Model.DeptCode</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>單位:</label><span>@Model.DeptName</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>薪資年月:</label><span>@Model.SalaryYM</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>薪資批號:</label><span>@Model.SalaryFormNo</span></td>
+        </tr>
+        <tr>
+            <td colspan='2' width='226' align='left' valign='middle' style='border-width: 0px;'>
+                <label>姓名:</label><span>@Model.Name</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>職稱:</label><span>@Model.JobTitle</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>職等:</label><span>@Model.GradeName</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>職級:</label><span>@Model.PositionName</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>薪點:</label><span>@Convert.ToInt32(Model.SalaryBasis)</span></td>
+        </tr>
+        <tr>
+            <td colspan='2' width='226' align='left' valign='middle' style='border-width: 0px; height: 20px;'>
+                <label>銀行名稱:</label><span>@Model.BankCode@Model.BankName</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>銀行分支機構:</label><span>@Model.BankBranchFISC</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>金融帳號:</label><span>@Model.BankAccount</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>扶養人數:</label><span>@Model.BringNumber</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>健保眷口:</label><span>@Model.HealthNumber</span></td>
+        </tr>
+        <tr>
+            <td colspan='1' width='113' align='left' valign='middle' style='border-width: 0px;'>
+                <label>應發金額 A+B:</label></td>
+            <td colspan='1' width='113' align='left' valign='middle' style='border-width: 0px;'><span>@Model.StandardAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span></td>
+            <td colspan='1' width='100' align='left' valign='middle' style='border-width: 0px;'>
+                <label>代扣合計 C:</label></td>
+            <td colspan='1' width='100' align='left' valign='middle' style='border-width: 0px;'><span>@Model.WithholdingItemsAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'>
+                <label>實發金額 A+B-C:</label></td>
+            <td colspan='2' width='200' align='left' valign='middle' style='border-width: 0px;'><span>@Model.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span></td>
+            <td colspan='1' width='100' align='left' valign='middle' style='border-width: 0px;'>
+                <label>公司勞退提撥:</label></td>
+            <td colspan='1' width='100' align='left' valign='middle' style='border-width: 0px;'><span>@Model.RetirementAllocate.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</span></td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,51 @@
+﻿@model IList<HRPortal.DBEntities.PersonalSettings>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+@using (Html.BeginForm("Index", "PersonalSettings", FormMethod.Post, new { enctype = "multipart/form-data", id = "PersonalSettings" }))
+{ 
+    <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                <input type="checkbox" id="ToDoList" name="ToDoList" value="1" @(GetSettingValue(Model, "ToDoList") == "0" ? "" : "checked") />
+                <label for="ToDoList">@HRPortal.MultiLanguage.Resource.ToDo</label>
+            </td>
+        </tr>
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                <input type="checkbox" id="SalarySearch" name="SalarySearch" value="1" @(GetSettingValue(Model, "SalarySearch") == "0" ? "" : "checked") />
+                <label for="SalarySearch">@HRPortal.MultiLanguage.Resource.SalarySearch</label>
+            </td>
+        </tr>
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                <input type="checkbox" id="PersonalLeavesSummary" name="PersonalLeavesSummary" value="1" @(GetSettingValue(Model, "PersonalLeavesSummary") == "0" ? "" : "checked") />
+                <label for="PersonalLeavesSummary">@HRPortal.MultiLanguage.Resource.PersonalLeavesSummary</label>
+            </td>
+        </tr>
+        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+            <td role="gridcell" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                <input type="checkbox" id="LeaveToday" name="LeaveToday" value="1" @(GetSettingValue(Model, "LeaveToday") == "0" ? "" : "checked") />
+                <label for="LeaveToday">@HRPortal.MultiLanguage.Resource.TodayLeaveDeptStaff</label>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+}
+@functions
+{
+    public string GetSettingValue(IList<HRPortal.DBEntities.PersonalSettings> personalSettings, string key)
+    {
+        var setting = personalSettings.Where(x => x.SettingKey == key).FirstOrDefault();
+        return (setting != null ? setting.SettingValue : "");
+    }
+}

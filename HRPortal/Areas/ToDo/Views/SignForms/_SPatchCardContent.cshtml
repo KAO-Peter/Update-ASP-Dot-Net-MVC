@@ -1,0 +1,55 @@
+﻿@model HRPortal.Mvc.Models.PatchCardDisplayModel
+<style>
+     .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+<div class="dl-info dl-horizontal">
+    <script >showAlertMessage("每月(考勤月)以兩次為限，每超過一次以請假 1 小時計。");</script>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.applicant</label>
+    <p class="form-control-static">@Model.EmployeeName</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Department</label>
+    <p class="form-control-static">@Model.DepartmentName</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Timecard</label>
+    <p class="form-control-static">@Model.Time.ToString("yyyy/MM/dd HH:mm")</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Outofthecompany</label>
+    <p class="form-control-static">@Model.Type</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Subjectt</label>
+    <p class="form-control-static">@Model.ReasonType</p>
+     <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Fillcreditcardreasons</label>
+    <p class="form-control-static">@Model.Reason</p>
+    @*<label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Attachment</label>
+    <p class="form-control-static">
+        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <a target="_blank" class="form-control-static" href="@Url.Action("DownloadPatchCardFormFile", new { formNo = Model.FormNo })"> @Html.DisplayFor(model => model.FileName) </a>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.NoData</span>
+        }
+    </p>*@
+</div>
+@if (ViewBag.CanResend != null && ViewBag.CanResend)
+{
+    @*<a class="btn btn-success" href="@ViewBag.ResendUrl">重送</a>*@
+    <script type="text/javascript">
+      $("#singFlowFooter").show();
+      $("#FormCancel").hide();
+      $("#Resend").show().attr("href", "@ViewBag.ResendUrl");
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#FormCancel").hide();
+        $("#Resend").hide();
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('@HRPortal.MultiLanguage.Resource.Upcreditcardapplicationform');
+    })
+</script>

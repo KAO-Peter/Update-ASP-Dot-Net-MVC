@@ -1,0 +1,443 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.CasualDailyPayrollChecklist
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "CasualDailyPayrollChecklist", FormMethod.Post, new { Id = "CasualDailyPayrollChecklist" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    @Html.Hidden("cmd", "Excel", new { id = "cmd" })
+    
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtENo" name="txtENo" type="text" value="@ViewBag.EmpNo" style="width:80%" />
+                        <button id="btnEmp" name="@Url.Action("Emp")" type="button" class="btn btn-primary" data-toggle="modal">查詢</button>
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtEName" name="txtEName" type="text" value="" disabled="disabled" />
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>月結 / 現金</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlMonthlyOrCash", (IEnumerable<SelectListItem>)ViewBag.MonthlyOrCashList, new { @class = "form-control", id = "ddlMonthlyOrCash" })
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>薪資計算區間(起/迄)</label>
+                    </div>
+                    <div class="search-date">
+                        <input id="txtDateS" name="txtDateS" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeS" />
+                        ~
+                        <input id="txtDateE" name="txtDateE" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeE" />
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>項目</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="radio" name="ReportType" id="ReportType1" value="1" text="明細" /> 明細
+                        <input type="radio" name="ReportType" id="ReportType2" value="2" text="彙總" /> 彙總
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnExcel" style="width:100%" name="btnExcel" type="submit" value="Excel" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+    @{
+    int sCount = 0;
+    double sWorkHours = 0, sAllowance = 0, sSalary = 0, sCompanyLabor = 0, sPersonalLabor = 0, sCompanyRetirement = 0;
+    }
+    @{
+    if (Model != null && Model.ReportType == "1")
+    {
+        if (Model.DetailData != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:5%"><div style="text-align:center;">員工工號<br />Employee</div></th>
+                        <th style="width:10%"><div style="text-align:center;">員工姓名<br />Name</div></th>
+                        <th style="width:10%"><div style="text-align:center;">部門<br />Dept.</div></th>
+                        <th style="width:10%"><div style="text-align:center;">身分證字號<br />I.D.</div></th>
+                        <th style="width:5%"><div style="text-align:center;">出生日期<br />Date of</div></th>
+                        <th style="width:5%"><div style="text-align:center;">日期<br />Date</div></th>
+                        <th style="width:10%" colspan="2"><div style="text-align:center;">核薪<br />Wage</div></th>
+                        <th style="width:5%"><div style="text-align:center;">總時數<br />Total Hours</div></th>
+                        <th style="width:5%"><div style="text-align:center;">車馬費<br />Honorarium</div></th>
+                        <th style="width:5%"><div style="text-align:center;">薪資<br />Salary</div></th>
+                        <th style="width:5%"><div style="text-align:center;">公司負擔勞保費<br />Employee Persion</div></th>
+                        <th style="width:5%"><div style="text-align:center;">員工負擔勞保費<br />Employer Persion</div></th>
+                        <th style="width:5%"><div style="text-align:center;">公司提撥金額<br />Mandatory Persion Contribution</div></th>
+                        <th style="width:15%"><div style="text-align:center;">備註<br />Note</div></th>
+                    </tr>
+                    @if (Model.DetailData.Count() > 0)
+                    {
+                        sCount = 0;
+                        sWorkHours = 0;
+                        sAllowance = 0;
+                        sSalary = 0;
+                        sCompanyLabor = 0;
+                        sPersonalLabor = 0;
+                        sCompanyRetirement = 0;                       
+                        
+                        foreach (var item in Model.DetailData)
+                        {
+                            sCount += 1;
+                            sWorkHours += item.WorkHours;
+                            sAllowance += item.Allowance;
+                            sSalary += item.Salary;
+                            sCompanyLabor += item.CompanyLabor;
+                            sPersonalLabor += item.PersonalLabor;
+                            sCompanyRetirement += item.CompanyRetirement;
+                            
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmpID
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmpName
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.dept
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.IDNumber
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Birthday
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.ExcuteDate
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.SalaryUnit
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Wage.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.WorkHours.ToString("N1")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Allowance.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Salary.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.CompanyLabor.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.PersonalLabor.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.CompanyRetirement.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Note
+                                </td>
+                            </tr>
+                        }
+
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count" colspan="7">
+                                @string.Format("Grand Total：{0}人", sCount)
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sWorkHours.ToString("N1")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sAllowance.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sSalary.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sCompanyLabor.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sPersonalLabor.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sCompanyRetirement.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    }
+    }
+    @{
+    if (Model != null && Model.ReportType == "2")
+    {
+        if (Model.TotalData != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:10%"><div style="text-align:center;">員工工號<br />Employee</div></th>
+                        <th style="width:10%"><div style="text-align:center;">員工姓名<br />Name</div></th>
+                        <th style="width:10%"><div style="text-align:center;">身分證字號<br />I.D.</div></th>
+                        <th style="width:10%"><div style="text-align:center;">出生日期<br />Date of</div></th>
+                        <th style="width:10%"><div style="text-align:center;">總時數<br />Total Hours</div></th>
+                        <th style="width:10%"><div style="text-align:center;">車馬費<br />Honorarium</div></th>
+                        <th style="width:10%"><div style="text-align:center;">薪資<br />Salary</div></th>
+                        <th style="width:10%"><div style="text-align:center;">公司負擔勞保費<br />Employee Persion</div></th>
+                        <th style="width:10%"><div style="text-align:center;">員工負擔勞保費<br />Employer Persion</div></th>
+                        <th style="width:10%"><div style="text-align:center;">公司提撥金額<br />Mandatory Persion Contribution</div></th>
+                    </tr>
+                    @if (Model.TotalData.Count() > 0)
+                    {
+                        sCount = 0;
+                        sWorkHours = 0;
+                        sAllowance = 0;
+                        sSalary = 0;
+                        sCompanyLabor = 0;
+                        sPersonalLabor = 0;
+                        sCompanyRetirement = 0;
+
+                        foreach (var item in Model.TotalData)
+                        {
+                            sCount += 1;
+                            sWorkHours += item.WorkHours;
+                            sAllowance += item.Allowance;
+                            sSalary += item.Salary;
+                            sCompanyLabor += item.CompanyLabor;
+                            sPersonalLabor += item.PersonalLabor;
+                            sCompanyRetirement += item.CompanyRetirement;
+
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmpID
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.EmpName
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.IDNumber
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Birthday
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.WorkHours.ToString("N1")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Allowance.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.Salary.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.CompanyLabor.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.PersonalLabor.ToString("N0")
+                                </td>
+                                <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @item.CompanyRetirement.ToString("N0")
+                                </td>
+                            </tr>
+                        }
+
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count"></td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count" colspan="3">
+                                @string.Format("Grand Total：{0}人", sCount)
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sWorkHours.ToString("N1")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sAllowance.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sSalary.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sCompanyLabor.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sPersonalLabor.ToString("N0")
+                            </td>
+                            <td role="gridcell" class="" style="text-align:right;white-space:normal" aria-describedby="grid-table_notification_count">
+                                @sCompanyRetirement.ToString("N0")
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="13" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    }
+    }
+    </div>
+    <div id="EmpDialog" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" id="EmpDialogContent"></div>
+    </div>
+}
+
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        $("#txtENo").change();  
+        
+        var tmpReportType="@ViewBag.ReportType";
+        $("input[name='ReportType'][value='"+tmpReportType+"']").click();
+
+        //輸入欄位 change 事件
+        $("input.form-control").change(function () {
+            switch($(this).attr("id"))
+            {
+                case "txtENo":  //工號
+                    if ($(this).val()!="")
+                    {
+                        //工號帶出員工資料
+                        $.getJSON('@Url.Action("GetEmp")', { EmpID: $(this).val() }, function (result) {
+                            if (result.Msg != "")
+                            {
+                                $("#txtEName").val("");
+                                showAlertMessage(result.Msg);
+                            }
+                            else
+                            {
+                                $("#txtEName").val(result.EmpName);
+                            }
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //工號小視窗
+        $("#btnEmp").click(function () {
+            if ( $("#EmpDialogContent").html()=="")
+            {
+                $("#EmpDialogContent").load($(this).attr("name"));
+            }
+
+            $("#EmpDialog").modal("show");
+        });
+
+        //清除
+        $("#btnClear").click(function () {
+            $("#cmd").val("Clear");
+            $("input:radio[name=ReportType]")[0].checked = true;
+            $("#CasualDailyPayrollChecklist").submit();
+        });
+
+        //查詢
+        $("#btnQuery").click(function () {
+            $("#cmd").val("Search");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualDailyPayrollChecklist").submit();
+            }
+        });
+
+        //Excel
+        $("#btnExcel").click(function () {
+            $("#cmd").val("Excel");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualDailyPayrollChecklist").submit();
+            }
+        });
+    });
+</script>
+}

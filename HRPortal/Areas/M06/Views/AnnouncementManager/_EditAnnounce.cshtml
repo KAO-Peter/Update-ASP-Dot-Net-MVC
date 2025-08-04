@@ -1,0 +1,208 @@
+﻿@model HRPortal.Mvc.Models.AnnouncementViewModel
+
+@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditAnnouncement";
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+    .col-sm-9:before {
+             content: "：";
+            display: inline-block;
+            height: 50px;
+            vertical-align: bottom;
+                  }
+     .col-sm-10:before {
+             content: "：";
+            display: inline-block;
+            height: 27px;
+            vertical-align: bottom;
+                  }
+    .col-md-33 {
+    color: #777;
+    width: 100px;
+    height: 15px;
+    text-align: justify;
+    -ms-text-justify: distribute;
+    padding: 0px 0 8px 35px;
+    float: left;
+}
+    .col-md-33:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.AnnouncementEditTitle</h4>
+        </div>
+
+
+        @using (Html.BeginForm("Edit", "AnnouncementManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.AnnouncementData.Modifiedby)
+            @Html.HiddenFor(model => model.AnnouncementData.Createdby)
+            @Html.HiddenFor(model => model.AnnouncementData.CreatedTime)
+            @Html.HiddenFor(model => model.AnnouncementData.Id)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.EmployeeNo</label>
+                        <div class="col-sm-44">
+                            <p class="form-control-static">@ViewBag.EmpID</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.EmployeeName</label>
+                        <div class="col-sm-44">
+                            <p class="form-control-static">@ViewBag.EmpName</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">@HRPortal.MultiLanguage.Resource.DownloadName</label>
+                        <div class="col-sm-44">
+                            <p class="form-control-static" data-bind="text: department_value">@ViewBag.DeptName</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AnnouncementData.Createdby, new { @class = "col-md-33", style = "width:15%"})
+                        <div class="col-sm-44">
+                            @Html.DisplayFor(model => model.AnnouncementData.Employee.EmployeeName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AnnouncementData.CreatedTime, new { @class = "col-md-33", style = "width:15%" })
+                        <div class="col-sm-44">
+                            @Html.DisplayFor(model => model.AnnouncementData.CreatedTime)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AnnouncementData.AnnounceStartTime, new { @class = "col-md-22", style = "width:15%" })
+                        <div class="col-sm-44">
+                            @Html.TextBoxFor(model => model.AnnouncementData.AnnounceStartTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker1" })
+                            @Html.ValidationMessageFor(model => model.AnnouncementData.AnnounceStartTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label(HRPortal.MultiLanguage.Resource.HaveEndTime, htmlAttributes: new {@class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-44" style="margin-top: 4px;">
+                                @Html.RadioButtonFor(model => model.IsShowEndTime, false, new { id = "IsNohave", style = "width:10%" })
+                                @Html.Label("IsNohave", HRPortal.MultiLanguage.Resource.No)
+                                @Html.RadioButtonFor(model => model.IsShowEndTime, true, new { id = "IsHave", style = "width:10%" })
+                                @Html.Label("IsHave", HRPortal.MultiLanguage.Resource.Yes)
+
+                            </div>
+                        </div>
+                        @if (Model.IsShowEndTime == false)
+                        {
+                            ViewBag.HideEndTime = "display:none;";
+                        }
+
+                        <div class="form-group" id="ShowEndTime" style="@(ViewBag.HideEndTime)">
+                            @Html.LabelFor(model => model.AnnouncementData.AnnounceEndTime, new { @class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-44">
+                                @Html.TextBoxFor(model => model.AnnouncementData.AnnounceEndTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker2" })
+                                @Html.ValidationMessageFor(model => model.AnnouncementData.AnnounceEndTime, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AnnouncementData.Title, new { @class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-10" style="width:75%">
+                                @Html.TextBoxFor(model => model.AnnouncementData.Title, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AnnouncementData.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AnnouncementData.ContentText, new { @class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-9">
+                                @Html.TextAreaFor(model => model.AnnouncementData.ContentText, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AnnouncementData.ContentText, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AnnouncementData.Status, new { @class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-44" style=" margin-top: 5px;">
+                                @Html.RadioButtonFor(model => model.AnnouncementData.Status, true, new { id = "have", style = "width:10%" })
+                                @Html.Label("have", HRPortal.MultiLanguage.Resource.AnnouncementStatusShow)
+                                @Html.RadioButtonFor(model => model.AnnouncementData.Status, false, new { id = "nohave", style = "width:10%" })
+                                @Html.Label("nohave", HRPortal.MultiLanguage.Resource.AnnouncementStatusHide)
+                                @Html.ValidationMessageFor(model => model.AnnouncementData.Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AnnouncementData.IsSticky, new { @class = "col-md-22", style = "width:15%" })
+                            <div class="col-sm-44" style=" margin-top: 5px;">
+                                @Html.RadioButtonFor(model => model.AnnouncementData.IsSticky, false, new { id = "nohaveSticky", style = "width:10%" })
+                                @Html.Label("nohaveSticky", HRPortal.MultiLanguage.Resource.No)
+                                @Html.RadioButtonFor(model => model.AnnouncementData.IsSticky, true, new { id = "haveSticky", style = "width:10%" })
+                                @Html.Label("haveSticky", HRPortal.MultiLanguage.Resource.Yes)                           
+                                @Html.ValidationMessageFor(model => model.AnnouncementData.IsSticky, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 15%;">附加檔案</label>
+                        <div class="col-sm-44">
+                            @Html.DropDownListFor(model => model.FileGuid, Model.FilesLists, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+                </div>
+                }
+            </div>
+        </div>
+        <script type="text/javascript">
+    @*function Redirectfunction(data)
+    {
+        console.log('enter redirect');
+        window.location.href = @Url.Action("Index","AnnouncementManager");
+    }*@
+            $(document).ready(function () {
+                $("input[name$='IsShowEndTime']").click(function () {
+                    $("#ShowEndTime").toggle();
+                });
+            });
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    language: 'zh-TW',
+                    pick12HourFormat: true,
+                    format: 'yyyy/mm/dd hh:ii',
+                    autoclose: true,
+                    showMeridian: true
+                });
+                $('#datetimepicker2').datetimepicker({
+                    language: 'zh-TW',
+                    pick12HourFormat: true,
+                    format: 'yyyy/mm/dd hh:ii',
+                    autoclose: true,
+                    showMeridian: true
+                });
+
+            });
+        </script>
+

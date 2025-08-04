@@ -1,0 +1,114 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.CreatePfaPerformance
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "CreatePfaPerformance";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">新增</h4>
+        </div>
+        @using (Html.BeginForm("Create", "PfaPerformance", FormMethod.Post, new { @id = "CreatePfaPerformanceForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">評等區間代碼</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">評等區間名稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">Performance</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.Performance, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Performance, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">band</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.band, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.band, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">佔比(%)</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.Rates, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Rates, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">Multiplier</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.Multiplier, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Multiplier, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">分數</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.ScoresStart, new { @class = "form-control", style = "width:39%;" })
+                            @Html.ValidationMessageFor(model => model.ScoresStart, "", new { @class = "text-danger" })
+                            <span style="width: 24px;"> ~ </span>
+                            @Html.TextBoxFor(model => model.ScoresEnd, new { @class = "form-control", style = "width:39%;" })
+                            @Html.ValidationMessageFor(model => model.ScoresEnd, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#btnSave').click(function () {
+            var form = $('#CreatePfaPerformanceForm');
+            var isValid = $(form).valid();
+
+            if (isValid) {
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: $(form).attr("method"),
+                    data: $(form).serialize(),
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaPerformanceDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

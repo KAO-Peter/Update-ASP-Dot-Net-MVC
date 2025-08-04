@@ -1,0 +1,82 @@
+﻿@model HRPortal.Mvc.Models.LeaveCancelFormViewModel
+<style>
+     .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+<div class="dl-info dl-horizontal">
+    <label class="col-md-22" style="width: 17%;">申請人</label>
+    <p class="form-control-static">@Model.SourceData.EmployeeName</p>
+    <label class="col-md-22" style="width: 17%;">單位</label>
+    <p class="form-control-static">@Model.SourceData.DepartmentName</p>
+    <label class="col-md-22" style="width: 17%;">銷假單申請日期</label>
+    <p class="form-control-static">@Model.FormData.CreatedTime.ToString("yyyy/MM/dd")</p>
+    <label class="col-md-22" style="width: 17%;">請假單申請日期</label>
+    <p class="form-control-static">@Model.SourceData.CreatedTime.ToString("yyyy/MM/dd")</p>
+    <label class="col-md-22" style="width: 17%;">假別</label>
+    <p class="form-control-static">@Model.SourceData.AbsentType</p>
+    <label class="col-md-22" style="width: 17%;">起迄時間</label>
+    <p class="form-control-static">@Model.SourceData.StartTime.ToString("yyyy/MM/dd HH:mm") <span>至</span> @Model.SourceData.EndTime.ToString("yyyy/MM/dd HH:mm")</p>
+    <label class="col-md-22" style="width: 17%;">時數</label>
+    <p class="form-control-static">@String.Format("{0} {1}", Model.SourceData.Amount.ToString("0.#"), Model.SourceData.Unit == "h" ? HRPortal.MultiLanguage.Resource.Hour : HRPortal.MultiLanguage.Resource.Day)</p>
+    <label class="col-md-22" style="width: 17%;">是否出國</label>
+    <p class="form-control-static">
+        @if (Model.SourceData.IsAbroad == true)
+        {
+            <span>是</span>
+        }
+        else
+        {
+            <span>否</span>
+        }
+    </p>
+    <label class="col-md-22" style="width: 17%;">事由</label>
+    <p class="form-control-static">
+        @Model.SourceData.LeaveReason
+    </p>
+    <label class="col-md-22" style="width: 17%;">代理人</label>
+    <p class="form-control-static">
+        @Model.SourceData.AgentName
+    </p>
+    <label class="col-md-22" style="width: 17%;">附件</label>
+    <p class="form-control-static">
+        @if (!string.IsNullOrWhiteSpace(Model.SourceData.FilePath))
+        {
+            <a target="_blank"  href="@Url.Action("DownloadLeaveFormFile", new { formNo = Model.SourceData.FormNo })"> @Html.DisplayFor(model => model.SourceData.FileName) </a>
+        }
+        else
+        {
+            <span>無</span>
+        }
+    </p>
+    <label class="col-md-22" style="width: 17%;">銷假原因</label>
+    <p class="form-control-static" style="word-break: break-all;">
+        @Model.FormData.CancelReason
+    </p>
+</div>
+
+@if (ViewBag.CanSign != null && ViewBag.CanSign == true)
+{
+    <script type="text/javascript">
+        $("#btnSign").show();
+        $("#btnReject").show();
+        $("#SignInstruction").show();
+        flagCanSign = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#btnSign").hide();
+        $("#btnReject").hide();
+        $("#SignInstruction").hide();
+        flagCanSign = false;
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('銷假單');
+    })
+</script>

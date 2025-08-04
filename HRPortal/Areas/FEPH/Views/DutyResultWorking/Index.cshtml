@@ -1,0 +1,503 @@
+﻿@model IEnumerable<HRPortal.ApiAdapter.HRMApiAdapterData.DutyResultWorking2>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "DutyResultWorking", FormMethod.Post, new { Id = "QueryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    if (TempData["message"] != null)
+    {
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+    }
+
+@*hidden 元素*@
+    <input type="hidden" value="@ViewBag.SearchDepartmentData" name="SearchDepartmentData" id="SearchDepartmentData" />
+
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>部門</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", id = "DepartmentListData", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#SearchDepartmentData');" })
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>開始日期</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchBeginDate" name="SearchBeginDate" type="datetime" placeholder="請選擇日期" maxlength="10" value="@ViewBag.SearchBeginDate" class="form-control">
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>結束日期</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchEndDate" name="SearchEndDate" type="datetime" placeholder="請選擇日期" maxlength="10" value="@ViewBag.SearchEndDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchEmpID" name="SearchEmpID" type="text" class="form-control" value="@ViewBag.SearchEmpID" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="SearchEmpName" name="SearchEmpName" type="text" class="form-control" value="@ViewBag.SearchEmpName" />
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnQuery" style="width: 100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnClear" style="width: 100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left: 0px">
+                    <input id="btnSave" style="width: 100%" name="btnSave" type="button" value="儲存" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Save", "DutyResultWorking", FormMethod.Post, new { Id = "SaveForm" }))
+{ 
+    <div class="col-xs-12" style="padding-right: 0px; padding-left: 0px;">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">
+                                <input type="checkbox" id="chkAll" value="ALL" />
+                            </div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">員工編號</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">員工姓名</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">日期</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">星期</div>
+                        </th>
+                        @*<th style="white-space:nowrap"><div style="text-align:center;">班別</div></th>*@
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">排進</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">排出</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">刷進</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">刷出</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">加班</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">補休</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">預支補休</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">可休補休</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">已請預支</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">排班時數</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">狀態名稱</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">開始時間</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">結束時間</div>
+                        </th>
+                        <th style="white-space: nowrap">
+                            <div style="text-align: center;">時數</div>
+                        </th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                <input type="checkbox" id="chkData" name="@item.EmpID" value="@item.ExcuteDate" />
+                                @Html.HiddenFor(modelItem => item.ClassStartTime)
+                                @Html.HiddenFor(modelItem => item.ClassEndTime)
+                                @Html.HiddenFor(modelItem => item.BeginTime)
+                                @Html.HiddenFor(modelItem => item.EndTime)
+                                @Html.HiddenFor(modelItem => item.DiningBegin1)
+                                @Html.HiddenFor(modelItem => item.DiningEnd1)
+                                @Html.HiddenFor(modelItem => item.DiningBegin2)
+                                @Html.HiddenFor(modelItem => item.DiningEnd2)
+                                @Html.HiddenFor(modelItem => item.DiningBegin3)
+                                @Html.HiddenFor(modelItem => item.DiningEnd3)
+                                @Html.HiddenFor(modelItem => item.DiningBegin4)
+                                @Html.HiddenFor(modelItem => item.DiningEnd4)
+                                @Html.HiddenFor(modelItem => item.FlexibleTime)
+                                @Html.HiddenFor(modelItem => item.OverTimeBeginTime)
+                                @Html.HiddenFor(modelItem => item.OverTimeEndTime)
+                                @Html.HiddenFor(modelItem => item.CompensatoryBeginTime)
+                                @Html.HiddenFor(modelItem => item.CompensatoryEndTime)
+                                @Html.HiddenFor(modelItem => item.AdvanceCompensatoryBeginTime)
+                                @Html.HiddenFor(modelItem => item.AdvanceCompensatoryEndTime)
+                                @Html.HiddenFor(modelItem => item.Overtime)
+                                @Html.HiddenFor(modelItem => item.Compensatory)
+                                @Html.HiddenFor(modelItem => item.AdvanceCompensatory)
+                                @Html.HiddenFor(modelItem => item.WorkHours)
+                                @Html.HiddenFor(modelItem => item.DutyAmount)
+                                @Html.HiddenFor(modelItem => item.EmpData_Name)
+
+
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.EmpID)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.EmpData_Name)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.ExcuteDate)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.WeekDay)
+                            </td>
+                            @*<td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Class)
+                                </td>*@
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.ClassStartTime)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.ClassEndTime)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: nowrap" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.InTimeCard)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: nowrap" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.OutTimeCard)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @if (item.OvertimeCheckFlag || item.ResultType == "AB-AB2")
+                                {
+                                    @Html.DisplayFor(modelItem => item.Overtime)
+                                }
+                                else
+                                {
+                                    <input type="text" id="txtOvertime" size="5" value="@item.Overtime" />
+                                }
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @if (item.AbsentCheckFlag || item.ResultType == "OT-OT")
+                                {
+                                    @Html.DisplayFor(modelItem => item.Compensatory)
+                                }
+                                else
+                                {
+                                    double tmpCompensatory = double.Parse(item.CanUseCompensatory) - double.Parse(item.UseAdvanceCompensatory);
+                                    <input type="text" id="txtCompensatory" name="@tmpCompensatory" size="5" value="@item.Compensatory" />
+                                }
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @if (item.AbsentCheckFlag || item.ResultType == "OT-OT")
+                                {
+                                    @Html.DisplayFor(modelItem => item.AdvanceCompensatory)
+                                }
+                                else
+                                {
+                                    <input type="text" id="txtAdvanceCompensatory" size="5" value="@item.AdvanceCompensatory" />
+                                }
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.CanUseCompensatory)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.UseAdvanceCompensatory)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.WorkHours)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.ResultTypeName)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.BeginTime)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.EndTime)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.DutyAmount)
+                            </td>
+                        </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="19" style="text-align: center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align: center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.ApiAdapter.HRMApiAdapterData.DutyResultWorking2>;
+                }
+                @{
+                    if (IsAjax)
+                    {
+                        Layout = "";
+                    }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "btnQuery", SearchDepartmentData = ViewBag.SearchDepartmentData, SearchBeginDate = ViewBag.SearchBeginDate, SearchEndDate = ViewBag.SearchEndDate, SearchEmpID = ViewBag.SearchEmpID, SearchEmpName = ViewBag.SearchEmpName }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                                                  new { page, Cmd = "btnQuery", SearchDepartmentData = ViewBag.SearchDepartmentData, SearchBeginDate = ViewBag.SearchBeginDate, SearchEndDate = ViewBag.SearchEndDate, SearchEmpID = ViewBag.SearchEmpID, SearchEmpName = ViewBag.SearchEmpName }), new PagedListRenderOptions
+                                                                  {
+                                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                                      DisplayLinkToIndividualPages = false,
+                                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                                      //LinkToNextPageFormat = "後一頁>",
+                                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                                      DisplayPageCountAndCurrentLocation = true,
+                                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                                      DisplayItemSliceAndTotal = true,
+                                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                                  })
+                }
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        function ChangeStatus(form, fileId, formName) {
+            $("#SearchEmpID").val("");
+            $("#SearchEmpName").val("");
+            $(formName).val(fileId);
+        }
+
+        $(function () {
+            //Optional: turn the chache off
+            //Popup
+            $.ajaxSetup({ cache: false });
+   
+            $("[type='datetime']").datetimepicker({
+                format: 'yyyy/mm/dd',
+                minView: 'month',
+                autoclose: true,
+                showMeridian: true,
+                language: 'zh-TW'
+            });
+
+            $("input[type='checkbox'][id='chkAll']").click(function (event) {
+                $("input[type='checkbox'][id='chkData']").prop("checked",$(this).prop("checked"));
+            });
+
+            //儲存
+            $("#btnSave").click(function (event) {
+                var chkDataList=$("input[type='checkbox'][id='chkData']:checked");
+                
+                if (chkDataList.length>0)
+                {
+                    var submitData=new FormData();
+                
+                    var dataObj=[];
+
+                    for(var i=0;i<chkDataList.length;i++)
+                    {
+                        dataObj[i] = new Object();
+                        dataObj[i].EmpID = $(chkDataList[i]).attr("name");
+                        dataObj[i].ExcuteDate = $(chkDataList[i]).val();
+                        dataObj[i].ClassStartTime = $($(chkDataList[i]).parent().find("input[type='hidden'][id='item_ClassStartTime']")[0]).val();
+                        dataObj[i].ClassEndTime = $($(chkDataList[i]).parent().find("input[type='hidden'][id='item_ClassEndTime']")[0]).val();
+                        dataObj[i].BeginTime = $($(chkDataList[i]).parent().find("input[type='hidden'][id='item_BeginTime']")[0]).val();
+                        dataObj[i].EndTime = $($(chkDataList[i]).parent().find("input[type='hidden'][id='item_EndTime']")[0]).val();
+                        dataObj[i].Overtime=null;
+                        dataObj[i].Compensatory=null;
+                        dataObj[i].AdvanceCompensatory=null;
+
+                        var originalOvertime=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_Overtime']")[0]).val();
+                        var originalCompensatory=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_Compensatory']")[0]).val();
+                        var originalAdvanceCompensatory=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_AdvanceCompensatory']")[0]).val();
+                        
+                        //201707 增加四段用餐時間與彈性時間
+                        dataObj[i].DiningBegin1=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningBegin1']")[0]).val();
+                        dataObj[i].DiningEnd1=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningEnd1']")[0]).val();
+                        dataObj[i].DiningBegin2=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningBegin2']")[0]).val();
+                        dataObj[i].DiningEnd2=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningEnd2']")[0]).val();
+                        dataObj[i].DiningBegin3=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningBegin3']")[0]).val();
+                        dataObj[i].DiningEnd3=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningEnd3']")[0]).val();
+                        dataObj[i].DiningBegin4=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningBegin4']")[0]).val();
+                        dataObj[i].DiningEnd4=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DiningEnd4']")[0]).val();
+                        dataObj[i].FlexibleTime=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_FlexibleTime']")[0]).val();
+                        //console.log(i+'_DiningBegin1='+dataObj[i]._DiningBegin1);
+
+                        
+                        var empData_Name=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_EmpData_Name']")[0]).val()
+
+                        var inputOvertime=0;
+                        var inputCompensatory=0;
+                        var inputAdvanceCompensatory=0;
+
+                        var txtObj=$(chkDataList[i]).parent().parent().find("td input[type='text'][id='txtOvertime']");
+
+                        if (txtObj.length>0)
+                        {
+                            dataObj[i].Overtime=$(txtObj[0]).val();
+                            //檢查輸入欄位是否為數字
+                            if (isNaN(dataObj[i].Overtime))
+                            {
+                                showAlertMessage("員工 "+dataObj[i].EmpID+" "+empData_Name+" 的加班時數不為數字");
+                                return false;
+                            }
+                            else
+                            {
+                                inputOvertime=parseFloat(dataObj[i].Overtime);
+                            }
+                        }
+
+                        txtObj=$(chkDataList[i]).parent().parent().find("td input[type='text'][id='txtCompensatory']");
+
+                        if (txtObj.length>0)
+                        {
+
+                            var tmpCompensatory=$(txtObj[0]).attr("name");
+
+                            dataObj[i].Compensatory=$(txtObj[0]).val();
+                            //檢查輸入欄位是否為數字
+                            if (isNaN(dataObj[i].Compensatory))
+                            {
+                                showAlertMessage("員工 "+dataObj[i].EmpID+" "+empData_Name+" 的補休時數不為數字");
+                                return false;
+                            }
+                            else
+                            {
+                                inputCompensatory=parseFloat(dataObj[i].Compensatory);
+                            }
+                            
+
+                            if (dataObj[i].Compensatory!="0")
+                            {
+                                var oriCompensatory=0;
+                                if (originalCompensatory.length>0)
+                                {
+                                    oriCompensatory=parseFloat(originalCompensatory);
+                                }
+                                //if (parseFloat(tmpCompensatory)<parseFloat(dataObj[i].Compensatory))
+                                if ((parseFloat(tmpCompensatory)+oriCompensatory)<parseFloat(dataObj[i].Compensatory))
+                                {
+                                    showAlertMessage("員工 "+dataObj[i].EmpID+" 日期 "+dataObj[i].ExcuteDate+" 的補休時數(可休補休-已請預支)不夠");
+                                    return false;
+                                }
+                            }
+                        }
+
+                        txtObj=$(chkDataList[i]).parent().parent().find("td input[type='text'][id='txtAdvanceCompensatory']");
+
+                        if (txtObj.length>0)
+                        {
+                            dataObj[i].AdvanceCompensatory=$(txtObj[0]).val();
+                            //檢查輸入欄位是否為數字
+                            if (isNaN(dataObj[i].AdvanceCompensatory))
+                            {
+                                showAlertMessage("員工 "+dataObj[i].EmpID+" "+empData_Name+" 的預支補休時數不為數字");
+                                return false;
+                            }
+                            else
+                            {
+                                inputAdvanceCompensatory=parseFloat(dataObj[i].AdvanceCompensatory);
+                            }
+                            
+                        }
+
+                        //檢核時數
+                        var workhours=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_WorkHours']")[0]).val();
+                        var dutyAmount=$($(chkDataList[i]).parent().find("input[type='hidden'][id='item_DutyAmount']")[0]).val();
+                        if (!isNaN(workhours) && !isNaN(dutyAmount))
+                        {
+                            var absentTotal=inputCompensatory+inputAdvanceCompensatory;
+                            console.log(absentTotal+"_"+workhours+"_"+dutyAmount);
+                            if (absentTotal>parseFloat(workhours) || absentTotal>parseFloat(dutyAmount))
+                            {
+                                showAlertMessage("員工 "+dataObj[i].EmpID+" "+empData_Name+" 的補休+預支補休時數合計為"+absentTotal+"，超過排班時數"+parseFloat(workhours)+"，或是曠職時數"+parseFloat(dutyAmount));
+                                return false;
+                            }
+                        }
+                    }
+
+                    submitData.append("data", JSON.stringify(dataObj));
+
+                    $.ajax({
+                        url: "DutyResultWorking/Save",
+                        type: "POST",
+                        data: submitData,
+                        contentType: false,
+                        processData: false,
+                        success: function (submitResult) {
+                            if (submitResult.status == "success") {
+                                showAlertMessage("儲存成功");
+                                $("#btnQuery").click();
+                            } else {
+                                showAlertMessage(submitResult.message);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    showAlertMessage("無異動資料");
+                }
+            });
+        });
+    </script>
+}

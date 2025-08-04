@@ -1,0 +1,202 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryItemsFEDS
+@{
+            var MaxCount = 8;
+            var OtherMaxCount = 9;
+            if (Model.TaxableItems.BasicItems.Detail.Count > MaxCount)//基本項
+            {
+                MaxCount = Model.TaxableItems.BasicItems.Detail.Count;
+            }
+            if (Model.TaxableItems.AddItems.Detail.Count > MaxCount)//加發項
+            {
+                MaxCount = Model.TaxableItems.AddItems.Detail.Count;
+            }
+            if (Model.TaxableItems.MinusItems.Detail.Count > MaxCount)//減發項
+            {
+                MaxCount = Model.TaxableItems.MinusItems.Detail.Count;
+            }
+            if (Model.NoTaxItems.Detail.Count > MaxCount) //免稅項
+            {
+                MaxCount = Model.NoTaxItems.Detail.Count;
+            }
+            if (Model.WithholdingItems.Detail.Count > (MaxCount+OtherMaxCount)) //代扣項
+            {
+                OtherMaxCount = Model.WithholdingItems.Detail.Count;
+            }
+            if (Model.TaxableItems.BasicItemsOthers.Detail.Count > OtherMaxCount) //基本項(其他項)
+            {
+                OtherMaxCount = Model.TaxableItems.BasicItemsOthers.Detail.Count;
+            }
+            if(Model.TaxableItems.AddItemsOthers.Detail.Count > OtherMaxCount) //加發項(其他項)
+            {
+                OtherMaxCount = Model.TaxableItems.AddItemsOthers.Detail.Count;
+            }
+            if (Model.TaxableItems.MinusItemsOthers.Detail.Count > OtherMaxCount) //減發項(其他項)
+            {
+                OtherMaxCount = Model.TaxableItems.MinusItemsOthers.Detail.Count;
+            }
+            if (Model.NoTaxItemsOthers.Detail.Count > OtherMaxCount) //免稅項(其他項)
+            {
+                OtherMaxCount = Model.NoTaxItemsOthers.Detail.Count;
+            }
+}
+
+
+<table cellpadding='0' cellspacing='0' border='1' style='width:100%;max-width:100%;margin-bottom:5px; font-size:10px;'>
+		<tbody>
+			<tr height='20'>
+                <td ROWSPAN='2' width='26' style='border-width:0px 0px 2px 0px;'></td>
+				<td COLSPAN='2' width='200' style='border-width:0px 0px 0px 1px;'></td>
+				<td COLSPAN='2' width='200' align='center' valign='middle' style='border-width:0px 0px 0px 0px;'>課稅項合計 A</td>
+				<td COLSPAN='2' width='200' align='right' valign='middle' style='border-width:0px 1px 0px 0px;'>@Model.TaxableItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+				<td ROWSPAN='2' width='100' style='border-width:0px 0px 2px 0px;'>&nbsp;免稅項合計 B</td>
+				<td ROWSPAN='2' width='100' align='right' style='border-width:0px 0px 2px 0px;'>@Model.NoTaxItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+				<td ROWSPAN='2' width='100' style='border-width:0px 0px 1px 1px;'>&nbsp;代扣項合計 C</td>
+				<td ROWSPAN='2' width='100' align='right' style='border-width:0px 0px 1px 0px;'>@Model.WithholdingItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+			</tr>
+            <tr height='20'>
+				<td width='100' style='border-width:1px 0px 2px 1px ; border-top-color:#CCCCCC;'>&nbsp;基本項小計A1</td>
+				<td width='100' align='right' style='border-width:1px 1px 2px 0px ; border-color:#CCCCCC #CCCCCC black none;'>@Model.TaxableItems.BasicItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+				<td width='100' style='border-width:1px 0px 2px 0px ; border-top-color:#CCCCCC;'>&nbsp;加發項小計A2</td>
+				<td width='100' align='right' style='border-width:1px 1px 2px 0px ; border-color:#CCCCCC #CCCCCC black none;'>@Model.TaxableItems.AddItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+				<td width='100' style='border-width:1px 0px 2px 0px ; border-top-color:#CCCCCC;'>&nbsp;減發項小計A3</td>
+				<td width='100' align='right' style='border-width:1px 1px 2px 0px ; border-top-color:#CCCCCC;'>@Model.TaxableItems.MinusItems.Total.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+			</tr>
+            @for (int i = 0; i < MaxCount; i++)
+            {
+                 <tr height='20'>
+                     @if (i == 0)
+                     {
+                          <td ROWSPAN='@MaxCount' width='26' style='border-width:0px 0px 0px 1px;' align='center'>全薪</td>
+                     }
+                     @if (i < Model.TaxableItems.BasicItems.Detail.Count)//基本項
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'>&nbsp;@Model.TaxableItems.BasicItems.Detail[i].Name</td>
+                         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.TaxableItems.BasicItems.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'></td>
+                         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+                     }
+                     @if (i < Model.TaxableItems.AddItems.Detail.Count)//加發項
+                     {
+                        <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.TaxableItems.AddItems.Detail[i].Name</td>
+				        <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.TaxableItems.AddItems.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else 
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+                     }
+				     @if (i < Model.TaxableItems.MinusItems.Detail.Count)//減發項
+                     {
+                        <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.TaxableItems.MinusItems.Detail[i].Name</td>
+				        <td width='100' align='right' style='border-width:0px 1px 0px 0px;'>@Model.TaxableItems.MinusItems.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else 
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px;'></td>
+                     }
+                     @if (i < Model.NoTaxItems.Detail.Count)//免稅項
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.NoTaxItems.Detail[i].Name</td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px;'>@Model.NoTaxItems.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px;'></td>
+                     }
+                     @if (i < Model.WithholdingItems.Detail.Count) //代扣項
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 1px;'>&nbsp;@Model.WithholdingItems.Detail[i].Name</td>
+				         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'>@Model.WithholdingItems.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'></td>
+                         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'></td>
+                     }
+				
+			    </tr>
+            }
+            <tr height="20">
+                <td width='26' style='border-width:0px 0px 2px 1px;'></td>
+                @* <td COLSPAN='8' width='800' align='center' valign='middle' style='border-width:1px 1px 2px 1px;'>平日每小時工資: NT$ @(((Model.TaxableItems.Total+Model.NoTaxItems.Total)/240).ToString("###,###,###,##0.0").Replace(".0", string.Empty))&nbsp; (全月在職全薪/240)</td>*@
+                <td COLSPAN='2' width='200' style='border-width:0px 1px 2px 1px; border-color:none #CCCCCC black black;'></td>
+                <td COLSPAN='2' width='200' style='border-width:0px 1px 2px 0px; border-color:none #CCCCCC black none;' ></td>
+                <td COLSPAN='2' width='200' style='border-width:0px 1px 2px 0px;'></td>
+                <td COLSPAN='2' width='200' style='border-width:0px 1px 2px 0px;'></td>
+                @if (Model.WithholdingItems.Detail.Count >= MaxCount)
+                { 
+                    <td width='100' style='border-width:0px 0px 0px 1px;'>&nbsp;@Model.WithholdingItems.Detail[MaxCount].Name</td>
+				    <td width='100' align='right' style='border-width:0px 0px 0px 0px; '>@Model.WithholdingItems.Detail[MaxCount].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                }
+                else
+                {
+                    <td width='100' style='border-width:0px 0px 0px 1px;'></td>
+                    <td width='100' align='right' style='border-width:0px 0px 0px 0px;'></td>
+                }
+            </tr>
+             @for (int i = 0; i < OtherMaxCount; i++)
+             {
+                 <tr height="20">
+                     @if (i == 0)
+                     {
+                          <td ROWSPAN='@OtherMaxCount' width='26' style='border-width:0px 0px 0px 0px;' align='center'>其他項</td>
+                     }
+                     @if (i < Model.TaxableItems.BasicItemsOthers.Detail.Count)//基本項(其他項)
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'>&nbsp;@Model.TaxableItems.BasicItemsOthers.Detail[i].Name</td>
+                         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.TaxableItems.BasicItemsOthers.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'></td>
+                         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+                     }
+                     @if (i < Model.TaxableItems.AddItemsOthers.Detail.Count)//加發項 (其他項)
+                     {
+                        <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.TaxableItems.AddItemsOthers.Detail[i].Name</td>
+				        <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'>@Model.TaxableItems.AddItemsOthers.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else 
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px; border-color:none #CCCCCC none none;'></td>
+                     }
+				     @if (i < Model.TaxableItems.MinusItemsOthers.Detail.Count)//減發項
+                     {
+                        <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.TaxableItems.MinusItemsOthers.Detail[i].Name</td>
+				        <td width='100' align='right' style='border-width:0px 1px 0px 0px;'>@Model.TaxableItems.MinusItemsOthers.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else 
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 1px 0px 0px;'></td>
+                     }
+                     @if (i < Model.NoTaxItemsOthers.Detail.Count)//免稅項
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 0px;'>&nbsp;@Model.NoTaxItemsOthers.Detail[i].Name</td>
+				         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'>@Model.NoTaxItemsOthers.Detail[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 0px;'></td>
+				         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'></td>
+                     }
+                      @if ((i+1+MaxCount) < Model.WithholdingItems.Detail.Count) //代扣項
+                     { 
+                         <td width='100' style='border-width:0px 0px 0px 1px;'>&nbsp;@Model.WithholdingItems.Detail[i+1+MaxCount].Name</td>
+				         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'>@Model.WithholdingItems.Detail[i+1+MaxCount].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</td>
+                     }
+                     else
+                     {
+                         <td width='100' style='border-width:0px 0px 0px 1px;'></td>
+                         <td width='100' align='right' style='border-width:0px 0px 0px 0px;'></td>
+                     }
+                 </tr> 
+             }
+        </tbody>
+</table>

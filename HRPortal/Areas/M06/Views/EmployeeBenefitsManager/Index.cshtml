@@ -1,0 +1,237 @@
+﻿@model IEnumerable<HRPortal.DBEntities.EmployeeBenefits>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "EmployeeBenefitsManager", FormMethod.Post, new { id = "AnnouncementManagerForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+                    var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+            </script>
+        }
+        <div class="col-md-7 col-sm-12 btn-toolbar action-buttons">
+            <a class="btn btn-info" id="btnCreate" data-modal="" href="@Url.Action("Create")">@HRPortal.MultiLanguage.Resource.BtnCreate</a>
+        </div>
+
+        <div class="col-md-5 col-sm-12 mini-input-group">
+            <div class="col-xs-3">
+            </div>
+            <div class="col-xs-3">
+                @Html.DropDownList("StatusListData", (IEnumerable<SelectListItem>)ViewData["StatusList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#selectChangeStatus');" })
+            </div>
+            <div class="col-xs-6 filter-toolbar">
+                <div class="input-group">
+                    <input id="txtkeyword" name="txtkeyword" type="text" class="form-control" value="@ViewBag.TitleKeyword" placeholder="@HRPortal.MultiLanguage.Resource.PlaceHolderSearchTitle">
+                    <span class="input-group-btn">
+                        <button id="btn_filter" onclick="ChangeStatus(this.form, 1, '#SearchTitle')" class="btn btn-primary" type="button"><i class="fa fa-filter"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height: 50px; width: 100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                        <th class="" style="width: 15%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnounceStartTime</div>
+                        </th>
+                        <th class="" style="width: 15%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnouncementEndTime</div>
+                        </th>
+                        <th class="" style="width: 5%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.statuss</div>
+                        </th>
+                        <th class="" style="width: 25%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.Title</div>
+                        </th>
+                        <th class="" style="width: 10%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@Html.DisplayNameFor(model => model.FirstOrDefault().Employees.DepartmentID)</div>
+                        </th>
+                        <th class="" style="width: 10%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnouncementCreatedBy</div>
+                        </th>
+                        <th class="" style="width: 20%"></th>
+                    </tr>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                 @{ //20170512 Start Daniel，更正起始時間欄位為AnounceStartTime
+                                    //@Html.DisplayFor(modelItem => item.CreatedTime)
+                                    @Html.DisplayFor(modelItem => item.AnnounceStartTime)
+                                 }
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.AnnounceEndTime)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                <span>
+                                    @{ //20170511 Start Daniel，原來是將日期轉成字串比對，在判斷日期前後順序時會出問題，改回直接以日期比對
+                            //@(string.Compare(item.AnnounceEndTime.ToString(), DateTime.Now.ToString())>0 || item.AnnounceEndTime == null ? item.Status == true ? HRPortal.MultiLanguage.Resource.AnnouncementStatusShow : HRPortal.MultiLanguage.Resource.AnnouncementStatusHide : "逾期" )
+                                        @((item.AnnounceEndTime == null || item.AnnounceEndTime > DateTime.Now) ? (item.Status == true ? HRPortal.MultiLanguage.Resource.AnnouncementStatusShow : HRPortal.MultiLanguage.Resource.AnnouncementStatusHide) : "逾期")
+                                    }
+                                </span>
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Employees.Department.DepartmentName)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal" aria-describedby="grid-table_notification_count">
+                                @Html.DisplayFor(modelItem => item.Employees.EmployeeName)
+                            </td>
+                            <td role="gridcell" class="" style="white-space: normal; text-align: center" aria-describedby="grid-table_notification_count">
+                                <a class="btn btn-warning" id="btnEdit@(item.Id)" data-modal="" href="@Url.Action("Edit", new { id = item.Id })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                <button type="button" class="btn btn-danger delete-ann" id="btnAnnouncementDelete@(item.Id)" onclick="ChangeStatus(this.form,'@item.Id','#DeletedID');">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                                @if (item.Status == true)
+                                {
+                                    <input type="button" value="@HRPortal.MultiLanguage.Resource.AnnouncementStatusHide" formnovalidate="formnovalidate" onclick="ChangeStatus(this.form,'H/@item.Id    ','#changeId');" class="btn btn-danger" />
+                                }
+                                else
+                                {
+                                    <input type="button" value="@HRPortal.MultiLanguage.Resource.AnnouncementStatusShow" formnovalidate="formnovalidate" onclick="ChangeStatus(this.form,'S/@item.Id    ','#changeId');" class="btn btn-success" />
+                                }
+                            </td>
+                        </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="6" style="text-align: center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+            <div style="text-align: center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.DBEntities.EmployeeBenefits>
+                                                        ;
+                }
+                @{
+                    if (IsAjax)
+                    { Layout = ""; }
+                }
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                            new { page, Status = ViewBag.StatusData, keyword = ViewBag.TitleKeyword }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, Status = ViewBag.StatusData, keyword = ViewBag.TitleKeyword }), new PagedListRenderOptions
+                        {
+                            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                            DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                            DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                            DisplayLinkToIndividualPages = false,
+                            //LinkToFirstPageFormat = "<<第一頁",
+                            //LinkToPreviousPageFormat = "<前一頁",
+                            //LinkToNextPageFormat = "後一頁>",
+                            //LinkToLastPageFormat = "最末頁>>",
+                            DisplayPageCountAndCurrentLocation = true,
+                            PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                            DisplayItemSliceAndTotal = true,
+                            ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                        })
+            </div>
+        </div>
+    </div>
+@*hidden 元素*@
+    <input type="hidden" value="0" name="changeId" id="changeId" />
+    <input type="hidden" value="0" name="SearchTitle" id="SearchTitle" />
+    <input type="hidden" value="0" name="DeletedID" id="DeletedID" />
+    <input type="hidden" value="@ViewBag.StatusData" name="selectChangeStatus" id="selectChangeStatus" />
+}
+<div id='AnnounmentDialogDiv' class='modal fade in' role="dialog">
+    <div id='AnnouncementDialogContent'></div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        function ChangeStatus(form, fileId, formName) {
+            //Submit data
+            $(formName).val(fileId);
+            if (formName!='#DeletedID')
+                form.submit();
+        }
+
+        $(function () {
+            var form = $('#AnnouncementManagerForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+            //Optional: turn the chache off
+            //Popup
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                $('#AnnouncementDialogContent').load(this.href, function () {
+                    $('#AnnounmentDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this, '#AnnounmentDialogDiv', '#AnnouncementDialogContent', true, '@Url.Action("Index")');
+                });
+                return false;
+            });
+            $('.delete-ann').click(function (event) {
+                var submitData = new FormData(form[0]);
+                showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+                    $.ajax({
+                        url: 'EmployeeBenefitsManager/Deleted',
+                        type: 'POST',
+                        data: submitData,
+                        contentType: false,
+                        processData: false,
+                        success: function (submitResult) {
+                            if (submitResult.status == 'success')  {
+                                showAlertMessage( submitResult.message , function(){
+                                    window.location='@Url.Action("Index")';
+                                });
+                            }                else                {
+                                showAlertMessage(submitResult.message);
+                            }
+                        
+                        }
+                    });
+                });
+       
+            });
+
+            $("#txtkeyword").keypress(function(event)
+            {
+                var keyCode = (event.keyCode ? event.keyCode : event.which); 
+                if(keyCode==13){//Enter 鍵
+                    ChangeStatus(this.form, 1, '#SearchTitle')
+                }
+            })
+
+        });
+
+    
+    </script>
+}
+

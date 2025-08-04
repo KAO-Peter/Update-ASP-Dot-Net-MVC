@@ -1,0 +1,138 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaSignFlowViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "DetailPfaSignFlow";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog" style="width:1200px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">考核簽核設定</h4>
+        </div>
+        @using (Html.BeginForm("Detail", "PfaSignFlow", FormMethod.Post, new { @id = "DetailPfaSignFlowForm", @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-body" style="height:500px; overflow-y:scroll">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">簽核類別</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("SignTypeID", Model.SignTypeList, new { @id = "SignTypeID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table id="tableData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                            <thead>
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:100px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核步驟</div>
+                                    </th>
+                                    <th style="width:190px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核關卡</div>
+                                    </th>
+                                    <th style="width:326px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">簽核目標</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">自評</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">初核</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">複核</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">決核</div>
+                                    </th>
+                                    <th style="width:110px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">上傳權限</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyData">
+                                @if (Model.Data != null)
+                                {
+                                    var isHide = "";
+
+                                    foreach (var item in Model.Data)
+                                    {
+                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td style="white-space:normal; text-align:center">
+                                                @item.SignStep
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.DropDownList("SignLevel", item.SignLevelList, new { @id = "SignLevel", @class = "form-control", @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "DeptManager")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_DeptManager" class="form-group" style="@isHide">
+                                                    @Html.DropDownList("DeptClass", item.DeptClassList, new { @id = "DeptClass", @class = "form-control", @disabled = true })
+                                                </div>
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "SpEmp")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_SpEmp" class="form-group" style="@isHide">
+                                                    @Html.TextBox("EmployeesName", string.Format("{0} {1}", item.EmployeesNo, item.EmployeesName), new { @class = "form-control", @disabled = true })
+                                                    @Html.Hidden("EmployeesID", item.EmployeesID)
+                                                </div>
+                                                @{
+                                                    isHide = "";
+                                                    if (item.SignLevelCode != "SpDept")
+                                                    {
+                                                        isHide = "display:none";
+                                                    }
+                                                }
+                                                <div id="SignLevel_SpDept" class="form-group" style="@isHide">
+                                                    @Html.DropDownList("Company", item.CompanyList, new { @id = "Company", @class = "form-control", @disabled = true })
+                                                    @Html.DropDownList("Department", item.DepartmentList, new { @id = "Department", @class = "form-control", @disabled = true })
+                                                </div>
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsSelfEvaluation", item.IsSelfEvaluation, new { @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsFirstEvaluation", item.IsFirstEvaluation, new { @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsSecondEvaluation", item.IsSecondEvaluation, new { @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsThirdEvaluation", item.IsThirdEvaluation, new { @disabled = true })
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @Html.CheckBox("IsUpload", item.IsUpload, new { @disabled = true })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,257 @@
+﻿@model HRPortal.Mvc.Models.AttendanceSummaryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+     th {
+        padding-left: 5px;
+        text-align:center;
+        vertical-align:middle !important;
+    }
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+</style>
+  @using System.Resources;
+        @if (TempData["message"] != null)
+      {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+        }
+<div class=" row">
+    @using (Html.BeginForm("Index", "Attendance", FormMethod.Post, new { id = "AttendanceSummaryForm" }))
+    {
+        <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var ddata = new ViewDataDictionary();
+                            ddata.Add("id", "SelectedDepartment");
+                            ddata.Add("class", "form-control");
+                            ddata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.DepartmentListData, ddata);
+                        }
+                        @*@Html.DropDownListFor(x => x.SelectedDepartment, Model.DepartmentListData, new { @class = "form-control", @multiple = "multiple" })*@
+                        <input id="DeptID" name="DeptID" type="hidden" value="">
+                    </div>
+                </div>
+                <div class="search-wrap divEmp">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var edata = new ViewDataDictionary();
+                            edata.Add("id", "SelectedEmployee");
+                            edata.Add("class", "form-control");
+                            edata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.EmployeeListData, edata);
+                        }
+                        @*@Html.DropDownListFor(x => x.SelectedEmployee, Model.EmployeeListData, new { @class = "form-control", @multiple = "multiple" })*@
+                        <input id="EmpID" name="EmpID" type="hidden" value="">
+                    </div>
+                </div>
+                @if (Model.Role != null)
+                {
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                        </div>
+                        <div class="search-input">
+                            @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="search-section search-button">
+                <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4 col-md-1" style="padding-left: 0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-sm-12" id="GetDutyScheduleSummary"></div>
+</div>     
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var $url = "@Url.Action("Index")";
+
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.deptSelect = $('#SelectedDepartment');
+        $mutiSelect.empSelect = $('#SelectedEmployee');
+        $mutiSelect.statusSelect = $('#SelectedStatuslistData');
+        $mutiSelect.empvalmode = "ID";
+        
+    //    var obj = null;
+    //$("#SelectedDepartment").change(function (event) {
+    //    $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val() }, function (datas) {
+    //        var empSelect = $("#SelectedEmployee");
+    //        $(empSelect).empty();
+    //        $.each(datas, function (index, data) {
+    //            empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+    //        });
+
+    //        if (obj != null) {
+    //            $("#SelectedEmployee").val(obj.Empno);
+    //            obj = null;
+    //        }
+    //    });
+    //});
+    //$("#SelectedStatuslistData").change(function (event) {
+    //    $.getJSON('@Url.Action("GetStatusData")', { DepartmentId: $("#SelectedDepartment").val(), StatusData: $(this).val() }, function (datas) {
+    //        var empSelect = $("#SelectedEmployee");
+    //        $(empSelect).empty();
+    //        $.each(datas, function (index, data) {
+    //            empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+    //        });
+
+    //        if (obj != null) {
+    //            $("#SelectedEmployee").val(obj.Empno);
+    //            obj = null;
+    //        }
+    //    });
+    //});
+    $(function () {
+        $mutiSelect.setDepartmentList2();
+
+        $('#BeginDate,#EndDate').appendDtpicker({
+            "inline": false,
+            "locale": "cn",
+            "minuteInterval": 10,
+            "timelistScroll": false,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width": "300px",
+            "dateFormat": "YYYY/MM/DD",
+            "dateOnly": true
+        });
+        /*
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            pickTime: false,
+            startView: 'decade',
+            minView: 'month',
+            autoclose: true,
+            language: 'zh-TW'
+        });
+        */
+        //$('#BeginDate').appendDtpicker({
+        //    "inline": false,
+        //    "locale": "cn",
+        //    "minuteInterval": 10,
+        //    "timelistScroll": false,
+        //    "calendarMouseScroll": false,
+        //    "closeOnSelected": true,
+        //    "width": "300px",
+        //    "dateFormat": "YYYY/MM/DD",
+        //    "dateOnly": true
+        //    //"current":formatToday+" 08:00"
+        //});
+
+        //$('#EndDate').appendDtpicker({
+        //    "inline": false,
+        //    "locale": "cn",
+        //    "minuteInterval": 10,
+        //    "timelistScroll": false,
+        //    "calendarMouseScroll": false,
+        //    "closeOnSelected": true,
+        //    "width": "300px",
+        //    "dateFormat": "YYYY/MM/DD",
+        //    "dateOnly": true
+        //    //"current":formatToday+" 08:00"
+        //});
+        $('#btnQuery').click(function (event) {
+            if ($mutiSelect.empID.val() == '') {
+                showAlertMessage('請選擇員工');
+                return false;
+            }
+
+            var form = $('#AttendanceSummaryForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            var submitData = new FormData(form[0]);
+            submitData.append("BeginDate", $('input[name=BeginTime]').val());
+            submitData.append("EndDate", $('input[name=EndTime]').val())
+            $.ajax({
+                url: $url + '/GetDutyScheduleSummary',
+                type: 'POST',
+                data: submitData,
+                contentType: false,
+                processData: false,
+                dataType: 'html',
+                success: function (result) {
+                    $('#GetDutyScheduleSummary').html(result);
+                },
+                error: function (xhr) {
+                    showAlertMessage(xhr.responseText);
+                    window.location.href = $url;
+                }
+            });
+        });
+
+        $('#btnClear').click(function () {
+            window.location.href = $url;
+        });
+
+        if ('@ViewBag.isALL' != 'True') {
+            //$("#btnQuery").trigger("click");
+        }
+        else {
+            $mutiSelect.divEmp.hide();
+        }
+
+    });
+</script>
+}

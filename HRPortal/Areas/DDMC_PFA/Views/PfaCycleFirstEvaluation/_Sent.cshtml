@@ -1,0 +1,202 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaCycleSentDataViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "SentForm";
+}
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("SentQuery", "PfaCycleFirstEvaluation", FormMethod.Post, new { Id = "SentForm" }))
+{
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">考績主管初核送出</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="search-container">
+                        <div class="search-section">
+                            <div class="form-group">
+                                <label class="col-md-22" style="width:15%;">績效考核批號</label>
+                                <div class="col-sm-44" style="width:30%;">
+                                    @Html.DropDownList("ddlPfaFormNoList", Model.PfaFormNoList, new { @id = "ddlPfaFormNoList", @class = "form-control" })<br />
+                                </div>
+                                <label class="col-md-22" style="width: 15%;">績效考核年度</label>
+                                <div class="col-sm-44" style="width:30%;padding-top:8px;">@Model.PfaYear</div>
+                                <label class="col-md-22" style="width: 15%;">備註</label>
+                                <div class="col-sm-44" style="width:30%;padding-top:8px;">@Model.Remark</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive" style="height:380px">
+                            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                <thead>
+                                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                        @if (ViewBag.Status == "N")
+                                        {
+                                            <th style="width:5%">
+                                                <div id="jqgh_grid-table_code" style="text-align:center;">
+                                                    <input type="checkbox" id="chkAll" name="chkAll" />
+                                                </div>
+                                            </th>
+                                        }
+                                        <th style="width:10%">
+                                            <div id="jqgh_grid-table_code" style="text-align:center;">部門</div>
+                                        </th>
+                                        <th style="width:10%">
+                                            <div id="jqgh_grid-table_code" style="text-align:center;">應評核人數</div>
+                                        </th>
+                                        <th style="width:10%">
+                                            <div id="jqgh_grid-table_code" style="text-align:center;">已評核人數</div>
+                                        </th>
+                                        <th style="width:10%">
+                                            <div id="jqgh_grid-table_code" style="text-align:center;">狀態</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.PfaCycleDeptSent.Count() > 0)
+                                    {
+                                        foreach (var item in Model.PfaCycleDeptSent)
+                                        {
+                                            <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                                @if (ViewBag.Status == "N")
+                                                {
+                                                    <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                                        @if (item.SignStatus == "N" && item.FirstAll == item.FirstFinal)
+                                                        {
+                                                            <div id="jqgh_grid-table_code" name="@item.PfaDeptID" style="text-align:center;">
+                                                                <input type="checkbox" id="chkData" name="chkData" />
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                }
+                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                    @Html.DisplayFor(modelItem => item.PfaDeptName)
+                                                </td>
+                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                    @Html.DisplayFor(modelItem => item.FirstAll)
+                                                </td>
+                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                    @Html.DisplayFor(modelItem => item.FirstFinal)
+                                                </td>
+                                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                    @{
+                                                        var tmpStatus = "";
+                                                        switch (item.SignStatus)
+                                                        {
+                                                            case "N":
+                                                                tmpStatus = "未送出";
+                                                                break;
+                                                            case "Y":
+                                                                tmpStatus = "已送出";
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+                                                    }
+                                                    @tmpStatus
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td colspan="4" style="text-align:center">@HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (ViewBag.Status == "N")
+                {
+                    <button id="btnConfirm" name="@Url.Action("SentConfirm")" type="button" class="btn btn-success" data-toggle="modal">@HRPortal.MultiLanguage.DDMC_PFA.Resource.OK_Sent</button>
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        var url = '@Url.Action("SentQuery")';
+        //績效考核批號
+        $("#ddlPfaFormNoList").change(function () {
+            var href = url + "?Id=" + $("#ddlPfaFormNoList").val();
+            if (href != null) {
+                $("#PfaSignProcessDialogContent").load(href);
+            }
+        });
+
+        $("#chkAll").click(function () {
+            $("input[type='checkbox'][name='chkData']").prop("checked", $(this).prop("checked"));
+        });
+
+        $("div[id='PfaSignProcessDialogContent'] li a").click(function (event) {
+            event.preventDefault();
+
+            var href = $(this).attr("href");
+
+            if (href != null) {
+                $("#PfaSignProcessDialogContent").load(href);
+                $("#PfaSignProcessDialogContent").reload();
+            }
+        });
+
+        $("#btnConfirm").click(function () {
+            var obj = new Object();
+            obj.PfaCycleID = $("#ddlPfaFormNoList").val();
+            var objDetailList = [];
+            $("input[type='checkbox'][name='chkData']:checked").each(function () {
+                var itemDetail = new Object();
+                itemDetail.PfaDeptID = $(this).parent("div").attr("name");
+                objDetailList.push(itemDetail);
+            });
+            obj.PfaCycleDeptSent = objDetailList;
+
+            if (objDetailList.length == 0) {
+                showAlertMsg("請選擇要送出的部門");
+                return false;
+            }
+
+            var jsonObj = { "model": obj };
+
+            $.ajax({
+                url: $(this).attr("name"),
+                type: "POST",
+                data: jsonObj,
+                async: true,
+                dataType: "json",
+                success: function (result) {
+                    var message = result.message;
+
+                    showAlertMsg(message, function () {
+                        if (result.success) {
+                            $("#ddlPfaFormNoList").trigger('change');
+                        }
+                        setModalopen();
+                    });
+                }
+            });
+        });
+    });
+</script>

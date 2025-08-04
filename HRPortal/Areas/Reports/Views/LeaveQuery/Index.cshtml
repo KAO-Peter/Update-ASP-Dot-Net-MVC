@@ -1,0 +1,391 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+@using HRPortal.Mvc.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+
+    #grid-table th, #grid-table td {
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+</style>
+@using System.Resources;
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div id="bodyContainer" class="row">
+    @using (Html.BeginForm("Index", "LeaveQuery", FormMethod.Post, new { id = "LeaveQuery" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+       <div class="row"  style="margin-right: 0px;margin-left: 0px;">
+        <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.StartDate</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10" value="@ViewBag.StartTime" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.EnddDate</label>
+                     </div>
+                    <div class="search-input">
+                        <input id="EndDate" type="datetime" placeholder="請選擇日期" name="EndDate" maxlength="10" value="@ViewBag.EndTime" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                    <div class="search-wrap">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var ddata = new ViewDataDictionary();
+                                ddata.Add("id", "DepartmentListData");
+                                ddata.Add("class", "form-control");
+                                ddata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["DepartmentList"], ddata);
+                            }
+                            <input id="DeptID" name="DeptID" type="hidden" value="">
+                        </div>
+                    </div>
+                    <div class="search-wrap divEmp">
+                        <div class="search-name">
+                            <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                        </div>
+                        <div class="search-input">
+                            @{
+                                var edata = new ViewDataDictionary();
+                                edata.Add("id", "EmployeeListData");
+                                edata.Add("class", "form-control");
+                                edata.Add("multiple", "true");
+                                Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", (IEnumerable<MutiSelectListItem>)ViewData["EmployeeList"], edata);
+                            }
+                            <input id="EmpID" name="EmpID" type="hidden" value="">
+                        </div>
+                    </div>
+            </div>
+            <div class="search-section">
+            <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.FAQType</label>
+            </div>
+            <div class="search-input">
+              @Html.DropDownList("FormTypelistData", (IEnumerable<SelectListItem>)ViewData["FormTypelist"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#course_category');" })
+            </div>
+              <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" class="btn btn-info" />
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px">
+                                <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.Remove" class="btn btn-warning" />
+                            </div>
+             </div>
+            <div class="search-wrap">
+            <div class="search-name">
+                <label>@HRPortal.MultiLanguage.Resource.Signstate</label>
+            </div>
+            <div class="search-input">
+              @Html.DropDownList("SignStatuslistData", (IEnumerable<SelectListItem>)ViewData["SignStatuslist"], new { @class = "form-control",onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#SignStatusdate');" })
+            </div>  
+        </div>
+        </div>
+       </div>
+        </div>
+        @*hidden 元素*@
+        <input type="hidden" value="@ViewBag.course_category" name="course_category" id="course_category" />
+        <input type="hidden" value="@ViewBag.DepartmentData" name="DepartmentData" id="DepartmentData" />
+        <input type="hidden" value="@ViewBag.EmployeeData" name="EmployeeData" id="EmployeeData" />
+        <input type="hidden" value="@ViewBag.SignStatusdate" name="SignStatusdate" id="SignStatusdate" />
+        <input type="hidden" value="1" name="page" id="page" />
+    }
+
+</div>
+
+       <div id="GetLeaveQuerySummary"></div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.FormDetails - <span id="detailFormTypeName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#BaseFormModel_form_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_form_tab_0">@HRPortal.MultiLanguage.Resource.Title_Tab_FormDetails</a></li>
+                    <li><a href="#BaseFormModel_flow_tab" role="tab" data-toggle="tab" modalid="myModal" tabid="BaseFormModel_flow_tab_0">@HRPortal.MultiLanguage.Resource.Title_Tab_SignflowHistory</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="BaseFormModel_form_tab_0">
+                        <div id="formContent">
+                        </div>
+                        <!--20170509 Start 增加 by Daniel，增加退簽理由欄位-->
+                        <div class="dl-info dl-horizontal" id="SignInstruction" style="display:none;">
+                            <div>
+                                <label class="col-md-22" style="line-height:23px;">
+                                    @HRPortal.MultiLanguage.Resource.Suggest
+                                    <div style="width: 100%; display:inline-block; color:red;">※@HRPortal.MultiLanguage.Resource.returnisSuggestrequired</div>
+                                </label>
+                                <div class="form-control-static"><input id="instruction" class="col-xs-6 col-md-7" type="text" style="height:50px; border-radius: 4px; border-style: solid; border-color: gray; border-width: 1px; float:initial"  /></div>
+                            </div>         
+                            
+                            <p ></p>
+                            <p ></p>
+                        </div>
+                        <!--20170509 End-->
+                        <input type="hidden" id="signingFormType" />
+                        <input type="hidden" id="signingFormNo" />
+                        <input type="hidden" id="signingFlowID" />
+                        @*詳細資料
+                            <div class="modal-footer"> </div>*@
+                    </div>
+                    @*簽核紀錄*@
+                    <div class="tab-pane" id="BaseFormModel_flow_tab_0">
+                        <div id="signFlowContent">
+                        </div>
+                    </div>
+                </div>
+                <div id="singFlowFooter" class="modal-footer">
+                    <a class="btn btn-success" id="btnSign" style="display:none">@HRPortal.MultiLanguage.Resource.Button_ProcurationSignForm</a>
+                    <a class="btn btn-danger" id="btnReject" style="display:none">@HRPortal.MultiLanguage.Resource.Button_RejectForm</a> <!--20170509 增加 by Daniel，增加退回按鈕-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/muti-dept-emp.js"></script>
+    <script type="text/javascript">
+        var $url = "@Url.Action("Index")";
+     
+        var $mutiSelect = mutiSelect || {};
+        $mutiSelect.url = $url;
+        $mutiSelect.deptSelect = $('#DepartmentListData');
+        $mutiSelect.empSelect = $('#EmployeeListData');
+        $mutiSelect.empvalmode = "ID";
+
+        $(function () {
+            $mutiSelect.setDepartmentList2();
+
+            var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+            $('#BeginDate,#EndDate').appendDtpicker({
+                "inline": false,
+                "locale": "cn",
+                "minuteInterval": 10,
+                "timelistScroll": false,
+                "calendarMouseScroll": false,
+                "closeOnSelected": true,
+                "width":"300px",
+                "dateFormat": "YYYY/MM/DD",
+                "dateOnly":true
+            });
+            $('#BeginDate,#EndDate,#DepartmentListData,#EmployeeListData').change(function () {
+                $('#page').val('1');
+            });
+
+            $('#btnQuery').click(function (event) {
+                if ($mutiSelect.deptID.val() == '') {
+                    showAlertMessage('請選擇部門');
+                    return false;
+                }
+                if ($mutiSelect.empID.val() == '') {
+                    showAlertMessage('請選擇員工');
+                    return false;
+                }
+
+                var form = $('#LeaveQuery');
+                var submitData = new FormData(form[0]);
+                $.ajax({
+                    url: $url + '/GetLeaveQuerySummary',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'html',
+                    success: function (result) {
+                        $('#GetLeaveQuerySummary').html(result);
+                    },
+                    error: function (xhr) {
+                        showAlertMessage(xhr.responseText);
+                        window.location.href = $url;
+                    }
+                });
+            });
+
+            $('#btnClear').click(function () {
+                window.location.href = $url;
+            });
+
+            $('#FormTypelistData').trigger('change');
+            $('#SignStatusdate').trigger('change');
+
+            if ('@ViewBag.isALL' != 'True') {
+                //$("#btnQuery").trigger("click");
+            }
+            else {
+                $mutiSelect.divEmp.hide();
+            }
+
+            $('a').click(function () {
+                if ($(this).data('toggle')=='tab') {
+                    var $currentTab = $('#' + $(this).attr('modalID')).find('div.tab-content');
+                    $currentTab.children().hide();
+                    $currentTab.find("#" + $(this).attr('tabID')).show();
+                
+                    if ($(this).html() == '@HRPortal.MultiLanguage.Resource.Title_Tab_FormDetails' && flagCanSign)
+                    {
+                        $('#btnSign').show();
+                        $('#btnReject').show();
+                    }
+                    else
+                    {
+                        $('#btnSign').hide();
+                        $('#btnReject').hide();
+                    }
+                
+                }
+            })
+
+        })
+
+        function goPage(p) {
+            $('#page').val(p);
+            $('#btnQuery').trigger('click');
+        }
+
+        function ChangeStatus(form, fileId, formName) {
+            $('#page').val('1');
+            $(formName).val(fileId);
+        }
+
+        function loadFormDetail(formType, formNo, signFlowId) {
+            $('#signingFormType').val(formType);
+            $('#signingFormNo').val(formNo);
+            $('#signingFlowID').val(signFlowId);
+
+            var action;
+            if (formType == 'Leave') {
+                action = 'GetLeaveDetail';
+            } else if (formType == 'OverTime') {
+                action = 'GetOverTimeDetail';
+            } else if (formType == 'PatchCard') {
+                action = 'GetPatchCardDetail';
+            }else if (formType == 'LeaveCancel') {
+                action = 'GetLeaveCancelDetail';
+            }else if (formType='OverTimeCancel'){
+                action='GetOverTimeCancelDetail';
+            };
+
+            $('#formContent').load('SignForms/' + action + '?formNo=' + formNo);
+            $('#signFlowContent').load('SignForms/GetSignFlow?formNo=' + formNo);
+        }
+        $('#btnSign').click(function () {
+            var postData = new Object();
+            postData.FormType = $('#signingFormType').val();
+            postData.FormNo = $('#signingFormNo').val();
+            postData.SignFlowID = $('#signingFlowID').val();
+            postData.Instruction = "";
+
+            $.ajax({
+                url: 'SignForms/Sign',
+                type: 'POST',
+                data: JSON.stringify(postData),
+                contentType: 'application/json',
+                success: function (result) {
+                    var message = $('<table style="margin-top: 12px;"></table>');
+                    var data = $('#' + postData.FormNo);
+                    var tr = $('<tr></tr>');
+                    tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + $('td.sender', data).html() + '</td>');
+                    tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + $('td.formType', data).html() + '</td>');
+                    tr.append('<td style="padding-bottom: 6px; padding-right: 12px;">' + result.message + '</td>');
+                    message.append(tr);
+
+                    bootbox.alert($("<p>").append(message).html(), function () {
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+
+        //20170509 Start 增加 by Daniel，增加退回按鈕邏輯
+        $('#btnReject').click(function () {
+
+            if ($('#instruction').val().trim() == '') {
+                showAlertMessage('@HRPortal.MultiLanguage.Resource.returnisSuggestrequired');
+                return false;
+            } 
+            else 
+            {
+                var submitData = {
+                    FormType: $('#signingFormType').val(),
+                    FormNo: $('#signingFormNo').val(),
+                    SignFlowID: $('#signingFlowID').val(),
+                    Instruction: $('#instruction').val()
+                    //Instruction: ''
+
+                };
+                $.ajax({
+                    url: 'SignForms/Reject',
+                    method: 'POST',
+                    data: JSON.stringify(submitData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        bootbox.alert(result.message, function () {
+                            window.location.reload();
+                        });
+                    }
+                });
+            }
+        });
+        //20170509 End
+</script>
+}

@@ -1,0 +1,204 @@
+﻿@model HRPortal.Mvc.Models.HomeViewModel
+@using HRPortal.Controllers;
+@section header{
+    @Scripts.Render("~/bundles/jquery2")
+    @Styles.Render("~/content/CP0L0/HomeSite")
+    @Scripts.Render("~/bundles/CalendarJs")
+    @Styles.Render("~/content/CalendarCSS")
+    @Styles.Render("~/content/LightBox")
+    @Scripts.Render("~/bundles/linkify")
+    @Scripts.Render("~/bundles/displayPDFContent")
+    @Scripts.Render("~/bundles/imageZoom")
+}
+@*<link href="~/Content/CP0L0/customerPageCss.css" rel="stylesheet" />*@
+<!--客製化CSS-->
+<div class="container-fluid">
+    <div class="page-content">
+        <div class="row">
+            @{
+                //20170328修改 by Daniel，改為使用Global變數
+                string siteType = HRPortal.Services.Models.SiteFunctionInfo.SiteType;
+                bool isMobile = (siteType == "mobile");
+                bool isOutside = (siteType == "outside");
+                bool isNormal = (!(isMobile || isOutside));
+
+                if (Session["CurrentTab"].ToString() == "_index")
+                {
+                   if(ViewBag.isLeaveNotShow !="1")
+                   {
+                    if ((ViewBag.PendingItems == "1" || ViewBag.ReplyQuestion == "1" || ViewBag.PendingYourApproval == "1") && HomeController.IsPersonalSetting(Model.PersonalSettings, "ToDoList"))
+                    {   
+                        <!--待辦事項-->
+            <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                @{Html.RenderAction("_ToDoList");}
+            </div>
+            }
+
+                    if (ViewBag.SalarySearch == "1" && HomeController.IsPersonalSetting(Model.PersonalSettings, "SalarySearch"))
+                    {
+                        <!--薪資查詢-->
+            <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                @{Html.RenderPartial("_SalarySearch");}
+            </div>
+            }
+                
+                    @*
+            <!--公司規範-->
+
+            if (isMobile && !isOutside)
+                   {
+                    <div id="_main_1" class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                        @{Html.RenderAction("_Personnelspecification");}
+                    </div>
+            }*@
+                    
+                    if (ViewBag.PersonalLeavesSummary == "1" && HomeController.IsPersonalSetting(Model.PersonalSettings, "PersonalLeavesSummary"))
+                    {                
+                        <!--個人假別時數彙總表-->
+            <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                @{Html.RenderPartial("_personalLeavesSummary");}
+            </div>
+            }
+
+                   @*
+            <!--公司訊息-->
+            if (isNormal)
+                   {
+                    <div id="main" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                        @{Html.RenderAction("_IndexAnnounceList", new { Page });}
+                    </div>
+            }*@
+                    
+                    if (ViewBag.LeaveForm == "1" && HomeController.IsPersonalSetting(Model.PersonalSettings, "LeaveToday"))
+                    {
+                        <!--今日部門請假人員-->
+            <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;" id="divToDayList">
+                @{Html.RenderPartial("_LeaveToday", Model.LeaveList);}
+            </div>
+            }
+
+                   @*<!--集團訊息-->
+            if (isMobile)
+                   {  
+                    <div id="_main" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                        @{Html.RenderAction("_ReadToday");}
+                    </div>
+            } 
+                    <!--職缺公告-->
+            <!--快速連結-->
+            if (isMobile && !isOutside)
+                   {    
+                    <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                        @{Html.RenderPartial("_WebLinkListFEDS");}
+                    </div>
+            } 
+                    
+                    <!--電子簽到-->
+            if (ViewBag.SmallElectronicSign == "1")
+                   {
+                    <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                        @{Html.RenderPartial("_smallElectronicSign", Model.SmallElectronicSign);}
+                    </div>
+            } 
+
+                   //20170410 Start 修改 by Daniel
+                   //員工福利在行動版要放到最底下，PC版與外網位置不變
+                   if (isMobile)
+                   {
+                    <!--員工福利-->
+            <div id="_main_3" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                @{Html.RenderAction("_EmployeeBenefits");}
+            </div>
+            } 
+                   //20170410 End
+                   
+                   <div class="col-sm-5" style="padding-left: 10px; padding-right: 10px; width: 90%; clear: both;">
+                       @{Html.RenderPartial("_scheduleCalendar");}
+                   </div>
+            *@
+                    }
+                }
+                else if (Session["CurrentTab"].ToString() == "_leaveApplication")
+                {
+                    @*<div class="col-sm-5" style="padding-left: 10px; padding-right: 10px; width: 90%; clear: both;">
+                        @{Html.RenderPartial("_scheduleCalendar");}
+                    </div>*@
+                <div class="col-sm-6" style="padding-left: 10px; padding-right: 5px;">
+                    @{Html.RenderPartial("_LeaveLinkList");}
+                </div> 
+                }
+                else if (Session["CurrentTab"].ToString() == "_salarySearch")
+                {
+                <div class="col-sm-6" style="padding-left: 0px; padding-right: 5px;">
+                    @{Html.RenderPartial("_SalarySearch");}
+                </div>
+                }
+                else if (Session["CurrentTab"].ToString() == "_Vacancies")//<!--職缺公告-->
+                {
+                <div id="_main_4" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                    @{Html.RenderAction("_Vacancies");}
+                </div>
+                }
+                else if (Session["CurrentTab"].ToString() == "_EmployeeBenefits")//<!--員工福利-->
+                {
+                <div id="_main_2" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                    @{Html.RenderAction("_EmployeeBenefits");}
+                </div>
+                }
+                else if (Session["CurrentTab"].ToString() == "_IndexAnnounceList")//<!--公司訊息-->
+                {
+                <div id="main" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                    @{Html.RenderAction("_IndexAnnounceList", new { Page });}
+                </div>
+                }
+                else if (Session["CurrentTab"].ToString() == "_ReadToday")//<!--集團訊息-->
+                {
+                <div id="_main" class="col-sm-6" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+                    @{Html.RenderAction("_ReadToday");}
+                </div>
+                }
+                else if (Session["CurrentTab"].ToString() == "_Personnelspecification")//<!--公司規範-->
+                {
+                <div id="_main_1" class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                    @{Html.RenderAction("_Personnelspecification");}
+                </div> 
+                }
+                else if (Session["CurrentTab"].ToString() == "_WebLinkListFEDS")//<!--快速連結-->
+                {
+                <div class="col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+                    @{Html.RenderPartial("_WebLinkListFEDS");}
+                </div>  
+                }
+            }
+        </div>
+    </div>
+</div>
+<div id="loadingWidget">
+    <div id="loadingWidget-text" class="alert alert-warning"><i class="fa fa-spinner fa-spin"></i><strong>載入中...</strong></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/site")
+    <script type="text/javascript">
+        $(function () {
+            //alert($("div.row > div").length);
+            var $Item = $("div.row > div");
+            $Item.eq(2).css("clear", "both");
+            $Item.eq(4).css("clear", "both");
+            $Item.eq(6).css("clear", "both");
+            $Item.eq(8).css("clear", "both");
+        })
+
+        var actionIndex = 1;
+        //2019/03/05 Neo 增加可查詢GetSuperintendentLeaveToday
+        var urlleaveToDay = ['@Url.Action("GetAllSignedLeaveToday")', '@Url.Action("GetDeptLeaveToday")', '@Url.Action("GetSuperintendentLeaveToday")'];
+    </script>
+}
+<!--[if lt IE 9]>
+        <link href="/CT0L0/Backend/content/ie8?v=qtrVsmzRGgaiaQt-BK3EsKqMKM6Uz9Azo0_eHsIDbu41" rel="stylesheet"/>
+
+        <script src="/CT0L0/Backend/bundles/ie8?v=wAqka8xK50pXg3VO67I99voJcJUmoQcdTbof4t5fDng1"></script>
+
+        <script src="/CT0L0/Backend/bundles/jquery1?v=OlkWm6jxvuKBzMl38EUILDU2sGRbksemb6bxw7W5eeU1"></script>
+
+    <![endif]-->

@@ -1,0 +1,56 @@
+﻿@model HRPortal.Mvc.Models.HomeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_PersonalLeavesSummary</title>
+</head>
+<body>
+    <div class="dayoff box col-xs-6 " style="border: #337ab7 1px solid;">
+        <ul>
+            <li class="title col-xs-12" style="background-color: #337ab7;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.PersonalLeavesSummary</li>
+            <li class="blank col-xs-12"></li>
+            <li style="height:150px; overflow:auto;">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="" style="height: 50px; width: 100%">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height: 40px; color: #777">
+                    <th class="">
+                        <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div>
+                    </th>
+                    <th class="">
+                        <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.AnnualLeaveHours</div>
+                    </th>
+                    <th class="">
+                        <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.LeaveHours</div>
+                    </th>
+                    <th class="">
+                        <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.ApprovedHours</div>
+                    </th>
+                    <th class="">
+                        <div id="jqgh_grid-table_code" class="" style="text-align: center;">@HRPortal.MultiLanguage.Resource.RemainingHours</div>
+                    </th>
+                </tr>
+                @foreach (var item in Model.PersonalLeavesSummary)
+                {
+                    if (item.CanUse == true)
+                    {
+                        <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="text-align: center; height:25px;" title="@item.Name" aria-describedby="grid-table_classified_code_name">@(ViewBag.LanguageCookie == "en-US" ? item.AbsentNameEn : item.Name)</td>
+                            <td role="gridcell" style="text-align: center; height:25px;" title="@item.AnnualLeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.AnnualLeaveHours.ToString("0.0") @item.Unit</td>
+                            <td role="gridcell" style="text-align: center; height:25px;" title="@item.LeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.LeaveHours.ToString("0.0") @item.Unit</td>
+                            <td role="gridcell" style="text-align: center; height:25px;" title="@item.ApprovedHours @item.Unit" aria-describedby="grid-table_category_name">@item.ApprovedHours.ToString("0.0") @item.Unit</td>
+                            <td role="gridcell" style="text-align: center; height:25px;" title="@item.UseAmount @item.Unit" aria-describedby="grid-table_category_name">@item.UseAmount.ToString("0.0") @item.Unit</td>
+                        </tr>
+                    }
+                }
+            </table>
+            </li>
+            <li class="bottom col-xs-12"></li>
+        </ul>
+    </div>
+</body>
+</html>

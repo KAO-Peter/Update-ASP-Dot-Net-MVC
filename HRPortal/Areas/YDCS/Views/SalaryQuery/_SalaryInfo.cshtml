@@ -1,0 +1,57 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryInfo
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th style="height:30px;">
+              員工姓名
+            </th>
+            <td style="height:30px;">@Model.Name</td>
+            <th style="height:30px;">工號</th>
+            <td style="height:30px;">@Model.EmpID </td>
+            <th style="height:30px;">薪資年月</th>
+            <td style="height:30px;">@Model.SalaryYM</td>
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                部門代號
+            </th>
+            <td style="height:30px;">@Model.DeptCode</td>
+            <th style="height:30px;">部門名稱</th>
+            <td style="height:30px;">@Model.DeptName</td>
+            <th style="height:30px;">扶養人數</th>
+            <td style="text-align:right;height:30px;">@Model.BringNumber</td>
+            
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                職等
+            </th>
+            <td style="height:30px;">@Model.GradeName</td>
+            <th style="height:30px;">職稱</th>
+            <td style="height:30px;">@Model.JobTitle</td>
+            <th style="height:30px;">健保眷口數</th>
+            <td style="height:30px;">@Model.HealthNumber</td>         
+        </tr>
+        <tr>
+            <th style="height:30px;">
+                金融局號
+            </th>
+            <td style="height:30px;">@Model.BankCode </td>
+            <th style="height:30px;">金融帳號</th>
+            <td style="height:30px;">@Model.BankAccount</td>
+             <th style="height:30px;">應發金額</th>
+            <td style="text-align:right;height:30px;">@Model.StandardAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+        <tr>
+            <th style="height:30px;"> 
+                勞退公司提撥
+            </th>
+            <td style="text-align:right;height:30px;">@Model.RetirementAllocate.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th style="height:30px;">應稅合計</th>
+            <td style="text-align:right;height:30px;">@Model.TaxTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>   
+            <th style="height:30px;">實發金額</th>
+            <td style="text-align:right;height:30px;">@Model.RealAmount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>      
+            </tr>
+        
+    </tbody>
+</table>

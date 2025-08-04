@@ -1,0 +1,247 @@
+﻿@model IEnumerable<HRPortal.ApiAdapter.HRMApiAdapterData.CasualAttendPayrollChecklistData>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "CasualAttendPayrollChecklist", FormMethod.Post, new { Id = "CasualAttendPayrollChecklist" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+
+    @Html.Hidden("cmd", "Excel", new { id = "cmd" })
+    
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>部門</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlDepartment", (IEnumerable<SelectListItem>)ViewBag.DepartmentList, new { @class = "form-control", id = "ddlDepartment" })
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block"></div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>員工編號</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtEmpID" name="txtEmpID" type="text" class="form-control" value="@ViewBag.EmpID" />
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>員工姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input id="txtEmpName" name="txtEmpName" type="text" class="form-control" value="@ViewBag.EmpName" />
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>日期</label>
+                    </div>
+                    <div class="search-date">
+                        <input id="txtDateS" name="txtDateS" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeS" />
+                        ~
+                        <input id="txtDateE" name="txtDateE" placeholder="請選擇日期" type="datetime" maxlength="10" value="@ViewBag.DateTimeE" />
+                    </div>
+                </div>
+                <div style="width:49%;display: inline-block">
+                    <div class="search-name">
+                        <label>狀態</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.StatusList, new { @class = "form-control", id = "ddlStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="button" value="清除" class="btn btn-warning" />
+                </div>
+                <div class="col-xs-4" style="padding-left:0px">
+                    <input id="btnExcel" style="width:100%" name="btnExcel" type="button" value="Excel" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+    @if (Model != null)
+    {
+        <div class="table-responsive">
+            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                    <th style="width:10%"><div style="text-align:center;">Dept' Number<br />部門代碼</div></th>
+                    <th style="width:10%"><div style="text-align:center;">Dept' Name<br />部門名稱</div></th>
+                    <th style="width:10%"><div style="text-align:center;">Employee Number<br />員工編號</div></th>
+                    <th style="width:10%"><div style="text-align:center;">Employee's Name<br />員工姓名</div></th>
+                    <th style="width:12%"><div style="text-align:center;">Salary Attendance-in<br />計薪刷進</div></th>
+                    <th style="width:12%"><div style="text-align:center;">Salary Attendance-out<br />計薪刷出</div></th>
+                    <th style="width:12%"><div style="text-align:center;">Actual Attendance-in<br />實際刷進</div></th>
+                    <th style="width:12%"><div style="text-align:center;">Actual Attendance-out<br />實際刷出</div></th>
+                    <th style="width:12%"><div style="text-align:center;">檢核狀態</div></th>
+                </tr>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.DeptCode
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.DeptName
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.EmpID
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.EmpName
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.SalaryStartTime
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.SalaryEndTime
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.ActualStartTime
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.ActualEndTime
+                            </td>
+                            <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @item.StatusName
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="13" style="text-align:center">
+                            @HRPortal.MultiLanguage.Resource.NoData
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div style="text-align:center">
+            @* 在後面對pagelist做轉型 *@
+            @using PagedList
+            @using PagedList.Mvc
+            @{
+                var data = Model as IPagedList<HRPortal.ApiAdapter.HRMApiAdapterData.CasualAttendPayrollChecklistData>;
+            }
+            @{
+                if (IsAjax)
+                {
+                    Layout = "";
+                }
+            }
+            @if (Model.Count() > 0)
+            {
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                                               new { page, cmd = "Search", ddlDepartment = ViewBag.Department, txtEmpID = ViewBag.EmpID, txtEmpName = ViewBag.EmpName, txtDateS = ViewBag.DateTimeS, txtDateE = ViewBag.DateTimeE, ddlStatus = ViewBag.Status }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                @Html.PagedListPager(data, page => Url.Action("Index",
+                                                               new { page, Cmd = "Search", ddlDepartment = ViewBag.Department, txtEmpID = ViewBag.EmpID, txtEmpName = ViewBag.EmpName, txtDateS = ViewBag.DateTimeS, txtDateE = ViewBag.DateTimeE, ddlStatus = ViewBag.Status }), new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                      //LinkToNextPageFormat = "後一頁>",
+                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  })
+            }
+        </div>
+    }
+    </div>
+}
+
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("[type='datetime']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        //清除
+        $("#btnClear").click(function () {
+            $("#cmd").val("Clear");
+            $("#CasualAttendPayrollChecklist").submit();
+        });
+
+        //查詢
+        $("#btnQuery").click(function () {
+            $("#cmd").val("Search");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualAttendPayrollChecklist").submit();
+            }
+        });
+
+        //Excel
+        $("#btnExcel").click(function () {
+            $("#cmd").val("Excel");
+
+            if ($("#txtDateS").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間起日");
+                return false;
+            }
+            else if ($("#txtDateE").val()=="")
+            {
+                showAlertMessage("請輸入薪資計算區間迄日");
+                return false;
+            }
+            else
+            {
+                $("#CasualAttendPayrollChecklist").submit();
+            }
+        });
+    });
+</script>
+}

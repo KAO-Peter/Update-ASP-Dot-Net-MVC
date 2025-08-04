@@ -1,0 +1,290 @@
+﻿@model IEnumerable<HRPortal.Mvc.DDMC_PFA.Models.PfaCycleEmpSignViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a id="btnTransfer" class="btn btn-info" data-modal="" data-action="4" style="margin-bottom: 10px;">@HRPortal.MultiLanguage.DDMC_PFA.Resource.OK_Sent</a>
+
+@using (Html.BeginForm("Index", "PfaStepTransfer", FormMethod.Post, new { Id = "PfaStepTransferForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>考核批號</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownList("ddlPfaCycleID", (IEnumerable<SelectListItem>)ViewData["PfaFormNoList"], new { @id = "ddlPfaCycleID", @class = "form-control" })
+                        <input type="hidden" value="@ViewBag.txtPfaCycleID" name="txtPfaCycleID" id="txtPfaCycleID" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>簽核人員編</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtSignEmpNo" name="txtSignEmpNo" value="@ViewBag.txtSignEmpNo" class="form-control" style="width:70%;display:inline-block" />
+                        <button type="button" id="btnSignEmp" name="@Url.Action("Emp")" class="btn btn-primary" value="" data-toggle="modal">查詢</button>
+                        @Html.Hidden("txtSignEmpID")
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>簽核人姓名</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtSignEmpName" name="txtSignEmpName" value="@ViewBag.txtSignEmpName" class="form-control" disabled="disabled" />
+                        @Html.Hidden("txtSignEmpName")
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" id="ModelData">
+        @if (Model != null)
+        {
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name" style="width:30%">
+                        <label>代理簽核人員編</label>
+                    </div>
+                    <div class="search-input" style="width:50%">
+                        <input type="text" id="txtAgentSignEmpNo" name="txtAgentSignEmpNo" value="@ViewBag.txtAgentSignEmpNo" class="form-control" style="width:70%;display:inline-block" />
+                        <button type="button" id="btnAgentEmp" name="@Url.Action("Emp")" class="btn btn-primary" value="" data-toggle="modal">查詢</button>
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name" style="width:30%">
+                        <label>代理簽核人姓名</label>
+                    </div>
+                    <div class="search-input" style="width:50%">
+                        <input type="text" id="txtAgentSignEmpName" name="txtAgentSignEmpName" value="@ViewBag.txtAgentSignEmpName" class="form-control" disabled="disabled" />
+                        @Html.Hidden("txtAgentSignEmpID")
+                        @Html.Hidden("txtAgentSignEmpName")
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:5%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">
+                                <input type="checkbox" id="chkAll" name="chkAll" />
+                            </div>
+                        </th>
+                        <th style="width:14%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">績效考核批號</div>
+                        </th>
+                        <th style="width:14%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">部門</div>
+                        </th>
+                        <th style="width:14%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">員工編號</div>
+                        </th>
+                        <th style="width:14%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">員工姓名</div>
+                        </th>
+                        <th style="width:8%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">簽核狀態</div>
+                        </th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    <div id="jqgh_grid-table_code" name="@item.PfaSignProcessID" style="text-align:center;">
+                                        <input type="checkbox" id="chkData" name="chkData" />
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaFormNo)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.PfaDeptName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmployeeNo)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.StrSignStatus)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="8" style="text-align:center">
+                                @HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+}
+
+<div id="EmpDialog" class="modal fade in" tabindex="-1" role="dialog"><div id="EmpDialogContent"></div></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var selUrl = "";
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $("#chkAll").click(function () {
+                $("input[type='checkbox'][name='chkData']").prop("checked", $(this).prop("checked"));
+            });
+
+            $("#ddlPfaCycleID").change(function () {
+                $("#txtPfaCycleID").val($("#ddlPfaCycleID").val());
+                if ($("#txtSignEmpNo").val() != "")
+                {
+                    $("#txtSignEmpNo").trigger('change');
+                }
+            });
+
+            $("#btnSignEmp").click(function () {
+                if ($("#txtPfaCycleID").val() != "") {
+                    var url = $(this).attr("name") + "?cmd=Sign&txtPfaCycleID=" + $("#txtPfaCycleID").val();
+                    $("#EmpDialogContent").load(url, function () {
+                        $('#EmpDialog').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }, 'show');
+                    });
+                } else {
+                    showAlertMessage("請選擇考核批號");
+                }
+            });
+
+            $("#txtSignEmpNo").change(function () {
+                if ($("#txtPfaCycleID").val() != "") {
+                    var url = "PfaStepTransfer/GetEmp?txtPfaCycleID=" + $("#txtPfaCycleID").val() + "&txtSignEmpNo=" + $("#txtSignEmpNo").val();
+                    $.ajax({
+                        url: url,
+                        type: "GET",
+                        async: true,
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.success) {
+                                $("#txtSignEmpID").val(result.empid);
+                                $("#txtSignEmpName").val(result.empname);
+                            }
+                            else {
+                                showAlertMessage("考核批號無此簽核人員");
+                                $("#ModelData").empty();
+                                $("#txtSignEmpID").empty();
+                                $("#txtSignEmpNo").val("");
+                                $("#txtSignEmpName").val("");
+                            }
+                        }
+                    });
+                } else {
+                    showAlertMessage("請選擇考核批號");
+                }
+            });
+
+            $("#btnAgentEmp").click(function () {
+                if ($("#txtPfaCycleID").val() != "") {
+                    var url = $(this).attr("name") + "?cmd=Agent&txtPfaCycleID=";
+                    $("#EmpDialogContent").load(url, function () {
+                        $('#EmpDialog').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }, 'show');
+                    });
+                } else {
+                    showAlertMessage("請選擇考核批號");
+                }
+            });
+
+            $("#txtAgentSignEmpNo").change(function () {
+                var url = "PfaStepTransfer/GetEmp?txtPfaCycleID=&txtSignEmpNo=" + $("#txtAgentSignEmpNo").val();
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success) {
+                            $("#txtAgentSignEmpID").val(result.empid);
+                            $("#txtAgentSignEmpName").val(result.empname);
+                        }
+                        else {
+                            $("#txtAgentSignEmpID").empty();
+                            $("#txtAgentSignEmpName").empty();
+                        }
+                    }
+                });
+            });
+
+            $("#btnTransfer").click(function () {
+                if ($("#txtAgentSignEmpID").val() == null || $("#txtAgentSignEmpID").val() == "") {
+                    showAlertMessage("請選擇代理簽核人員編");
+                } else {
+                    var nidx = 0;
+                    var item = [];
+                    $("input[type='checkbox'][name='chkData']:checked").each(function () {
+                        item[nidx] = new Object();
+                        item[nidx].ID = $(this).parent("div").attr("name");
+                        item[nidx].PreSignEmpID = $("#txtAgentSignEmpID").val();
+                        nidx += 1;
+                    });
+
+                    if (nidx == 0) {
+                        showAlertMsg("請選擇要指定代簽的資料");
+                        return false;
+                    }
+
+                    var jsonObj = { "model": item };
+                    $.ajax({
+                        url: "PfaStepTransfer/Transfer",
+                        type: "POST",
+                        data: jsonObj,
+                        async: true,
+                        dataType: "json",
+                        success: function (result) {
+                            var message = result.message;
+
+                            showAlertMsg(message, function () {
+                                if (result.success) {
+                                    $('#btnQuery').click();
+                                }
+                                setModalopen();
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

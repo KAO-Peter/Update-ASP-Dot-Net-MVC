@@ -1,0 +1,107 @@
+﻿@model IEnumerable<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+@{ Layout = null; }
+@section header{
+
+}
+@Scripts.Render("~/bundles/ajaxjquery")
+
+
+@using System.Resources;
+
+
+@if (Model != null)
+            {
+    <div class="table-responsive">
+        <table id="grid-table" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+            <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                <th id="grid-table_code" role="columnheader" class="" style="width: 15%">
+                    <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.Date</div>
+                </th>
+
+                <th id="grid-table_category_name" role="columnheader" class="" style="width: 75%;">
+                    <div id="jqgh_grid-table_category_name" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.FAQContentText</div>
+                </th>
+
+                <th id="grid-table_id" role="columnheader" class="" style="width:10%;">
+                    <div id="jqgh_grid-table_id" class="ui-jqgrid-sortable"></div>
+                </th>
+
+            </tr>
+            @if (Model != null && Model.Count() > 0)
+                        {
+                            ResourceManager _resourceManager = new ResourceManager("HRPortal.MultiLanguage.Resource", typeof(HRPortal.MultiLanguage.Resource).Assembly);
+                            foreach (var item in Model)
+                            {
+                        <tr role="row" id="@item.FormNo" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            @Html.HiddenFor(m => item.FormType)
+                            @Html.HiddenFor(m => item.FormNo)
+                            <td role="gridcell" style="" aria-describedby="grid-table_code">@item.FormCreateDate.ToString("yyyy/MM/dd")</td>
+
+                            <td role="gridcell" style="" aria-describedby="grid-table_category_name">@item.FormSummary</td>
+                            <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                <a class="btn btn-danger" href="@Url.Action("Index",new { LeaveFormID=item.FormNo})" style="" id="FormCancel">@HRPortal.MultiLanguage.Resource.LeaveCancel</a>
+                            </td>
+
+                        </tr>
+                            }
+                        }
+                        else
+                        {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="8" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                        }
+        </table>
+    </div>
+                <div style="text-align:center">
+                    @* 在後面對pagelist做轉型 *@
+                    @using PagedList
+                    @using PagedList.Mvc
+                    @{
+                        var data = Model as IPagedList<HRPortal.SignFlow.Model.HRPotralFormSignStatus>
+        ;
+                    }
+                    @{
+                        if (IsAjax)
+                        { Layout = ""; }
+}
+@if (Model != null && Model.Count() > 0)
+                    {
+
+
+                    @Html.PagedListPager(data, page => Url.Action("SearchList",
+                                                      new { page, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.ClassicPlusFirstAndLast, new AjaxOptions() {UpdateTargetId= "ListData" }))
+
+                    @Html.PagedListPager(data, page => Url.Action("SearchList",
+                                                  new { page, beginDate = ViewBag.StartTime, endDate = ViewBag.EndTime }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                                                  {
+                                                      DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                                      DisplayLinkToIndividualPages = false,
+                                                      //LinkToFirstPageFormat = "<<第一頁",
+                                                      //LinkToPreviousPageFormat = "<前一頁",
+                                                      //LinkToNextPageFormat = "後一頁>",
+                                                      //LinkToLastPageFormat = "最末頁>>",
+                                                      DisplayPageCountAndCurrentLocation = true,
+                                                      PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                                      DisplayItemSliceAndTotal = true,
+                                                      ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                                  }, new AjaxOptions() { UpdateTargetId = "ListData" }))
+                    }
+</div>
+    }
+
+
+<script type="text/javascript">
+    $(function () {
+        //Optional: turn the chache off
+        //Popup
+        $.ajaxSetup({ cache: false });
+
+
+    });
+</script>

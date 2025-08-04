@@ -1,0 +1,78 @@
+﻿@model HRPortal.Mvc.Models.RoleMenuMapViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditRoleMenu";
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.EditRoleMenu</h4>
+        </div>
+        <div class="modal-body">
+            <div class="tab-content">
+                <input type="hidden" id="RoleID" value="@ViewBag.RoleID" />
+                <div class="form-group">
+                        @if (Model != null)
+                        {
+                                <table id="menuTable" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                        <th class="col-xs-10">@HRPortal.MultiLanguage.Resource.FunctionName</th>
+                                        <th class="col-xs-2">@HRPortal.MultiLanguage.Resource.IsAssigned</th>
+                                    </tr>
+                                    @foreach (var group in Model.RoleMenus)
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td style="font-weight: bold;">@Html.DisplayFor(modelItem => group.Title)</td>
+                                            <td></td>
+                                        </tr>
+                                        foreach (var item in group.Items)
+                                        {
+                                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                                    @Html.DisplayFor(modelItem => item.Title)
+                                                </td>
+                                                <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                                    @Html.CheckBoxFor(modelItem => item.Active, new { id = @item.ID })
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                        }
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" id="btnUpdateMenu" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+            <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        console.log('');
+        $('#btnUpdateMenu').click(function () {
+            var data = {
+                "RoleID": $('#RoleID').val(),
+                "MenuList": $("#menuTable input:checkbox:checked").map(function () { return $(this).attr('id'); }).get()
+            };
+            $.ajax({
+                url: 'RoleManager/UpdateRoleMenuMap',
+                type: 'POST',
+                data: data,
+                success: function (result) {
+                    if (result.status == 'success') {
+                        window.location = window.location.href;
+                        location.reload();
+                    } else {
+                        showAlertMessage(result.message);
+                    }
+                }
+            });
+        });
+    })
+</script>

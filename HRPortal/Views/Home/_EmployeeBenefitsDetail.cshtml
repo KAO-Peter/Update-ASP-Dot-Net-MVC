@@ -1,0 +1,78 @@
+﻿@model HRPortal.Mvc.Models.EmployeeBenefitsViewModel
+
+@{
+    ViewBag.Title = "EmployeeBenefits Detail";
+}
+
+<div class="form-horizontal modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title">@Html.DisplayFor(model => model.AnnouncementData.Title) - 詳細資料</h4>
+        </div>
+        <div class="modal-body">
+            <div class="tab-content">
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.AnnouncementData.Createdby, new { @class = "col-md-2 control-label" })*@
+                    @Html.Label("公告者", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10" style="margin-top: 6px;">
+                        [@Model.AnnouncementData.Employees.Department.DepartmentName]
+                        @Html.DisplayFor(model => model.AnnouncementData.Employees.EmployeeName)
+                    </div>
+                </div>
+                <div class="form-group">
+                   @* @Html.LabelFor(model => model.AnnouncementData.ModifiedTime, new { @class = "col-md-2 control-label" })*@
+                    @Html.Label("最後更新時間", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10" style="margin-top: 6px;">
+                        @Html.DisplayFor(model => model.AnnouncementData.ModifiedTime)
+                    </div>
+                </div>
+                @if (Model.AnnouncementData.AnnounceEndTime != null)
+                {
+                    <div class="form-group">
+                        @Html.Label(HRPortal.MultiLanguage.Resource.AnnouncementTime, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10" style="margin-top: 6px;">
+                            @Html.DisplayFor(model => model.AnnouncementData.AnnounceStartTime) -
+                            @Html.DisplayFor(model => model.AnnouncementData.AnnounceEndTime)
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    @Html.Label("內容", new { @class = "col-md-2 control-label" })
+                    @*@Html.LabelFor(model => model.AnnouncementData.ContentText, new { @class = "col-md-2 control-label" })*@
+                    <div class="col-md-10" style="margin-top: 6px;word-break: break-all;">
+                        @Html.Raw(Model.AnnouncementData.ContentText.Replace("\r\n", "<br/>"))
+                    </div>
+                </div>
+
+                @*2017.03.17增加by Daniel，顯示附件內容*@
+                @{Html.RenderAction("_ShowAttachmentContent", new { fileGuid = Model.FileGuid, filePath = Model.FilePath, fileDescription = Model.FileDescription });}
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">附件檔案</label>
+                    <div class="col-md-10" style="margin-top: 6px;">
+
+                        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+                        {
+                            <a target="_blank" class="form-control-static" href="@Url.Action("Download", "DownloadFiles", new { id = Model.FileGuid })"> @Html.DisplayFor(model => model.FileDescription) </a>
+                        }
+                        else
+                        {
+                            <span>無</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    //2017.03.17增加by Daniel，將內容附加<a>連結
+    //注意：此Function會找出所有.modal-body .form-group label裡面，標題文字是"內容"的才會附加
+    AddContentLink();
+</script>
+

@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @if (TempData["PfaOptionGroup"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $('#CurrentPfaOptionGroup').val('@TempData["PfaOptionGroup"]');
+            });
+        </script>
+    }
+    <div class="row btn-toolbar action-buttons">
+        <div class="col-md-4">
+            @Html.DropDownList("PfaOptionGroupList", (IEnumerable<SelectListItem>)ViewData["PfaOptionGroupList"], new { @class = "form-control", onchange = "$('#CurrentPfaOptionGroup').val(this.options[this.selectedIndex].value);loadPfaOptionList(this.options[this.selectedIndex].value);" })
+            <input type="hidden" id="CurrentPfaOptionGroup" />
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="table-responsive" id="PfaOptionList"></div>
+    </div>
+
+    <div id='PfaOptionDialogDiv' class='modal fade in' role="dialog">
+        <div id='PfaOptionDialogContent'></div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            if($('#CurrentPfaOptionGroup').val() != '') {
+                $('#PfaOptionGroupList option[value=' + $('#CurrentPfaOptionGroup').val() + ']').attr('selected', true);
+            } else {
+                $('#CurrentPfaOptionGroup').val($('#PfaOptionGroupList option:selected').val());
+            }
+            loadPfaOptionList($('#CurrentPfaOptionGroup').val());
+        });
+
+        function loadPfaOptionList(PfaCodeGroup) {
+            if(PfaCodeGroup != '') {
+                $.ajax({
+                    url: 'PfaOption/LoadPfaOptionList?PfaCodeGroup=' + PfaCodeGroup,
+                    type: 'GET',
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        $('#PfaOptionList').html(result);
+                    }
+                });
+            }
+        }
+    </script>
+}

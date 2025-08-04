@@ -1,0 +1,403 @@
+﻿@model HRPortal.DBEntities.OverTimeForm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .col-sm-offset-2 {
+        margin-left: 11.666667%;
+    }
+
+    .col-sm-9:before {
+        content: "：";
+        display: inline-block;
+        height: 60px;
+        vertical-align: bottom;
+    }
+
+    .col-sm-6 {
+        width: 33.33333333%;
+    }
+
+    .form-control-static:before {
+        content: "：";
+        display: inline-block;
+        color: black;
+    }
+
+    .col-sm-45 {
+        width: 33.33333333%;
+        padding-left: 10px;
+        float: left;
+    }
+
+    /*2018/11/1 Neo HPortal SLTN 選項標題靠左切齊調整*/
+    .form-group .col-md-22 {
+         text-align: left;
+    }
+
+    .col-height50 {
+        height:50px;
+    }
+
+    .col-height30 {
+        height:30px;
+    }
+
+    .col-height35 {
+        height:35px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "OverTimeForm", FormMethod.Post, new { enctype = "multipart/form-data", id = "OverTimeForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+          $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+        </script>
+    }
+
+    @Html.HiddenFor(model => model.FormNo);
+    @Html.HiddenFor(model => model.ID);
+    @Html.HiddenFor(model => model.Status);
+    <div class="form-horizontal">
+        <div class="form-group">
+            <!-- 2018/11/1 Neo HPortal SLTN 選項標題靠左切齊調整 -->
+            <label class="col-md-22" style="width: 120px;">&nbsp;&nbsp;&thinsp;@(HRPortal.MultiLanguage.Resource.EmployeeNumber)</label>
+            <div class="col-sm-45">
+                <p class="form-control-static">@ViewBag.EmpID</p>
+            </div>
+            
+                <label class="col-md-22" style="width: 120px;">@HRPortal.MultiLanguage.Resource.EmployeeName1</label>
+           
+            @if (ViewBag.getLanguageCookie == "en-US")
+            {
+                 <div class="col-sm-45">
+                        <p class="form-control-static">@ViewBag.EmployeeEnglishName</p>
+                    </div>
+            }else{
+            <div class="col-sm-45">
+                <p class="form-control-static">@ViewBag.EmpName</p>
+            </div>
+            }
+        </div>
+        <div class="form-group">
+            <!-- 2018/11/1 Neo HPortal SLTN 選項標題靠左切齊調整 -->
+            <label class="col-md-22" style="width: 120px;">&nbsp;&nbsp;&thinsp;@(HRPortal.MultiLanguage.Resource.DepartmentName)</label>
+            @if (ViewBag.getLanguageCookie == "en-US")
+            {
+            <div class="col-sm-45">
+                <p class="form-control-static" data-bind="text: department_value">@ViewBag.DepartmentEnglishName</p>
+            </div>
+            }else
+            {
+            <div class="col-sm-45">
+                <p class="form-control-static" data-bind="text: department_value">@ViewBag.SignDeptName</p>
+            </div>
+            }
+            <label class="col-md-22" style="width: 125px;">@HRPortal.MultiLanguage.Resource.Label_OvertimeAccumulation</label>
+            <div class="col-sm-45">
+                <p class="form-control-static">@ViewBag.OverTimeTotal @HRPortal.MultiLanguage.Resource.Hour</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-22" style="width: 120px;font-weight:bold;">
+                <span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.StartingDate
+            </div>
+            <div class="col-sm-44">
+                @Html.TextBoxFor(model => model.StartTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker1", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-1" style="padding-right: 0px;width: 20px; padding-left: 0px;">
+                ~
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.EndTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker2", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-22 @Html.Raw(ViewBag.getLanguageCookie == "en-US"?"col-height50":"")" style="width: 120px;"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.TypesOfOvertimeReason</label>
+            <div class="col-sm-44">
+                @Html.DropDownList("OverTimeReasonData", (IEnumerable<SelectListItem>)ViewData["OverTimeReasonList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#OverTimeData');",style = "width:50%" })
+            </div>
+        </div>
+         @if (ViewBag.OvertimeType == "true")
+         {
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Type, new { @class = "col-sm-2 control-label" })*@
+            <label class="col-md-22" style="width: 120px;"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.CompensatoryLeaveOrOvertimePay</label>
+            <div class="col-sm-44" style=" margin-top: 5px;">
+                @Html.RadioButtonFor(model => model.CompensationWay, 0, new { id = "Compensatory",style = "width:3%" })
+                @Html.Label("Compensatory", @HRPortal.MultiLanguage.Resource.CompensatoryLeave)
+                @Html.RadioButtonFor(model => model.CompensationWay, 1, new { id = "OvertimeMoney",style = "width:3%"  })
+                @Html.Label("OvertimeMoney", @HRPortal.MultiLanguage.Resource.OvertimePay)
+                @Html.ValidationMessageFor(model => model.CompensationWay, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        }
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Type, new { @class = "col-md-2 control-label" })*@
+            <!-- 2018/11/1 Neo HPortal SLTN 選項標題靠左切齊調整 -->
+            <label class="col-md-22 @Html.Raw(ViewBag.getLanguageCookie == "en-US"?"col-height35":"")" style="width: 120px;" for="HaveDinning">&nbsp;&nbsp;&thinsp;@(HRPortal.MultiLanguage.Resource.OvertimeMeal)</label>
+            <div class="col-sm-44" style=" margin-top: 5px;">
+                @Html.CheckBoxFor(model => model.HaveDinning, new { style = "width:15px"  })
+                @Html.ValidationMessageFor(model => model.CompensationWay, "", new { @class = "text-danger" })
+                 <span>@HRPortal.MultiLanguage.Resource.IsEating</span>
+                @if(ViewBag.enableSettingEatingTime=="true")
+                {
+                    <div id="mealTimeSetting">
+                        <span>@HRPortal.MultiLanguage.Resource.MealTime :</span>
+                        @Html.TextBoxFor(model => model.CutTime, new { @style = "width:20%;", id = "CutTime" ,type = "number" })
+                        <span>@HRPortal.MultiLanguage.Resource.Minute</span>
+                    </div>
+                }
+            </div>
+           
+        </div>
+       
+    
+       @* //End*@
+        <div class="form-group">
+            <label class="col-md-22" style="width: 120px;"><span style="color:red;">* </span>@HRPortal.MultiLanguage.Resource.ReasonForOvertime</label>
+            @*@Html.LabelFor(model => model.OverTimeReason, new { @class = "col-sm-2 control-label" })*@
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.OverTimeReason, new { @class = "form-control", style = "height:60px;width:60%" })
+                <div style="padding-left: 20px;">(@HRPortal.MultiLanguage.Resource.Within200Words)</div>
+                @Html.ValidationMessageFor(model => model.OverTimeReason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+       @* //新增主管同意欄位_FEDS Irving20161208*@
+      @*  <div class="form-group">
+            <label class="col-md-22" style="width:220px;" for="body"><span style="color:red;">* </span>此次加班已經過主管同意</label>
+            <div class="col-sm-44" style=" margin-top: 5px;">
+            <input type="checkbox" name="body" id="body" style="width:20px;" >
+            </div>
+        </div>*@
+        @* //附加檔案 *@ <!-- style="display:none"-->
+        <div class="form-group">
+            <!-- 2018/11/1 Neo HPortal SLTN 選項標題靠左切齊調整 -->
+            <label class="col-md-22" style="width:275px;">&nbsp;&nbsp;&thinsp;@(HRPortal.MultiLanguage.Resource.Attachment)  (@HRPortal.MultiLanguage.Resource.Hint_OvertimeAttachment)</label>
+            <div class="col-sm-44">
+                <input type="file" name="UploadFilePath" id="UploadFilePath" title="支援格式： csv、jpg、jpeg、png、gif、tiff、bmp、txt、doc、docx、xls、xlsx、ppt、pptx、pdf" />
+            </div>  
+        </div>
+        @* //新增加班提示註解 *@
+        @*<div class="form-group">
+            <div class="col-md-8" style="">A. 加班時數確認: 加班後三個工作日內提出申請，需檢附加班工作內容或說明。</div>
+            <div class="col-md-8" style="">B. 加班時數計算: 以半小時為單位。</div>
+            <div class="col-md-8" style="">C. 加班補休: 加班後六個月內休畢。</div>
+            <div class="col-md-8" style="">D. 送簽流程：申請人→初核主管→人事單位→分公司店長或總公司部室主管→副總經理。</div>
+            <div class="col-md-8" style="">E. 申請加班當日總工時未超過12小時。</div>
+            <div class="col-md-8" style="">F. 當月延長工時未超過46小時。</div>
+        </div>*@
+    </div>
+        if (Model.Status == (int)HRPortal.Mvc.Models.FormStatus.Draft)
+        { 
+            <div class="row">
+                <div class="col-sm-offset-2" style="padding-top: 20px;padding-left: 15px;">
+                    <button type="submit" class="btn btn-success" id="btnOverTimeFormSubmit">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                    @if (ViewBag.StatusEdit == "True")
+                    {
+                        <button type="submit" class="btn btn-danger" id="btnOverTimeFormDelete">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                    }
+                </div>
+            </div>
+        }
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.OverTimeData" name="OverTimeData" id="OverTimeData" />
+    
+    @*<input type="hidden" value="@ViewBag.AgentData" name="AgentData" id="AgentData" />*@
+}
+
+
+<script>
+    function ChangeStatus(form, fileId, formName) {
+        $(formName).val(fileId);
+    }
+    $(function () {
+        $('#OverTimeData').val($('#OverTimeReasonData').val());
+
+        $('input#HaveDinning').prop('checked',true);//20160224 是否用餐預設打勾 by Bee
+
+        $.ajaxSetup({ cache: false });
+        /*
+        $('#datetimepicker1').datetimepicker({
+            language: 'zh-TW',
+            pick12HourFormat: true,
+            format: 'yyyy/mm/dd hh:ii',
+            autoclose: true,
+            showMeridian: true
+        });
+        $('#datetimepicker2').datetimepicker({
+            language: 'zh-TW',
+            pick12HourFormat: true,
+            format: 'yyyy/mm/dd hh:ii',
+            autoclose: true,
+            showMeridian: true
+        });
+        */
+        var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+        $('#datetimepicker1').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": true,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD hh:mm"
+            //"current":formatToday+" 08:00"
+        });
+  
+        $('#datetimepicker2').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": true,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD hh:mm"
+            //"current":formatToday+" 17:00"
+        });
+
+        if( $('#mealTimeSetting').length>0){//如果有mealTimeSetting這元素的話
+            $('#HaveDinning').change(function(){
+                if($(this).prop('checked')==true){
+                    $('#mealTimeSetting').show();
+                }else if($(this).prop('checked')==false){
+                    $('#mealTimeSetting').hide();
+                }
+            })
+        }
+
+        $('#btnOverTimeFormDelete').click(function (event) {
+            var form = $('#OverTimeForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+
+            var submitData = new FormData(form[0]);
+            showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+                $.ajax({
+                    url: 'OverTimeForm/DeletedForm',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        if (submitResult.status == 'success')  {
+                            showAlertMessage( submitResult.message , function(){
+                                window.location='@Url.Action("Index")';
+                            });
+                        }                else                {
+                            showAlertMessage(submitResult.message);
+                        }
+
+                    }
+                });
+            });
+
+        });
+
+        $('#btnOverTimeFormSubmit').click(function (event) {
+            var form = $('#OverTimeForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+            ////增加主管欄位未填寫出現錯誤 Irving 20161208
+            //if(form.validate().form())
+            //{
+            //    if(document.getElementById("body").checked==false)
+            //    {
+            //        showAlertMessage("主管同意欄位未填");
+            //        return;
+            //    }
+            //}
+            //End
+            if (form.validate().form()) {
+                if (  $('#OverTimeData').val()=="")
+                {
+                    showAlertMessage("@HRPortal.MultiLanguage.Resource.PleaseChooseoneofthefollowing");
+                    return;
+                }
+                var submitData = new FormData(form[0]);
+                $.ajax({
+                    url: 'OverTimeForm/CheckCrossOverTime',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (checkResult) {
+                        if (checkResult.status == 'success')
+                        {
+                            $.ajax({
+                                url: 'OverTimeForm/CheckOverTimeForm',
+                                type: 'POST',
+                                data: submitData,
+                                contentType: false,
+                                processData: false,
+                                success: function (checkOverTime) {
+                                    if (checkOverTime.status == 'success')
+                                    {
+                                        bootbox.dialog({
+                                            title: "@HRPortal.MultiLanguage.Resource.Confirmsendd",
+                                            message: checkOverTime.message,
+                                            buttons: {
+                                                success: {
+                                                    label: "@HRPortal.MultiLanguage.Resource.Confirm",
+                                                    className: "btn-primary",
+                                                    callback: function() {
+                                                        $.ajax({
+                                                            url: form.attr('action'),
+                                                            type: form.attr('method'),
+                                                            data: submitData,
+                                                            contentType: false,
+                                                            processData: false,
+                                                            success: function (submitResult) {
+                                                                if (submitResult.status == 'success') {
+                                                                    showAlertMessage(submitResult.message,                                         function() {
+                                                                        window.location = '@Url.Action("Index")';
+                                                                    });
+                                                                }
+                                                                else
+                                                                {
+                                                                    showAlertMessage(submitResult.message, function(){
+                                                                        window.location = '@Url.Action("Index")';
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                },
+                                                cancel:{
+                                                    label: "@HRPortal.MultiLanguage.Resource.Cancel",
+                                                    className: "btn-default"
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        showAlertMessage(checkOverTime.message);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            showAlertMessage(checkResult.message);
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>

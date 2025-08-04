@@ -1,0 +1,22 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        @Html.Raw(ViewBag.AESKey + "-" + ViewBag.AESIV)
+        <br />
+        @Html.Raw(ViewBag.EncryptedString)
+        <br />
+        @Html.Raw(ViewBag.DecryptedString)
+    </div>
+</body>
+</html>

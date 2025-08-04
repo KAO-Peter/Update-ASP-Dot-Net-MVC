@@ -1,0 +1,77 @@
+﻿@model IEnumerable<HRPortal.DBEntities.Announcement>
+@{ Layout = null; }
+
+@section header{
+    @Scripts.Render("~/bundles/jquery2")
+
+}
+<style>
+    #main .news .bottom a{
+        background-color:#d9534f; 
+        color:white;
+        border:#d9534f; 
+    }
+</style>
+<div class="news box col-xs-12" style="border:  #d9534f 1px solid;">
+    <ul>
+        <!--公告 Title-->
+        <li class="title col-xs-12" style="background-color: #d9534f;"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>@HRPortal.MultiLanguage.Resource.Companymessage<p class="num pull-right">@ViewBag.AnnouncementTotal</p></li>
+        <li class="blank col-xs-12"></li>
+        <!--公告內容-->
+        @foreach (var item in Model)
+        {
+            <li class="list col-xs-12">
+                <p class="col-xs-4 text-left" style="font-size: 15px; word-break: break-all;">@(item.AnnounceStartTime == null ? "" : ((DateTime)item.AnnounceStartTime).ToString("yyyy/MM/dd"))</p>
+			    <p class="col-xs-6"style="font-size: 15px; word-break:break-all;">@item.Title</p>
+				<p class="col-xs-2 text-right"style="font-size: 15px; padding:0px;">
+                    <a id="btnDetail" data-modal="" href="@Url.Action("_AnnounceDetail",new {id=item.Id })">@HRPortal.MultiLanguage.Resource.BtnDetail</a>
+				</p>
+            </li>
+        }
+        <li class="blank col-xs-12"></li>
+		<li class="bottom col-xs-12" style="border-top: #d9534f 1px solid;">
+            @* 在後面對pagelist做轉型 *@
+            @using PagedList
+            @using PagedList.Mvc
+            @{
+                var data = Model as IPagedList<HRPortal.DBEntities.Announcement>;
+            }
+            @{
+                if (IsAjax)
+                { Layout = ""; }
+            }
+            <div class="pagination-sm" style="height: 70px;margin-right: 10px; float:right;">
+                @Html.PagedListPager(data, page => Url.Action("_IndexAnnounceList",
+                            new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#main"))
+
+            </div>
+		</li>
+        
+        <div class="clearfix"></div>
+         </ul>  
+    </div>
+   
+
+
+<div id='ShowDetailDialogDiv' class='modal fade in' role="dialog">
+    <div id='ShowDetailDialogContent'></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //Optional: turn the chache off
+        //Popup
+        $.ajaxSetup({ cache: false });
+        $('a[data-modal]').click(function () {
+            $('#ShowDetailDialogContent').load(this.href, function () {
+                $('#ShowDetailDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#ShowDetailDialogDiv', '#ShowDetailDialogContent', true);
+            });
+            return false;
+        });
+
+    });
+</script>

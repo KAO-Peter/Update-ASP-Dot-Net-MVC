@@ -1,0 +1,175 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaSignUploadDataViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+
+<link href="@Url.Content("~/Content/jquery-ui_1.11.3.css")" rel="stylesheet" type="text/css" />
+@Scripts.Render("~/Scripts/jquery-ui-1.11.4.min.js")
+@Scripts.Render("~/Scripts/plugins/pdfjs/pdf.js")
+
+@using (Html.BeginForm("Upload", "PfaProgressQuery", FormMethod.Post, new { @id = "UploadForm", @multiple = "multiple" }))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">附件</h4>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive">
+                            <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:60%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">名稱</div>
+                                    </th>
+                                    <th style="width:40%">
+                                        <div id="jqgh_grid-table_code" style="text-align:center;">功能</div>
+                                    </th>
+                                </tr>
+                                @if (Model.PfaSignUpload.Count() > 0)
+                                {
+                                    foreach (var item in Model.PfaSignUpload)
+                                    {
+                                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr" name="@item.ID">
+                                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                                @Html.DisplayFor(modelItem => item.FileName)
+                                            </td>
+                                            <td role="gridcell" style="white-space:normal;text-align:center;" aria-describedby="grid-table_notification_count">
+                                                <a id="btnView" class="btn btn-info" style="color:white;" onclick="ViewPDF('@item.ID');">閱覽</a>
+                                                <a id="btnDownload" class="btn btn-primary" style="color:white;" data-modal="" href="@Url.Action("Download", "PfaSignUpload", new { pfaSignUploadId = item.ID })" data-action="4">下載</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td colspan="3" style="text-align:center">@HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewPdfDialog" title="view pdf dialog">
+        <div>
+            顯示比例
+            <select id="scaleSelect" name="scaleSelect">
+                <option value="1" selected="selected">100%</option>
+                <option value="1.25">125%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+                <option value="3">300%</option>
+            </select>
+        </div>
+        <div id="viewPdf"></div>
+    </div>
+    <div id="Message" title="message dialog">文件內容請遵守保密原則!</div>
+}
+
+<script type="text/javascript">
+    var uploadUrl = '@Url.Action("Upload")';
+
+    $(function () {
+
+        $("a[id='btnDownload']").click(function (event) {
+            event.preventDefault();
+            window.open($(this).attr("href"));
+        });
+
+        var bheight = $(window).height();
+        console.log(bheight * 0.7);
+        $("#viewPdfDialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 840,
+            height: bheight * 0.7,
+            close: function (event, ui) {
+                console.log('close');
+                $("#scaleSelect").unbind('change');
+                $("#scaleSelect")[0].selectedIndex = 0;
+            }
+        });
+
+        $("#Message").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 260,
+            height: 120
+        });
+
+        $('#viewPdfDialog').on('dialogclose', function (event) {
+            $(document).unbind("contextmenu");
+        });
+    });
+
+    function ViewPDF(pfaSignUploadId) {
+        $("#pfaSignUploadId").val(pfaSignUploadId);
+        $(document).bind("contextmenu", function (e) {
+            e.preventDefault();
+            $("#Message").dialog("open");
+        });
+
+        $('#scaleSelect').on('change', function () {
+            ScalePdf($("#pfaSignUploadId").val(), this.value);
+        });
+
+        $("#viewPdfDialog").dialog("open");
+        $(".ui-dialog").css({
+            zIndex: '1060',
+        });
+        ScalePdf(pfaSignUploadId, 1);
+    }
+
+    function ScalePdf(pfaSignUploadId,pscale) {
+        $("#viewPdf").append("<label>..................載入中</label>");
+        $("#viewPdf").find("canvas").remove();
+        console.log($("#viewPdf").find("canvas").length);
+
+        var srcpath = '@Url.Action("LoadPfaSignUpload", "PfaSignUpload", new { Area = "DDMC_PFA" })';
+        var url = srcpath + "?pfaSignUploadId=" + pfaSignUploadId + "#toolbar=0";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '@Url.Content("~/Scripts/plugins/pdfjs/pdf.worker.js")';
+
+        var loadingTask = pdfjsLib.getDocument(url);
+        loadingTask.promise.then(function (pdf) {
+            pdf.getPage(1).then(function (page) {
+                var scale = pscale;
+                var viewport = page.getViewport({ scale: scale });
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport,
+                };
+                page.render(renderContext);
+
+                document.getElementById('viewPdf').appendChild(canvas);
+                $("#viewPdf").find("label").remove();
+            });
+        });
+    }
+</script>

@@ -1,0 +1,271 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.PfaAbilityCreateViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditPfaAbility";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog" style="width:1200px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">勝任能力設定</h4>
+        </div>
+        @using (Html.BeginForm("Edit", "PfaAbility", FormMethod.Post, new { @id = "EditPfaAbilityForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body" style="height:500px; overflow-y:scroll">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">身分類別</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.DropDownList("EmpTypeID", Model.EmpTypeList, new { @id = "EmpTypeID", @class = "form-control", @disabled = true })<br />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">排序</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.Ordering, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.Ordering, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">勝任能力代碼</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.PfaAbilityCode, new { @class = "form-control", @disabled = true })<br />
+                            @Html.ValidationMessageFor(model => model.PfaAbilityCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">勝任能力名稱</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.PfaAbilityName, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.PfaAbilityName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">總分</label>
+                        <div class="col-sm-44" style="width:23%">
+                            @Html.TextBoxFor(model => model.TotalScore, new { @class = "form-control" })<br />
+                            @Html.ValidationMessageFor(model => model.TotalScore, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 10%;">定義</label>
+                        <div class="col-sm-44" style="width:60%">
+                            <textarea id="Description" name="Description" style="width:500px;height:100px;">@Html.DisplayFor(model => model.Description, new { @class = "form-control" })</textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <button type="button" class="btn btn-warning" style="margin-bottom: 10px;" id="btnAdd">新增</button>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table id="tableData" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid">
+                            <thead>
+                                <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                                    <th style="width:80px"></th>
+                                    <th style="width:80px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">排序</div>
+                                    </th>
+                                    <th style="width:300px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">關鍵行為指標</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">上限</div>
+                                    </th>
+                                    <th style="width:60px">
+                                        <div class="ui-jqgrid-sortable" style="text-align:center;">下限</div>
+                                    </th>
+                                    <th style="width:80px"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyData">
+                                @if (Model.Data != null)
+                                {
+                                    foreach (var item in Model.Data)
+                                    {
+                                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                            <td style="white-space:normal;text-align:center">
+                                                <button type="button" class="btn btn-success" id="btnInsert">插入</button>
+                                            </td>
+                                            <td style="white-space:normal; text-align:center">
+                                                @item.Ordering
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("PfaAbilityKey", item.PfaAbilityKey, new { @class = "form-control", @style = "width:70%" })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("UpperLimit", item.UpperLimit, new { @class = "form-control", @style = "width:70%" })
+                                            </td>
+                                            <td style="white-space:normal">
+                                                @Html.TextBox("LowerLimit", item.LowerLimit, new { @class = "form-control", @style = "width:70%" })
+                                            </td>
+                                            <td style="white-space:normal;text-align:center">
+                                                <button type="button" class="btn btn-danger" id="btnDel">刪除</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tbody id="tbodyCopy" style="display:none">
+                                <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                    <td style="white-space:normal;text-align:center">
+                                        <button type="button" class="btn btn-success" id="btnInsert">插入</button>
+                                    </td>
+                                    <td style="white-space:normal; text-align:center"></td>
+                                    <td style="white-space:normal">
+                                        @Html.TextBox("PfaAbilityKey", "", new { @class = "form-control", @style = "width:70%" })
+                                    </td>
+                                    <td style="white-space:normal">
+                                        @Html.TextBox("UpperLimit", "", new { @class = "form-control", @style = "width:70%" })
+                                    </td>
+                                    <td style="white-space:normal">
+                                        @Html.TextBox("LowerLimit", "", new { @class = "form-control", @style = "width:70%" })
+                                    </td>
+                                    <td style="white-space:normal;text-align:center">
+                                        <button type="button" class="btn btn-danger" id="btnDel">刪除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnSave</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var copyObj = $("#tbodyCopy tr");
+        var idx = $("#tbodyData tr").length;
+
+        //新增
+        $("#btnAdd").click(function () {
+            idx += 1;
+            var item = $(copyObj).clone();
+            $($(item).children("td")[1]).text(idx);
+            $(item).appendTo("tbody[id='tbodyData']");
+        });
+
+        //插入
+        $("#tbodyData").delegate("button[id='btnInsert']", "click", function () {
+            var trObj = $(this).parent("td").parent("tr");
+            $(trObj).after($(copyObj).clone());
+
+            var nidx = 0;
+            $("#tbodyData tr").each(function () {
+                nidx += 1;
+                $($(this).children("td")[1]).text(nidx);
+            });
+            idx = nidx;
+        });
+
+        //刪除
+        $("#tbodyData").delegate("button[id='btnDel']", "click", function () {
+            var trObj = $(this).parent("td").parent("tr");
+            $(trObj).remove();
+
+            var nidx = 0;
+            $("#tbodyData tr").each(function () {
+                nidx += 1;
+                $($(this).children("td")[1]).text(nidx);
+            });
+
+            idx = nidx;
+        });
+
+        $('#btnSave').click(function () {
+            var obj = new Object();
+            obj.ID = $("#ID").val();
+            obj.PfaEmpTypeID = $("#EmpTypeID").val();
+
+            if (obj.ID == "")
+            {
+                showAlertMessage("請選擇身份類別");
+                return false;
+            }
+
+            obj.PfaAbilityCode = $('#PfaAbilityCode').val();
+            obj.PfaAbilityName = $('#PfaAbilityName').val();
+            obj.Description = $('#Description').val();
+            obj.TotalScore = $('#TotalScore').val();
+            obj.Ordering = $('#Ordering').val();
+
+            var nidx = 0;
+            var item = [];
+            var error = false;
+            $("#tbodyData tr").each(function () {
+                item[nidx] = new Object();
+                item[nidx].Ordering = nidx + 1;
+                item[nidx].PfaAbilityKey = $($(this).find("input[id='PfaAbilityKey']")[0]).val();
+                item[nidx].UpperLimit = $($(this).find("input[id='UpperLimit']")[0]).val();
+                item[nidx].LowerLimit = $($(this).find("input[id='LowerLimit']")[0]).val();
+
+                if (item[nidx].PfaAbilityKey == "")
+                {
+                    showAlertMessage("請輸入關鍵行為指標");
+                    $($(this).find("input[id='PfaAbilityKey']")[0]).select();
+                    error = true;
+                    return false;
+                }
+                if (isNaN(item[nidx].UpperLimit)) {
+                    showAlertMessage("上限僅能輸入數字");
+                    $($(this).find("input[id='UpperLimit']")[0]).select();
+                    error = true;
+                    return false;
+                }
+                if (isNaN(item[nidx].LowerLimit)) {
+                    showAlertMessage("下限僅能輸入數字");
+                    $($(this).find("input[id='LowerLimit']")[0]).select();
+                    error = true;
+                    return false;
+                }
+
+                nidx += 1;
+            });
+
+            if (error == false)
+            {
+                if (nidx == 0) {
+                    showAlertMessage("請輸入關鍵行為指標");
+                    return false;
+                }
+                obj.Data = item;
+                var jsonObj = { "obj": obj };
+                $.ajax({
+                    url: "PfaAbility/Edit",
+                    type: "POST",
+                    data: jsonObj,
+                    async: true,
+                    dataType: "json",
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaAbilityDetailDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

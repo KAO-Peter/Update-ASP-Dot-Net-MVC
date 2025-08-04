@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3cc091ef24a2443891931c2203c1b715" Name="Diagram1">
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaDept" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaDeptEmp" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaOption" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaOptionGroup" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaDeptEmp_PfaDept" ManuallyRouted="false" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaOption_PfaOptionGroup" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaDepartment" Width="1.5" PointX="7.625" PointY="3.25" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmployee" Width="1.5" PointX="5.375" PointY="1.25" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Employees_dbo_Departments_DepartmentID" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Departments_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Departments_Parent" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Departments_SignManager" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Departments_SignParent" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Employees_SignDepartment" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Employees_dbo_Employees_ReportToID" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaDeptEmp_Employees" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaRole" Width="1.5" PointX="3.125" PointY="10" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Employees_dbo_Roles_RoleID" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaCompany" Width="1.5" PointX="0.75" PointY="4.125" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_Companys_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Departments_dbo_Companys_CompanyID" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Employees_dbo_Companys_CompanyID" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaDept_Companys" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaMenu" Width="1.5" PointX="7.375" PointY="9.75" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_Menus_dbo_Menus_Parent_ID" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaRoleMenuMaps" Width="1.5" PointX="9.625" PointY="10.25" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_RoleMenuMaps_dbo_Menus_Menu_ID" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_dbo_RoleMenuMaps_dbo_Roles_Role_ID" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSystemLog" Width="1.5" PointX="7.625" PointY="0.5" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSystemSetting" Width="1.5" PointX="10.375" PointY="1.5" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_SystemLog_UserIDEmployees" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaMailAccount" Width="1.5" PointX="10.375" PointY="5.5" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaOrg" Width="1.5" PointX="12.625" PointY="0.75" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaOrgDept" Width="1.5" PointX="14.875" PointY="4.125" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaOrg_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaOrg_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaOrgDept_PfaDept" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaOrgDept_PfaOrg" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaPerformance" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpType" Width="1.5" PointX="3" PointY="14.625" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpTypeTargets" Width="1.5" PointX="5.25" PointY="15.25" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpType_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpTypeTargets_PfaEmpType" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSignFlow" Width="1.5" PointX="12.875" PointY="9.5" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaTargets" Width="1.5" PointX="9.625" PointY="13.75" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignFlow_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignFlow_PfaDept" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaAbility" Width="1.5" PointX="12.25" PointY="14.25" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaAbilityDetail" Width="1.5" PointX="14.5" PointY="14.5" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaAbility_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaAbility_PfaEmpType" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaAbilityDetail_PfaAbility" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaRatioJobTitle" Width="1.5" PointX="5.25" PointY="24.125" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaRatioJobTitle_PfaOption" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSignProcess" Width="1.5" PointX="20.125" PointY="7" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSignRecord" Width="1.5" PointX="23.125" PointY="7" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_Employees1" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_Employees2" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_Employees1" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_Employees2" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_PfaEmpType" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_PfaEmpType" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_PfaOption" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_PfaOption" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaCycleRation" Width="1.5" PointX="16.875" PointY="17.75" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaCycleRationDetail" Width="1.5" PointX="19.125" PointY="18.75" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpAbility" Width="1.5" PointX="20.125" PointY="13.875" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpAbilityDetail" Width="1.5" PointX="22.375" PointY="14.125" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSignerList" Width="1.5" PointX="8.625" PointY="16.625" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignerList_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleRation_PfaOrg" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleRationDetail_PfaCycleRation" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleRationDetail_PfaPerformance" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpAbilityDetail_PfaEmpAbility" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaMailMessage" Width="1.5" PointX="15.625" PointY="7.375" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaMailMessage_Employees" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaMailMessage_MailAccount" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaMailMessageMain" Width="1.5" PointX="12.625" PointY="19.125" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_MailMessage_MailAccount" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaIndicator" Width="1.5" PointX="3" PointY="19.75" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaIndicatorDetail" Width="1.5" PointX="5.25" PointY="20" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaIndicator_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaIndicatorDetail_PfaIndicator" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpIndicator" Width="1.5" PointX="20.125" PointY="1.5" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaCycle" Width="1.5" PointX="3" PointY="24.375" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycle_Companys" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleRation_PfaCycle" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaMailMessage_PfaCycle" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignerList_PfaCycle" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaEmpTraining" Width="1.5" PointX="20.125" PointY="24.875" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaSignUpload" Width="1.5" PointX="25.375" PointY="10" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignUpload_PfaSignProcess" />
+        <EntityTypeShape EntityType="NewHRPortal_DDMCModel.PfaCycleEmp" Width="1.5" PointX="17.875" PointY="3" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_Employee" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaDept" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaEmpType" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOption" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOption1" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOption2" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOption3" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOption4" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaOrg" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaPerformance" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_PfaPerformance1" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpAbility_PfaEmpAbility" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpIndicator_PfaCycleEmp" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaEmpTraining_PfaCycleEmp" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignProcess_PfaCycleEmp" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignRecord_PfaCycleEmp" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaSignUpload_PfaCycleEmp" />
+        <AssociationConnector Association="NewHRPortal_DDMCModel.FK_PfaCycleEmp_Employee1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

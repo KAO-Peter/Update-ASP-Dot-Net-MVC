@@ -1,0 +1,76 @@
+﻿@model HRPortal.Mvc.Models.LeaveDisplayModel
+<style>
+     .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+<div class="dl-info dl-horizontal">
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.applicant</label>
+    <p class="form-control-static">@(Model.getLanguageCookie == "en-US" ? Model.SenderEmployeeEnglishName : Model.EmployeeName)</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Department</label>
+    <p class="form-control-static">@(Model.getLanguageCookie == "en-US" ? Model.DepartmentEnglishName : Model.DepartmentName)</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Date</label>
+    <p class="form-control-static">@Model.CreatedTime.ToString("yyyy/MM/dd")</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+    <p class="form-control-static">@(Model.getLanguageCookie == "en-US" ? Model.AbsentNameEn : Model.AbsentType)</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Startingandendingtime</label>
+    <p class="form-control-static">@Model.StartTime.ToString("yyyy/MM/dd HH:mm") <span>～</span> @Model.EndTime.ToString("yyyy/MM/dd HH:mm")</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Hours</label>
+    <p class="form-control-static">@String.Format("{0} {1}", Model.Amount.ToString("0.#"), Model.Unit == "h" ? HRPortal.MultiLanguage.Resource.Hour : HRPortal.MultiLanguage.Resource.Day)</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.IfOutOfCountry</label>
+    <p class="form-control-static">
+        @if (Model.IsAbroad == true)
+        {
+            <span>@HRPortal.MultiLanguage.Resource.Yes</span>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.No</span>
+        }
+    </p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Subjectt</label>
+    <p class="form-control-static">
+            @Model.LeaveReason
+    </p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+    <p class="form-control-static">
+            @(Model.getLanguageCookie == "en-US" ? Model.AgentEmployeeEnglishName : Model.AgentName)
+    </p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Attachment</label>
+    <p class="form-control-static">
+        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <a target="_blank"  href="@Url.Action("DownloadLeaveFormFile", new { formNo = Model.FormNo })"> @Html.DisplayFor(model => model.FileName) </a>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.NoData</span>
+        }
+    </p>
+</div>
+
+@if (ViewBag.CanSign != null && ViewBag.CanSign == true)
+{
+    <script type="text/javascript">
+        $("#btnSign").show();
+        $("#btnReject").show();
+        $("#SignInstruction").show();
+        flagCanSign = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#btnSign").hide();
+        $("#btnReject").hide();
+        $("#SignInstruction").hide();
+        flagCanSign = false;
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('@HRPortal.MultiLanguage.Resource.Leavealone');
+    })
+</script>

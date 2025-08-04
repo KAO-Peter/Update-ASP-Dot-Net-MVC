@@ -1,0 +1,83 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.CreatePfaDept
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "DetailPfaDept";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">考核部門資料</h4>
+        </div>
+        @using (Html.BeginForm("DelPfaDept", "PfaDept", FormMethod.Post, new { @id = "DelPfaDeptForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">公司別</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("CompanyID", Model.CompanyList, new { @id = "CompanyID", @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核部門代碼</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaDeptCode, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核部門名稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaDeptName, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核上層部門</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("SignParentID", Model.SignParentList, new { @id = "SignParentID", @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">考核簽核主管</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.SignManagerName, new { @class = "form-control", @disabled = true })
+                            @Html.HiddenFor(model => model.SignManagerID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">部門階級</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.DropDownList("DeptClassID", Model.DeptClassList, new { @id = "DeptClassID", @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">有效起日</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.BeginDate, "{0:yyyy/MM/dd}", new { @class = "form-control", @id = "datetimepicker1", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">有效迄日</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy/MM/dd}", new { @class = "form-control", @id = "datetimepicker1", @disabled = true })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>

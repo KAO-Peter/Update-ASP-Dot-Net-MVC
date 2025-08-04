@@ -1,0 +1,71 @@
+﻿@model HRPortal.Mvc.DDMC_PFA.Models.CreatePfaEmpType
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "DeletePfaEmpType";
+}
+<style>
+    .form-horizontal .form-group {
+        margin-right: -15px;
+        margin-left: 5px;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">刪除</h4>
+        </div>
+        @using (Html.BeginForm("Delete", "PfaEmpType", FormMethod.Post, new { @id = "DeletePfaEmpTypeForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">身分類別代碼</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaEmpTypeCode, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-22" style="width: 20%;">身分類別名稱</label>
+                        <div class="col-sm-44" style="width:79%">
+                            @Html.TextBoxFor(model => model.PfaEmpTypeName, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnDelete" class="btn btn-success"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#btnDelete').click(function () {
+            showConfirm("<div style='text-align:center'>是否要刪除?</div>", function () {
+                var form = $('#DeletePfaEmpTypeForm');
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: $(form).attr("method"),
+                    data: $(form).serialize(),
+                    success: function (result) {
+                        var message = result.message;
+                        showAlertMsg(message, function () {
+                            if (result.success) {
+                                $('#PfaEmpTypeDialogDiv').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>

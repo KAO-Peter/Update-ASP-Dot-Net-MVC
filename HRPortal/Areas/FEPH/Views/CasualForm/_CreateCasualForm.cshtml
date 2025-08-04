@@ -1,0 +1,658 @@
+﻿@model HRPortal.Mvc.Models.CasualFormViewModel
+@Scripts.Render("~/bundles/validate")
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">臨時工處理 新增</h4>
+        </div>
+
+        @using (Html.BeginForm("Index", "CasualForm", FormMethod.Post, new { Id = "CreateCasualForm" }))
+        {
+            @Html.HiddenFor(x => x.casualFormData.ID)
+            @Html.HiddenFor(x => x.casualFormData.CompanyID)
+            @Html.HiddenFor(x => x.casualFormData.EmpData_ID)
+            
+            @Html.Hidden("MinSalaryPerHour", (string)ViewBag.MinSalaryPerHour)
+            
+            <div class="modal-body">
+                @if (Model != null)
+                {
+                    <table id="menuTable" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="col-xs-1" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                日期
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.ExcuteDate, "{0:yyyy/MM/dd}", new { @class = "form-control date-control", @default = @Model.casualFormData.ExcuteDate.ToString("yyyy/MM/dd") })
+                                @Html.ValidationMessageFor(model => model.casualFormData.ExcuteDate, "", new { @class = "text-danger" })
+                            </td>
+                            <td role="gridcell" class="col-xs-1" style="white-space:nowrap" aria-describedby="grid-table_notification_count">
+                                工號
+                                <button id="btnEmp" name="@Url.Action("Emp")" type="button" class="btn btn-primary" data-toggle="modal">查詢</button>
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.EmployeeNO, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.EmployeeNO, "", new { @class = "text-danger" })
+                            </td>
+                            <td role="gridcell" class="col-xs-1" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                姓名
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.EmpName, new { @class = "form-control", @readonly = "true" })
+                                @*@Html.ValidationMessageFor(model => model.casualFormData.EmpName, "", new { @class = "text-danger" })*@
+                            </td>
+                            <td role="gridcell" class="col-xs-1" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                累計工時
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @*@Html.TextBoxFor(model => model.SumWorkHours, new { @class = "form-control", @readonly = "true" })*@
+                                @Html.Label("SumWorkHours", Model.SumWorkHours.ToString(), new { id = "SumWorkHours" })
+                                @Html.HiddenFor(model => model.SumWorkHours)
+                            </td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                排班部門
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.Dept_Code, Model.DepartmentList, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.Dept_Code, "", new { @class = "text-danger" })
+                                @*@Html.HiddenFor(model => model.casualFormData.Dept_ID)*@
+                                @Html.HiddenFor(model => model.casualFormData.Dept_Code)
+                                @Html.HiddenFor(model => model.casualFormData.Dept_Name)
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                成本中心
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.Cost_Code, Model.DeptCostList, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.Cost_Code, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                            <td colspan="4" align="center">原本薪資</td>
+                            <td colspan="4" align="center">本次核薪</td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                計薪單位
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.PrevSalaryUnit, Model.SalaryUnitList, new { @class = "form-control", @disabled = "true" })
+                                @*@Html.ValidationMessageFor(model => model.PrevSalaryUnit, "", new { @class = "text-danger" })*@
+                                @Html.HiddenFor(model => model.PrevSalaryUnit)
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                計薪單位
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.SalaryUnit, Model.SalaryUnitList, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.SalaryUnit, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                薪資
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @*@Html.TextBoxFor(model => model.PrevSalary, new { @class = "form-control", @readonly = "true" })*@
+                                @Html.Label("PrevSalary", Model.PrevSalary.ToString(), new { id = "PrevSalary" })
+                                @Html.HiddenFor(model => model.PrevSalary)
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                薪資
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.Salary, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.Salary, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                            <td colspan="4" align="center">預計排班時間/工作時數</td>
+                            <td colspan="4" align="center">實際上班時間/工作時數</td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                班別代碼
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.Class_ID, Model.ClassList, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.Class_ID, "", new { @class = "text-danger" })
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Time In
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.StartTime, Model.TimeList, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Time In
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.DefaultStartTime, new { @class = "form-control", @readonly = "true" })
+                                @*@Html.ValidationMessageFor(model => model.casualFormData.DefaultStartTime, "", new { @class = "text-danger" })*@
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Time Out
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.DropDownListFor(model => model.casualFormData.EndTime, Model.TimeList, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Time Out
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.DefaultEndTime, new { @class = "form-control", @readonly = "true" })
+                                @*@Html.ValidationMessageFor(model => model.casualFormData.DefaultEndTime, "", new { @class = "text-danger" })*@
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                用餐時間
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.RadioButtonFor(model => model.casualFormData.DiningHours, "0", new { id = "casualFormData_DiningHours" })
+                                @Html.Label("casualFormData_DiningHours", "無")
+                                @Html.RadioButtonFor(model => model.casualFormData.DiningHours, "0.5", new { id = "casualFormData_DiningHours" })
+                                @Html.Label("casualFormData_DiningHours", "30分")
+                                @Html.RadioButtonFor(model => model.casualFormData.DiningHours, "1", new { id = "casualFormData_DiningHours" })
+                                @Html.Label("casualFormData_DiningHours", "60分")
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                車馬費
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.Allowance, new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.casualFormData.Allowance, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Total Hrs
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.DefaultWorkHours, new { @class = "form-control", @readonly = "true" })
+                                @*@Html.ValidationMessageFor(model => model.casualFormData.DefaultWorkHours, "", new { @class = "text-danger" })*@
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                Total Hrs
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.casualFormData.WorkHours, new { @class = "form-control", @readonly = "true" })
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                總計
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true" })
+                            </td>
+                        </tr>
+                        <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                            <td colspan="8" align="center">其他資訊</td>
+                        </tr>
+                        <tr role="row" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" class="col-xs-1" style="white-space:normal;color:red;font-weight:bold" aria-describedby="grid-table_notification_count">
+                                投保身份
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.CheckBox("PrevStatus", Model.PrevStatus, new { @id = "PrevStatus" }) 己退休
+                            </td>
+                            <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                出勤卡號
+                                @*@Html.CheckBox("casualFormData.CardKeep", Model.casualFormData.CardKeep.Value, new { @id = "casualFormData_CardKeep" })*@
+                                @*@Html.CheckBoxFor(model => model.casualFormData.CardKeep.Value)*@
+                                @*延用*@
+                            </td>
+                            <td role="gridcell" colspan="3" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                <div class="col-xs-12">
+                                    @Html.TextBoxFor(model => model.casualFormData.CardNo, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.casualFormData.CardNo, "", new { @class = "text-danger" })
+                                </div>
+                                @*<div class="col-xs-5" style="padding-top:7px">
+                                    @Html.RadioButtonFor(model => model.casualFormData.CardKeep, true, new { id = "casualFormData_CardKeep" })
+                                    @Html.Label("casualFormData_CardKeep", "續用")
+                                    @Html.RadioButtonFor(model => model.casualFormData.CardKeep, false, new { id = "casualFormData_CardKeep" })
+                                    @Html.Label("casualFormData_CardKeep", "歸還")
+                                </div>*@
+                            </td>
+                            <td role="gridcell" class="col-xs-1" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                現金發放
+                            </td>
+                            <td role="gridcell" class="col-xs-2" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                @Html.CheckBox("casualFormData.CashFlag", Model.casualFormData.CashFlag.Value, new { @id = "casualFormData_CashFlag" })
+                                @*@Html.CheckBoxFor(model => model.casualFormData.CashFlag.Value)*@
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+            <div class="modal-footer">
+                <input id="btnSave" type="button" class="btn btn-success" value="@HRPortal.MultiLanguage.Resource.BtnSave" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="EmpDialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" id="EmpDialogContent"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {  
+        if ($("select[id='casualFormData_Cost_Code']").find("option").length>1)
+        {
+            $($("select[id='casualFormData_Cost_Code']").find("option")[1]).prop("selected",true);
+        }
+
+        $("[class*='date-control']").datetimepicker({
+            format: 'yyyy/mm/dd',
+            minView: 'month',
+            autoclose: true,
+            showMeridian: true,
+            language: 'zh-TW'
+        });
+
+        //工號小視窗
+        $("#btnEmp").click(function () {
+            if ( $("#EmpDialogContent").html()=="")
+            {
+                $("#EmpDialogContent").load($(this).attr("name"));
+            }
+
+            $("#EmpDialog").modal("show");
+        });
+
+        //輸入欄位 change 事件
+        $("input.form-control").change(function () {
+            switch($(this).attr("id"))
+            {
+                case "casualFormData_ExcuteDate":  //日期
+                case "casualFormData_EmployeeNO":  //工號
+                    if ($("#casualFormData_ExcuteDate").val()=="")
+                    {
+                        $("#casualFormData_ExcuteDate").val($("#casualFormData_ExcuteDate").attr("default"));
+                    }
+
+                    if ($("#casualFormData_EmployeeNO").val()!="" &&  $("#casualFormData_ExcuteDate").val()!="")
+                    {
+                        //工號帶出員工資料
+                        $.getJSON('@Url.Action("GetEmp")', { EmpID: $("#casualFormData_EmployeeNO").val(), ExcuteDate: $("#casualFormData_ExcuteDate").val() }, function (result) {
+                            if (result.Msg != "")
+                            {
+                                $("#casualFormData_EmpData_ID").val("");
+                                $("#casualFormData_EmpName").val("");
+                                $("#casualFormData_CardNo").val("");
+
+                                $("input[id='SumWorkHours']").val("0");
+                                $("label[id='SumWorkHours']").text("0");
+
+                                $("select[id='PrevSalaryUnit']").val("");
+                                $("input[id='PrevSalaryUnit']").val("");
+
+                                $("input[id='PrevSalary']").val("0");
+                                $("label[id='PrevSalary']").text("0");
+
+                                $("input[id='PrevStatus']").prop("checked",false);
+
+                                showAlertMessage(result.Msg);
+                            }
+                            else
+                            {
+                                $("#casualFormData_EmpData_ID").val(result.Emp.ID);
+                                $("#casualFormData_EmpName").val(result.Emp.EmpName);
+                                $("#casualFormData_CardNo").val(result.Door.CardNo);
+
+                                $("input[id='SumWorkHours']").val(result.SumWorkHours);
+                                $("label[id='SumWorkHours']").text(result.SumWorkHours);
+
+                                $("select[id='PrevSalaryUnit']").val(result.PrevSalaryUnit);
+                                $("input[id='PrevSalaryUnit']").val(result.PrevSalaryUnit);
+
+                                $("input[id='PrevSalary']").val(result.PrevSalary);
+                                $("label[id='PrevSalary']").text(result.PrevSalary);
+
+                                $("input[id='PrevStatus']").prop("checked",result.PrevStatus);
+                            }
+                        });
+                    }
+                    break;
+                case "casualFormData_Salary":  //本次核薪薪資
+                    $("#casualFormData_StartTime").change();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //下拉選單 change 事件
+        $("select.form-control").change(function () {
+            switch($(this).attr("id"))
+            {
+                case "casualFormData_Dept_Code":  //排班部門(Dept.)
+                    $("input[id='casualFormData_Dept_Code']").val($(this).val());
+                    $("input[id='casualFormData_Dept_Name']").val($(this).find("option:selected").text());
+
+                    //排班部門帶出費用中心
+                    $.getJSON('@Url.Action("GetCost")', { DeptCode: $(this).val() }, function (result) {
+                        var obj = $("#casualFormData_Cost_Code").empty();
+
+                        $.each(result, function (index, item) {
+                            obj.append($("<option></option>").val(item.Value).html(item.Text));
+                        });
+                    });
+                    break;
+                case "casualFormData_Class_ID":  //班別代碼
+                    //班表下拉帶出工作時間
+                    $.getJSON('@Url.Action("GetClass")', { ClassID: $(this).val() }, function (result) {
+                        $("#casualFormData_DefaultStartTime").val(result.StartTime);
+                        $("#casualFormData_DefaultEndTime").val(result.EndTime);
+                        $("#casualFormData_DefaultWorkHours").val(result.WorkHours);
+                    });
+                    break;
+                case "PrevSalaryUnit":  //原計薪單位
+                    $("input[id='PrevSalaryUnit']").val($(this).val());
+                    break;
+                case "casualFormData_StartTime":  //實際上班時間/工作時數 Time In
+                case "casualFormData_EndTime":  //實際上班時間/工作時數 Time Out
+                    var tmpStartTimeList=$("#casualFormData_StartTime").val().split(":");
+                    var tmpEndTimeList=$("#casualFormData_EndTime").val().split(":");
+                    var tmpDiningHours=$("input[name='casualFormData.DiningHours']:checked").val();
+                    var tmpSalaryUnit=$("#casualFormData_SalaryUnit").val();
+                    var tmpStartTime=0,tmpEndTime=0,tmpWorkHours=0,tmpTotal=0;
+                    var tmpAllowance=0,tmpSalary=0;
+
+                    if (tmpStartTimeList.length==2 && tmpEndTimeList.length==2)
+                    {
+                        //轉換成分鐘
+                        tmpStartTime=parseInt(tmpStartTimeList[0])*60 + parseInt(tmpStartTimeList[1]);
+                        tmpEndTime=parseInt(tmpEndTimeList[0])*60 + parseInt(tmpEndTimeList[1]);
+
+                        //跨天要再加 24*60 分鐘
+                        if (tmpStartTime>tmpEndTime)
+                        {
+                            tmpEndTime+=24*60;
+                        }
+
+                        tmpWorkHours=parseFloat(tmpEndTime-tmpStartTime)/60-tmpDiningHours;
+
+                        //車馬費
+                        if ($("#casualFormData_StartTime").val()>="04:00" && $("#casualFormData_StartTime").val()<="06:30")
+                        {
+                            tmpAllowance=150;
+                        }
+
+                        if ($("#casualFormData_StartTime").val()>$("#casualFormData_EndTime").val())
+                        {
+                            if ($("#casualFormData_EndTime").val()>="00:00" && $("#casualFormData_EndTime").val()<="04:00")
+                            {
+                                tmpAllowance=150;
+                            }
+                        }
+                        else
+                        {
+                            if ($("#casualFormData_EndTime").val()>="23:30")
+                            {
+                                tmpAllowance=150;
+                            }
+                        }
+
+                        if (isNaN($("#casualFormData_Salary").val()))
+                        {
+                            tmpSalary=0;
+                        }
+                        else if (parseFloat($("#casualFormData_Salary").val())<=0)
+                        {
+                            tmpSalary=0;
+                        }
+                        else
+                        {
+                            tmpSalary=parseFloat($("#casualFormData_Salary").val());
+                        }
+
+                        switch(tmpSalaryUnit)
+                        {
+                            case "d":
+                                tmpTotal=formatFloat((tmpSalary+tmpAllowance), 0);
+                                break;
+                            case "h":
+                                tmpTotal=formatFloat(((tmpWorkHours*tmpSalary)+tmpAllowance), 0);
+                                break;
+                            default:
+                                tmpTotal=formatFloat(tmpAllowance, 0);
+                                break;
+                        }
+                    }
+
+                    $("#casualFormData_WorkHours").val(tmpWorkHours);
+                    $("#casualFormData_Allowance").val(tmpAllowance);
+                    $("#Total").val(tmpTotal);
+                    break;
+                case "casualFormData_SalaryUnit":  //本次計薪單位
+                    $("#casualFormData_StartTime").change();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //radio change 事件
+        $("input[type='radio']").change(function () {
+            switch($(this).attr("id"))
+            {
+                case "casualFormData_DiningHours":
+                    $("#casualFormData_StartTime").change();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //儲存
+        $("#btnSave").click(function (event) {
+            if (!$(this).prop("disabled"))
+            {
+                var form = $("#CreateCasualForm");
+
+                form.submit(function (e) {
+                    e.preventDefault();
+                });
+
+                var submitData = new FormData(form[0]);
+
+                //判斷是否為臨時工
+                if ($("#casualFormData_EmployeeNO").val()!="")
+                {
+                    $.getJSON('@Url.Action("GetEmp")', { EmpID: $("#casualFormData_EmployeeNO").val(), ExcuteDate: $("#casualFormData_ExcuteDate").val() }, function (result) {
+                        if (result.Msg != "")
+                        {
+                            showAlertMessage(result.Msg);
+                            return false;
+                        }
+                        else
+                        {
+                            //薪資
+                            var tmpSalary=$("#casualFormData_Salary").val();
+
+                            if (isNaN(tmpSalary))
+                            {
+                                showAlertMessage("本次核薪-薪資請輸入數字");
+                                return false;
+                            }
+
+                            if (parseFloat(tmpSalary)<=0)
+                            {
+                                showAlertMessage("本次核薪-薪資請輸入大於0的數字");
+                                return false;
+                            }
+
+                            //檢查計薪單位
+                            var tmpSalaryUnit=$("#casualFormData_SalaryUnit").val(); //計薪單位
+
+                            if (!isNaN(tmpSalary) && !(tmpSalaryUnit=="d" || tmpSalaryUnit=="h"))
+                            {
+                                showAlertMessage("本次核薪-請選擇計薪單位為時薪或日薪");
+                                return false;
+                            }
+
+                            //檢查最低時薪與日薪
+                            var minSalaryPerHour=$("#MinSalaryPerHour").val(); //最低時薪
+                            
+                            //var casualWorkHours=$("#casualFormData_WorkHours").val(); //計算出的工時 (不一定有值)
+                            var checkDaySalary=0;
+                            
+                            if (!isNaN(minSalaryPerHour)) //有設定最低時薪
+                            {
+                                if (tmpSalaryUnit=="h") //計薪單位選時薪時
+                                {
+                                    checkHourSalary=parseFloat(tmpSalary);
+                                    if (checkHourSalary<parseFloat(minSalaryPerHour))
+                                    {
+                                        showAlertMessage("本次核薪-計薪單位為時薪，不得少於最低時薪"+minSalaryPerHour+"元");
+                                        return false;
+                                    }
+                                }
+                                else if (tmpSalaryUnit=="d") //計薪單位選日薪，用最低時薪*8計算最低日薪
+                                {
+                                    //checkHourSalary=Math.round(parseFloat(tmpSalary)/parseFloat(casualWorkHours));
+                                    checkDaySalary  =parseFloat(minSalaryPerHour) * 8;
+                                    if (parseFloat(tmpSalary)<checkDaySalary)
+                                    {
+                                        showAlertMessage("本次核薪-計薪單位為日薪，不得少於最低日薪"+checkDaySalary+"元");
+                                        return false;
+                                    }
+                                }
+                            }
+
+                            //console.log('minSalaryPerHour='+minSalaryPerHour+',tmpSalaryUnit='+tmpSalaryUnit+',checkDaySalary='+checkDaySalary);
+                           
+
+                            //實際上班時間/工作時數
+                            if ($("#casualFormData_StartTime").val()!="" && $("#casualFormData_EndTime").val()=="")
+                            {
+                                showAlertMessage("請輸入實際上班時間/工作時數-Time Out");
+                                return false;
+                            }
+
+                            if ($("#casualFormData_StartTime").val()=="" && $("#casualFormData_EndTime").val()!="")
+                            {
+                                showAlertMessage("請輸入實際上班時間/工作時數-Time In");
+                                return false;
+                            }
+
+                            if ($("#casualFormData_StartTime").val()!="" && $("#casualFormData_EndTime").val()!="")
+                            {
+                                if (parseFloat($("#casualFormData_WorkHours").val())<=0)
+                                {
+                                    showAlertMessage("實際上班時間/工作時數-Total Hrs必需大於0");
+                                    return false;
+                                }
+                            }
+
+                            ////車馬費
+                            //var tmpAllowance=$("#casualFormData_Allowance").val();
+
+                            //if (isNaN(tmpAllowance))
+                            //{
+                            //    showAlertMessage("車馬費請輸入數字");
+                            //    return false;
+                            //}
+
+                            //if (parseFloat(tmpAllowance)<0)
+                            //{
+                            //    showAlertMessage("車馬費請輸入大於等於0的數字");
+                            //    return false;
+                            //}
+
+                            //出勤卡號
+                            //var tmpCardKeep=$("input[name='casualFormData.CardKeep']:checked").val();
+                            var tmpCardNo=$("#casualFormData_CardNo").val();
+
+                            if ($("#casualFormData_StartTime").val()!="" || $("#casualFormData_EndTime").val()!="")
+                            {
+                                if (tmpCardNo=="")
+                                {
+                                    showAlertMessage("請輸入出勤卡號");
+                                    return false;
+                                }
+                            }
+
+                            //if (tmpCardKeep!=null)
+                            //{
+                            //    if (tmpCardNo=="")
+                            //    {
+                            //        showAlertMessage("請輸入出勤卡號");
+                            //        return false;
+                            //    }
+                            //}
+
+                            //if (tmpCardNo!="")
+                            //{
+                            //    if (tmpCardKeep==null)
+                            //    {
+                            //        showAlertMessage("請選擇歸還或續用");
+                            //        return false;
+                            //    }
+                            //}
+
+                            //if ($("#casualFormData_CardKeep").prop("checked"))
+                            //{
+                            //    if ($("#casualFormData_CardNo").val()=="")
+                            //    {
+                            //        showAlertMessage("因為勾選出勤卡號延用，所以必需輸入出勤卡號");
+                            //        return false;
+                            //    }
+                            //}
+
+                            if (form.validate().form()) {
+                                $("#btnSave").prop("disabled",true);
+
+                                $.ajax({
+                                    url: "CasualForm/Create",
+                                    type: "POST",
+                                    data: submitData,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (submitResult) {
+                                        if (submitResult.status == "success") {
+                                            $("#CasualFormDialogDiv").modal("hide");
+                                            showAlertMessage(submitResult.message, function () {
+                                                window.location.reload();
+                                            });
+                                        } else {
+                                            showAlertMessage(submitResult.message);
+                                        }
+                                    },
+                                    complete: function(){
+                                        $("#btnSave").prop("disabled",false);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        //$("select[id='casualFormData_Dept_Code']").change();
+    });
+
+    function formatFloat(num, pos)
+    {
+        var size = Math.pow(10, pos);
+        return Math.round(num * size) / size;
+    }
+</script>

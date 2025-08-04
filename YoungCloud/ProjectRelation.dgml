@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph DataVirtualized="True" GraphDirection="BottomToTop" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="(@11)" Category="CodeSchema_Assembly" Bounds="497.04,220,174.233333333333,25" CodeSchemaProperty_StrongName="YoungCloud.Mail, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(f9c8cae8-823b-44b9-aaf6-7e14e71f78b2.OutputPath)" Group="Collapsed" Label="YoungCloud.Mail.dll" />
+    <Node Id="(@14)" Category="CodeSchema_Assembly" Bounds="695.736666666667,330,229.903333333333,25" CodeSchemaProperty_StrongName="YoungCloud.Mail.SendMail, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(31c2b4d8-e617-42ae-a0b0-993b54c540d2.OutputPath)" Group="Collapsed" Label="YoungCloud.Mail.SendMail.dll" />
+    <Node Id="(@15)" Category="CodeSchema_Assembly" Bounds="453.136666666667,330,212.6,25" CodeSchemaProperty_StrongName="YoungCloud.AuthServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(b2df7f73-ccc6-49ab-8a86-af1e0a52d2d0.OutputPath)" Group="Collapsed" Label="YoungCloud.AuthServer.dll" />
+    <Node Id="(@16)" Category="CodeSchema_Assembly" Bounds="0,330,192.12,25" CodeSchemaProperty_StrongName="YoungCloud.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(8fb6bd00-0948-408e-b7c3-70635242d6f5.OutputPath)" Group="Collapsed" Label="YoungCloud.Utilities.dll" />
+    <Node Id="(@27)" Category="CodeSchema_Assembly" Bounds="0,385,261.513333333333,25" CodeSchemaProperty_StrongName="YoungCloud.Mail.Databases.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(3bced0ee-ed05-4c82-b2ee-367230cbbab8.OutputPath)" Group="Collapsed" Label="YoungCloud.Mail.Databases.Test.dll" />
+    <Node Id="(@28)" Category="CodeSchema_Assembly" Bounds="222.12,330,201.016666666667,25" CodeSchemaProperty_StrongName="YoungCloud.SignFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(be6a9eb3-ac3e-4310-9a43-b8631347901c.OutputPath)" Group="Collapsed" Label="YoungCloud.SignFlow.dll" />
+    <Node Id="(@3)" Category="CodeSchema_Assembly" Bounds="310.961666666667,110,272.39,25" CodeSchemaProperty_StrongName="YoungCloud.Global.Caches.Service, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(7455ad0f-f023-4552-b6fa-48698cef5da5.OutputPath)" Group="Collapsed" Label="YoungCloud.Global.Caches.Service.dll" />
+    <Node Id="(@4)" Category="CodeSchema_Assembly" Bounds="0,110,280.313333333334,25" CodeSchemaProperty_StrongName="YoungCloud.Global.Sessions.Service, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(2a4fc807-e58b-4bbe-9a28-426e342b2eff.OutputPath)" Group="Collapsed" Label="YoungCloud.Global.Sessions.Service.dll" />
+    <Node Id="@10" Category="CodeSchema_Assembly" Bounds="305.463333333333,0,205.386666666667,25" CodeSchemaProperty_StrongName="YoungCloud.Remoting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(4e32c8bc-c0c1-4fc0-94f1-bdb056184c53.OutputPath)" Group="Collapsed" Label="YoungCloud.Remoting.dll" />
+    <Node Id="@13" Category="CodeSchema_Assembly" Bounds="677.266666666667,55,197.78,25" CodeSchemaProperty_StrongName="YoungCloud.Net.Mail, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(7bc75c1d-d6e0-4a8f-a8a4-4936d941368d.OutputPath)" Group="Collapsed" Label="YoungCloud.Net.Mail.dll" />
+    <Node Id="@18" Category="CodeSchema_Assembly" Bounds="702.016666666667,220,208.28,25" CodeSchemaProperty_StrongName="YoungCloud.Databases, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(785d9a10-031c-4d84-a02c-8c959a40de1c.OutputPath)" Group="Collapsed" Label="YoungCloud.Databases.dll" />
+    <Node Id="@2" Category="CodeSchema_Assembly" Bounds="1057.61,0,147.093333333333,25" CodeSchemaProperty_StrongName="YoungCloud, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(715dedc3-83aa-440a-ad41-0d8a0247adaf.OutputPath)" Group="Collapsed" Label="YoungCloud.dll" />
+    <Node Id="@20" Category="CodeSchema_Assembly" Bounds="348.446666666667,275,235.42,25" CodeSchemaProperty_StrongName="YoungCloud.Mail.Databases, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(47be4f2b-2f98-4b4e-90e2-5078c9e02023.OutputPath)" Group="Collapsed" Label="YoungCloud.Mail.Databases.dll" />
+    <Node Id="@22" Category="CodeSchema_Assembly" Bounds="541.353333333333,0,209.606666666667,25" CodeSchemaProperty_StrongName="YoungCloud.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(b7463ed1-104c-4037-8905-5bbf56552ea2.OutputPath)" Group="Collapsed" Label="YoungCloud.Extensions.dll" />
+    <Node Id="@24" Category="CodeSchema_Assembly" Bounds="349.356666666667,165,233.6,25" CodeSchemaProperty_StrongName="YoungCloud.Configurations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(1a25d3f5-77f1-4e34-81df-465220dc820c.OutputPath)" Group="Collapsed" Label="YoungCloud.Configurations.dll" />
+    <Node Id="@26" Category="CodeSchema_Assembly" Bounds="644.961666666667,110,210.39,25" CodeSchemaProperty_StrongName="YoungCloud.Exceptions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(47f56ad1-e100-4856-bf26-e5c7db074218.OutputPath)" Group="Collapsed" Label="YoungCloud.Exceptions.dll" />
+    <Node Id="@30" Category="CodeSchema_Assembly" Bounds="905.705,55,194.903333333334,25" CodeSchemaProperty_StrongName="YoungCloud.Security, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(5442993f-4053-4c92-a781-2736acc629b0.OutputPath)" Group="Collapsed" Label="YoungCloud.Security.dll" />
+    <Node Id="@6" Category="CodeSchema_Assembly" Bounds="323.596666666667,55,259.12,25" CodeSchemaProperty_StrongName="YoungCloud.Global.Caches.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(c0e6d562-ca0b-414b-ab2d-f591d91bd179.OutputPath)" Group="Collapsed" Label="YoungCloud.Global.Caches.Core.dll" />
+    <Node Id="@8" Category="CodeSchema_Assembly" Bounds="25.635,55,267.043333333334,25" CodeSchemaProperty_StrongName="YoungCloud.Global.Sessions.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(838159ff-11c0-4760-8092-f7e6d2e54653.OutputPath)" Group="Collapsed" Label="YoungCloud.Global.Sessions.Core.dll" />
+  </Nodes>
+  <Links>
+    <Link Source="(@11)" Target="@24" Category="References" Bounds="501.132263183594,193.802185058594,56.2062377929688,26.1978149414063" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="11">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="InheritsFrom" />
+    </Link>
+    <Link Source="(@3)" Target="@6" Category="CodeSchema_Calls" Bounds="448.520294189453,88.9469223022461,2.29672241210938,21.0530776977539" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2" />
+    <Link Source="(@4)" Target="@8" Category="CodeSchema_Calls" Bounds="144.474853515625,88.5067138671875,7.42494201660156,21.4932861328125" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2" />
+    <Link Source="@13" Target="@2" Category="InheritsFrom" Bounds="856.838500976563,25.0273590087891,193.459716796875,29.9726409912109" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="5">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@13" Target="@22" Category="CodeSchema_Calls" Bounds="683.990844726563,28.5067596435547,62.620361328125,26.4932403564453" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="4" />
+    <Link Source="@18" Target="@2" Category="References" Bounds="880.020324707031,34,251.136291503906,186" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="25">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="InheritsFrom" />
+    </Link>
+    <Link Source="@18" Target="@22" Category="CodeSchema_Calls" Bounds="614.156677246094,32.7791366577148,148.363647460938,187.220863342285" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="13" />
+    <Link Source="@18" Target="@24" Category="InheritsFrom" Bounds="552.313903808594,191.437194824219,176.570007324219,28.5628051757813" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="6">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@18" Target="@26" Category="References" Bounds="760.603454589844,143.020462036133,39.1895751953125,76.9795379638672" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="75">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="InheritsFrom" />
+    </Link>
+    <Link Source="@18" Target="@30" Category="References" Bounds="850.929382324219,89,152.227294921875,131" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="6">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@20" Target="@18" Category="InheritsFrom" Bounds="543.429382324219,246.437194824219,176.570068359375,28.5628051757813" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="32">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="Implements" />
+    </Link>
+    <Link Source="@20" Target="@24" Category="References" Bounds="466.156677246094,199,0,76" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="6">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="InheritsFrom" />
+    </Link>
+    <Link Source="@24" Target="@26" Category="References" Bounds="530.7021484375,136.711166381836,146.0732421875,28.2888336181641" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="63">
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="CodeSchema_FieldRead" />
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@26" Target="@13" Category="CodeSchema_Calls" Bounds="756.065734863281,88.1366500854492,10.33544921875,21.8633499145508" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="13" />
+    <Link Source="@26" Target="@22" Category="CodeSchema_Calls" Bounds="646.156677246094,34,80.3636474609375,76" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2" />
+    <Link Source="@30" Target="@2" Category="InheritsFrom" Bounds="1032.24755859375,28.5530681610107,61.5491943359375,26.4469318389893" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="51">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@30" Target="@22" Category="CodeSchema_Calls" Bounds="736.188110351563,26.3703861236572,185.832214355469,28.6296138763428" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="3" />
+    <Link Source="@6" Target="@10" Category="InheritsFrom" Bounds="424.083068847656,31.9656162261963,18.8463134765625,23.0343837738037" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="10">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@6" Target="@22" Category="CodeSchema_Calls" Bounds="497.020294189453,27.4665660858154,96.6173400878906,27.5334339141846" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2" />
+    <Link Source="@8" Target="@10" Category="InheritsFrom" Bounds="215.747573852539,26.941162109375,127.030014038086,28.058837890625" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="10">
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@8" Target="@22" Category="CodeSchema_Calls" Bounds="269.838470458984,25.1053810119629,264.703277587891,29.8946189880371" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2" />
+  </Links>
+  <Categories>
+    <Category Id="CodeSchema_Assembly" Label="組件" BasedOn="File" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Assembly" NavigationActionLabel="組件" />
+    <Category Id="CodeSchema_Calls" Label="呼叫" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="由下列呼叫" OutgoingActionLabel="呼叫" />
+    <Category Id="CodeSchema_FieldRead" Label="欄位讀取" BasedOn="CodeSchema_FieldReference" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="讀取者" OutgoingActionLabel="讀取欄位" />
+    <Category Id="CodeSchema_FieldReference" Label="欄位參考" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="由下列參考" OutgoingActionLabel="參考欄位" />
+    <Category Id="CodeSchema_FieldWrite" Label="欄位寫入" BasedOn="CodeSchema_FieldReference" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="寫入者" OutgoingActionLabel="寫入欄位" />
+    <Category Id="File" Label="檔案" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="File" NavigationActionLabel="檔案" />
+    <Category Id="Implements" Label="實作" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="由下列實作" OutgoingActionLabel="實作" />
+    <Category Id="InheritsFrom" Label="繼承自" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="由下列繼承" OutgoingActionLabel="繼承自" />
+    <Category Id="References" Label="參考" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="由下列參考" OutgoingActionLabel="參考" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_StrongName" Label="StrongName" Description="StrongName" DataType="System.String" />
+    <Property Id="DataVirtualized" Label="虛擬化資料" Description="如果為 true，就表示圖形可以包含代表虛擬化節點/連結 (亦即，實際上並未在圖形中建立) 之資料的節點和連結。" DataType="System.Boolean" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="DelayedChildNodesState" Label="延遲子節點狀態" Description="如果未指定延遲子節點狀態，則為 Unspecified。如果群組包含的子節點尚未擷取至圖形，則為 NotFetched。如果群組的所有延遲子節點己擷取，則為 Fetched。" DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="DelayedCrossGroupLinksState" Label="延遲跨群組連結狀態" Description="如果未指定延遲跨群組連結狀態，則為 Unspecified。如果此節點上的延遲跨群組連結尚未擷取至圖形，則為 NotFetched。如果所有延遲跨群組連結已擷取，則為 Fetched。" DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="FilePath" Label="檔案路徑" Description="檔案路徑" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="Group" Label="群組" Description="將節點顯示為群組" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="Icon" Label="圖示" Description="圖示" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsSourceVirtualized" Label="虛擬化連結來源" Description="如果為 true，就表示連結來源端包含虛擬化節點/連結 (亦即，實際上並未在圖形中建立) 的資料。" DataType="System.Boolean" />
+    <Property Id="IsTargetVirtualized" Label="虛擬化連結目標" Description="如果為 true，就表示連結目標端包含虛擬化節點/連結 (亦即，實際上並未在圖形中建立) 的資料。" DataType="System.Boolean" />
+    <Property Id="Label" Label="標籤" Description="可註釋物件的可顯示標籤" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="Visibility" Label="Visibility" Description="Defines whether a node in the graph is visible or not" DataType="System.Windows.Visibility" />
+    <Property Id="Weight" Label="寬度" Description="寬度" DataType="System.Double" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="組件" ValueType="Uri" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(715dedc3-83aa-440a-ad41-0d8a0247adaf.OutputPathUri)" />
+    <Alias n="2" Id="(@1)" />
+    <Alias n="3" Uri="Assembly=$(7455ad0f-f023-4552-b6fa-48698cef5da5.OutputPathUri)" />
+    <Alias n="4" Uri="Assembly=$(2a4fc807-e58b-4bbe-9a28-426e342b2eff.OutputPathUri)" />
+    <Alias n="5" Uri="Assembly=$(c0e6d562-ca0b-414b-ab2d-f591d91bd179.OutputPathUri)" />
+    <Alias n="6" Id="(@5)" />
+    <Alias n="7" Uri="Assembly=$(838159ff-11c0-4760-8092-f7e6d2e54653.OutputPathUri)" />
+    <Alias n="8" Id="(@7)" />
+    <Alias n="9" Uri="Assembly=$(4e32c8bc-c0c1-4fc0-94f1-bdb056184c53.OutputPathUri)" />
+    <Alias n="10" Id="(@9)" />
+    <Alias n="11" Uri="Assembly=$(f9c8cae8-823b-44b9-aaf6-7e14e71f78b2.OutputPathUri)" />
+    <Alias n="12" Uri="Assembly=$(7bc75c1d-d6e0-4a8f-a8a4-4936d941368d.OutputPathUri)" />
+    <Alias n="13" Id="(@12)" />
+    <Alias n="14" Uri="Assembly=$(31c2b4d8-e617-42ae-a0b0-993b54c540d2.OutputPathUri)" />
+    <Alias n="15" Uri="Assembly=$(b2df7f73-ccc6-49ab-8a86-af1e0a52d2d0.OutputPathUri)" />
+    <Alias n="16" Uri="Assembly=$(8fb6bd00-0948-408e-b7c3-70635242d6f5.OutputPathUri)" />
+    <Alias n="17" Uri="Assembly=$(785d9a10-031c-4d84-a02c-8c959a40de1c.OutputPathUri)" />
+    <Alias n="18" Id="(@17)" />
+    <Alias n="19" Uri="Assembly=$(47be4f2b-2f98-4b4e-90e2-5078c9e02023.OutputPathUri)" />
+    <Alias n="20" Id="(@19)" />
+    <Alias n="21" Uri="Assembly=$(b7463ed1-104c-4037-8905-5bbf56552ea2.OutputPathUri)" />
+    <Alias n="22" Id="(@21)" />
+    <Alias n="23" Uri="Assembly=$(1a25d3f5-77f1-4e34-81df-465220dc820c.OutputPathUri)" />
+    <Alias n="24" Id="(@23)" />
+    <Alias n="25" Uri="Assembly=$(47f56ad1-e100-4856-bf26-e5c7db074218.OutputPathUri)" />
+    <Alias n="26" Id="(@25)" />
+    <Alias n="27" Uri="Assembly=$(3bced0ee-ed05-4c82-b2ee-367230cbbab8.OutputPathUri)" />
+    <Alias n="28" Uri="Assembly=$(be6a9eb3-ac3e-4310-9a43-b8631347901c.OutputPathUri)" />
+    <Alias n="29" Uri="Assembly=$(5442993f-4053-4c92-a781-2736acc629b0.OutputPathUri)" />
+    <Alias n="30" Id="(@29)" />
+  </IdentifierAliases>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="結果" ValueLabel="是">
+      <Condition Expression="HasCategory('QueryResult')" />
+      <Setter Property="Background" Value="#FFBCFFBE" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="組件" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Assembly')" />
+      <Setter Property="Background" Value="#FF094167" />
+      <Setter Property="Stroke" Value="#FF094167" />
+      <Setter Property="Icon" Value="CodeSchema_Assembly" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="命名空間" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Namespace')" />
+      <Setter Property="Background" Value="#FF0E619A" />
+      <Setter Property="Stroke" Value="#FF0E619A" />
+      <Setter Property="Icon" Value="CodeSchema_Namespace" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="介面" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Interface')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Interface" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="結構" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Struct')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Struct" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="列舉" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Enum')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Enum" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="委派" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Delegate')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Delegate" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="類別" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Type')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Class" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="屬性" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Property')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Property" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="方法" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Method') Or HasCategory('CodeSchema_CallStackUnresolvedMethod')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Method" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="事件" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Event')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Event" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="欄位" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Field')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Field" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="輸出參數" ValueLabel="有分類">
+      <Condition Expression="CodeSchemaProperty_IsOut = 'True'" />
+      <Setter Property="Icon" Value="CodeSchema_OutParameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="參數" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Parameter')" />
+      <Setter Property="Icon" Value="CodeSchema_Parameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="區域變數" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_LocalExpression')" />
+      <Setter Property="Icon" Value="CodeSchema_LocalExpression" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="外部" ValueLabel="有分類">
+      <Condition Expression="HasCategory('Externals')" />
+      <Setter Property="Background" Value="#FF424242" />
+      <Setter Property="Stroke" Value="#FF424242" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="繼承自" ValueLabel="有分類">
+      <Condition Expression="HasCategory('InheritsFrom')" />
+      <Setter Property="Stroke" Value="#FF00A600" />
+      <Setter Property="StrokeDashArray" Value="2 0" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="實作" ValueLabel="有分類">
+      <Condition Expression="HasCategory('Implements')" />
+      <Setter Property="Stroke" Value="#8000A600" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="呼叫" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_Calls')" />
+      <Setter Property="Stroke" Value="#FFFF00FF" />
+      <Setter Property="StrokeDashArray" Value="2 0" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="函式指標" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_FunctionPointer')" />
+      <Setter Property="Stroke" Value="#FFFF00FF" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="欄位參考" ValueLabel="有分類">
+      <Condition Expression="HasCategory('CodeSchema_FieldReference')" />
+      <Setter Property="Stroke" Value="#FF00AEEF" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Inherits From" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('InheritsFrom') And Target.HasCategory('CodeSchema_Class')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Implements" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('Implements') And Target.HasCategory('CodeSchema_Interface')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Field Read" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Target.HasCategory('CodeSchema_Field') And HasCategory('CodeSchema_FieldRead')" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Comment Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Source.HasCategory('Comment')" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Cursor Location Changed" ValueLabel="是" Visibility="Hidden">
+      <Condition Expression="IsCursorLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Disabled Breakpoint Location Changed" ValueLabel="是" Visibility="Hidden">
+      <Condition Expression="DisabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Enabled Breakpoint Location Changed" ValueLabel="是" Visibility="Hidden">
+      <Condition Expression="EnabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Instruction Pointer Location Changed" ValueLabel="是" Visibility="Hidden">
+      <Condition Expression="IsInstructionPointerLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Current Callstack Changed" ValueLabel="是" Visibility="Hidden">
+      <Condition Expression="IsCurrentCallstackFrame" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+  </Styles>
+  <Paths>
+    <Path Id="1a25d3f5-77f1-4e34-81df-465220dc820c.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Configurations\bin\Debug\YoungCloud.Configurations.dll" />
+    <Path Id="1a25d3f5-77f1-4e34-81df-465220dc820c.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Configurations/bin/Debug/YoungCloud.Configurations.dll" />
+    <Path Id="2a4fc807-e58b-4bbe-9a28-426e342b2eff.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Global.Sessions.Service\bin\Debug\YoungCloud.Global.Sessions.Service.dll" />
+    <Path Id="2a4fc807-e58b-4bbe-9a28-426e342b2eff.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Global.Sessions.Service/bin/Debug/YoungCloud.Global.Sessions.Service.dll" />
+    <Path Id="31c2b4d8-e617-42ae-a0b0-993b54c540d2.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Mail.SendMail\bin\Debug\YoungCloud.Mail.SendMail.dll" />
+    <Path Id="31c2b4d8-e617-42ae-a0b0-993b54c540d2.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Mail.SendMail/bin/Debug/YoungCloud.Mail.SendMail.dll" />
+    <Path Id="3bced0ee-ed05-4c82-b2ee-367230cbbab8.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Mail.Databases.Test\bin\Debug\YoungCloud.Mail.Databases.Test.dll" />
+    <Path Id="3bced0ee-ed05-4c82-b2ee-367230cbbab8.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Mail.Databases.Test/bin/Debug/YoungCloud.Mail.Databases.Test.dll" />
+    <Path Id="47be4f2b-2f98-4b4e-90e2-5078c9e02023.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Mail.Databases\bin\Debug\YoungCloud.Mail.Databases.dll" />
+    <Path Id="47be4f2b-2f98-4b4e-90e2-5078c9e02023.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Mail.Databases/bin/Debug/YoungCloud.Mail.Databases.dll" />
+    <Path Id="47f56ad1-e100-4856-bf26-e5c7db074218.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Exceptions\bin\Debug\YoungCloud.Exceptions.dll" />
+    <Path Id="47f56ad1-e100-4856-bf26-e5c7db074218.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Exceptions/bin/Debug/YoungCloud.Exceptions.dll" />
+    <Path Id="4e32c8bc-c0c1-4fc0-94f1-bdb056184c53.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Remoting\bin\Debug\YoungCloud.Remoting.dll" />
+    <Path Id="4e32c8bc-c0c1-4fc0-94f1-bdb056184c53.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Remoting/bin/Debug/YoungCloud.Remoting.dll" />
+    <Path Id="5442993f-4053-4c92-a781-2736acc629b0.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Security\bin\Debug\YoungCloud.Security.dll" />
+    <Path Id="5442993f-4053-4c92-a781-2736acc629b0.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Security/bin/Debug/YoungCloud.Security.dll" />
+    <Path Id="715dedc3-83aa-440a-ad41-0d8a0247adaf.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud\bin\Debug\YoungCloud.dll" />
+    <Path Id="715dedc3-83aa-440a-ad41-0d8a0247adaf.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud/bin/Debug/YoungCloud.dll" />
+    <Path Id="7455ad0f-f023-4552-b6fa-48698cef5da5.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Global.Caches.Service\bin\Debug\YoungCloud.Global.Caches.Service.dll" />
+    <Path Id="7455ad0f-f023-4552-b6fa-48698cef5da5.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Global.Caches.Service/bin/Debug/YoungCloud.Global.Caches.Service.dll" />
+    <Path Id="785d9a10-031c-4d84-a02c-8c959a40de1c.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Databases\bin\Debug\YoungCloud.Databases.dll" />
+    <Path Id="785d9a10-031c-4d84-a02c-8c959a40de1c.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Databases/bin/Debug/YoungCloud.Databases.dll" />
+    <Path Id="7bc75c1d-d6e0-4a8f-a8a4-4936d941368d.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Net.Mail\bin\Debug\YoungCloud.Net.Mail.dll" />
+    <Path Id="7bc75c1d-d6e0-4a8f-a8a4-4936d941368d.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Net.Mail/bin/Debug/YoungCloud.Net.Mail.dll" />
+    <Path Id="838159ff-11c0-4760-8092-f7e6d2e54653.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Global.Sessions.Core\bin\Debug\YoungCloud.Global.Sessions.Core.dll" />
+    <Path Id="838159ff-11c0-4760-8092-f7e6d2e54653.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Global.Sessions.Core/bin/Debug/YoungCloud.Global.Sessions.Core.dll" />
+    <Path Id="8fb6bd00-0948-408e-b7c3-70635242d6f5.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Utilities\bin\Debug\YoungCloud.Utilities.dll" />
+    <Path Id="8fb6bd00-0948-408e-b7c3-70635242d6f5.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Utilities/bin/Debug/YoungCloud.Utilities.dll" />
+    <Path Id="b2df7f73-ccc6-49ab-8a86-af1e0a52d2d0.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.AuthServer\bin\Debug\YoungCloud.AuthServer.dll" />
+    <Path Id="b2df7f73-ccc6-49ab-8a86-af1e0a52d2d0.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.AuthServer/bin/Debug/YoungCloud.AuthServer.dll" />
+    <Path Id="b7463ed1-104c-4037-8905-5bbf56552ea2.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Extensions\bin\Debug\YoungCloud.Extensions.dll" />
+    <Path Id="b7463ed1-104c-4037-8905-5bbf56552ea2.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Extensions/bin/Debug/YoungCloud.Extensions.dll" />
+    <Path Id="be6a9eb3-ac3e-4310-9a43-b8631347901c.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.SignFlow\bin\Debug\YoungCloud.SignFlow.dll" />
+    <Path Id="be6a9eb3-ac3e-4310-9a43-b8631347901c.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.SignFlow/bin/Debug/YoungCloud.SignFlow.dll" />
+    <Path Id="c0e6d562-ca0b-414b-ab2d-f591d91bd179.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Global.Caches.Core\bin\Debug\YoungCloud.Global.Caches.Core.dll" />
+    <Path Id="c0e6d562-ca0b-414b-ab2d-f591d91bd179.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Global.Caches.Core/bin/Debug/YoungCloud.Global.Caches.Core.dll" />
+    <Path Id="f9c8cae8-823b-44b9-aaf6-7e14e71f78b2.OutputPath" Value="C:\YoungCloud\Framework\YoungCloud.Mail\bin\Debug\YoungCloud.Mail.dll" />
+    <Path Id="f9c8cae8-823b-44b9-aaf6-7e14e71f78b2.OutputPathUri" Value="file:///C:/YoungCloud/Framework/YoungCloud.Mail/bin/Debug/YoungCloud.Mail.dll" />
+  </Paths>
+</DirectedGraph>

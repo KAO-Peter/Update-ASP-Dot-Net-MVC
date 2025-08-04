@@ -1,0 +1,132 @@
+﻿@model HRPortal.Mvc.Models.PatchCardCancelFormViewModel
+<style type="text/css">
+    .col-md-22:before {
+        content: "：";
+        display: inline-block;
+        float: right;
+    }
+
+    .col-md-22 {
+        min-width: 120px;
+        width: 17%;
+    }
+
+    .dl-info > div {
+        clear: both;
+    }
+
+    .form-control-static {
+        float: left;
+        width: 60%;
+    }
+</style>
+<div class="dl-info dl-horizontal">
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.applicant</label>
+        @if (Model.SourceData.getLanguageCookie == "en-US")
+        {
+            <p class="form-control-static">@Model.SourceData.SenderEmployeeEnglishName</p>
+        }
+        else
+        {
+            <p class="form-control-static">@Model.SourceData.EmployeeName</p>
+        }
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Department</label>
+        <p class="form-control-static">@Model.SourceData.DepartmentName</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.OvertimesinglepinFilingDate</label>
+        <p class="form-control-static">@Model.FormData.CreatedTime.ToString("yyyy/MM/dd")</p>
+    </div>
+    <div>
+        <label class="col-md-22">刷卡時間</label>
+        <p class="form-control-static">@Model.SourceData.Time.ToString("yyyy/MM/dd")</p>
+    </div>
+    <div>
+        <label class="col-md-22">進出別</label>
+        <p class="form-control-static">@Model.SourceData.Type</p>
+    </div>
+    @* <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Hours</label>*@
+    @* <p class="form-control-static">@Model.SourceData.Amount.ToString("0.#")</p>
+    <label class="col-md-22">@HRPortal.MultiLanguage.Resource.OvertimeMeal</label>
+    <p class="form-control-static">
+        @if (Model.SourceData.HaveDining)
+        {
+            <span>@HRPortal.MultiLanguage.Resource.Yes</span>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.No</span>
+        }
+    </p>*@
+    @*<dt>補休或加班費</dt>
+        <dd>
+            @if (Model.Compensation== "0")
+            {
+                <span>加班費</span>
+            }
+            else
+            {
+                <span>補修</span>
+            }
+        </dd>*@
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Subjectt</label>
+        <p class="form-control-static">@Model.SourceData.Reason</p>
+    </div>
+    <div>
+        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.PinsinglereasonOvertime</label>
+        <p class="form-control-static" style="word-break: break-all;">
+            @Model.FormData.CancelReason
+        </p>
+    </div>
+</div>
+@if (ViewBag.CanResend != null && ViewBag.CanResend)
+{
+    @*<div class="modal-footer">
+            <a class="btn btn-success" href="@ViewBag.ResendUrl">重送</a>
+        </div>*@
+    <script type="text/javascript">
+        $("#singFlowFooter").show();
+        $("#FormCancel").hide();
+        //2019/09/18 Neo 簽核內容(補刷卡刪除單) 編輯重送按鈕增加confirm事件
+        //$("#Resend").show().attr("href", "@ViewBag.ResendUrl");
+        $("#Resend").unbind("click");
+        $("#Resend").show().click(function (event) {
+            var c = confirm('按下確定後此假單就會拉回，需重新送出');
+            if (c) {
+                window.location.href = '@ViewBag.ResendUrl';
+            }
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#FormCancel").hide();
+        $("#Resend").hide();
+    </script>
+}
+
+@if (ViewBag.FormStatus != null && ViewBag.FormStatus == (int)HRPortal.Mvc.Models.FormStatus.Send)
+{
+
+    <script type="text/javascript">
+        $("#singFlowFooter").show();
+        $("#FormCancel").show().attr("href", "@ViewBag.CancelURL").html("@HRPortal.MultiLanguage.Resource.Overtimesinglepin");
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#FormCancel").hide();
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('@HRPortal.MultiLanguage.Resource.Overtimesinglepin');
+    })
+</script>

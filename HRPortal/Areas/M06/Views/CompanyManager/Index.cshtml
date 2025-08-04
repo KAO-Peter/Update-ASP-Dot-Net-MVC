@@ -1,0 +1,149 @@
+﻿@model IEnumerable<HRPortal.DBEntities.Company>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        padding-left: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "CompanyManager", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+              $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+            </script>
+        }
+
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align:center;">公司代碼</div>  
+                        </th>
+                        <th class="" width="45%" >
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">公司名稱</div> 
+                        </th>
+                         <th class="">
+                           <div id="jqgh_grid-table_code" class="" style="text-align:center;">聯絡窗口</div>  
+                        </th>
+                        <th class="" width="10%">
+                        </th>
+                    </tr>
+                    @if (Model != null && Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                            <tr role="row" id="@(item.ID)" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.CompanyCode)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.CompanyName)
+                                </td>
+                                 <td role="gridcell" class="" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.ContactPrincipal)
+                                </td>
+                                <td role="gridcell" class="" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a class="btn btn-warning"  data-modal="" href="@Url.Action("Detail", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.Resource.BtnEdit</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="3" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.DBEntities.Company>
+                        ;
+                }
+                @{
+                    if (IsAjax)
+                    { Layout = ""; }
+                }
+                @if (Model != null && Model.Count() > 0)
+                {
+
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                         new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                                     new { page }), new PagedListRenderOptions
+                                     {
+                                         DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                                         DisplayLinkToIndividualPages = false,
+                                         //LinkToFirstPageFormat = "<<第一頁",
+                                         //LinkToPreviousPageFormat = "<前一頁",
+                                         //LinkToNextPageFormat = "後一頁>",
+                                         //LinkToLastPageFormat = "最末頁>>",
+                                         DisplayPageCountAndCurrentLocation = true,
+                                         PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.Resource.Pageof,
+                                         DisplayItemSliceAndTotal = true,
+                                         ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.Resource.ofrow
+                                     })
+                }
+            </div>
+        </div>
+    </div>
+
+                    }
+
+<div id='CompanyManagerDialogDiv' class='modal fade in' role="dialog">
+    <div id='CompanyManagerDialogContent'></div>
+</div>
+
+
+
+<script type="text/javascript">
+    function ChangeStatus(form, fileId, formName) {
+        //Submit data
+        $(formName).val(fileId);
+        form.submit();
+    }
+
+    $(function () {
+        //Optional: turn the chache off
+        //Popup
+        $.ajaxSetup({ cache: false });
+        $('a[data-modal]').click(function () {
+            //debugger;
+            $('#CompanyManagerDialogContent').load(this.href, function () {
+                $('#CompanyManagerDialogDiv').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm(this, '#CompanyManagerDialogDiv', '#CompanyManagerDialogContent', true, '@Url.Action("Index")');
+            });
+
+            return false;
+        });
+
+    });
+
+
+</script>

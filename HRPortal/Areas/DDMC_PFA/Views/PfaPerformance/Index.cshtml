@@ -1,0 +1,195 @@
+﻿@model IEnumerable<HRPortal.Mvc.DDMC_PFA.Models.PfaPerformanceViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .col-sm-44:before {
+        content: "：";
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 7px;
+    }
+</style>
+@*<a class="btn btn-info" data-modal="" href="@Url.Action("Create")" data-action="4" style="margin-bottom: 10px;">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnCreate</a>*@
+
+@using (Html.BeginForm("Index", "PfaPerformance", FormMethod.Post, new { Id = "PfaPerformanceForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+                $(function () {
+                    var message = @Html.Raw(Json.Encode(TempData["message"]));
+                    showAlertMessage(message);
+                });
+        </script>
+    }
+    <div class=" row">
+        <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+            <div class="search-section">
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>評等區間代碼</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtCode" name="txtCode" value="@ViewBag.txtCode" class="form-control" />
+                    </div>
+                </div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>評等區間名稱</label>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" id="txtName" name="txtName" value="@ViewBag.txtName" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="submit" value="查詢" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="submit" value="清除" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th style="width:15%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">評等區間代碼</div>
+                        </th>
+                        <th style="width:15%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">評等區間名稱</div>
+                        </th>
+                        <th style="width:15%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">Performance</div>
+                        </th>
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">band</div>
+                        </th>
+                        <th style="width:10%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">佔比(%)</div>
+                        </th>
+                        <th style="width:15%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">Multiplier</div>
+                        </th>
+                        <th style="width:16%">
+                            <div id="jqgh_grid-table_code" style="text-align:center;">Scores</div>
+                        </th>
+                        @*
+                        <th style="width:2%"></th>
+                        <th style="width:2%"></th>
+                        *@
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" id="@item.ID">
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Code)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Performance)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.band)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Rates)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Multiplier)
+                                </td>
+                                <td role="gridcell" style="white-space:normal" aria-describedby="grid-table_notification_count">
+                                    @Html.DisplayFor(modelItem => item.Scores)
+                                </td>
+                                @*
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnEdit" class="btn btn-warning" data-modal="" href="@Url.Action("Edit", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnEdit</a>
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a id="btnDel" class="btn btn-danger" data-modal="" href="@Url.Action("Delete", new { id = item.ID })" data-action="4">@HRPortal.MultiLanguage.DDMC_PFA.Resource.BtnDelete</a>
+                                </td>
+                                *@
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="9" style="text-align:center">
+                                @HRPortal.MultiLanguage.DDMC_PFA.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div style="text-align:center">
+                @* 在後面對pagelist做轉型 *@
+                @using PagedList
+                @using PagedList.Mvc
+                @{
+                    var data = Model as IPagedList<HRPortal.Mvc.DDMC_PFA.Models.PfaPerformanceViewModel>;
+                }
+                @{
+                    if (IsAjax) { Layout = ""; }
+                }
+                @if (Model.Count() > 0)
+                {
+                    @Html.PagedListPager(data, page => Url.Action("Index", new { page, txtCompanyID = ViewBag.txtCompanyID, txtCode = ViewBag.txtCode, txtName = ViewBag.txtName, cmd = "Query" }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                    @Html.PagedListPager(data, page => Url.Action("Index",
+                        new { page, txtCompanyID = ViewBag.txtCompanyID, txtCode = ViewBag.txtCode, txtName = ViewBag.txtName, cmd = "Query" }), new PagedListRenderOptions
+                        {
+                            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                            DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+                            DisplayLinkToNextPage = PagedListDisplayMode.Never,
+                            DisplayLinkToIndividualPages = false,
+                            DisplayPageCountAndCurrentLocation = true,
+                            PageCountAndCurrentLocationFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.Pageof,
+                            DisplayItemSliceAndTotal = true,
+                            ItemSliceAndTotalFormat = @HRPortal.MultiLanguage.DDMC_PFA.Resource.ofrow
+                        })
+                }
+            </div>
+        }
+    </div>
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.txtCompanyID" name="txtCompanyID" id="txtCompanyID" />
+}
+
+<div id='PfaPerformanceDialogDiv' class='modal fade in' role="dialog"><div id='PfaPerformanceDialogContent'></div></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var selEmpUrl = "";
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $('a[data-modal]').click(function () {
+                selEmpUrl = this.href;
+
+                $('#PfaPerformanceDialogContent').load(selEmpUrl, function () {
+                    $('#PfaPerformanceDialogDiv').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }, 'show');
+                });
+                return false;
+            });
+        });
+    </script>
+}

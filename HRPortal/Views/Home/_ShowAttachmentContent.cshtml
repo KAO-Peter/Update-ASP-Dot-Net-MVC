@@ -1,0 +1,50 @@
+﻿@model HRPortal.Mvc.Models.ShowAttachmentContentViewModel
+@{
+   ViewBag.Title="Show attachment content (PDF or Image)";
+}
+
+<div class="form-group">
+    @Html.Label("附件內容", new { @class = "col-md-2 control-label" })
+    <div style="width:100%" id="divFileContent">
+                        
+                      
+    </div>
+</div>
+<script>
+    var pdf_options = {
+        width: "100%",
+        height: "100vh",
+        pdfOpenParams: {
+            view: "fitH",
+            pagemode: "none",
+            toolbar: "0"
+
+        }
+    };
+    @{
+        string filePath=Model.AttachmentFilePath ?? "";
+        string fileExtension = filePath.Substring(filePath.LastIndexOf('.') + 1).Trim().ToLower();
+        
+        switch (fileExtension)
+        {
+            case "pdf":
+                @:PDFObject.embed("@Url.Action("DownloadStream", "DownloadFiles", new { id = Model.AttachmentGUID })", "#divFileContent", pdf_options);
+                break;        
+            case "jpg":
+            case "png":
+            case "gif":
+            case "jpeg":
+            case "bmp":
+                @:$("#divFileContent").append($("<a>", { "href": "@Url.Action("DownloadStream", "DownloadFiles", new { id = Model.AttachmentGUID })", "data-lightbox": "lightbox_FileContent", "data-title": "@Html.DisplayFor(modal=>modal.ContentTitle)" }).append($("<img>", { id: "imgFileContent", src: "@Url.Action("DownloadStream", "DownloadFiles", new { id = Model.AttachmentGUID })", width: "60%" })));
+                @:$(function () { lightbox.option({ "positionFromTop": 30, "resizeDuration": 300, "fitImagesInViewport": false, "fadeDuration": 300, "imageFadeDuration": 300 }) });
+                break;
+            default:
+                @:$("#divFileContent").parent().hide();
+                break;
+                
+        }
+            
+       
+    }
+</script>
+

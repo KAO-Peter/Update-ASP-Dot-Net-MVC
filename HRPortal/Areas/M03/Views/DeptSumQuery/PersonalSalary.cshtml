@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>個人薪資明細</title>
+    @Styles.Render("~/content/site")
+</head>
+<body>
+    @if (TempData["SalaryInfoData"] != null)
+    {
+        <h1 style="text-align:center">個人薪資明細</h1>
+        <div class="row" style="margin:10px">
+
+            @Html.Partial("~/Areas/M03/Views/SalaryQuery/_SalaryInfo.cshtml", (HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryInfo)TempData["SalaryInfoData"])
+
+            @Html.Partial("~/Areas/M03/Views/SalaryQuery/_SalaryItems.cshtml", (HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryItems)TempData["SalaryItemsData"])
+
+
+            @Html.Partial("~/Areas/M03/Views/SalaryQuery/_AbsentItems.cshtml", (HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeAbsentItems)TempData["AbsentItemsData"])
+        </div>
+    }
+    else
+    {
+        <h1 style="text-align:center">無權限閱讀</h1>
+        
+    }
+
+
+</body>
+</html>
+
+
+

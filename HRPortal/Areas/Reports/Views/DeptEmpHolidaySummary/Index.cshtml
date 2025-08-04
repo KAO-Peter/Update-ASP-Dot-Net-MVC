@@ -1,0 +1,311 @@
+﻿@model HRPortal.Mvc.Models.HolidaySummaryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    th {
+        padding-left: 5px;
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .muti-search-container {
+        padding: 15px;
+        background: #eaeae9;
+        margin: 0 0 25px;
+        position: relative;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .search-input span {
+        padding: 3px 0;
+    }
+
+    .search-input input[type="checkbox"] {
+        margin: 0;
+    }
+
+    .ms-drop ul > li label {
+        max-width: 20px;
+    }
+
+    .ms-choice > span {
+        padding-left: 8px;
+    }
+    @(ViewBag.LanguageCookie == "en-US" ? ".search-name label {text-align : left}" : "")
+</style>
+
+@using (Html.BeginForm("Index", "DeptEmpHolidaySummary", FormMethod.Post, new { id = "HolidaySummaryForm" }))
+{
+    <div class=" row">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                var message = @Html.Raw(Json.Encode(TempData["message"]))
+                showAlertMessage(message);
+            </script>
+        }
+        <div class="muti-search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+          <div>
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var ddata = new ViewDataDictionary();
+                            ddata.Add("id", "SelectedDepartment");
+                            ddata.Add("class", "form-control");
+                            ddata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.DepartmentListData, ddata);
+                        }
+                        <input id="DeptID" name="DeptID" type="hidden" value="">
+                    </div>
+                </div>
+                <div class="search-wrap divEmp">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.Employee</label>
+                    </div>
+                    <div class="search-input">
+                        @{
+                            var edata = new ViewDataDictionary();
+                            edata.Add("id", "SelectedEmployee");
+                            edata.Add("class", "form-control");
+                            edata.Add("multiple", "true");
+                            Html.RenderPartial("~/Views/Shared/_MutiSelectList.cshtml", Model.EmployeeListData, edata);
+                        }
+                        <input id="EmpID" name="EmpID" type="hidden" value="">
+                    </div>
+                </div>
+                @if (Model.Role!=null)
+                {
+                    <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.statuss</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedStatuslistData, Model.StatuslistDataData, new { @class = "form-control" })
+                    </div>
+                </div>
+                }
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.yearr</label>
+                    </div>
+                    <div class="search-input">
+                        @Html.DropDownListFor(x => x.SelectedYear, Model.YearListData, new { @class = "form-control" })
+                    </div>
+                </div>
+                <!--假別-->
+                <div class="search-wrap">
+                    <div class="search-name">
+                        <label>@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                    </div>
+                    <div class="search-input" style="width:200px">
+                        @Html.DropDownListFor(x => x.AbsentCodes, Model.AbsentCodes, new { @class = "form-control", @multiple = "multiple" })
+                        <input id="QAbsentCodes" name="QAbsentCodes" type="hidden" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnQuery" style="width:100%" name="btnQuery" type="button" value="@HRPortal.MultiLanguage.Resource.Inquire" class="btn btn-info" />
+                </div>
+                <div class="col-xs-6" style="padding-left:0px">
+                    <input id="btnClear" style="width:100%" name="btnClear" type="button" value="@HRPortal.MultiLanguage.Resource.BtnClear" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" id="SummaryDetail" style="padding-right: 13px;">
+        </div>
+    </div>
+}
+
+@section scripts {
+<script src="~/Scripts/muti-dept-emp.js"></script>
+<script type="text/javascript">
+    var obj = null;
+    var $url = "@Url.Action("Index")";
+
+    var $mutiSelect = mutiSelect || {};
+    $mutiSelect.url = $url;
+    $mutiSelect.deptSelect = $('#SelectedDepartment');
+    $mutiSelect.empSelect = $('#SelectedEmployee');
+    $mutiSelect.statusSelect = $('#SelectedStatuslistData');
+    $mutiSelect.empvalmode = "ID";
+
+    $(function () {
+        $mutiSelect.setDepartmentList2();
+        var absentcodes = $('#AbsentCodes');
+        if (absentcodes.find('option').length == 1) {
+            absentcodes.removeAttr("multiple");
+        }
+        else {
+            absentcodes.multipleSelect({ selectAllText: '全部', allSelected: '全部' });
+            var $multiSelectArea = absentcodes.parent();
+            $multiSelectArea.children('.ms-parent').css({ 'padding': '0 0 0 0', 'max-width': '100%'});
+            $multiSelectArea.find('.ms-choice').css({ 'height': '100%' });
+        }
+
+        $("#btnQuery,#btnExport").click(function (event) {
+
+            if ($mutiSelect.empID.val() == '') {
+                showAlertMessage('請選擇員工');
+                return false;
+            }
+
+            var curSelectAbsent = '';
+            $.each(absentcodes.find('option:selected'), function () {
+                curSelectAbsent += $(this).val() + ',';
+            });
+
+            curSelectAbsent = curSelectAbsent.substring(0, curSelectAbsent.length - 1);
+
+            if (curSelectAbsent.trim().length == 0) {
+                showAlertMessage('請選擇假別');
+                return false;
+            }
+
+            $("#QAbsentCodes").val(curSelectAbsent);
+
+
+            if (event.target.id == "btnQuery") {
+                var form = $("#HolidaySummaryForm");
+                var submitData = new FormData(form[0]);
+
+                $.ajax({
+                    url: $url + '/SummaryDetail',
+                    type: "POST",
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    dataType: "html",
+                    success: function (result) {
+                        $("#SummaryDetail").html(result);
+                    }
+                });
+            } else {
+                var formexport = $('#HolidaySummaryForm');
+                formexport.attr('action', '@Url.Action("Export")');
+                formexport.submit();
+            }
+        });
+
+        $('#btnClear').click(function () {
+            window.location.href = $url;
+        });
+
+        if ('@ViewBag.isALL' != 'True') {
+            //$("#btnQuery").trigger("click");
+        }
+        else {
+            $mutiSelect.divEmp.hide();
+        }
+    });
+/*
+    $("#SelectedDepartment").change(function (event) {
+        $.getJSON('@Url.Action("GetEmployee")', { DepartmentId: $(this).val(),StatusData:$("#SelectedStatuslistData").val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null)
+            {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+    $("#SelectedStatuslistData").change(function (event) {
+        $.getJSON('@Url.Action("GetStatusData")', { DepartmentId: $("#SelectedDepartment").val(), StatusData: $(this).val() }, function (datas) {
+            var empSelect = $("#SelectedEmployee");
+            $(empSelect).empty();
+            $.each(datas, function (index, data) {
+                empSelect.append($("<option></option>").val(data.Value).html(data.Text));
+            });
+
+            if (obj != null) {
+                $("#SelectedEmployee").val(obj.Empno);
+                obj = null;
+            }
+        });
+    });
+*/
+    //$("#btnQuery").click(function (event) {
+    //    var form = $("#HolidaySummaryForm");
+    //    var submitData = new FormData(form[0]);
+
+    //    $.ajax({
+    //        url: "DeptEmpHolidaySummary/SummaryDetail",
+    //        type: "POST",
+    //        data: submitData,
+    //        contentType: false,
+    //        processData: false,
+    //        dataType: "html",
+    //        success: function (result) {
+    //            $("#SummaryDetail").html(result);
+    //        }
+    //    });
+        //});
+/*
+        $("#btnClear").click(function (event) {
+            empno = "";
+
+            var form = $("#HolidaySummaryForm");
+            var submitData = new FormData(form[0]);
+
+            $.ajax({
+                url: "DeptEmpHolidaySummary/Index",
+                type: "POST",
+                data: submitData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (result) {
+                    obj = result;
+
+                    $("#SelectedDepartment").val(result.Dept);
+                    $("#SelectedDepartment").change();
+                    $("#SelectedYear").val(result.Year);
+                
+                }
+            });
+        });
+*/
+/*
+    $("#btnClear").click(function (event) {
+        empno = "";
+
+        var form = $("#HolidaySummaryForm");
+        var submitData = new FormData(form[0]);
+
+        $.ajax({
+            url: "DeptEmpHolidaySummary/Index",
+            type: "POST",
+            data: submitData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (result) {
+                obj = result;
+
+                $("#SelectedDepartment").val(result.Dept);
+                $("#SelectedDepartment").change();
+                $("#SelectedYear").val(result.Year);
+                
+            }
+        });
+    });*/
+
+    //function refresh(seconds){
+    //    setTimeout("self.location.reload()", seconds * 1000);
+    //}
+    //refresh(300);  //调用方法启动定时刷新，数值单位：秒。
+</script>
+}
+

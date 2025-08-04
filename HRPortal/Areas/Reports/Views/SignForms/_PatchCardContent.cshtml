@@ -1,0 +1,57 @@
+﻿@model HRPortal.Mvc.Models.PatchCardDisplayModel
+<style>
+     .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+<div class="dl-info dl-horizontal">
+    <label class="col-md-22" style="width: 17%;">申請人</label>
+    <p class="form-control-static">@Model.EmployeeName</p>
+    <label class="col-md-22" style="width: 17%;">單位</label>
+    <p class="form-control-static">@Model.DepartmentName</p>
+    <label class="col-md-22" style="width: 17%;">刷卡時間</label>
+    <p class="form-control-static">@Model.Time.ToString("yyyy/MM/dd HH:mm")</p>
+    <label class="col-md-22" style="width: 17%;">進出公司</label>
+    <p class="form-control-static">@Model.Type</p>
+    <label class="col-md-22" style="width: 17%;">事由</label>
+    <p class="form-control-static">@Model.ReasonType</p>
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.Fillcreditcardreasons</label>
+    <p class="form-control-static">@Model.Reason</p>
+    <label class="col-md-22" style="width: 17%;">附件</label>
+    <p class="form-control-static">
+        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <a target="_blank"  href="@Url.Action("DownloadPatchCardFormFile", new { formNo = Model.FormNo })"> @Html.DisplayFor(model => model.FileName) </a>
+        }
+        else
+        {
+            <span>無</span>
+        }
+    </p>
+</div>
+
+@if (ViewBag.CanSign != null && ViewBag.CanSign == true)
+{
+    <script type="text/javascript">
+        $("#btnSign").show();
+        $("#btnReject").show();
+        $("#SignInstruction").show();
+        flagCanSign = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#btnSign").hide();
+        $("#btnReject").hide();
+        $("#SignInstruction").hide();
+        flagCanSign = false;
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('補刷卡申請單');
+    })
+</script>

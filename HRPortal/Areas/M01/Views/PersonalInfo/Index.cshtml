@@ -1,0 +1,241 @@
+﻿@model HRPortal.Mvc.Models.PersonalInfoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+       .col-md-22 {
+    
+    width: 15%;
+   
+}
+            .col-sm-45 {
+    width: 33.33333333%;
+    padding-left: 10px;
+    float: left;
+}
+            
+             .col-sm-45:before {
+        display:inline-block;
+              }
+            
+               .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+@using (Html.BeginForm("Index", "PersonalInfo", FormMethod.Post, new { id = "PersonalInfoForm" }))
+{
+    //if (ViewBag.Status == null || ViewBag.Status == "false" )
+    if (false) //20180319 Daniel，移除第二層AD密碼輸入
+    {
+        <div class="col-xs-12">
+            <h4 class="text-danger" style="font-size:20px;">※請再次輸入您的<span style="font-size:24px;font-weight:bolder;">AD登入密碼</span>，才可使用該功能。</h4>
+            <!--<label for="Password" style="font-weight: bold;color: red;">提醒您：密碼連續輸入錯誤3次，將被鎖定並立即登出，請逕洽HR。</label>-->
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="col-md-2 control-label" style="font-size:16px;width:7.6%">密碼：</label>
+                <div class="col-md-4">
+                    <input type="password" name="PWdata" class="form-control" id="PWdata" />
+                </div>
+                <button name="btnCheckPW" id="btnCheckPW" class="col-md-2 btn btn-success" type="button">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                @*<input type="submit" class="col-md-2 btn btn-success" name="btnCheckPW" id="btnCheckPW" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" />*@
+            </div>
+        </div>
+    }else{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="col-md-11 col-lg-9">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_CompanyName</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@ViewBag.CompanyName</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_DepartmentOfHRM</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@(ViewBag.LanguageCookie == "en-US" ? Model.employeeData.Department.DepartmentEnglishName : Model.employeeData.Department.DepartmentName)</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmployeeName</label>
+                <div class="col-sm-45">
+
+                    <p class="form-control-static">@Model.employeeData.EmployeeName</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmpID</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@Model.employeeData.EmployeeNO</p>
+                </div>
+                </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmployeeEnglishName</label>
+                <div class="col-sm-45">
+
+                    <p class="form-control-static">@Model.employeeData.EmployeeEnglishName</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_Gender</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@(Model.employeeData.Gender == (int)HRPortal.Mvc.Models.GenderType.Male ? HRPortal.MultiLanguage.Resource.Option_Male : HRPortal.MultiLanguage.Resource.Option_Female)</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_OnBoardDate</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@Model.employeeData.ArriveDate.ToString("yyyy/MM/dd")</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_Email</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@Model.employeeData.Email</p>
+                    @*@Html.TextBoxFor(model => model.ArriveDate, "{0:yyyy/MM/dd}", new { @class = "form-control", id = "datetimepicker1" })
+                        @Html.ValidationMessageFor(model => model.ArriveDate, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_Phone</label>
+                <div class="col-sm-45 mini-input-group">
+                    <p class="form-control-static">@Model.employeeData.TelephoneNumber</p>
+                    @*@Html.TextBoxFor(model => model.employeeData.TelephoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.employeeData.TelephoneNumber, "", new { @class = "text-danger" })*@
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_Address</label>
+                <div class="col-sm-45">
+                    <div class="form-control-static" style="width: 500px;">@Model.employeeData.Address</div>
+                </div>
+                 </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_RegisterPhone</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@Model.employeeData.RegisterTelephoneNumber</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_RegisterAddress</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static" style="width: 500px;">@Model.employeeData.RegisterAddress</p>
+                </div>
+                </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_MobilePhone</label>
+                <div class="col-sm-45" data-bind="validationElement: cel" title="">
+                    <p class="form-control-static">@Model.employeeData.CellphoneNumber</p>
+                    @*@Html.TextBoxFor(model => model.employeeData.CellphoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.employeeData.CellphoneNumber, "", new { @class = "text-danger" })*@
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmergencyContactName</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static">@Model.employeeData.EmergencyName</p>
+                </div>
+                </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmergencyContactPhone</label>
+                <div class="col-sm-45">
+                   <p class="form-control-static">@Model.employeeData.EmergencyTelephoneNumber</p>
+                </div>
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmergencyContactAddress</label>
+                <div class="col-sm-45">
+                    <p class="form-control-static" style="width: 600px;">@Model.employeeData.EmergencyAddress</p>
+                </div>
+               </div>
+            <div class="form-group">
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_EmergencyContactRelationship</label>
+                <div class="col-sm-45">
+                   <p class="form-control-static">@Model.employeeData.EmergencyRelation</p>
+                </div>
+            
+                <label class="col-md-22">@HRPortal.MultiLanguage.Resource.Label_ApprovalDepartment</label>
+                <div class="col-sm-45 mini-input-group">
+                    <p class="form-control-static">@(ViewBag.LanguageCookie == "en-US" ? Model.employeeData.SignDepartment.DepartmentEnglishName : Model.employeeData.SignDepartment.DepartmentName)</p>
+                    @*@Html.DropDownListFor(m => m.employeeData.SignDepartmentID, Model.signDepartmentLists, new { @class = "form-control" })
+                    @Html.HiddenFor(model => model.employeeData.SignDepartmentID, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.employeeData.SignDepartment.DepartmentName, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.employeeData.SignDepartmentID, "", new { @class = "text-danger" })*@
+                </div>
+                </div>
+                </div>
+                @*<div class="row">
+                <div class="col-sm-offset-2">
+                    <input id="btnPersonalInfoUpdate" type="submit" class="btn btn-success" value="@HRPortal.MultiLanguage.Resource.BtnSave" />
+                </div>
+            </div>*@
+        </div>
+    
+}
+    
+}
+@section Scripts{
+
+    <script type="text/javascript">
+        $('#btnPersonalInfoUpdate').click(function (event) {
+            var form = $('#PersonalInfoForm');
+            form.submit(function (e) {
+                e.preventDefault();
+            });
+            var submitData = new FormData(form[0]);
+            showConfirm("<div style='text-align:center'>是否仍要更新?</div>", function () {
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (submitResult) {
+                        if (submitResult.status == 'success') {
+                            showAlertMessage(submitResult.message, function () {
+                                window.location = '@Url.Action("Index")';
+                            });
+                        } else {
+                            showAlertMessage(submitResult.message);
+                        }
+
+                    }
+                });
+            });
+
+        });
+        $(function () {
+
+            //停用按下Return鍵會自動送出表單的動作
+            $(document).on('keypress', 'form input[type="password"]', function (e) {
+                if (e.which == 13) {
+                    e.preventDefault();
+                    //$('#btnCheckPW').trigger('click');
+                    return false;
+                }
+            });
+
+            $('#btnCheckPW').click(function (event) {
+                var form = $('#PersonalInfoForm');
+
+                if ($('#PWdata').val() == "")
+                    showAlertMessage("請輸入密碼");
+                else {
+                    checkPassword();
+                }
+
+            });
+
+            function checkPassword() {
+                var form = $('#PersonalInfoForm');
+                var submitData = new FormData(form[0]);
+                $.ajax({
+                    url: 'PersonalInfo/CheckPassword',
+                    type: 'POST',
+                    data: submitData,
+                    contentType: false,
+                    processData: false,
+                    success: function (checkResult) {
+                        if (checkResult.status != 'success') {
+                            $('#PWdata').val('');
+                            showAlertMessage(checkResult.message, function () {
+                                window.location = '@Url.Action("Index")';
+                           });
+                        }
+                        else {
+                            form.submit();
+                        }
+                    }
+                });
+
+            }
+        });
+    </script>
+}

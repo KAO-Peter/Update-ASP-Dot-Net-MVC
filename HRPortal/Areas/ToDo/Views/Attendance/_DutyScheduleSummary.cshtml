@@ -1,0 +1,104 @@
+﻿@model List<HRPortal.ApiAdapter.HRMApiAdapterData.DutyScheduleSummary>
+
+<style>
+    .highlightabsent {
+        color: red;
+    }
+    .highlightabsentbackground {
+        background-color: #d4eef9;
+    }
+</style>
+@foreach(var deptItem in Model)
+{
+if (deptItem.DeptMember.Count() == 0)
+{
+    <table class="table table-outline table-bordered fe-table">
+        <tbody>
+            <tr>
+                <th style="text-align:center">
+                    @HRPortal.MultiLanguage.Resource.NoData
+                </th>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{    
+    foreach (var EmployeeItem in deptItem.DeptMember)
+    {
+        if(EmployeeItem.EmpName!=null && EmployeeItem.EmpID!=null && EmployeeItem.DutySet.Count>0)
+        {
+            <table class="table table-outline table-bordered fe-table">
+                <tbody>
+                    <tr style="background-color: lightgray; color: #333"; >
+                        <th style="width:8% ;text-align: center">
+                            @EmployeeItem.EmpID  @EmployeeItem.EmpName
+                        </th>
+                        <th style="width:4% ;text-align: center">星期</th>
+                        <th style="width:5% ;text-align: center">上班時間</th><!--排進-->
+                        <th style="width:5% ;text-align: center">下班時間</th><!--排出-->
+                        <th style="width:3% ;text-align: center">上班時數</th><!--排班時數-->
+                        <th style="width:5% ;text-align: center">刷進</th>
+                        <th style="width:5% ;text-align: center">刷出</th>
+                        <th style="width:5% ;text-align: center">出勤時數</th>
+                        <th style="width:3% ;text-align: center">缺勤</th>
+                        <th style="width:3% ;text-align: center">遲到分鐘</th>
+                        <th style="width:3% ;text-align: center">早退分鐘</th>
+                        <th style="width:4% ;text-align: center">假別</th>
+                        <th style="width:13% ;text-align: center">假別起訖時間</th>
+                        <th style="width:3% ;text-align: center">請假時數</th>
+                    </tr>
+                    @foreach (var DutyItem in EmployeeItem.DutySet)
+                    {
+                        var rowspan = DutyItem.AbsentOvertimeInfo.Any() ? string.Format("rowspan={0}", DutyItem.AbsentOvertimeInfo.Count()) : "";
+                        <tr style="font-weight:bold">
+                            <td @rowspan style="vertical-align:middle;text-align: center;">
+                                @DutyItem.ExcuteDate
+                            </td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.Weekday </td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.StartTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.EndTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.WorkHours</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.InTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.OutTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.DutyTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.DutyAmount</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.LateTime</td>
+                            <td @rowspan style="vertical-align:middle;text-align: center;">@DutyItem.EarlyLeaveTime</td>
+                            @if (DutyItem.AbsentOvertimeInfo.Any())
+                            {
+                                <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[0].Name</td>
+                                <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[0].BeginTime - @DutyItem.AbsentOvertimeInfo[0].EndTime</td>
+                                <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[0].Amount</td>
+                            }
+                            else
+                            {
+                                <td style="vertical-align:middle;text-align: center;"></td>
+                                <td style="vertical-align:middle;text-align: center;"></td>
+                                <td style="vertical-align:middle;text-align: center;"></td>                            
+                            }
+
+                        </tr>
+                        if (DutyItem.AbsentOvertimeInfo.Any())
+                        {
+                            for (var i = 1; i < DutyItem.AbsentOvertimeInfo.Count(); i++)
+                            {
+                                <tr style="font-weight:bold">
+                                    <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[i].Name</td>
+                                    <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[i].BeginTime - @DutyItem.AbsentOvertimeInfo[i].EndTime</td>
+                                    <td style="vertical-align:middle;text-align: center;">@DutyItem.AbsentOvertimeInfo[i].Amount</td>
+                                </tr>
+                          
+                            }
+                        }
+                                                
+
+                    
+                    }
+                </tbody>
+            </table>
+        }
+    }
+     
+}
+}

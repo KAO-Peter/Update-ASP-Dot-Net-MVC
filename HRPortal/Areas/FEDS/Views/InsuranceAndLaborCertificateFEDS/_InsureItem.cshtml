@@ -1,0 +1,62 @@
+﻿@model List<HRPortal.ApiAdapter.HRMApiAdapterData.EmpInsurePersonalMoney>
+
+@{
+    var MaxCount = Model.Count;
+    double LaborInsurePersonalMoneyTotal = 0;
+    double HealthInsurePersonalMoneyTotal = 0;
+    double EmpHealthAddPersonalMoneyTotal = 0;
+ }
+
+<table cellpadding='0' cellspacing='0' border='0' style='width: 100%; max-width: 100%; margin-bottom: 5px; font-size: 12px;'>
+	<tbody>
+		<tr>
+			<td colspan='1' width='170' align='center' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>姓名</span></td>
+			<td colspan='1' width='80' align='center' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>&nbsp;</span></td>
+			<td colspan='1' width='170' align='center' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>身分證字號</span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>勞保保費&nbsp;</span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>健保保費&nbsp;</span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px 0px 1px 0px; height: 20px;'>
+                <span>補充保費&nbsp;</span></td>
+		</tr>
+        @for (int i = 0; i < MaxCount; i++)
+        {
+            <tr>
+                <td colspan='1' width='170' align='center' valign='middle' style='border-width: 0px;  height: 20px;'>
+                    <span>@Model[i].Name</span></td>
+			    <td colspan='1' width='80' align='center' valign='middle' style='border-width: 0px; height: 20px;'>
+                    <span>@Model[i].Type</span></td>
+			    <td colspan='1' width='170' align='center' valign='middle' style='border-width: 0px; height: 20px;'>
+                    <span>@Model[i].IDNumber</span></td>
+			    <td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px; height: 20px;'>
+                    <span>@Model[i].LaborInsurePersonalMoney.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+			    <td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px; height: 20px;'>
+                    <span>@Model[i].HealthInsurePersonalMoney.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+			    <td colspan='1' width='160' align='right' valign='middle' style='border-width: 0px; height: 20px;'>
+                    <span>@Model[i].EmpHealthAddPersonalMoney.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+            </tr> 
+            
+                LaborInsurePersonalMoneyTotal = LaborInsurePersonalMoneyTotal + Model[i].LaborInsurePersonalMoney;
+                HealthInsurePersonalMoneyTotal = HealthInsurePersonalMoneyTotal +  Model[i].HealthInsurePersonalMoney;
+                EmpHealthAddPersonalMoneyTotal = EmpHealthAddPersonalMoneyTotal +   Model[i].EmpHealthAddPersonalMoney;                        
+        }
+        <tr>
+            <td colspan='1' width='170' align='left' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span>合計:</span></td>
+			<td colspan='1' width='80' align='left' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span></span></td>
+			<td colspan='1' width='170' align='left' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span></span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span>@LaborInsurePersonalMoneyTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span>@HealthInsurePersonalMoneyTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+			<td colspan='1' width='160' align='right' valign='middle' style='border-width: 1px 0px 0px 0px; border-top-style: solid; height: 20px;'>
+                <span>@EmpHealthAddPersonalMoneyTotal.ToString("###,###,###,##0.000").Replace(".000", string.Empty)&nbsp;</span></td>
+        </tr>
+	</tbody>
+</table>

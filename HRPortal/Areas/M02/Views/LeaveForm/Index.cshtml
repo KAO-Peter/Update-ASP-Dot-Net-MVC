@@ -1,0 +1,893 @@
+﻿@*@model HRPortal.DBEntities.LeaveForm*@
+@model HRPortal.Mvc.Models.LeaveFormViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+.form-group .col-sm-8:before {
+             content: "：";
+            display: inline-block;
+            float:left;
+            line-height:33px;
+                  }
+.form-group .col-sm-9:before {
+             content: "：";
+            display: inline-block;
+            height: 60px;
+            vertical-align: bottom;
+                  }
+.form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+ .col-sm-45 {
+    width: 32%;
+    padding-left: 10px;
+    float: left;
+}
+     .needStar:before {
+        content: "*";
+        color:red;
+        float:left;
+    }
+
+    .col-md-22 {
+        height:28px;
+    }
+
+    .titleValid {
+        font-weight:bolder;
+    }
+    .titleFuture {
+        font-weight:bolder;
+        color:blue;  
+    }
+    .titleOverdue {
+        font-weight:bolder;
+        color:red;
+    }
+    .disabledText {
+        background-color:#F6F6F6;
+        font-weight:bolder;
+        -webkit-text-fill-color:#880000; 
+        -webkit-opacity:1; 
+    }
+</style>
+
+@using (Html.BeginForm("Index", "LeaveForm", FormMethod.Post, new { enctype = "multipart/form-data", id = "LeaveForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var message = @Html.Raw(Json.Encode(TempData["message"]));
+                showAlertMessage(message);
+            });
+        </script>
+    }
+    @Html.HiddenFor(model => model.FormData.FormNo);
+    @Html.HiddenFor(model => model.FormData.ID);
+    @Html.HiddenFor(model => model.FormData.Status);
+    <div class="row">
+        <!-- 2018/11/22 Neo 增加生效日與到期日欄位而調整寬度 -->
+        <div id="leaveLeftSide" class="col-sm-12 col-md-6" style="padding:0px;">
+            <div class="form-horizontal">
+                 <!--員工編號 & 員工姓名-->
+                 <div class="form-group">
+                    <div class="col-xs-10 col-sm-10 col-md-6">
+                        <label  class="col-md-22">@HRPortal.MultiLanguage.Resource.EmployeeNumber</label>               
+                        <div class="col-sm-45">
+                            <p class="form-control-static">@ViewBag.EmpID</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-10 col-sm-10 col-md-6">
+                        <label class="col-md-22">
+                        <label　>@HRPortal.MultiLanguage.Resource.EmployeeName1</label>
+                    </label>
+                        @if (Model.getLanguageCookie == "en-US")
+                        {
+                            <div class="col-sm-45">
+                        <p class="form-control-static">@ViewBag.EmployeeEnglishName</p>
+                    </div>
+                        }else{  
+                            <div class="col-sm-45">
+                        <p class="form-control-static">@ViewBag.EmpName</p>
+                    </div>
+                        }
+                     </div>
+                    </div>
+                 <!--部門-->
+                 <div class="form-group">
+                     <div class="col-sm-7 col-md-9">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.DepartmentName</label>
+                        @if (Model.getLanguageCookie == "en-US")
+                        {
+                            <div class="col-sm-6 col-md-8" style="float:left;">
+                                <p class="form-control-static" data-bind="text: department_value">@ViewBag.DepartmentEnglishName</p>
+                            </div>
+                        }else
+                        {
+                            <div class="col-sm-6 col-md-8" style="float:left;">
+                                <p class="form-control-static" data-bind="text: department_value">@ViewBag.SignDeptName</p>
+                            </div>
+                        }
+                      </div>
+                </div>
+                 <!--假別-->
+                 <div class="form-group">
+                    <div class="col-sm-7 col-md-9">
+                        <label class="col-md-22 needStar">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</label>
+                        <div class="col-sm-8">
+                            @Html.DropDownList("LeaveAmountListData", (IEnumerable<SelectListItem>)ViewData["LeaveAmountList"], new { @class = "form-control", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#LeaveAmountData');" })                                             
+                         </div>
+                    </div>
+                 </div>
+                <div class="form-group" id="div_absent_note" style="display:none;">                    
+                    <label style="margin-left: 130px; color:red;">@HRPortal.MultiLanguage.Resource.Hint_DeferredAnnualLeave</label>
+                </div>
+                 <!--起訖時間-->                                   
+                 <div class="form-group">
+                    <div class="col-sm-11  col-md-12">
+                       <label class="col-md-22 needStar">@HRPortal.MultiLanguage.Resource.StartingDate</label>
+                       <div class="col-sm-8 col-md-9">
+                            <div class="col-xs-12 col-sm-10 col-md-11" style="display:inline-block; padding:0px;">
+                            @Html.TextBoxFor(model => model.FormData.StartTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker1", style="width:45%; float:left; font-size:12px; padding:5px;",@readonly="readonly"})
+                            @Html.ValidationMessageFor(model => model.FormData.StartTime, "", new { @class = "text-danger" })
+                            <span class="col-sm-1" style="padding-right: 10px;width: 24px; float:left; line-height:33px;"> ~ </span>
+                            @Html.TextBoxFor(model => model.FormData.EndTime, "{0:yyyy/MM/dd HH:mm}", new { @class = "form-control", id = "datetimepicker2", style="width:45%; float:left; font-size:12px; padding:5px;",@readonly="readonly"})
+                            @Html.ValidationMessageFor(model => model.FormData.EndTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-11  col-md-12">
+                    <label class="col-md-22">@HRPortal.MultiLanguage.Resource.AppliedLeaveHours</label>
+                     <div class="col-sm-8 col-md-9">
+                        <input type="text" class="disabledText" style ="width:30%;" id="LeaveAmount" value ="@(string.Format("1 {0} 0 {1}",HRPortal.MultiLanguage.Resource.dayy,HRPortal.MultiLanguage.Resource.Hour))" disabled/>
+                        <br /><label id="leaveAmountMsg" class="text-danger" style="display:none;"></label>
+                    </div>
+                     <div class="col-sm-4">
+                     </div>
+                    </div>
+                </div>
+                <!--是否檢核假單--> 
+                @if(ViewBag.isCheck == "false")
+                {
+                    @*判斷是否顯示檢核*@
+                    <div class="form-group" id="mealTimeSetting">
+                         <div class="col-sm-7 col-md-9">
+                             <label class="col-md-22" for="ChkLeave">@HRPortal.MultiLanguage.Resource.NoChecked</label>
+                             <div class="col-sm-8 col-md-9" style="padding-top:0px">
+                                 @Html.CheckBoxFor(m => m.ChkLeave, new {style="width:10%" })    
+                                 @Html.TextBoxFor(m => m.IsCheckedAmount, new { @style = "width:30%;", id = "IsCheckedAmount" ,type = "number"})
+                                 <span>@HRPortal.MultiLanguage.Resource.Hour</span>                   
+                             </div>
+                             <div class="col-sm-4"></div>
+                         </div>
+                    </div>
+                     @*<div class="form-group" id="mealTimeSetting">
+                        <div class="col-sm-11  col-md-12">
+                        <label class="col-sm-2 control-label">@HRPortal.MultiLanguage.Resource.NoChecked</label>
+                  <div class="col-sm-4" style="padding-right: 0px;width: 20px;padding-top:5px;">
+                      @Html.CheckBoxFor(m => m.ChkLeave)
+                  </div>
+                   <div class="col-sm-4">
+                       @Html.TextBoxFor(m => m.IsCheckedAmount, new { @style = "width:30%;", id = "IsCheckedAmount" ,type = "number"})
+                        <span>@HRPortal.MultiLanguage.Resource.Hour</span>
+                     </div>
+                   </div>
+                 </div>*@
+                    }
+
+                @*<div class="form-group">
+                        @Html.LabelFor(model => model.LeaveAmount, new { @class = "col-md-2 control-label" })
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(model => model.LeaveAmount, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LeaveAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                 <!--是否出國-->
+                 <div class="form-group">
+                     <div class="col-sm-7 col-md-9">
+                        <label class="col-md-22" for="FormData_IsAbroad">@HRPortal.MultiLanguage.Resource.IfOutOfCountry</label>
+                        <div class="col-sm-8 col-md-9" style="padding-top:5px">
+                            @Html.CheckBoxFor(model => model.FormData.IsAbroad, new {style="width:10%" })
+                            @Html.ValidationMessageFor(model => model.FormData.IsAbroad, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="form-group" >                
+                        <label style="margin-left: 130px; color:red;">1.各類假別請假時數最少為1小時，滿1小時以上方能以0.5小時為單位申請。</label>
+                        <label style="margin-left: 130px; color:red;">2.申請公出假時，請於下方請假原因處填具公出事由。</label>
+                </div>*@
+                 <!--請假原因-->
+                 <div class="form-group">
+                     <div class="col-sm-7 col-md-12">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.ReasonForLeave</label>
+                        <div class="col-sm-8">                               
+                        @Html.TextAreaFor(model => model.FormData.LeaveReason, new { @class = "form-control", style = "height:60px; width:92%" })
+                        <div>(@HRPortal.MultiLanguage.Resource.Within200Words)</div>
+                        @Html.ValidationMessageFor(model => model.FormData.LeaveReason, "", new { @class = "text-danger" })
+                        </div>
+                      </div>
+                </div>
+                 <!--代理人部門 & 代理人-->       
+                 <!--特定人員不顯示代理人-->         
+                @if(ViewBag.EmpID == "00630" || ViewBag.EmpID == "00733" || ViewBag.EmpID == "01189" || ViewBag.EmpID == "00242" || ViewBag.EmpID == "01034" || ViewBag.EmpID == "01098")
+                    {
+
+                    }
+                    else
+                    {
+                 <div class="form-group">
+                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6" style="margin-top:10px;">  
+                        <label class="col-md-22 needStar">@HRPortal.MultiLanguage.Resource.ActingPersonDepartment</label>
+                        <div class="col-sm-8 col-md-6 col-lg-8">
+                            <div>
+                                @Html.DropDownList("DepartmentListData", (IEnumerable<SelectListItem>)ViewData["DepartmentList"], new { @class = "form-control", id = "DepartmentListData", style = "width:80%" })
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6" style="margin-top:10px;">
+                        <label class="col-md-22 needStar">@HRPortal.MultiLanguage.Resource.ActingPerson</label>
+                        <div class="col-sm-8 col-md-6 col-lg-8">
+                            <div>
+                                @Html.DropDownList("AgentListData", (IEnumerable<SelectListItem>)ViewData["AgentList"], new { @class = "form-control", id = "AgentListData", onchange = "ChangeStatus(this.form,this.options[this.selectedIndex].value,'#AgentData');", style = "width:80%" })
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                    }
+                 @* <!--假別說明-->
+                 <div class="form-group">
+                     <div class="col-sm-7 col-md-12">
+                        <label class="col-md-22">@HRPortal.MultiLanguage.Resource.AbsentExplanation</label>                                   
+                        <div class="col-sm-8">                                                    
+                            <textarea readonly="readonly" id="ShowRemark" name="ShowRemark" style = "width:95% ;border: none; ">@ViewBag.RemarkData</textarea>
+                        </div>
+                      </div>
+                 </div>*@
+                 
+                 <!--附加檔案--><!-- style="display:none"-->
+                 <div class="form-group">
+                     <div class="col-sm-7 col-md-12">
+                        <label class="col-md-22" >@HRPortal.MultiLanguage.Resource.Attachment</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="UploadFilePath" id="UploadFilePath" style="padding-top:5px;" title="支援格式： csv、jpg、jpeg、png、gif、tiff、bmp、txt、doc、docx、xls、xlsx、ppt、pptx、pdf" />
+                        </div> 
+                      </div> 
+                    </div>
+                @if (Model.FormData.Status == (int)HRPortal.Mvc.Models.FormStatus.Draft)
+                {
+                    <div class="col-sm-offset-2" style="padding-bottom:10px;padding-top:10px;padding-left:5px;">
+                        <button type="button" class="btn btn-info" id="btnShowLeaveHours">@HRPortal.MultiLanguage.Resource.Button_LeaveHoursSummary</button>
+                        <button type="submit" class="btn btn-success" id="btnLeaveFormSubmit" onclick="$(this).prop('disabled', true);">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                        @if (ViewBag.StatusEdit == "True")
+                        {
+                            <button type="submit" class="btn btn-danger" id="btnLeaveFormDelete">@HRPortal.MultiLanguage.Resource.BtnDelete</button>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        @if (ViewData["LeaveDatas"] != null)
+        {
+            <!-- 2018/11/22 Neo 增加生效日與到期日欄位而調整寬度 -->
+            <div id="leaveRightSide" style="display:none;" class="col-sm-6">
+                <div class="titleValid">@HRPortal.MultiLanguage.Resource.Label_EmpHolidayHoursNow
+                    @if (ViewData["Now_SpecialAbsent_EndDate"] != null)
+                    {
+                        <span>(@HRPortal.MultiLanguage.Resource.Label_AnnualLeaveExpiryDate：@(((DateTime)ViewData["Now_SpecialAbsent_EndDate"]).ToString("yyyy/MM/dd")))</span>
+                    }
+                </div>
+                <!-- 2018/11/22 Neo 增加生效日與到期日欄位而調整字大小 -->
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%;font-size:11px;">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div> 
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;"> @HRPortal.MultiLanguage.Resource.TotalLeaveQuota </div>   
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.LeaveHours</div>  
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.WaitiAapproval</div>   
+                        </th>
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.RemainingHours</div>  
+                        </th>
+                        <!-- 2018/11/22 Neo 增加生效日與到期日欄位 -->
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.PfStartDate</div>  
+                        </th>
+                        <th class="">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">@HRPortal.MultiLanguage.Resource.PfEndDate</div>  
+                        </th>
+                    </tr>
+                    @foreach (var item in ((List<HRPortal.ApiAdapter.HRMApiAdapterData.AbsentDetail>)ViewData["LeaveDatas"]).Where(x => x.CanUse))
+                    {
+                        <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" title="@item.Name" aria-describedby="grid-table_classified_code_name">@(item.getLanguageCookie == "en-US" ? item.AbsentNameEn : item.Name)</td>
+                            <td role="gridcell" title="@item.AnnualLeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.AnnualLeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.LeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.LeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.ApprovedHours @item.Unit" aria-describedby="grid-table_category_name">@item.ApprovedHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>                          
+                            <td role="gridcell" title="@item.UseAmount @item.Unit" aria-describedby="grid-table_category_name">@item.UseAmount.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <!-- 2018/11/22 Neo 增加生效日與到期日欄位 -->
+                            <td role="gridcell" style="" title="@item.BeginDateMin @item.BeginDateMin" aria-describedby="grid-table_category_name">@(item.BeginDateMin.HasValue && item.Name != "補休" ? item.BeginDateMin.Value.ToString("yyyy/MM/dd") : "") </td>
+                            <td role="gridcell" style="" title="@item.EndDateMax @item.EndDateMax" aria-describedby="grid-table_category_name">@(item.EndDateMax.HasValue && item.Name != "補休" ? item.EndDateMax.Value.ToString("yyyy/MM/dd") : "") </td>
+                        </tr>
+                    }
+                </table>
+             
+                <!--增加逾期失效的與未來生效的-->
+                <!--逾期失效的，目前不顯示-->
+                <!--
+                <div class="titleOverdue">逾期失效的假別時數</div>
+                <table id="tblOverdue" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div> 
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;"> @HRPortal.MultiLanguage.Resource.TotalLeaveQuota</div>   
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.LeaveHours</div>  
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.WaitiAapproval</div>   
+                        </th>
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.RemainingHours</div>  
+                        </th>
+                    </tr>
+                    @*foreach (var item in ((List<HRPortal.ApiAdapter.HRMApiAdapterData.AbsentDetail>)ViewData["LeaveDatas_Overdue"]).Where(x => x.CanUse && (x.AnnualLeaveHours > 0 || x.ApprovedHours > 0 || x.UseAmount > 0)))
+                    {
+                        <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" title="@item.Name" aria-describedby="grid-table_classified_code_name">@(item.getLanguageCookie== "en-US" ? item.AbsentNameEn : item.Name)</td>
+                            <td role="gridcell" title="@item.AnnualLeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.AnnualLeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.LeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.LeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.ApprovedHours @item.Unit" aria-describedby="grid-table_category_name">@item.ApprovedHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>                          
+                            <td role="gridcell" title="@item.UseAmount @item.Unit" aria-describedby="grid-table_category_name">@item.UseAmount.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                        </tr>
+                    }*@
+                </table>
+                -->
+
+                @if (((List<HRPortal.ApiAdapter.HRMApiAdapterData.AbsentDetail>)ViewData["LeaveDatas_Future"]).Where(x => x.CanUse && (x.AnnualLeaveHours > 0 || x.ApprovedHours > 0 || x.UseAmount > 0)).Any())
+                {
+                <div class="titleFuture">@HRPortal.MultiLanguage.Resource.Label_EmpHolidayHoursFuture
+                    @if (ViewData["Future_SpecialAbsent_BeginDate"] != null)
+                    {
+                        <span>(@HRPortal.MultiLanguage.Resource.Label_AnnualLeaveEffectiveDate：@(((DateTime)ViewData["Future_SpecialAbsent_BeginDate"]).ToString("yyyy/MM/dd")))</span>
+                    }
+                </div>
+                <!-- 2018/11/22 Neo 增加生效日與到期日欄位而調整字大小 -->
+                <table id="tblFutureHoliday" tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%;font-size:11px;">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.CategoryOfLeave</div> 
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;"> @HRPortal.MultiLanguage.Resource.TotalLeaveQuota</div>   
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.LeaveHours</div>  
+                        </th>
+                        <th>
+                           <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.WaitiAapproval</div>   
+                        </th>
+                        <th>
+                            <div id="jqgh_grid-table_code" style="text-align:center;">@HRPortal.MultiLanguage.Resource.RemainingHours</div>  
+                        </th>
+                    </tr>
+                    @foreach (var item in ((List<HRPortal.ApiAdapter.HRMApiAdapterData.AbsentDetail>)ViewData["LeaveDatas_Future"]).Where(x => x.CanUse && (x.AnnualLeaveHours > 0 || x.ApprovedHours > 0 || x.UseAmount > 0)))
+                    {
+                        <tr role="row" id="leave_rest" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td role="gridcell" title="@item.Name" aria-describedby="grid-table_classified_code_name">@(item.getLanguageCookie == "en-US" ? item.AbsentNameEn : item.Name)</td>
+                            <td role="gridcell" title="@item.AnnualLeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.AnnualLeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.LeaveHours @item.Unit" aria-describedby="grid-table_category_name">@item.LeaveHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                            <td role="gridcell" title="@item.ApprovedHours @item.Unit" aria-describedby="grid-table_category_name">@item.ApprovedHours.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>                          
+                            <td role="gridcell" title="@item.UseAmount @item.Unit" aria-describedby="grid-table_category_name">@item.UseAmount.ToString("0.0") @(item.Unit == "h" ? @HRPortal.MultiLanguage.Resource.Hour : @HRPortal.MultiLanguage.Resource.dayy)</td>
+                        </tr>
+                    }
+                </table>
+               
+                }
+            </div>
+        }
+    </div>
+    
+    @*hidden 元素*@
+    <input type="hidden" value="@ViewBag.LeaveAmountData" name="LeaveAmountData" id="LeaveAmountData" />
+    <input type="hidden" value="@ViewBag.AgentData" name="AgentData" id="AgentData" />
+    <input type="hidden" value="@ViewBag.minTime" name="minTime" id="minTime" />
+    <input type="hidden" value="@ViewBag.EndTime" name="EndTime" id="EndTime" />
+    <input type="hidden" value="" id="HoursCheckPassed"/>
+    <input type="hidden" value="@ViewBag.DeferredAmount" name="DeferredAmount" id="DeferredAmount" />    
+}
+
+@section scripts{
+<script type="text/javascript">
+    function ChangeStatus(form, fileId, formName) {
+        $(formName).val(fileId);
+        if (formName == "#LeaveAmountData" && fileId != null && fileId.split('_')[2]!=null)
+        {
+            if(fileId.split('_')[2]!="")
+            {
+                $("#ShowRemark").html("※"+fileId.split('_')[2]);
+            }else
+            {
+                $("#ShowRemark").html("@HRPortal.MultiLanguage.Resource.NoRemark");
+            }
+        }
+    }
+    $(function () {
+        @*20180515 Frank 假單編輯重送計算時數顯示天及時數 *@
+        if ($('#LeaveAmountListData option:selected').val() != "") {
+            getCalculatehHours();
+        } 
+
+        $.ajaxSetup({ cache: false });
+
+        $('#AgentListData').trigger('change');
+
+        var locale='@(Request.Cookies["lang"].Value  == "en-US" ? "en" : "cn")';
+        $('#datetimepicker1').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "minTime":"@(ViewBag.minTime)",//"@Model.FormData.StartTime.ToString("HH:mm")",
+            "timelistScroll": true,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD hh:mm",
+            "onShow": function(handler){
+                //開啟日期選擇器就要暫停自動重新計算時數
+                flagRecalculateHours=false;
+                //console.log('datetimepicker1 show--'+flagRecalculateHours);
+            },
+            "onHide": function(handler){
+                //關閉日期選擇器就要重新計算時數與重取得代理人
+                flagRecalculateHours=true;
+                //console.log('datetimepicker1 hide--'+flagRecalculateHours);
+                $('#datetimepicker1').trigger('change');
+
+                //如果另一個日期選擇器有顯示，自動計算就要再設定為false
+                var datePickers=$(".datepicker");
+                for (var i=0;i<=datePickers.length;i++) {
+                    if ($(datePickers[i]).css('display')!='none')
+                    {
+                        flagRecalculateHours=false;
+                        break;
+                    }
+                }
+            }
+
+        });
+  
+        $('#datetimepicker2').appendDtpicker({
+            "inline": false,
+            "locale": locale,
+            "minuteInterval": 10,
+            "timelistScroll": true,
+            "calendarMouseScroll": false,
+            "closeOnSelected": true,
+            "width":"300px",
+            "dateFormat": "YYYY/MM/DD hh:mm",
+            "onShow": function(handler){
+                //開啟日期選擇器就要暫停自動重新計算時數
+                flagRecalculateHours=false;
+            },
+            "onHide": function(handler){
+                //關閉日期選擇器就要重新計算時數與重取得代理人
+                flagRecalculateHours=true;
+                $('#datetimepicker2').trigger('change');
+
+                //如果另一個日期選擇器有顯示，自動計算就要再設定為false
+                var datePickers=$(".datepicker");
+                for (var i=0;i<=datePickers.length;i++) {
+                    if ($(datePickers[i]).css('display')!='none')
+                    {
+                        flagRecalculateHours=false;
+                        break;
+                    }
+                }
+            }
+        });
+
+        //this.value.indexOf("01") 各家的假別代碼需注意，特休代碼需依各位設定進行變更
+        // 20200210 小榜 this.value.indexOf("01") >= 0 改為 == 以防字串中有相同代碼出現，造成無法選取假別
+        $('#LeaveAmountListData').change(function(){       
+            if(this.value.indexOf("01") == 0){
+                if($("#DeferredAmount").val() > 0 ){
+                    alert("@HRPortal.MultiLanguage.Resource.Text_UseDeferredLeaveFirst");
+                    $("#LeaveAmountListData option[value^='DD1']").prop("selected", true);
+                }
+            }
+        });
+
+            if($("#DeferredAmount").val() > 0 ){
+                $("#LeaveAmountListData option[value^='01']").remove();
+                $("#div_absent_note").show();
+            }
+    })
+
+    $('#btnLeaveFormSubmit').click(function (event) {
+        //2018/12/26 Neo 按下送出就先disable送出按鈕(防止重複送出)
+        EnableSubmitElement(false);
+        
+        var form = $('#LeaveForm');
+        form.submit(function (e) {
+            e.preventDefault();
+        });
+
+        if (form.validate().form()) {
+            var checkAgent = true;
+            if ('@(ViewBag.AgentRequired)'=="true" && $('#AgentData').val()=="")
+            {
+                if('@(ViewBag.EmpID)' == '00630' || '@(ViewBag.EmpID)'  == '00733' ||'@(ViewBag.EmpID)'  == '01189' ||'@(ViewBag.EmpID)'  == '00242' ||'@(ViewBag.EmpID)'  == '01034' ||'@(ViewBag.EmpID)'  == '01098')
+                {}
+                else
+                {
+                    showAlertMessage("@HRPortal.MultiLanguage.Resource.Actingpersonmustbefilled", function() {EnableSubmitElement(true);});
+                    //return;
+                    checkAgent = false;
+                }
+            }
+            
+            if(checkAgent)
+            {
+                //為了iOS專門做的處理，沒上傳檔案就要將input type=file設定為停用
+                EnableUploadFileElement(false);
+
+                var submitData = new FormData(form[0]);
+                var absentData = $('#LeaveAmountData').val().split('_');
+                submitData.append('AbsentCode', absentData[0]);
+                submitData.append('AbsentAmount', absentData[1]);
+                submitData.append('AbsentUnitData', absentData[3]);
+                submitData.append('CanOverdraft', absentData[4]);
+                submitData.append('AgentNo', $('#AgentData').val());
+
+                //增加剩餘時數是否足夠的檢核
+                if ($("#HoursCheckPassed").val()!="true") {
+                    showAlertMessage("@HRPortal.MultiLanguage.Resource.Text_LeaveCheckFailed", function() {EnableSubmitElement(true);});
+                }
+                else {
+                    checkEmployeeLeave(submitData);
+                }
+            }
+        }
+
+        //2018/12/26 Neo 以上動作執行完畢, 最後一步再讓送出按鈕enable
+        //EnableSubmitElement(true);
+
+    });
+
+    $('#btnLeaveFormDelete').click(function (event) {
+        var form = $('#LeaveForm');
+        form.submit(function (e) {
+            e.preventDefault();
+        });
+
+        //為了iOS專門做的處理，沒上傳檔案就要將input type=file設定為停用
+        EnableUploadFileElement(false);
+
+        var submitData = new FormData(form[0]);
+        showConfirm("<div style='text-align:center'>@HRPortal.MultiLanguage.Resource.Confirmdeletee</div>", function(){
+            $.ajax({
+                url: 'LeaveForm/DeletedForm',
+                type: 'POST',
+                data: submitData,
+                async: true,
+                contentType: false,
+                processData: false,
+                success: function (submitResult) {
+                    if (submitResult.status == 'success')  {
+                        showAlertMessage(submitResult.message , function(){
+                            window.location='@Url.Action("Index")';
+                        });
+                    }
+                    else {
+                        showAlertMessage(submitResult.message);
+                    }
+                }
+            }).always(function () {
+                //重新開放file欄位
+                EnableUploadFileElement(true);
+            });
+        });
+    });
+
+    //下拉選單 change 事件
+    $("select.form-control").change(function () {
+        switch($(this).attr("id"))
+        {
+            case "DepartmentListData":  //代理人部門
+                //代理人部門帶出代理人
+                $.getJSON('@Url.Action("GetActingPerson")', { DeptCode: $(this).val()  ,beginDate:$('#datetimepicker1').val() ,endDate:$('#datetimepicker2').val()}, function (result) {
+                    var obj = $("#AgentListData").empty();
+                    $.each(result, function (index, item) {                        
+                        //obj.append($("<option></option>").val(item.Value).html(item.Text));
+                        //alert(item.Selected);
+                        //20180516 Ricky 增加disabled控制
+                        obj.append($("<option value=" + item.Value + " " +(item.Selected ? "selected=selected" : "") + (item.Disabled ? "disabled" : "") +">"+ item.Text +"</option>"));
+                    });
+
+                    $('#AgentListData').trigger('change');
+                });
+                //$('#AgentListData').trigger('change');
+                break;
+            default:
+                break;
+        }
+    });
+    $('#LeaveAmountListData').change(function(){
+        getCalculatehHours();
+    });
+
+    var flagRecalculateHours=true;
+
+    $('#datetimepicker1, #datetimepicker2').change(function(){
+        
+        if (this.id=='datetimepicker1')
+        {
+            var date1=$(this).val().substring(0,10);
+            var date2=$('#datetimepicker2').val().substring(0,10);
+            if (date1!=date2)
+            {
+                var checkdate1=parseInt(date1.replace(/\//g,''));
+                var checkdate2=parseInt(date2.replace(/\//g,''));
+                //console.log(checkdate1+","+checkdate2);
+                if (!isNaN(checkdate1) && !isNaN(checkdate2) && (checkdate1>checkdate2))
+                {
+                    $('#datetimepicker2').val($('#datetimepicker2').val().replace(date2,date1));
+                    //var newDate2=$('#datetimepicker2').val();
+                    //$('#datetimepicker2').handleDtpicker('setDate', new Date(newDate2.substring(0,4), newDate2.substring(5,7),newDate2.substring(8,10),newDate2.substring(11,13),newDate2.substring(14,16), 0, 0))
+                    //console.log($('#datetimepicker2').handleDtpicker('getDate'));
+                   
+                    $('#datetimepicker2').trigger('change');
+                    return;
+                }
+            }
+        }
+        console.log(flagRecalculateHours);
+        if (flagRecalculateHours)
+        {
+            getCalculatehHours();
+
+            $.getJSON('@Url.Action("GetActingPerson")', { DeptCode: $('#DepartmentListData').val() ,beginDate:$('#datetimepicker1').val() ,endDate:$('#datetimepicker2').val()}, function (result) {
+                var obj = $("#AgentListData").empty();
+
+                $.each(result, function(index, item) {
+                    //20180516 Ricky 增加disabled控制
+                    obj.append($("<option value=" + item.Value + " " +(item.Selected ? "selected=selected" : "") + (item.Disabled ? "disabled" : "") +">"+ item.Text +"</option>"));
+                });
+                $('#AgentListData').trigger('change');
+            });
+            $('#AgentData').val("");
+        }
+    });
+
+    $('#btnShowLeaveHours').click(function(){
+        if ($('#leaveRightSide').is(":visible")) {
+            $('#leaveRightSide').hide();
+        } 
+        else {
+            $('#leaveRightSide').show();
+        }
+    });
+
+    //設定上傳檔案欄位disabled狀態
+    function EnableUploadFileElement(flagEnabled) {
+        var file=$("#UploadFilePath");
+        if (!flagEnabled && !(file.val())) //如果需要關掉，又沒有選擇檔案時，將file設定為disabled，專門為了iOS處理的
+        {
+            file.attr('disabled',true);
+        }
+        else //有選擇檔案，或是需要重新打開的時候
+        {
+            file.attr('disabled',false);
+        }
+    }
+
+    //2018/12/26 Neo 增加送出按鈕disabled狀態開關function 
+    function EnableSubmitElement(flagEnabled) {
+        var btn=$('#btnLeaveFormSubmit');
+        if (!flagEnabled)
+        {
+            btn.prop('disabled',true);
+        }
+        else
+        {
+            btn.prop('disabled',false);
+        }
+    }
+
+    function checkEmployeeLeave(data) {
+        $.ajax({
+            url: 'LeaveForm/CheckEmployeeLeave?timestamp1='+Date.now(),
+            type: 'POST',
+            data: data,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function (checkResult) {
+                //var checkResult = JSON.parse(result);
+                if (checkResult.status == 'success') {
+                    checkAgentLeave(data);
+                }
+                else {
+                    showAlertMessage(checkResult.message, function() {EnableSubmitElement(true);});
+                }
+            }, 
+            error: function (error) {
+
+            }
+        }).always(function () {
+            //重新開放file欄位
+            EnableUploadFileElement(true);
+        });;
+    }
+
+    function checkAgentLeave(data) {
+        $.ajax({
+            url: 'LeaveForm/CheckAgentLeave?timestamp1='+Date.now(),
+            type: 'POST',
+            data: data,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function (checkResult) {
+                //var checkResult = JSON.parse(result);
+                if (checkResult.status == 'success') {
+                    checkLeave(data);
+                } else{
+                    showConfirm(checkResult.message + "<br/>@HRPortal.MultiLanguage.Resource.Confirmsend", function(){
+                        checkLeave(data);
+                    });
+                }
+            }
+
+        }).always(function () {
+            //重新開放file欄位
+            EnableUploadFileElement(true);
+        });
+    }
+
+    function checkLeave(data, successCallback) {
+        $.ajax({
+            url: 'LeaveForm/CheckLeave2?timestamp1='+Date.now(),
+            type: 'POST',
+            data: data,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function (checkResult) {
+                //var checkResult = JSON.parse(result);
+                if (checkResult.Status == true) {
+                    //console.log(checkResult);
+                    //$('#EmpAbsentCheckDetailList').val(JSON.stringify(checkResult.EmpAbsentCheckDetailList));
+                    data.append('WorkHours', checkResult.WorkHours);
+                    data.append('EmpAbsentCheckDetailList',JSON.stringify(checkResult.EmpAbsentCheckDetailList));
+                    data.append('AbsentName',checkResult.AbsentName);
+                    data.append('AbsentEngName',checkResult.AbsentEngName);
+                    data.append('AbsentQuota',checkResult.AbsentQuota);
+                    //data.append('EmpAbsentCheckDetailList',checkResult.EmpAbsentCheckDetailList);
+                    //console.log(JSON.stringify(checkResult.EmpAbsentCheckDetailList));
+                    formSubmit(data);
+                    @*bootbox.dialog({
+                        title: "@HRPortal.MultiLanguage.Resource.LeaveRequestSent",
+                        message: checkResult.Message,
+                        buttons: {
+                            success: {
+                                label: "@HRPortal.MultiLanguage.Resource.Confirm",
+                                className: "btn-primary",
+                                callback: function() {
+                                    formSubmit(data);
+                                }
+                            },
+                            cancel:{
+                                label: "@HRPortal.MultiLanguage.Resource.Cancel",
+                                className: "btn-default"
+                            }
+                        }
+                    });*@
+
+                } else {
+                    showAlertMessage(checkResult.Message, function() {EnableSubmitElement(true);});
+                }
+            }
+        }).always(function () {
+            //重新開放file欄位
+            EnableUploadFileElement(true);
+        });
+    }
+
+    function formSubmit(data) {
+        var form = $('#LeaveForm');
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: data,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function (submitResult) {
+                //svar submitResult = JSON.parse(result);
+                if (submitResult.status == 'success') {
+                    showAlertMessage(submitResult.message, function(){
+                        window.location = '@Url.Action("Index")';
+                    });
+                } else {
+                    showAlertMessage(submitResult.message, function(){
+                        window.location = '@Url.Action("Index")';
+                    });
+                }
+            }
+        }).always(function () {
+            //重新開放file欄位
+            EnableUploadFileElement(true);
+        });
+    }
+
+    @*20180419 Frank 假單計算時數改為顯示天及時數，有不足日數的部分則增加顯示提醒 *@
+    function getCalculatehHours(){
+        
+        $("#HoursCheckPassed").val("false");
+
+        $.ajax({
+            url: '@Url.Action("GetCalculatehHours")',
+            type: 'POST',
+            data:{leaveCode:$('#LeaveAmountListData option:selected').val().split("_")[0],beginDate:$('#datetimepicker1').val() ,endDate:$('#datetimepicker2').val()},
+            async: true,
+            success: function (result) {
+                $('#leaveAmountMsg').hide();
+                var amount = parseFloat(result.status);
+                var days = Math.floor(amount / 8);
+                var hours = amount % 8;
+
+                $("#HoursCheckPassed").val((amount>0)?"true":"false");
+               
+                var leaveAmoount = days + " @HRPortal.MultiLanguage.Resource.dayy " + hours + " @HRPortal.MultiLanguage.Resource.Hour";
+                $('#LeaveAmount').val(leaveAmoount);
+                if (hours == 0) {
+                    if (amount == 0) {
+                        $('#leaveAmountMsg').show();
+                        $('#leaveAmountMsg').html(result.message);
+                    }
+                }
+                else {
+                    $('#leaveAmountMsg').show();
+                    $('#leaveAmountMsg').html('@HRPortal.MultiLanguage.Resource.Hint_ConfirmLeaveHours');
+                }
+            }                
+        });
+    }
+
+    //$('#LeaveAmountListData').on('change', function() {        
+    //    if(this.value.indexOf("A01") >= 0){
+    //        if($("#DeferredAmount").val() > 0 ){
+    //            alert("請先使用遞延假");
+    //            $("#LeaveAmountListData option[value^='DD1']").prop("selected", true);
+    //        }
+    //    }
+    //})
+
+
+    //$(function() {
+    //    if($("#DeferredAmount").val() > 0 ){
+    //        $("#LeaveAmountListData option[value^='A01']").remove();
+    //        $("#div_absent_note").show();
+    //    }
+    //});
+</script>
+}

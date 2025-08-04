@@ -1,0 +1,79 @@
+﻿@model HRPortal.Mvc.Models.OverTimeDisplayModel
+<style>
+     .form-control-static:before {
+            content: "：";
+            display: inline-block;
+                  }
+</style>
+<div class="dl-info dl-horizontal">
+    <label class="col-md-22" style="width: 17%;">申請人</label>
+    <p class="form-control-static">@Model.EmployeeName</p>
+    <label class="col-md-22" style="width: 17%;">單位</label>
+    <p class="form-control-static">@Model.DepartmentName</p>
+    <label class="col-md-22" style="width: 17%;">填表日期</label>
+    <p class="form-control-static">@Model.CreatedTime.ToString("yyyy/MM/dd")</p>
+    <label class="col-md-22" style="width: 17%;">起迄時間</label>
+    <p class="form-control-static">@Model.StartTime.ToString("yyyy/MM/dd HH:mm") <span>至</span> @Model.EndTime.ToString("yyyy/MM/dd HH:mm")</p>
+    <label class="col-md-22" style="width: 17%;">時數</label>
+    <p class="form-control-static">@Model.Amount.ToString("0.#")</p>
+    <label class="col-md-22" style="width: 17%;">是否用餐</label>
+    <p class="form-control-static">
+        @if (Model.HaveDining)
+        {
+            <span>是</span>
+        }
+        else
+        {
+            <span>否</span>
+        }
+    </p>
+     <label class="col-md-22" style="width: 17%;">加班原因歸類</label>
+    <p class="form-control-static">
+       @Model.OverTimeTypeName
+    </p>
+    @if (Model.EnableSettingEatingTime == true)
+    {
+        <label class="col-md-22" style="width: 17%;">用餐時間</label>
+        <p class="form-control-static">
+            <span>@Model.CutTime</span>
+        </p> 
+    }
+    <label class="col-md-22" style="width: 17%;">@HRPortal.MultiLanguage.Resource.CompensatoryLeaveOrOvertimePay</label>
+    <p class="form-control-static">
+        @if (Model.Compensation== "0")
+        {
+            <span>@HRPortal.MultiLanguage.Resource.CompensatedDayOff</span>
+        }
+        else
+        {
+            <span>@HRPortal.MultiLanguage.Resource.OvertimePay</span>
+        }
+    </p>
+    <label class="col-md-22" style="width: 17%;">事由</label>
+    <p class="form-control-static">@Model.OverTimeReason</p>
+</div>
+
+@if (ViewBag.CanSign != null && ViewBag.CanSign == true)
+{
+    <script type="text/javascript">
+        $("#btnSign").show();
+        $("#btnReject").show();
+        $("#SignInstruction").show();
+        flagCanSign = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $("#btnSign").hide();
+        $("#btnReject").hide();
+        $("#SignInstruction").hide();
+        flagCanSign = false;
+    </script>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#detailFormTypeName').html('加班單');
+    })
+</script>

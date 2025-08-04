@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class=" row">
+    <div class="search-container" style="margin-right: 13px; border-left-width: 5px; margin-left: 13px;">
+        <div class="search-section">
+            <div class="search-wrap">
+                <div class="search-name">
+                    <label>刷卡日期</label>
+                </div>
+                <div class="search-input">
+                    <input id="BeginDate" placeholder="請選擇日期" type="datetime" name="BeginDate" maxlength="10"  class="form-control">
+                </div>
+            </div>
+             <div class="search-wrap">          
+                <div>
+                    <a id="tpe" name="btnCreateEmergencyStaffList" class="btn btn-info" data-modal="" data-action="4" style="margin-bottom: 10px;">台北</a>
+                    <a id="itabashi" name="btnCreateEmergencyStaffList" class="btn btn-info" data-modal="" data-action="4" style="margin-bottom: 10px;">板橋</a>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>
+        
+        <script>
+            $(function () {
+                var dateNow = new Date();
+                $("[type='datetime']").datetimepicker({
+                    format: 'yyyy/mm/dd',
+                    pickTime: false,
+                    startView: 'decade',
+                    minView: 'month',
+                    autoclose: true,
+                    language: 'zh-TW',
+                });
+
+                $('#BeginDate').val(dateNow.getFullYear() + '/' + (dateNow.getMonth()+1) + "/" + dateNow.getDate());
+            })
+
+            $('a[name=btnCreateEmergencyStaffList]').click(function () {
+                if ($('#BeginDate').val() != null && $('#BeginDate').val() != '') {
+                    var choiceDate = new Date($('#BeginDate').val());
+                    var DateToString = choiceDate.getFullYear().toString() + (((choiceDate.getMonth() + 1) < 10) ? '0' + (choiceDate.getMonth() + 1).toString() : (choiceDate.getMonth() + 1).toString()) + (choiceDate.getDate() < 10 ? ('0' + choiceDate.getDate().toString()) : choiceDate.getDate().toString());
+                    $.ajax({
+                        url: 'EmergencyStaffList/createEmergencyStaffList',
+                        type: 'POST',
+                        dataType: 'json',
+                        cache: false,
+                        async: false,
+                        data: {
+                            downloadDate: DateToString,
+                            compamyArea: $(this).attr('id')
+                        },
+                        success: function (submitResult) {
+                            if (submitResult.status == 'success') {
+                                window.location = 'EmergencyStaffList/DownloadExcelReport?fName=' + submitResult.message;
+                            } else {
+                                showAlertMessage(submitResult.message);
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            showAlertMessage(textStatus);
+                        }
+                    })
+                } else if ($('#BeginDate').val() == null || $('#BeginDate').val()=='')
+                {
+                    showAlertMessage("日期不得為空白");
+                }
+            })
+
+
+
+        </script>

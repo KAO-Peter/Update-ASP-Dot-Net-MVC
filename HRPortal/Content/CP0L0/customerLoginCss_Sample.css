@@ -1,0 +1,11 @@
+/*此檔案為客製登入畫面用檔案 如果登入畫面需要客製的話 將此檔名稱改為customerLoginCss.css*/
+
+#index .login .box
+{
+	border: #FFC13A 1px solid;/*取消邊框顏色*/
+}
+		
+#index .login .box .title
+{
+	border-bottom:#FFC13A 1px solid;
+}

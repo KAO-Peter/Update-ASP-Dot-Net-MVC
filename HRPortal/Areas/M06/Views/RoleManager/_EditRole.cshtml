@@ -1,0 +1,87 @@
+﻿@model HRPortal.Mvc.Models.RoleViewModel
+
+@Scripts.Render("~/bundles/validate")
+
+@{
+    ViewBag.Title = "EditRole";
+}
+<style>
+    .form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: 130px;
+}
+    .col-md-33 {
+    color: #777;
+    width: 100px;
+    height: 15px;
+    text-align: justify;
+    -ms-text-justify: distribute;
+    padding: 3px 0 8px 35px;
+    float: left;
+}
+    .col-md-33:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+</style>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            var message = @Html.Raw(Json.Encode(TempData["message"]));
+            showAlertMessage(message);
+        });
+    </script>
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@HRPortal.MultiLanguage.Resource.RoleEditTitle</h4>
+        </div>
+
+        @using (Html.BeginForm("Edit", "RoleManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            //hide data
+            @Html.HiddenFor(model => model.ID)
+    <div class="modal-body">
+        <div class="tab-content">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new {@class = "col-md-33", style = "width:19%" })
+                <div class="col-sm-44">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsAdmin, new { @class = "col-md-33", style = "width:19%" })
+                <div class="col-sm-44">
+                    @Html.CheckBoxFor(model => model.IsAdmin,new { style = "width:20%" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsHR, new {@class = "col-md-33", style = "width:19%" })
+                <div class="col-sm-44">
+                    @Html.CheckBoxFor(model => model.IsHR,new { style = "width:20%" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "col-md-33", style = "width:19%"})
+                <div class="col-sm-44" style="width:60%">
+                    @Html.EditorFor(model => model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="modal-footer">
+                <input type="submit" value="@HRPortal.MultiLanguage.Resource.BtnSave" class="btn btn-success" />
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @HRPortal.MultiLanguage.Resource.BtnClose</button>
+            </div>
+        }
+    </div>
+</div>
+

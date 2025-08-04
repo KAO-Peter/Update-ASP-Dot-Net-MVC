@@ -1,0 +1,91 @@
+﻿@model HRPortal.ApiAdapter.HRMApiAdapterData.EmployeeSalaryItems
+@{
+            var MaxCount = Model.TaxableItems.Count;
+            decimal TaxableAmounts = 0;
+            decimal NoTaxAmounts = 0;
+            decimal WithholdingAmounts = 0;
+            if (Model.NoTaxItems.Count > MaxCount)
+            {
+                MaxCount = Model.NoTaxItems.Count;
+            }
+            if (Model.WithholdingItems.Count > MaxCount)
+            {
+                MaxCount = Model.WithholdingItems.Count;
+            }
+
+}
+<table class="table table-outline table-bordered fe-table">
+    <tbody>
+        <tr>
+            <th style="text-align:center" colspan="2">
+                應稅項目
+            </th>
+            <th style="text-align:center"  colspan="2">
+                免稅項目
+            </th>
+            <th style="text-align:center"  colspan="2">
+                代扣項目
+            </th>
+        </tr>
+     
+            @for (int i = 0; i < MaxCount; i++)
+            {
+                <tr>
+                    @if (i < Model.TaxableItems.Count)
+                    {
+                    //TaxableItems
+                    TaxableAmounts += Model.TaxableItems[i].Amount;
+                    <th>
+                        @Model.TaxableItems[i].Name
+                    </th>
+                    <td style="text-align:right">@Model.TaxableItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    }
+
+                    @if (i < Model.NoTaxItems.Count)
+                    {
+                        //NoTaxItems
+                        NoTaxAmounts += Model.NoTaxItems[i].Amount;
+                    <th>
+                        @Model.NoTaxItems[i].Name
+                    </th>
+                    <td style="text-align:right">
+                        @Model.NoTaxItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)
+                    </td>
+                    }
+                    else
+                    {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    }
+
+                    @if (i < Model.WithholdingItems.Count)
+                    {
+                        //WithholdingItems
+                        WithholdingAmounts += Model.WithholdingItems[i].Amount;
+                    <th>
+                        @Model.WithholdingItems[i].Name
+                    </th>
+                    <td style="text-align:right">@Model.WithholdingItems[i].Amount.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+                    }
+                    else
+                    {
+                    <th></th>
+                    <td style="text-align:right"></td>
+                    }
+                </tr>
+            }
+        <tr>
+            <th>應稅合計</th>
+            <td style="text-align:right">@TaxableAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th>免稅合計</th>
+            <td style="text-align:right">@NoTaxAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+            <th>代扣合計</th>
+            <td style="text-align:right">@WithholdingAmounts.ToString("###,###,###,##0.000").Replace(".000", string.Empty)</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,173 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "InsuranceAndLaborCertificateFEDS", FormMethod.Post, new { id = "InsuranceAndLaborCertificateFEDSForm" }))
+    {
+        if (ViewBag.Status == null || ViewBag.Status == "false" || Session["ExpiredTime_"] == null || DateTime.Parse(Session["ExpiredTime_"].ToString()) < DateTime.Now)
+        {
+        <div class="col-xs-12">
+            <h4 class="text-danger">※請再次輸入您的登入密碼，才可使用該功能。</h4>
+            <!--<label for="Password" style="font-weight: bold;color: red;">提醒您：密碼連續輸入錯誤3次，將被鎖定並立即登出，請逕洽HR。</label>-->
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="col-md-2 control-label" style="font-size:16px;width:7.6%">密碼：</label>
+                <div class="col-md-4">
+                    <input type="password" name="PWdata" class="form-control" id="PWdata" />
+                </div>
+                <button name="btnCheckPW" id="btnCheckPW" class="col-md-2 btn btn-success" type="button">@HRPortal.MultiLanguage.Resource.BtnSubmit</button>
+                @*<input type="submit" class="col-md-2 btn btn-success" name="btnCheckPW" id="btnCheckPW" value="@HRPortal.MultiLanguage.Resource.BtnSubmit" />*@
+            </div>
+        </div>
+        }
+        else
+        {
+        <input id="selectedYear" type="text" name ="selectedYear" value="" style="display:none;" />
+        <div class="col-xs-12">
+            @if (ViewBag.YearList != null)
+            {
+                <div class="table-responsive">
+                <table tabindex="0" cellspacing="0" cellpadding="0" border="0" class="table-bordered ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="height:50px;width:100%">
+                    <tr class="ui-jqgrid-labels" role="rowheader" style="height:40px;color:#777">
+                        @*<div style="color:#F00">※下載後，PDF開啟密碼預設為身分證字號後6碼+生日月份4碼(ex:3月7日及輸入0307)</div>*@
+                        <div style="color:#F00">※下載後，PDF開啟密碼預設為身分證字號，英文字母為大寫(ex:A123456789)</div>
+                        <div style="color:#F00">※保費年度資料自2020年度起提供查詢</div>  
+                        <th class="" style="width:20%">
+                            <div id="jqgh_grid-table_code" class="" style="text-align:center;">保費年度</div>
+                        </th>
+                        <th class="" style="width:1%">
+
+                        </th>
+
+                    </tr>
+                    @if (ViewBag.YearList.Count > 0)
+                    {
+                        foreach (var item in ViewBag.YearList)
+                        {
+                            <tr role="row" tabindex="-1" id="@item" class="ui-widget-content jqgrow ui-row-ltr">
+                                <td role="gridcell" class="" style="white-space:normal; text-align:center;" aria-describedby="grid-table_notification_count">
+                                    @item
+                                </td>
+                                <td role="gridcell" style="white-space:normal;text-align:center" aria-describedby="grid-table_notification_count">
+                                    <a class="btn btn-success btnQuery" value="@item">@HRPortal.MultiLanguage.Resource.BtnDownload</a>
+                                </td>
+                              </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr role="row" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                            <td colspan="6" style="text-align:center">
+                                @HRPortal.MultiLanguage.Resource.NoData
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            }
+        </div> 
+        <script type="text/javascript">
+            //指定多少毫秒無動作轉跳
+            var timeout = @(string.IsNullOrWhiteSpace(ViewBag.DeptSumQueryTimeout) ? 6000 : int.Parse(ViewBag.DeptSumQueryTimeout));
+
+            //紀錄當前時間
+            var occurtime=new Date().getTime() ;
+
+            //判斷無動作的時間轉跳
+            function goUrl(){
+                var a = parseInt(new Date().getTime() - occurtime);
+                if(a>=timeout){
+                          @{
+            Session["ExpiredTime_"] = null;
+                          }
+                    window.location.href = '@Url.Action("Index", "Home", new { area = "" })';
+                    intservalID=window.clearInterval(intservalID);
+                }
+            }
+            //隔1000毫秒判斷一次
+            var intservalID=window.setInterval("goUrl()",1000);
+
+
+            function resettime()
+            {
+                occurtime = new Date().getTime();
+                    @{
+            Session["ExpiredTime_"] = DateTime.Now.AddMinutes(1);
+                      }
+     }
+
+            </script>   
+        }
+    }
+</body>
+</html>
+
+
+<script>
+    $(function () {
+        
+        $('.btnQuery').click(function () {
+            var $form = $('#InsuranceAndLaborCertificateFEDSForm');
+            //alert($(this).attr("value"));
+            $("#selectedYear").val($(this).attr("value"));
+            $form.submit();
+        });
+    })
+
+    $(function () {
+
+        //停用按下Return鍵會自動送出表單的動作
+        $(document).on('keypress', 'form input[type="password"]', function(e) {
+            if(e.which == 13) {
+                e.preventDefault();
+                //$('#btnCheckPW').trigger('click');
+                return false;
+            }
+        });
+
+        $('#btnCheckPW').click(function (event) {
+            var form = $('#InsuranceAndLaborCertificateFEDSForm');
+
+            if ($('#PWdata').val() == "")
+                showAlertMessage("請輸入密碼");
+            else {
+                checkPassword();
+            }
+
+        });
+
+        function checkPassword() {
+            var form = $('#InsuranceAndLaborCertificateFEDSForm');
+            var submitData = new FormData(form[0]);
+            $.ajax({
+                url: 'InsuranceAndLaborCertificateFEDS/CheckPassword',
+                type: 'POST',
+                data: submitData,
+                contentType: false,
+                processData: false,
+                success: function (checkResult) {
+                    if (checkResult.status != 'success') {
+                        $('#PWdata').val('');
+                        showAlertMessage(checkResult.message, function(){
+                            window.location='@Url.Action("Index")';    
+                        });
+                    }
+                    else {
+                        window.location = '@Url.Action("Index")';
+                    }
+                }
+            });
+
+        }
+     });
+</script>

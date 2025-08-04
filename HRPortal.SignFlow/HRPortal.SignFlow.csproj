@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A0AB8AB-CEEC-4C1A-BE2E-B70EE134C4F8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HRPortal.SignFlow</RootNamespace>
+    <AssemblyName>HRPortal.SignFlow</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conditions\PatchCardCdCheck.cs" />
+    <Compile Include="Conditions\OverTimeCdCheck.cs" />
+    <Compile Include="Conditions\LeaveCdCheck.cs" />
+    <Compile Include="Conditions\PatchCardConditionItems.cs" />
+    <Compile Include="Conditions\OverTimeConditionItems.cs" />
+    <Compile Include="Conditions\LeaveConditionItems.cs" />
+    <Compile Include="Model\FormChangeSign.cs" />
+    <Compile Include="Model\FormData.cs" />
+    <Compile Include="Helper\FormSummaryBuilder.cs" />
+    <Compile Include="Model\HRPotralFormSignStatus.cs" />
+    <Compile Include="Model\HRPotralLeaveSummary.cs" />
+    <Compile Include="Model\HRPotralSignFlowStatus.cs" />
+    <Compile Include="Model\OverTimeFormData.cs" />
+    <Compile Include="Model\LeaveFormData.cs" />
+    <Compile Include="Model\PatchCardFormData.cs" />
+    <Compile Include="Helper\SignMailHelper.cs" />
+    <Compile Include="SignLists\FormType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignLists\HRPortalSignFlowQueryHelper.cs" />
+    <Compile Include="SignLists\HRPortalSignList.cs" />
+    <Compile Include="SignLists\OverTimeCancelSignList.cs" />
+    <Compile Include="SignLists\LeaveCancelSignList.cs" />
+    <Compile Include="SignLists\PatchCardCancelSignList.cs" />
+    <Compile Include="SignLists\PatchCardSignList.cs" />
+    <Compile Include="SignLists\OverTimeSignList.cs" />
+    <Compile Include="SignLists\LeaveSignList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HRPortal.ApiAdapter\HRPortal.ApiAdapter.csproj">
+      <Project>{fc3ba0a4-28be-45ae-9f5b-5a992c861ae9}</Project>
+      <Name>HRPortal.ApiAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.DBEntities\HRPortal.DBEntities.csproj">
+      <Project>{111010b5-8234-474d-9312-f1051bf42420}</Project>
+      <Name>HRPortal.DBEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.MultiLanguage\HRPortal.MultiLanguage.csproj">
+      <Project>{8fab3a68-d5ee-4b90-86d5-1f517f0ccf26}</Project>
+      <Name>HRPortal.MultiLanguage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRPortal.Services\HRPortal.Services.csproj">
+      <Project>{e87b315a-e0e9-41f2-87e1-eca84a7607e2}</Project>
+      <Name>HRPortal.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.Configurations\YoungCloud.Configurations.csproj">
+      <Project>{1a25d3f5-77f1-4e34-81df-465220dc820c}</Project>
+      <Name>YoungCloud.Configurations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.Databases\YoungCloud.Databases.csproj">
+      <Project>{785d9a10-031c-4d84-a02c-8c959a40de1c}</Project>
+      <Name>YoungCloud.Databases</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.SignFlow.Databases\YoungCloud.SignFlow.Databases.csproj">
+      <Project>{77b56cfc-8e55-4c6b-989d-4c298c56e2b3}</Project>
+      <Name>YoungCloud.SignFlow.Databases</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud.SignFlow\YoungCloud.SignFlow.csproj">
+      <Project>{be6a9eb3-ac3e-4310-9a43-b8631347901c}</Project>
+      <Name>YoungCloud.SignFlow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungCloud\YoungCloud.csproj">
+      <Project>{715dedc3-83aa-440a-ad41-0d8a0247adaf}</Project>
+      <Name>YoungCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
