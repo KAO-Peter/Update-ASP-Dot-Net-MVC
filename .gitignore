@@ -1,0 +1,70 @@
+# Visual Studio cache
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+
+# Entity Framework
+*.edmx.diagram
+*.edmx.sql
+Migrations/
+
+# Packages
+packages/
+*/obj/
+*/bin/
+*.nupkg
+*.snupkg
+
+# NuGet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Database
+*.mdf
+*.ldf
+*.ndf
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# User-specific files
+*.cache
+YoungCloud.Configurations/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+
+# IDE
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
