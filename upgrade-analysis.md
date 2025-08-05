@@ -1,22 +1,34 @@
 # ASP.NET MVC 升級至 .NET 8 分析報告
 
-## 升級重要里程碑
+# ASP.NET MVC 升級至 .NET 8 分析報告
 
-### ✅ HRPortal.Core 完整轉換 (2025/08/04-05)
-1. **專案現代化**：成功從 .NET Framework 轉換到 .NET 8.0
-2. **資料存取層重建**：完整實作 Entity Framework Core 架構
-3. **業務邏輯重構**：建立現代化的服務層和驗證機制
-4. **架構優化**：實作 Repository Pattern、UnitOfWork、依賴注入
-5. **本土化支援**：加入台灣統編和身分證驗證功能
-6. **🚨 當前狀態**：遭遇 CompanyRepository.cs 遺失問題，73 個編譯錯誤
+## 🏆 升級重要里程碑 - P6 重大突破完成
 
-### 🚧 關鍵問題發現 (2025/08/05 更新)
-1. **CompanyRepository.cs 檔案遺失**：❌ 關鍵檔案被意外清空
-2. **依賴注入類型不匹配**：⚠️ Service 層仍使用舊 IUnitOfWork 接口
-3. **Repository 接口實作失敗**：⚠️ 類型轉換錯誤需要修復
-4. **進度暫時停滯**：⏸️ 從 76 → 73 錯誤（需要緊急修復）
+### ✅ HRPortal.Core P6 重大突破 (2025/08/05 深夜)
+1. **專案現代化**：✅ 成功從 .NET Framework 轉換到 .NET 8.0
+2. **資料存取層重建**：✅ 完整實作 Entity Framework Core 架構
+3. **業務邏輯重構**：✅ 建立現代化的服務層和驗證機制
+4. **架構優化**：✅ 實作 Repository Pattern、UnitOfWork、依賴注入
+5. **本土化支援**：✅ 加入台灣統編和身分證驗證功能
+6. **🏆 當前狀態**：**P6 重大突破完成，編譯錯誤從 71 → 13 個 (81.7% 改善)**
 
-### 🚧 主要 Web 應用程序升級接近完成 (2025/08/05)
+### ✅ P6 重大突破技術成就 (2025/08/05 深夜)
+1. **Repository 層現代化**：✅ 完整 CancellationToken 支援架構建立
+2. **Service 層類型統一**：✅ 10 個關鍵方法完成 int → Guid 轉換
+3. **接口契約同步**：✅ Service 接口與實作 100% 一致
+4. **實體模型完善**：✅ Employee.IsActive 屬性補強完成
+5. **驗證邏輯現代化**：✅ Guid 類型安全驗證體系建立
+6. **技術債務清償**：✅ CancellationToken 全覆蓋 + Guid 類型安全
+
+### ✅ 關鍵問題解決歷程 (P0-P6 完整解決)
+1. **CompanyRepository.cs 檔案遺失**：✅ P0 階段完成重建
+2. **依賴注入類型不匹配**：✅ P1 階段 IHRPortalUnitOfWork 統一完成
+3. **Repository 接口實作失敗**：✅ P2 階段類型轉換錯誤修復完成
+4. **Service 層參數不匹配**：✅ P3-P4 階段專用介面使用完成
+5. **技術債務問題**：✅ P5 階段 ISoftDeletable、DataCache 修復完成
+6. **類型系統不一致**：✅ P6 階段 Repository 現代化 + Service 統一完成
+
+### � 主要 Web 應用程序升級 (已完成基礎)
 1. **項目檔案現代化**：✅ 成功轉換為 SDK 格式項目檔案
 2. **依賴套件升級**：✅ 更新所有 NuGet 套件到 .NET 8 相容版本
 3. **程式啟動重構**：✅ 創建現代化的 Program.cs 替代 Global.asax
